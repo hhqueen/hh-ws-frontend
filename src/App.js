@@ -19,13 +19,16 @@ const filters = [
   { name: "dogFriendly", display: "Dog Friendly", value: false },
   { name: "hasPatio", display: "Patio", value: false  },
   { name: "hasFood", display: "Food", value: false  },
+  { name: "hasDrinks", display: "Drinks", value: false  },
   { name: "roofTop", display: "Roof Top", value: false  },
 ]
 
 function App() {
   const [allRestaurants, setAllRestaurants] = useState([])
   const [filterParams, setFilterParams] = useState([])
+  const [currentLocation, setCurrentLocation] = useState({})
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
+  const [showRestaurants, setShowRestaurants] = useState([])
   const [searchParams, setSearchParams] = useState({
     searchTerm: "",
     coordinates: {
@@ -35,8 +38,26 @@ function App() {
     location: ""
   })
 
-  const getRestaurants = async () => {
-    try {      
+
+  const filterRests = (filterArr, restData) => {
+    const trueFilters = filterArr.filter(filterParam => filterParam.value)
+    const filteredRestaurants = restData.filter((rest)=>{
+      // console.log(rest)  
+      for(let i=0;i<trueFilters.length;i++){
+          // console.log(rest[trueFilters[i].name])
+          if(!rest[trueFilters[i].name]){
+            return false
+          }
+        }
+        return true
+    })
+    // console.log("filteredRestaurants", filteredRestaurants)
+    return filteredRestaurants
+  }
+
+  const getRestaurants = async (filterObj) => {
+    try {
+      // console.log(filterObj)   
       const gotRests = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants`)
       return gotRests.data
     } catch (error) {
@@ -44,11 +65,18 @@ function App() {
     }
   }
 
+  const filterFormSubmitHandler = async (e) => {
+    e.preventDefault()
+    const filteredRests = filterRests(filterParams,allRestaurants)
+    setShowRestaurants(filteredRests)
+  }
+
 
   useEffect(() => {
       const loadInitialData = async () => {
         const allRests = await getRestaurants()
         setAllRestaurants(allRests)
+        setShowRestaurants(allRests)
       }
       loadInitialData()
       setFilterParams(filters)
@@ -65,9 +93,10 @@ function App() {
         <Route
           path="/"
           element={<Main
-            allRestaurants = {allRestaurants}
+            allRestaurants = {showRestaurants}
             setFilterParams = {setFilterParams}
             filterParams = {filterParams}
+            filterFormSubmitHandler= {filterFormSubmitHandler}
             />}
         />
 

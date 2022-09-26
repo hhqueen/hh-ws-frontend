@@ -7,7 +7,7 @@ export default function Checkbox({data, filterParams, setFilterParams,idx}) {
         const tempState = filterParams
         tempState[idx].value = checkState
         setFilterParams(tempState)
-        console.log(filterParams)
+        console.log(data)
     },[checkState])
 
     const handleChecking = () => {

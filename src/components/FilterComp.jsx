@@ -1,14 +1,7 @@
 import {useState} from 'react'
 import Checkbox from './Checkbox'
 
-export default function FilterComp({filterParams,setFilterParams}) {    
-    // const filters = [
-    //     { name: "dogFriendly", display: "Dog Friendly" },
-    //     { name: "hasPatio", display: "Patio" },
-    //     { name: "hasFood", display: "Food" },
-    //     { name: "roofTop", display: "Roof Top" },
-    // ]
-
+export default function FilterComp({filterParams,setFilterParams, filterFormSubmitHandler}) {    
 
     const filtersMap = filterParams.map((filterVal, idx) => {
         return (
@@ -30,10 +23,21 @@ export default function FilterComp({filterParams,setFilterParams}) {
             <div
                 className='border w-[25vw]'
             >
-                <p>Filters</p>
-                <ul>
-                    {filtersMap}
-                </ul>
+                <form
+                    onSubmit={(e)=>{
+                        filterFormSubmitHandler(e)
+                    }}
+                >
+                    
+                    <button
+                    type='submit'
+                    >APPLY</button>
+                    
+                    <p>Filters</p>
+                    <ul>
+                        {filtersMap}
+                    </ul>
+                </form>
             </div>
 
         </>

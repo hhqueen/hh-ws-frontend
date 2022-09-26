@@ -3,13 +3,13 @@ import RestListDetail from './RestListDetail'
 
 export default function ListViewComp({ allRestaurants }) {
 
-  console.log(allRestaurants)
+  // console.log(allRestaurants)
 
   const listRestaurants = allRestaurants.map((restaurant) => {
     return (
-      <RestListDetail
-        restaurantInfo={restaurant}
-      />
+        <RestListDetail
+          restaurantInfo={restaurant}
+        />
     )
   })
   return (
@@ -18,9 +18,9 @@ export default function ListViewComp({ allRestaurants }) {
         className='w-[75vw]'
       >
         <h2>ListViewComp</h2>
-        <div>
+        <ul>
           {listRestaurants}
-        </div>
+        </ul>
       </div>
     </>
   )

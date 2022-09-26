@@ -3,7 +3,7 @@ import FilterComp from '../FilterComp'
 import ListViewComp from '../ListViewComp'
 import MapViewComp from '../MapViewComp'
 
-export default function Main({allRestaurants,filterParams, setFilterParams}) {
+export default function Main({allRestaurants,filterParams, setFilterParams, filterFormSubmitHandler}) {
   return (
     <div
     className='flex'
@@ -12,6 +12,7 @@ export default function Main({allRestaurants,filterParams, setFilterParams}) {
             <FilterComp
             setFilterParams = {setFilterParams}
             filterParams={filterParams}
+            filterFormSubmitHandler = {filterFormSubmitHandler}
             />
         </div>
         <div>

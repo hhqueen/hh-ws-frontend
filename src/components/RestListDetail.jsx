@@ -5,7 +5,7 @@ export default function RestListDetail({restaurantInfo}) {
     const cuisineString = restaurantInfo.cuisines.join(", ")
     return (
     // container div
-    <div
+    <li
     className='flex flex-col border my-5'
     >
         {/* image div */}
@@ -23,6 +23,6 @@ export default function RestListDetail({restaurantInfo}) {
             <p>{restaurantInfo.city}</p>
         </div>
 
-    </div>
+    </li>
   )
 }
