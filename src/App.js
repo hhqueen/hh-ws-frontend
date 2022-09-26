@@ -15,9 +15,16 @@ import RestDetail from './components/pages/RestDetail';
 import SignUp from './components/pages/SignUp';
 import Login from './components/pages/Login';
 
+const filters = [
+  { name: "dogFriendly", display: "Dog Friendly", value: false },
+  { name: "hasPatio", display: "Patio", value: false  },
+  { name: "hasFood", display: "Food", value: false  },
+  { name: "roofTop", display: "Roof Top", value: false  },
+]
 
 function App() {
   const [allRestaurants, setAllRestaurants] = useState([])
+  const [filterParams, setFilterParams] = useState([])
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [searchParams, setSearchParams] = useState({
     searchTerm: "",
@@ -44,6 +51,7 @@ function App() {
         setAllRestaurants(allRests)
       }
       loadInitialData()
+      setFilterParams(filters)
   },[])
 
 
@@ -56,7 +64,11 @@ function App() {
         {/* website routes */}
         <Route
           path="/"
-          element={<Main/>}
+          element={<Main
+            allRestaurants = {allRestaurants}
+            setFilterParams = {setFilterParams}
+            filterParams = {filterParams}
+            />}
         />
 
         <Route

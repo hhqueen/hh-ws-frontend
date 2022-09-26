@@ -21,6 +21,12 @@ export default function NavBar() {
                 </Link>
             </div>
 
+            <div>
+                <input/>
+                <label></label>
+                <input/>
+                <label></label>
+            </div>
             <div
                 className='flex'
             >
