@@ -11,32 +11,32 @@ export default function NavBar() {
     return (
         <>
             <nav
-            className='flex justify-between'
+                className='flex justify-between'
             >
-            <div>
-                <Link to="/">
-                    <p>
-                        LOGO HERE
-                    </p>
-                </Link>
-            </div>
+                <div>
+                    <Link to="/">
+                        <p>
+                            LOGO HERE
+                        </p>
+                    </Link>
+                </div>
 
-            <div>
-                <input/>
-                <label></label>
-                <input/>
-                <label></label>
-            </div>
-            <div
-                className='flex'
-            >
-
-                <p
-                    onClick={handleLogOut}
+                <div>
+                    <input />
+                    <label></label>
+                    <input />
+                    <label></label>
+                </div>
+                <div
+                    className='flex'
                 >
-                    Log Out
-                </p>
-            </div>
+
+                    <p
+                        onClick={handleLogOut}
+                    >
+                        Log Out
+                    </p>
+                </div>
             </nav>
         </>
     )

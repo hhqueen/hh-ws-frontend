@@ -1,32 +1,28 @@
-import {useState, useEffect} from 'react'
+import { useState } from 'react'
 
-export default function Checkbox({data, filterParams, setFilterParams,idx}) {
-    const [checkState, setCheckState] = useState(false)
-    
-    useEffect(()=>{
-        const tempState = filterParams
-        tempState[idx].value = checkState
-        setFilterParams(tempState)
-        console.log(data)
-    },[checkState])
+export default function Checkbox({ data, filterParams, setFilterParams, idx }) {
+    const [checkState, setCheckState] = useState(filterParams[idx].value)
 
     const handleChecking = () => {
         setCheckState(!checkState)
+        const tempState = filterParams
+        tempState[idx].value = !filterParams[idx].value
+        setFilterParams(tempState)
     }
 
-  return (
-    <>
-        <label
-        htmlFor={data.name}
-        >
-            <input
-                type="checkbox"
-                id={data.name}
-                checked={checkState}
-                onChange={handleChecking}
-            />
-        {data.display}
-        </label>
-    </>
-  )
+    return (
+        <>
+            <label
+                htmlFor={filterParams[idx].name}
+            >
+                <input
+                    type="checkbox"
+                    id={filterParams[idx].name}
+                    checked={checkState}
+                    onChange={handleChecking}
+                />
+                {data.display}
+            </label>
+        </>
+    )
 }

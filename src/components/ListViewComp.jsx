@@ -1,7 +1,7 @@
 import React from 'react'
 import RestListDetail from './RestListDetail'
 
-export default function ListViewComp({ allRestaurants }) {
+export default function ListViewComp({ dow, allRestaurants }) {
 
   // console.log(allRestaurants)
 
@@ -9,6 +9,7 @@ export default function ListViewComp({ allRestaurants }) {
     return (
         <RestListDetail
           restaurantInfo={restaurant}
+          dow={dow}
         />
     )
   })
