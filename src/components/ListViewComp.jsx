@@ -18,7 +18,6 @@ export default function ListViewComp({ dow, allRestaurants }) {
       <div
         className='w-[75vw]'
       >
-        <h2>ListViewComp</h2>
         <ul>
           {listRestaurants}
         </ul>

@@ -3,7 +3,10 @@ import { useParams } from "react-router-dom"
 import { checkboxFilters } from "../../sourceData/filters"
 import axios from "axios"
 
-const dateConverter = require("../../helperFunctions/dateConverter")
+import HHHours from '../HHHours'
+import MenuItems from '../MenuItems'
+
+// const dateConverter = require("../../helperFunctions/dateConverter")
 
 export default function RestDetail() {
   let { id } = useParams()
@@ -11,13 +14,18 @@ export default function RestDetail() {
   const [cuisineString, setCuisineString] = useState("")
   const [filterString, setFilterString] = useState("")
   const [restHours, setRestHours] = useState([])
-  // const [isLoaded, setIsloaded] = useState(false)
+  const [isLoaded, setIsloaded] = useState(false)
   useEffect(() => {
     const getRestData = async () => {
       const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
-      console.log(response.data)
-      setRestData(response.data)
-      console.log("rest hours?",response.data.hours)
+      console.log("async data", response.data)
+
+      const setRestDataFunc = (function () {
+        setRestData(response.data)
+        setIsloaded(true)
+      })()
+
+      // console.log("rest hours?", response.data.hours)
       setRestHours(response.data.hours)
       setCuisineString(response.data.cuisines.join(", "))
       showApplicableFilters(response.data)
@@ -39,17 +47,10 @@ export default function RestDetail() {
   }
 
   const mapHours = restHours.map((time) => {
-    // console.log(time)
-    console.log(time)
-    const dayOweek = dateConverter(time.day, true)
     return (
-      <div
-        className='flex'
-      >
-        <p>Day: </p><p>{dayOweek}</p>
-        <p>Start Time: </p><p>{time.start1}</p>
-        <p>End Time: </p><p>{time.end1}</p>
-      </div>
+      <HHHours
+        hour={time}
+      />
     )
   })
 
@@ -63,6 +64,26 @@ export default function RestDetail() {
       <a href={`tel:${restData.telNumber}`}>{restData.displayNumber}</a>
 
       {mapHours}
+
+      {isLoaded &&
+        <>
+          <div
+          >
+            <div>
+            <MenuItems
+              ItemsArr={restData.menu.foodMenu}
+              menuType="Food"
+            />
+            </div>
+            <div>
+            <MenuItems
+              ItemsArr={restData.menu.drinkMenu}
+              menuType="Drink"
+            />
+            </div>
+          </div>
+        </>
+      }
     </div>
   )
 }

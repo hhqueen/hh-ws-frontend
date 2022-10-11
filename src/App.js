@@ -21,6 +21,8 @@ import { checkboxFilters } from "./sourceData/filters"
 
 // require functions
 const dateConverter = require("./helperFunctions/dateConverter")
+const getCoord = require("./helperFunctions/getCoord.js")
+const geoLocation = require("./helperFunctions/geoLocation.js")
 
 function App() {
   // variables
@@ -30,13 +32,12 @@ function App() {
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [showRestaurants, setShowRestaurants] = useState([])
   const [dow, setDow] = useState("")
-  const [searchParams, setSearchParams] = useState({
-    searchTerm: "",
+  const [locParams, setLocParams] = useState({
     coordinates: {
-      lat: "",
-      long: ""
+      lat: null,
+      long: null
     },
-    location: ""
+    location: null
   })
 
   const now = new Date()
@@ -79,7 +80,7 @@ function App() {
 
     const numOweek = dateConverter(dow,false)
     const filterRestsByDay = filteredRests.filter((rest) => {
-      const filterFlag = rest.hours.some((e)=> e.day === numOweek && e.hasHH === true)
+      const filterFlag = rest.hours.some((e)=> e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
       console.log(filterFlag)
       return filterFlag
     })
@@ -90,7 +91,7 @@ function App() {
   const filterRestByDay = (filteredRests, dayOweek) => {
     const numOweek = dateConverter(dayOweek,false)
     const filterRestsByDay = filteredRests.filter((rest) => {
-      const filterFlag = rest.hours.some((e)=> e.day === numOweek && e.hasHH === true)
+      const filterFlag = rest.hours.some((e)=> e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
       console.log(filterFlag)
       return filterFlag
     })
@@ -104,10 +105,20 @@ function App() {
       setAllRestaurants(allRests)
       const restArrByDay = filterRestByDay(allRests,fmtDate)
       setShowRestaurants(restArrByDay)
+
+      const coords = await getCoord("1281 Westreef, Costa Mesa, CA")
+      console.log(coords)
+
+      const latLong = geoLocation()
+      console.log(latLong)
+
+      setLocParams({...locParams, ...locParams.coordinates.lat= latLong.latitude})
+
     }
     loadInitialData()
     setDow(fmtDate)
     setFilterParams(checkboxFilters)
+
   }, [])
 
   useEffect(()=>{
