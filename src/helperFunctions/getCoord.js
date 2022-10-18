@@ -1,7 +1,7 @@
 const axios = require("axios")
 
 const getCoord = async (address) => {
-    const url = `http://api.positionstack.com/v1/forward?access_key=${process.env.REACT_APP_POS_STACK_API}&query=${address}&output=json`
+    const url = `https://api.positionstack.com/v1/forward?access_key=${process.env.REACT_APP_POS_STACK_API}&query=${address}&output=json`
     const response = await axios.get(url)
     console.log(response.data.data[0])
     const coordinates = {
