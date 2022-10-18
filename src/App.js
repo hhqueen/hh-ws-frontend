@@ -110,13 +110,13 @@ function App() {
       const restArrByDay = filterRestByDay(allRests, fmtDate)
       setShowRestaurants(restArrByDay)
 
-      const coords = await getCoord("1281 Westreef, Costa Mesa, CA")
-      console.log(coords)
+      // const coords = await getCoord("1281 Westreef, Costa Mesa, CA")
+      // console.log(coords)
 
       const latLong = geoLocation()
-      console.log(latLong)
+      // console.log(latLong)
 
-      setLocParams({ ...locParams, ...locParams.coordinates.lat = latLong.latitude })
+      // setLocParams({ ...locParams, ...locParams.coordinates.lat = latLong.latitude })
 
     }
     loadInitialData()

@@ -13,6 +13,7 @@ const geoLocation = () => {
         console.log("Not Available");
         geoLocCoords.geoLocAvail = false
       }
+      console.log("geolocation permission",geoLocCoords.geoLocAvail)
     
     
     navigator.geolocation.getCurrentPosition(function(position) {
