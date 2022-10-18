@@ -1,23 +1,24 @@
 import React from 'react'
 
 export default function MenuItems({ItemsArr, menuType}) {
+    
+    
     const ItemsMap = ItemsArr.map((item)=>{
+        // console.log(item)
         return(
             <li
-                className='my-3'
+            className='flex flex-col text-xs justify-center items-center my-3'
             >
                     <p
-                    className='text-xs'
+                    className='text-xs text-center'
                     >{item.name}</p>
+                    
                     <p
-                    className='text-xs'
-                    >
-                        {
-                            item.description ? <p>{item.description}</p> : ""
-                        }
-                    </p>
+                    className='text-xs text-center'
+                    >{item.description}</p>
+                    
                     <p
-                    className='text-xs'
+                    className='text-xs text-center'
                     >${item.price}</p>
             </li>
         )
@@ -25,7 +26,9 @@ export default function MenuItems({ItemsArr, menuType}) {
   
     return (
     <div>
-        <p>{menuType} Menu</p>
+        <p
+        className='flex justify-center'
+        >{menuType} Menu</p>
         <ul>
             {ItemsMap}
         </ul>

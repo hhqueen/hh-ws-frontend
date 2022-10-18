@@ -5,6 +5,7 @@ import MenuItems from './MenuItems'
 
 const dateConverter = require("../helperFunctions/dateConverter")
 
+
 export default function RestListDetail({ dow, restaurantInfo }) {
     const navigate = useNavigate()
 
@@ -27,47 +28,45 @@ export default function RestListDetail({ dow, restaurantInfo }) {
     return (
         // container div
         <div
-            className='flex flex-col border my-5'
+            className='flex flex-col border'
             onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
         >
-
-            {/* image div */}
+            
+            {/* image and Info Container Div */}
             <div
+            className='flex'
             >
-                <img
-                    src={restaurantInfo.image_url}
-                    alt={restaurantInfo.name}
-                />
-            </div>
+                {/* image div */}
+                <div
+                className='w-6/12 h-[8rem]'
+                >
+                    <img
+                        src={restaurantInfo.image_url}
+                        alt={restaurantInfo.name}
+                        className="object-contain h-full place-self-center"
+                    />
+                </div>
 
-            {/* info div */}
-            <div>
-                <p>{restaurantInfo.name}</p>
-                <p>{cuisineString}</p>
-                <p>{restaurantInfo.city}</p>
+                {/* info div */}
+                <div
+                className='h-fit place-self-center'
+                >
+                    <p
+                    className='text-sm'
+                    >{restaurantInfo.name}</p>
+                    <p
+                    className='text-xs my-1'
+                    >{cuisineString}</p>
+                    <p
+                    className='text-xs my-1'
+                    >{restaurantInfo.city}</p>
+                </div>
             </div>
+            {/* hours Div */}
             {dowHours}
 
-            <div
-            className='flex my-5'
-            >
-                <div
-                className='basis-full my-3 items-center'
-                >
-                    <MenuItems
-                        ItemsArr={restaurantInfo.menu.foodMenu}
-                        menuType="Food"
-                    />
-                </div>
-                <div
-                className='basis-full my-3 place-self-auto'
-                >
-                    <MenuItems
-                        ItemsArr={restaurantInfo.menu.drinkMenu}
-                        menuType="Drink"
-                    />
-                </div>
-            </div>
+            
+            
         </div>
     )
 }

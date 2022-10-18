@@ -8,6 +8,7 @@ import {
 import { useState, useEffect } from 'react';
 import axios from "axios"
 import date from 'date-and-time';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
 // import components
 import NavBar from "./components/NavBar";
@@ -78,9 +79,9 @@ function App() {
     const filteredRests = filterRests(filterParams, allRestaurants)
     // console.log(filteredRests)
 
-    const numOweek = dateConverter(dow,false)
+    const numOweek = dateConverter(dow, false)
     const filterRestsByDay = filteredRests.filter((rest) => {
-      const filterFlag = rest.hours.some((e)=> e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
+      const filterFlag = rest.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
       console.log(filterFlag)
       return filterFlag
     })
@@ -89,9 +90,9 @@ function App() {
   }
 
   const filterRestByDay = (filteredRests, dayOweek) => {
-    const numOweek = dateConverter(dayOweek,false)
+    const numOweek = dateConverter(dayOweek, false)
     const filterRestsByDay = filteredRests.filter((rest) => {
-      const filterFlag = rest.hours.some((e)=> e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
+      const filterFlag = rest.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
       console.log(filterFlag)
       return filterFlag
     })
@@ -103,7 +104,7 @@ function App() {
     const loadInitialData = async () => {
       const allRests = await getRestaurants()
       setAllRestaurants(allRests)
-      const restArrByDay = filterRestByDay(allRests,fmtDate)
+      const restArrByDay = filterRestByDay(allRests, fmtDate)
       setShowRestaurants(restArrByDay)
 
       const coords = await getCoord("1281 Westreef, Costa Mesa, CA")
@@ -112,7 +113,7 @@ function App() {
       const latLong = geoLocation()
       console.log(latLong)
 
-      setLocParams({...locParams, ...locParams.coordinates.lat= latLong.latitude})
+      setLocParams({ ...locParams, ...locParams.coordinates.lat = latLong.latitude })
 
     }
     loadInitialData()
@@ -121,52 +122,54 @@ function App() {
 
   }, [])
 
-  useEffect(()=>{
-    return console.log("dow",dow)
+  useEffect(() => {
+    return console.log("dow", dow)
   })
 
-  
+  const queryClient = new QueryClient()
   return (
-    <Router>
+    <QueryClientProvider client = {queryClient}>
+      <Router>
 
-      <NavBar />
+        <NavBar />
 
-      <Routes>
-        {/* website routes */}
-        <Route
-          path="/"
-          element={<Main
-            allRestaurants={showRestaurants}
-            setFilterParams={setFilterParams}
-            filterParams={filterParams}
-            filterFormSubmitHandler={filterFormSubmitHandler}
-            setDow={setDow}
-            dow={dow}
-          />}
-        />
+        <Routes>
+          {/* website routes */}
+          <Route
+            path="/"
+            element={<Main
+              allRestaurants={showRestaurants}
+              setFilterParams={setFilterParams}
+              filterParams={filterParams}
+              filterFormSubmitHandler={filterFormSubmitHandler}
+              setDow={setDow}
+              dow={dow}
+            />}
+          />
 
-        <Route
-          path="/restaurant/:id"
-          element={<RestDetail />}
-        />
+          <Route
+            path="/restaurant/:id"
+            element={<RestDetail />}
+          />
 
-        {/* <Route
+          {/* <Route
           path="/account"
           element={<RestDetail/>}
         /> */}
 
-        <Route
-          path="/signup"
-          element={<SignUp />}
-        />
+          <Route
+            path="/signup"
+            element={<SignUp />}
+          />
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+          <Route
+            path="/login"
+            element={<Login />}
+          />
 
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

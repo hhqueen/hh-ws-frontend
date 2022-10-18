@@ -6,9 +6,10 @@ import MapViewComp from '../MapViewComp'
 export default function Main({dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
   return (
     <div
-      className='flex'
+      className='flex flex-col 
+      sm:flex-row sm:my-10'
     >
-      <div>
+
         <FilterComp
           setFilterParams={setFilterParams}
           filterParams={filterParams}
@@ -16,13 +17,12 @@ export default function Main({dow, setDow, allRestaurants, filterParams, setFilt
           setDow={setDow}
           dow={dow}
         />
-      </div>
-      <div>
+
         <ListViewComp
           allRestaurants={allRestaurants}
           dow={dow}
         />
-      </div>
+
       {/* <div>
             <MapViewComp/>
         </div> */}

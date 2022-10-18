@@ -16,7 +16,7 @@ export default function ListViewComp({ dow, allRestaurants }) {
   return (
     <>
       <div
-        className='w-[75vw]'
+        className='w-full'
       >
         <ul>
           {listRestaurants}

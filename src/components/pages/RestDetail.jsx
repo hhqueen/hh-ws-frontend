@@ -46,10 +46,10 @@ export default function RestDetail() {
     setFilterString(filterString)
   }
 
-  const mapHours = restHours.map((time) => {
+  const mapHours = restHours.map((hour) => {
     return (
       <HHHours
-        hour={time}
+        hour={hour}
       />
     )
   })

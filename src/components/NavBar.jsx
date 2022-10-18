@@ -11,7 +11,7 @@ export default function NavBar() {
     return (
         <>
             <nav
-                className='flex justify-between'
+                className='flex justify-between static'
             >
                 <div>
                     <Link to="/">
