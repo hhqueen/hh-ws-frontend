@@ -2,8 +2,8 @@ import React from 'react'
 import { useNavigate } from "react-router-dom"
 import HHHours from './HHHours'
 import MenuItems from './MenuItems'
-
-const dateConverter = require("../helperFunctions/dateConverter")
+import dateConverter from "../helperFunctions/dateConverter"
+// const dateConverter = require("../helperFunctions/dateConverter")
 
 
 export default function RestListDetail({ dow, restaurantInfo }) {

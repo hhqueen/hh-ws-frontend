@@ -13,4 +13,5 @@ const getCoord = async (address) => {
     return coordinates
 }
 
-module.exports = getCoord;
+// module.exports = getCoord;
+export default getCoord

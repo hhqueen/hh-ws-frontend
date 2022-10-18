@@ -1,5 +1,5 @@
 const dateConverter = (value, numToDay) => {
-    if (numToDay == true) {
+    if (numToDay === true) {
       let day = ""
       switch (value) {
         case 0:
@@ -22,6 +22,8 @@ const dateConverter = (value, numToDay) => {
           break;
         case 6:
           day = "Saturday";
+        default:
+          day = "error";
       }
       return day
 
@@ -49,6 +51,8 @@ const dateConverter = (value, numToDay) => {
           break;
         case "Saturday":
           num = 6;
+        default:
+          num = -1;
       }
       return num
 
@@ -56,4 +60,5 @@ const dateConverter = (value, numToDay) => {
 
   }
 
-  module.exports = dateConverter;
+  // module.exports = dateConverter;
+  export default dateConverter;

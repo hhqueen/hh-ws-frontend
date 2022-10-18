@@ -15,7 +15,7 @@ const militaryTimeConverter = (value) => {
     } else if (value == 24) {
       ampm = "AM"
     }
-    console.log("ampm:",ampm)
+    // console.log("ampm:",ampm)
 
     let minute = 0 // default 0
     //calculate minute
@@ -26,7 +26,7 @@ const militaryTimeConverter = (value) => {
     if (minute < 10) {
       minute = `0${minute}`
     }
-    console.log("minute:",minute)
+    // console.log("minute:",minute)
     
     
     //calculate hour
@@ -39,13 +39,13 @@ const militaryTimeConverter = (value) => {
     if (hour < 10) {
       hour = `0${hour}`
     }
-    console.log("hour",hour)
+    // console.log("hour",hour)
 
     // need to add code to convert and return a string
     timeString = `${hour}:${minute}${ampm}`
-    console.log(timeString)
+    // console.log(timeString)
     return timeString
 
   }
-
-  module.exports = militaryTimeConverter;
+module.exports = militaryTimeConverter;
+  // export default militaryTimeConverter

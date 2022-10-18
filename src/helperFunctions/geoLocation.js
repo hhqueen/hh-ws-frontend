@@ -25,4 +25,5 @@ const geoLocation = () => {
     return geoLocCoords
 }
 
-module.exports = geoLocation;
+// module.exports = geoLocation;
+export default geoLocation
