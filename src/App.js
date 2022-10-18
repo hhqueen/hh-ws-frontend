@@ -16,6 +16,7 @@ import Main from './components/pages/Main';
 import RestDetail from './components/pages/RestDetail';
 import SignUp from './components/pages/SignUp';
 import Login from './components/pages/Login';
+import AddRest from "./components/pages/AddRest"
 
 // import source data
 import { checkboxFilters } from "./sourceData/filters"
@@ -160,6 +161,10 @@ function App() {
           element={<RestDetail/>}
         /> */}
 
+          <Route
+            path="/addnewrestaurant"
+            element={<AddRest/>}
+          />
           <Route
             path="/signup"
             element={<SignUp />}

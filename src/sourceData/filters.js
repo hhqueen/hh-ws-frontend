@@ -5,6 +5,3 @@ export const checkboxFilters = [
     { name: "hasDrinks", display: "Drinks", value: false  },
   ]
 
-export const dateTimeFilters = [
-    {name: "dayofweek"}
-]

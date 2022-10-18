@@ -1,6 +1,7 @@
 const dateConverter = (value, numToDay) => {
     if (numToDay === true) {
       let day = ""
+      console.log("dateConverter Value:",value, "dateConverter option", numToDay)
       switch (value) {
         case 0:
           day = "Monday";
@@ -18,12 +19,14 @@ const dateConverter = (value, numToDay) => {
           day = "Friday";
           break;
         case 5:
-          day = "Sunday";
+          day = "Saturday";
           break;
         case 6:
-          day = "Saturday";
+          day = "Sunday";
+          break;
         default:
-          day = "error";
+          day = "error?";
+          break;
       }
       return day
 
@@ -46,13 +49,15 @@ const dateConverter = (value, numToDay) => {
         case "Friday":
           num = 4;
           break;
-        case "Sunday":
+        case "Saturday":
           num = 5;
           break;
-        case "Saturday":
+        case "Sunday":
           num = 6;
+          break;
         default:
           num = -1;
+          break;
       }
       return num
 

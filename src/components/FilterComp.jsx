@@ -1,5 +1,6 @@
 // import { useState } from 'react'
 import Checkbox from './Checkbox'
+import {dowList} from "../sourceData/dowList"
 
 // const dateConverter = require("../helperFunctions/dateConverter")
 
@@ -22,7 +23,7 @@ export default function FilterComp({dow,setDow, filterParams, setFilterParams, f
         )
     })
     
-    const dowList = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
+    // const dowList = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
     const dowOptionsMap = dowList.map((day) => {
         if (dow===day) {
             return <option value={day} selected>{day}</option>

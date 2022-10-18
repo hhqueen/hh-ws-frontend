@@ -30,7 +30,11 @@ export default function NavBar() {
                 <div
                     className='flex'
                 >
-
+                    <Link
+                    to="/addnewrestaurant"
+                    >
+                    <p>Add New Restaurant</p>
+                    </Link>
                     <p
                         onClick={handleLogOut}
                     >
