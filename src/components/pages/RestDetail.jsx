@@ -8,6 +8,8 @@ import MenuItems from '../MenuItems'
 
 // const dateConverter = require("../../helperFunctions/dateConverter")
 
+// NOTE TO SELF: add restaurant website URL to code
+
 export default function RestDetail() {
   let { id } = useParams()
   const [restData, setRestData] = useState({})
