@@ -1,9 +1,17 @@
-import React from 'react'
+// Libraries
+import {useState} from 'react'
 import { checkboxFilters }  from "../../sourceData/filters"
 import { dowList } from "../../sourceData/dowList"
 // import {useQuery} from "@tanstack/react-query"
 
+// Components
+import Checkbox from '../Checkbox'
+import ModalForArray from '../ModalForArray'
+
 export default function AddRest() {
+    const [filterParams, setFilterParams] = useState(checkboxFilters)
+    const [searchRestBool , setSearchRestBool] = useState(true)
+    const [yelpRestData, setYelpRestData] = useState({})
     
     const hhHoursMap = dowList.map((day) => {
         return (
@@ -95,35 +103,68 @@ export default function AddRest() {
     })
 
     const options = checkboxFilters
-    // console.log(options)
+    console.log("options",options)
+
+    const filtersMap = filterParams.map((filterVal, idx) => {
+        return (
+            <li>
+                <Checkbox
+                    idx={idx}
+                    filterParams={filterParams}
+                    data={filterVal}
+                    setFilterParams={setFilterParams}
+                />
+            </li>
+           
+        )
+    })
 
     return (
-        <div>
+        <div
+        className='ml-10'
+        >
             <h1>Add New Restaurant Page</h1>
-            <form>
+            <form
+            onSubmit={''}
+            >
                 {/* div that holds yelp search input */}
                 <div>
-                    <label
-                        htmlFor='yelpSearchTerm'
-                    >Search Term</label>
-                    <input
-                        id='yelpSearchTerm'
-                        className='border'
-                        type="input"
-                    />
-                    <label
-                        htmlFor='yelpSearchLoc'
-                    >Search Term</label>
-                    <input
-                        id='yelpSearchLoc'
-                        className='border'
-                        type="input"
-                    />
+                    {
+                    searchRestBool ?
+                    // {/* search container */}
+                    <div>
+                        <label
+                            htmlFor='yelpSearchTerm'
+                        >Search Term</label>
+                        <input
+                            id='yelpSearchTerm'
+                            className='border'
+                            type="input"
+                        />
+                        <label
+                            htmlFor='yelpSearchLoc'
+                        >Search Term</label>
+                        <input
+                            id='yelpSearchLoc'
+                            className='border'
+                            type="input"
+                        />
+                    </div>
+                    :
+                    // {/* results Container */}
+                    <div>
+                        
+                    </div>
+                    }
+
+                    <button></button>
                 </div>
 
                 {/* div that holds options input */}
                 <div>
-                    
+                    <ul>
+                        {filtersMap}
+                    </ul>
                 </div>
 
                 {/* div that holds hours input */}
