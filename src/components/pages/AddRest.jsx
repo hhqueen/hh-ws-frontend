@@ -1,18 +1,28 @@
 // Libraries
-import {useState} from 'react'
-import { checkboxFilters }  from "../../sourceData/filters"
+import { useState } from 'react'
+import { checkboxFilters } from "../../sourceData/filters"
 import { dowList } from "../../sourceData/dowList"
 // import {useQuery} from "@tanstack/react-query"
 
 // Components
 import Checkbox from '../Checkbox'
 import ModalForArray from '../ModalForArray'
+import { Button } from 'flowbite-react'
 
 export default function AddRest() {
     const [filterParams, setFilterParams] = useState(checkboxFilters)
-    const [searchRestBool , setSearchRestBool] = useState(true)
+    const [searchRestBool, setSearchRestBool] = useState(true)
     const [yelpRestData, setYelpRestData] = useState({})
-    
+    const [searchParams, setSearchParams] = useState({
+        term: "",
+        location: {
+            isCoordinates: false,
+            address: "",
+            lat: 0,
+            long: 0
+        }
+    })
+
     const hhHoursMap = dowList.map((day) => {
         return (
             <li
@@ -20,7 +30,7 @@ export default function AddRest() {
             >
                 <div>{day}</div>
                 <div>
-                    
+
                     <label
                         htmlFor={`${day}Hour1`}
                     >Happy Hour
@@ -103,7 +113,7 @@ export default function AddRest() {
     })
 
     const options = checkboxFilters
-    console.log("options",options)
+    console.log("options", options)
 
     const filtersMap = filterParams.map((filterVal, idx) => {
         return (
@@ -115,46 +125,51 @@ export default function AddRest() {
                     setFilterParams={setFilterParams}
                 />
             </li>
-           
+
         )
     })
 
     return (
         <div
-        className='ml-10'
+            className='ml-10'
         >
             <h1>Add New Restaurant Page</h1>
             <form
-            onSubmit={''}
+                onSubmit={''}
             >
                 {/* div that holds yelp search input */}
                 <div>
                     {
-                    searchRestBool ?
-                    // {/* search container */}
-                    <div>
-                        <label
-                            htmlFor='yelpSearchTerm'
-                        >Search Term</label>
-                        <input
-                            id='yelpSearchTerm'
-                            className='border'
-                            type="input"
-                        />
-                        <label
-                            htmlFor='yelpSearchLoc'
-                        >Search Term</label>
-                        <input
-                            id='yelpSearchLoc'
-                            className='border'
-                            type="input"
-                        />
-                    </div>
-                    :
-                    // {/* results Container */}
-                    <div>
-                        
-                    </div>
+                        searchRestBool ?
+                            // {/* search container */}
+                            <div>
+                                <label
+                                    htmlFor='yelpSearchTerm'
+                                >Search Term</label>
+                                <input
+                                    id='yelpSearchTerm'
+                                    className='border'
+                                    type="input"
+                                />
+                                <label
+                                    htmlFor='yelpSearchLoc'
+                                >Search Term</label>
+                                <input
+                                    id='yelpSearchLoc'
+                                    className='border'
+                                    type="input"
+                                />
+                                <Button
+                                    onClick=""
+                                    type='button'
+                                    className="w-[10px]"
+                                >Button</Button>
+                            </div>
+                            :
+                            // {/* results Container */}
+                            <div>
+
+                            </div>
                     }
 
                     <button></button>
@@ -178,10 +193,10 @@ export default function AddRest() {
                         {hhHoursMap}
                     </ul>
                 </div>
-                
+
                 {/* div that holds menu input */}
                 <div>
-                    
+
                 </div>
             </form>
         </div>
