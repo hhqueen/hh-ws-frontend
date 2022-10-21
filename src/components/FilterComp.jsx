@@ -7,7 +7,7 @@ import {dowList} from "../sourceData/dowList"
 export default function FilterComp({dow,setDow, filterParams, setFilterParams, filterFormSubmitHandler }) {
     
     // enhancement idea: untie filter date from restaurant cards
-
+    // testing changes dev vs main
     const filtersMap = filterParams.map((filterVal, idx) => {
         return (
             <li
