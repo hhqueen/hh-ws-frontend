@@ -18,9 +18,10 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
         // console.log("numOfDay", numOfDay)
         const dayFilterFlag = numOfDay === day.day
         return dayFilterFlag
-    }).map((hour) => {
+    }).map((hour,idx) => {
         return (
             <HHHours
+                key={`restDetailCard-${restaurantInfo._id}-${idx}`}
                 hour={hour}
             />
         )

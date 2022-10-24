@@ -8,6 +8,7 @@ export default function ListViewComp({ dow, allRestaurants }) {
   const listRestaurants = allRestaurants.map((restaurant) => {
     return (
         <RestListDetailCard
+          key={`restCard-${restaurant._id}`}
           restaurantInfo={restaurant}
           dow={dow}
         />

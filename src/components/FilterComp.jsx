@@ -15,6 +15,7 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
                 key={`filter${idx}`}
             >
                 <Checkbox
+                    key={`filterCheckbox${idx}`}
                     idx={idx}
                     filterParams={filterParams}
                     data={filterVal}
@@ -25,11 +26,11 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
     })
 
     // const dowList = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
-    const dowOptionsMap = dowList.map((day) => {
+    const dowOptionsMap = dowList.map((day,idx) => {
         if (dow === day) {
-            return <option value={day} selected>{day}</option>
+            return <option key={`day-option${idx}`} value={day} defaultValue>{day}</option>
         } else {
-            return <option value={day}>{day}</option>
+            return <option key={`day-option${idx}`} value={day}>{day}</option>
         }
     })
 
