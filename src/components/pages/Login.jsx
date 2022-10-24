@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import axios from 'axios'
 import { Label,TextInput,Button, Checkbox } from 'flowbite-react'
 
 export default function Login() {
@@ -8,9 +9,15 @@ export default function Login() {
     rememberMeBool: false
   })
   
-  const loginFormSubmitHandler = (e) => {
+  const loginFormSubmitHandler = async (e) => {
     e.preventDefault()
+    try {
+      const reqBody = loginData
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/login`, reqBody)
 
+    } catch (error) {
+      console.warn(error, "Component:Login.jsx, Function:loginFormSubmitHandler")
+    }
   }
   return (
     <form 

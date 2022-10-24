@@ -29,13 +29,13 @@ export default function Main({dow, setDow, allRestaurants, filterParams, setFilt
           allRestaurants={allRestaurants}
           dow={dow}
         />
+
+        // {/* <div>
+        //     <MapViewComp/>
+        // </div> */}
           :
           <LoadingComp/>
         }
-
-      {/* <div>
-            <MapViewComp/>
-        </div> */}
     </div>
   )
 }
