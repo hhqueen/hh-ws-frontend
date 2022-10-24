@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import jwt_decode from 'jwt-decode'
 
@@ -76,18 +76,21 @@ export default function NavBar() {
                     
                 }
                 
+                
+                {localStorage.getItem('jwt') &&
 
-                <div
-                    className='flex'
-                >
-                    
-
-                    <p
-                        onClick={handleLogOut}
+                    <div
+                        className='flex'
                     >
-                        Log Out
-                    </p>
-                </div>
+                        
+
+                        <p
+                            onClick={handleLogOut}
+                        >
+                            Log Out
+                        </p>
+                    </div>
+                }
             </nav>
         </>
     )
