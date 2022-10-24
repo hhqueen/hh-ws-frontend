@@ -7,12 +7,58 @@ import { dowList } from "../../sourceData/dowList"
 // Components
 import Checkbox from '../Checkbox'
 import ModalForArray from '../ModalForArray'
-import { Button } from 'flowbite-react'
+// import { Button } from 'flowbite-react'
 
 export default function AddRest() {
+    const menuItemTypeText = {
+        1: "$",
+        2: "% Off",
+        3: "$ Off"
+    }
+    const foodMenuItemTemplate = {
+        name: "",
+        description: "",
+        Type: "Food",
+        specialTypeId: 1,
+        // 1 = price, 2 = percentDiscount, 3 = dollarsOff
+        price: 0,
+        percentDiscout: 0.5,
+        dollarsOff: 0,
+    }
+    const drinkMenuItemTemplate = {
+        name: "",
+        description: "",
+        Type: "Food",
+        specialTypeId: 1,
+        // 1 = price, 2 = percentDiscount, 3 = dollarsOff
+        price: 0,
+        percentDiscout: 0.5,
+        dollarsOff: 0,
+    }
     const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
     const [yelpRestData, setYelpRestData] = useState({})
+    const [hoursData, setHoursData] = useState([
+        { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //monday
+        { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //tuesday
+        { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //weds
+        { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, // thurs
+        { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, //friday
+        { day: 5, hasHH1: false, start1: -1, end1: -1, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, //sat
+        { day: 6, hasHH1: false, start1: -1, end1: -1, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //sun
+    ])
+    const [mainMenuData, setMainMenuData] = useState({
+        restaurantname: "",
+        isChain: false,
+        hasFoodSpecials: true,
+        foodSpecialsDescriptions: "",
+        foodMenu: [],
+        hasDrinkSpecials: true,
+        drinkSpecialsDescriptions: "",
+        drinkMenu: []
+    })
+    const [foodMenuData, setFoodMenuData] = useState([])
+    const [drinksMenuData, setDrinksMenuData] = useState([])
     const [searchParams, setSearchParams] = useState({
         term: "",
         location: {
@@ -133,10 +179,10 @@ export default function AddRest() {
         <div
             className='ml-10'
         >
-            <h1>Add New Restaurant Page</h1>
             <form
                 onSubmit={''}
             >
+
                 {/* div that holds yelp search input */}
                 <div>
                     {
@@ -145,7 +191,7 @@ export default function AddRest() {
                             <div>
                                 <label
                                     htmlFor='yelpSearchTerm'
-                                >Search Term</label>
+                                >Search:</label>
                                 <input
                                     id='yelpSearchTerm'
                                     className='border'
@@ -153,22 +199,28 @@ export default function AddRest() {
                                 />
                                 <label
                                     htmlFor='yelpSearchLoc'
-                                >Search Term</label>
+                                >Location:</label>
                                 <input
                                     id='yelpSearchLoc'
                                     className='border'
                                     type="input"
                                 />
-                                <Button
-                                    onClick=""
+                                <button
+                                    onClick={() => { setSearchRestBool(false) }}
                                     type='button'
-                                    className="w-[10px]"
-                                >Button</Button>
+                                    className="border"
+                                >Search</button>
                             </div>
                             :
                             // {/* results Container */}
                             <div>
+                                <p>Yelp Results Container</p>
 
+                                <button
+                                    type='button'
+                                    className='border'
+                                    onClick={() => { setSearchRestBool(true) }}
+                                >Reset Search</button>
                             </div>
                     }
 
@@ -177,6 +229,7 @@ export default function AddRest() {
 
                 {/* div that holds options input */}
                 <div>
+                    <p>Filters:</p>
                     <ul>
                         {filtersMap}
                     </ul>
@@ -184,6 +237,7 @@ export default function AddRest() {
 
                 {/* div that holds hours input */}
                 <div>
+                    <p>Hours:</p>
                     <ul
                         className=''
                     >
@@ -196,7 +250,72 @@ export default function AddRest() {
 
                 {/* div that holds menu input */}
                 <div>
+                    <div>
+                        <div>
+                            <input
+                                id='foodSpecialsBoolean'
+                                type="checkbox"
+                            />
+                            <label
+                                htmlFor='foodSpecialsBoolean'
+                            >
+                                Has Food Specials
+                            </label>
+                        </div>
+                        <div>
+                            <input
+                                id='drinkSpecialsBoolean'
+                                type="checkbox"
+                            />
+                            <label
+                                htmlFor='drinkSpecialsBoolean'
+                            >
+                                has Drink Specials
+                            </label>
+                        </div>
+                    </div>
 
+                    {/* Main Menu Inputs */}
+                    <p>Menu</p>
+                    <div>
+                        
+                        {/* Food Menu Items */}
+                        {mainMenuData.hasFoodSpecials &&
+                            <div
+                            className='border'
+                            >
+                            <p>Add Food Menu/Items:</p>
+                            
+                                <label
+                                    htmlFor='foodSpecialDescription'
+                                >
+                                    Food Special Description:
+                                </label>
+                                <br></br>
+                                <textarea
+                                    id='foodSpecialDescription'
+                                    onChange={(e)=>{setMainMenuData({...mainMenuData, foodSpecialsDescriptions:e.target.value})}}
+                                />
+                            </div>
+                        }
+
+
+                        {/* Drink Menu Items */}
+                        {mainMenuData.hasDrinkSpecials &&
+                            <div>
+                                <label
+                                    htmlFor='drinkSpecialDescription'
+                                >
+                                    Drink Special Description:
+                                </label>
+                                <br></br>
+                                <textarea
+                                    id='drinkSpecialDescription'
+                                    onChange={(e)=>{setMainMenuData({...mainMenuData, drinkSpecialsDescriptions:e.target.value})}}
+                                />
+                            </div>
+                        }
+                    </div>
                 </div>
             </form>
         </div>
