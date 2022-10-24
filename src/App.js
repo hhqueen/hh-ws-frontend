@@ -5,18 +5,20 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
 // import components
 import NavBar from "./components/NavBar";
-import Main from './components/pages/Main';
-import RestDetail from './components/pages/RestDetail';
+// import Main from './components/pages/Main';
+// import RestDetail from './components/pages/RestDetail';
 import SignUp from './components/pages/SignUp';
 import Login from './components/pages/Login';
 import AddRest from "./components/pages/AddRest"
+import LoadingComp from './components/LoadingComp';
+import ModalTest from './components/pages/ModalTest';
 
 // import source data
 import { checkboxFilters } from "./sourceData/filters"
@@ -28,6 +30,8 @@ import geoLocation from "./helperFunctions/geoLocation"
 // const dateConverter = require("./helperFunctions/dateConverter")
 // const getCoord = require("./helperFunctions/getCoord.js")
 // const geoLocation = require("./helperFunctions/geoLocation.js")
+const Main = lazy(() => import('./components/pages/Main'))
+const RestDetail = lazy(() => import('./components/pages/RestDetail'))
 
 function App() {
   // variables
@@ -132,50 +136,58 @@ function App() {
 
   const queryClient = new QueryClient()
   return (
-    <QueryClientProvider client = {queryClient}>
+    <QueryClientProvider client={queryClient}>
       <Router>
 
         <NavBar />
+        <Suspense fallback={<LoadingComp />}>
+          <Routes>
+            {/* website routes */}
+            <Route
+              path="/"
+              element={<Main
+                allRestaurants={showRestaurants}
+                setFilterParams={setFilterParams}
+                filterParams={filterParams}
+                filterFormSubmitHandler={filterFormSubmitHandler}
+                setDow={setDow}
+                dow={dow}
+              />}
+            />
 
-        <Routes>
-          {/* website routes */}
-          <Route
-            path="/"
-            element={<Main
-              allRestaurants={showRestaurants}
-              setFilterParams={setFilterParams}
-              filterParams={filterParams}
-              filterFormSubmitHandler={filterFormSubmitHandler}
-              setDow={setDow}
-              dow={dow}
-            />}
-          />
+            <Route
+              path="/restaurant/:id"
+              element={<RestDetail />}
+            />
 
-          <Route
-            path="/restaurant/:id"
-            element={<RestDetail />}
-          />
+            
 
-          {/* <Route
+            {/* <Route
           path="/account"
           element={<RestDetail/>}
         /> */}
 
-          <Route
-            path="/addnewrestaurant"
-            element={<AddRest/>}
-          />
-          <Route
-            path="/signup"
-            element={<SignUp />}
-          />
+            <Route
+              path="/addnewrestaurant"
+              element={<AddRest />}
+            />
+            <Route
+              path="/signup"
+              element={<SignUp />}
+            />
 
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+            <Route
+              path="/login"
+              element={<Login />}
+            />
 
-        </Routes>
+            <Route
+              path="/modalTest"
+              element={<ModalTest />}
+            />        
+
+          </Routes>
+        </Suspense>
       </Router>
     </QueryClientProvider>
   );

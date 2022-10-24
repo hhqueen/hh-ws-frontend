@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 import FilterComp from '../FilterComp'
-import ListViewComp from '../ListViewComp'
+// import ListViewComp from '../ListViewComp'
 import MapViewComp from '../MapViewComp'
 import LoadingComp from '../LoadingComp'
 
 import { Alert } from 'flowbite-react'
+
+const ListViewComp = React.lazy(()=> import('../ListViewComp'))
 
 export default function Main({dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
   
@@ -22,20 +24,15 @@ export default function Main({dow, setDow, allRestaurants, filterParams, setFilt
           dow={dow}
         />
 
-        {
-          allRestaurants ? 
         
-        <ListViewComp
-          allRestaurants={allRestaurants}
-          dow={dow}
-        />
-
-        // {/* <div>
-        //     <MapViewComp/>
-        // </div> */}
-          :
-          <LoadingComp/>
-        }
+        <Suspense fallback={<LoadingComp/>}>
+          <ListViewComp
+            allRestaurants={allRestaurants}
+            dow={dow}
+          />
+        </Suspense>       
+          
+        
     </div>
   )
 }

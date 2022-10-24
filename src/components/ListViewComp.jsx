@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {Suspense} from 'react'
+import LoadingComp from './LoadingComp'
 import RestListDetailCard from './RestListDetailCard'
+// const RestListDetailCard = React.lazy(()=>{import('./RestListDetailCard')})
 
 export default function ListViewComp({ dow, allRestaurants }) {
 
@@ -19,9 +21,11 @@ export default function ListViewComp({ dow, allRestaurants }) {
       <div
         className='w-full'
       >
+    {/* <Suspense fallback={<LoadingComp/>}> */}
         <ul>
           {listRestaurants}
         </ul>
+    {/* </Suspense> */}
       </div>
     </>
   )

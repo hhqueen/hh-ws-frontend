@@ -32,7 +32,7 @@ export default function NavBar() {
     return (
         <>
             <nav
-                className='flex justify-between static'
+                className='flex justify-between sticky top-[-1px] bg-white h-[50px]'
             >
                 <div>
                     <Link to="/">
