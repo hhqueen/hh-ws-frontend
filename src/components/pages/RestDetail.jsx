@@ -24,7 +24,7 @@ export default function RestDetail() {
   useEffect(() => {
     const getRestData = async () => {
       const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
-      console.log("async data", response.data)
+      // console.log("async data", response.data)
 
       const setRestDataFunc = (function () {
         setRestData(response.data)

@@ -126,9 +126,9 @@ function App() {
 
   }, [])
 
-  useEffect(() => {
-    return console.log("dow", dow)
-  })
+  // useEffect(() => {
+  //   return console.log("dow", dow)
+  // })
 
   const queryClient = new QueryClient()
   return (
