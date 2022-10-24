@@ -1,5 +1,5 @@
 import React from 'react'
-import RestListDetail from './RestListDetail'
+import RestListDetailCard from './RestListDetailCard'
 
 export default function ListViewComp({ dow, allRestaurants }) {
 
@@ -7,7 +7,7 @@ export default function ListViewComp({ dow, allRestaurants }) {
 
   const listRestaurants = allRestaurants.map((restaurant) => {
     return (
-        <RestListDetail
+        <RestListDetailCard
           restaurantInfo={restaurant}
           dow={dow}
         />

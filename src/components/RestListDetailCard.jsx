@@ -6,7 +6,7 @@ import dateConverter from "../helperFunctions/dateConverter"
 // const dateConverter = require("../helperFunctions/dateConverter")
 
 
-export default function RestListDetail({ dow, restaurantInfo }) {
+export default function RestListDetailCard({ dow, restaurantInfo }) {
     const navigate = useNavigate()
 
     const cuisineString = restaurantInfo.cuisines.join(", ")

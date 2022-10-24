@@ -13,6 +13,7 @@ export default function Checkbox({ data, filterParams, setFilterParams, idx }) {
     return (
         <>
             <label
+                className=''
                 htmlFor={filterParams[idx].name}
             >
                 <input
