@@ -2,10 +2,13 @@ import React from 'react'
 import FilterComp from '../FilterComp'
 import ListViewComp from '../ListViewComp'
 import MapViewComp from '../MapViewComp'
+import LoadingComp from '../LoadingComp'
 
 import { Alert } from 'flowbite-react'
 
 export default function Main({dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
+  
+  
   return (
     <div
       className='flex flex-col 
@@ -19,10 +22,16 @@ export default function Main({dow, setDow, allRestaurants, filterParams, setFilt
           dow={dow}
         />
 
+        {
+          allRestaurants ? 
+        
         <ListViewComp
           allRestaurants={allRestaurants}
           dow={dow}
         />
+          :
+          <LoadingComp/>
+        }
 
       {/* <div>
             <MapViewComp/>

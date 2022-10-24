@@ -6,6 +6,8 @@ import axios from "axios"
 import HHHours from '../HHHours'
 import MenuItems from '../MenuItems'
 
+import LoadingComp from '../LoadingComp'
+
 // const dateConverter = require("../../helperFunctions/dateConverter")
 
 // NOTE TO SELF: add restaurant website URL to code
@@ -67,7 +69,7 @@ export default function RestDetail() {
 
       {mapHours}
 
-      {isLoaded &&
+      {isLoaded ?
         <>
           <div
           >
@@ -85,6 +87,8 @@ export default function RestDetail() {
             </div>
           </div>
         </>
+        :
+        <LoadingComp/>
       }
     </div>
   )
