@@ -1,8 +1,12 @@
 import {useState} from 'react'
 import axios from 'axios'
 import { Label,TextInput,Button, Checkbox } from 'flowbite-react'
+import {useNavigate} from "react-router-dom"
 
 export default function Login() {
+
+  const navigate = useNavigate()
+  const [msg, setMsg] = useState('')
   const [loginData, setLoginData] = useState({
     email:"",
     password:"",
@@ -13,10 +17,15 @@ export default function Login() {
     e.preventDefault()
     try {
       const reqBody = loginData
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/login`, reqBody)
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/login`, reqBody)
+      const { token } = response.data
+			localStorage.setItem('jwt', token)
+      navigate("/")
 
-    } catch (error) {
-      console.warn(error, "Component:Login.jsx, Function:loginFormSubmitHandler")
+    } catch (err) {
+      if (err.response.status === 400) {
+        setMsg(err.response.data.msg)
+      }
     }
   }
   return (
@@ -53,7 +62,8 @@ export default function Login() {
           onChange={(e)=>setLoginData({...loginData, password:e.target.value})}
         />
       </div>
-      <div className="flex items-center gap-2">
+      
+      {/* <div className="flex items-center gap-2">
         <Checkbox 
           id="remember"
           checked={loginData.rememberMeBool}
@@ -65,10 +75,12 @@ export default function Login() {
         <Label htmlFor="remember">
           Remember me
         </Label>
-      </div>
+      </div> */}
       <Button type="submit">
         Submit
       </Button>
+      <p>{msg}</p>
     </form>
+    
   )
 }

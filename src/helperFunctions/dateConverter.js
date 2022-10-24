@@ -1,7 +1,7 @@
 const dateConverter = (value, numToDay) => {
     if (numToDay === true) {
       let day = ""
-      console.log("dateConverter Value:",value, "dateConverter option", numToDay)
+      // console.log("dateConverter Value:",value, "dateConverter option", numToDay)
       switch (value) {
         case 0:
           day = "Monday";
