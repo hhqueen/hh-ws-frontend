@@ -31,7 +31,7 @@ export default function HHHours({ hour }) {
     // console.log(hour)
     return (
         <div
-            className='grid grid-cols-5 border'
+            className='grid grid-cols-5'
         >           
             <p
             className={`${timePTagClass} col-start-1 col-end-1`}

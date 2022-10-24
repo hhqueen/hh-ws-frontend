@@ -28,45 +28,35 @@ export default function RestListDetail({ dow, restaurantInfo }) {
     return (
         // container div
         <div
-            className='flex flex-col border'
+            className='flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
             onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
         >
-            
+            <img
+                src={restaurantInfo.image_url}
+                alt={restaurantInfo.name}
+                className="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
+            />
+
             {/* image and Info Container Div */}
             <div
-            className='flex'
+                className='flex flex-col justify-between p-4 leading-normal'
             >
-                {/* image div */}
-                <div
-                className='w-6/12 h-[8rem]'
-                >
-                    <img
-                        src={restaurantInfo.image_url}
-                        alt={restaurantInfo.name}
-                        className="object-contain h-full place-self-center"
-                    />
-                </div>
 
                 {/* info div */}
-                <div
-                className='h-fit place-self-center'
-                >
-                    <p
+                <p
                     className='text-sm'
-                    >{restaurantInfo.name}</p>
-                    <p
+                >{restaurantInfo.name}</p>
+                <p
                     className='text-xs my-1'
-                    >{cuisineString}</p>
-                    <p
+                >{cuisineString}</p>
+                <p
                     className='text-xs my-1'
-                    >{restaurantInfo.city}</p>
-                </div>
-            </div>
-            {/* hours Div */}
-            {dowHours}
+                >{restaurantInfo.city}</p>
+                {/* hours Div */}
+                {dowHours}
 
-            
-            
+            </div>
+
         </div>
     )
 }
