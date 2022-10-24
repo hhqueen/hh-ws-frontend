@@ -18,7 +18,7 @@ export default function SignUp() {
   const handleSubmit = async e => {
     e.preventDefault()
     try {
-      // post fortm data to the backend
+      // post form data to the backend
       const reqBody = {
         firstName,
         lastName,

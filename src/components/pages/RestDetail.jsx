@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
-import { checkboxFilters } from "../../sourceData/filters"
+// import { checkboxFilters } from "../../sourceData/filters"
+import showApplicableFilters from "../../helperFunctions/showApplicableFilters"
+
 import axios from "axios"
 
 import HHHours from '../HHHours'
@@ -32,23 +34,28 @@ export default function RestDetail() {
       // console.log("rest hours?", response.data.hours)
       setRestHours(response.data.hours)
       setCuisineString(response.data.cuisines.join(", "))
-      showApplicableFilters(response.data)
+      
+      setFilterString(
+        showApplicableFilters(response.data)
+      )
+      
       // setIsloaded(true)
     }
     getRestData()
   }, [id])
 
-  const showApplicableFilters = (restData) => {
-    let applFilterArr = []
-    checkboxFilters.forEach((filter) => {
-      if (restData[filter.name]) {
-        applFilterArr.push(filter.display)
-      }
-    })
-    let filterString = applFilterArr.join(", ")
-    // console.log("filterString:",filterString)
-    setFilterString(filterString)
-  }
+  // const showApplicableFilters = (restData) => {
+  //   let applFilterArr = []
+  //   checkboxFilters.forEach((filter) => {
+  //     if (restData[filter.name]) {
+  //       applFilterArr.push(filter.display)
+  //     }
+  //   })
+  //   let filterString = applFilterArr.join(", ")
+  //   // console.log("filterString:",filterString)
+  //   // setFilterString(filterString)
+  //   return filterString
+  // }
 
   const mapHours = restHours.map((hour) => {
     return (
@@ -59,27 +66,52 @@ export default function RestDetail() {
   })
 
   return (
-    <div>
+    <div
+    >
       <img src={restData.image_url} alt={restData.name} />
+      <div
+      className='py-3'
+      >
       <p>{restData.name}</p>
       <p>{cuisineString}</p>
       <p>{filterString}</p>
       <p>{`${restData.address1} ${restData.city} ${restData.state} ${restData.zip_code}`}</p>
       <a href={`tel:${restData.telNumber}`}>{restData.displayNumber}</a>
-
+      </div>
+      
+      <div
+      className='py-3'
+      >
       {mapHours}
+      </div>
 
       {isLoaded ?
         <>
           <div
           >
-            <div>
+            <div
+            className='flex flex-col items-center justify-center py-3'>
+              <p
+              className='border-b'
+              >Food Menu</p>
+              <p
+              className='px-10 text-center'
+              >{restData.menu.foodSpecialsDescription}</p>
             <MenuItems
               ItemsArr={restData.menu.foodMenu}
               menuType="Food"
             />
             </div>
-            <div>
+
+            <div
+            className='flex flex-col items-center justify-center py-3'
+            >
+            <p
+            className='border-b'
+            >Drink Menu</p>
+            <p
+            className='px-10 text-center'
+            >{restData.menu.drinkSpecialsDescription}</p>
             <MenuItems
               ItemsArr={restData.menu.drinkMenu}
               menuType="Drink"

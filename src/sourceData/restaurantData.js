@@ -35,9 +35,6 @@ const AngelinaIrvine = {
             "start2": 21,
             "end2": -1,
             "end2close": true,
-            "_id": "6344e797065fcdb559a84d43",
-            "createdAt": "2022-10-11T03:48:39.083Z",
-            "updatedAt": "2022-10-11T03:48:39.083Z"
         },
         {
             "day": 1,
@@ -49,9 +46,6 @@ const AngelinaIrvine = {
             "start2": 21,
             "end2": -1,
             "end2close": true,
-            "_id": "6344e797065fcdb559a84d44",
-            "createdAt": "2022-10-11T03:48:39.084Z",
-            "updatedAt": "2022-10-11T03:48:39.084Z"
         },
         {
             "day": 2,
@@ -63,9 +57,6 @@ const AngelinaIrvine = {
             "start2": 21,
             "end2": -1,
             "end2close": true,
-            "_id": "6344e797065fcdb559a84d45",
-            "createdAt": "2022-10-11T03:48:39.084Z",
-            "updatedAt": "2022-10-11T03:48:39.084Z"
         },
         {
             "day": 3,
@@ -77,9 +68,6 @@ const AngelinaIrvine = {
             "start2": 21,
             "end2": -1,
             "end2close": true,
-            "_id": "6344e797065fcdb559a84d46",
-            "createdAt": "2022-10-11T03:48:39.084Z",
-            "updatedAt": "2022-10-11T03:48:39.084Z"
         },
         {
             "day": 4,
@@ -91,9 +79,6 @@ const AngelinaIrvine = {
             "start2": 21,
             "end2": -1,
             "end2close": true,
-            "_id": "6344e797065fcdb559a84d47",
-            "createdAt": "2022-10-11T03:48:39.084Z",
-            "updatedAt": "2022-10-11T03:48:39.084Z"
         },
         {
             "day": 5,
@@ -105,9 +90,6 @@ const AngelinaIrvine = {
             "start2": 21,
             "end2": -1,
             "end2close": true,
-            "_id": "6344e797065fcdb559a84d48",
-            "createdAt": "2022-10-11T03:48:39.085Z",
-            "updatedAt": "2022-10-11T03:48:39.085Z"
         },
         {
             "day": 6,
@@ -119,210 +101,111 @@ const AngelinaIrvine = {
             "start2": 21,
             "end2": -1,
             "end2close": true,
-            "_id": "6344e797065fcdb559a84d49",
-            "createdAt": "2022-10-11T03:48:39.085Z",
-            "updatedAt": "2022-10-11T03:48:39.085Z"
         }
     ],
-    "createdAt": "2022-10-11T03:48:39.016Z",
-    "updatedAt": "2022-10-11T03:48:39.085Z",
-    "__v": 1,
     "menu": {
-        "_id": "6344e797065fcdb559a84d4a",
         "restaurantName": "Angelina's Pizzeria Napoletana",
         "isChain": false,
         "hasFoodSpecials": true,
+        "foodSpecialsDescription": "",
         "hasDrinkSpecials": true,
-        "restaurant": [
-            "6344e797065fcdb559a84d41"
-        ],
+        "drinkSpecialsDescription":"",
+        "restaurant": [],
         "foodMenu": [
             {
                 "name": "POLPETTE AL SUGO",
                 "description": "Napoletana-style meatballs",
-                "isPrice": true,
-                "price": 13,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d54",
-                "createdAt": "2022-10-11T03:48:39.107Z",
-                "updatedAt": "2022-10-11T03:48:39.107Z"
+                "value": 13,
+                "specialTypeId": 1,
             },
             {
                 "name": "BRUSCHETTA CLASSICA",
                 "description": "",
-                "isPrice": true,
-                "price": 7,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d55",
-                "createdAt": "2022-10-11T03:48:39.108Z",
-                "updatedAt": "2022-10-11T03:48:39.108Z"
+                "value": 7,
+                "specialTypeId": 1,
             },
             {
                 "name": "PROSCIUTTO & PARMIGIANO",
                 "description": "sliced prosciutto, Parmigiano-Reggiano cheese, giardiera",
-                "isPrice": true,
-                "price": 11,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d56",
-                "createdAt": "2022-10-11T03:48:39.108Z",
-                "updatedAt": "2022-10-11T03:48:39.108Z"
+                "value": 11,
+                "specialTypeId": 1,
             },
             {
                 "name": "PIZZETTA DIAVOLA BIANCA",
                 "description": "flatbread topped with mozzarella di bufala, Napoletana-style spicy salame",
-                "isPrice": true,
-                "price": 9,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d57",
-                "createdAt": "2022-10-11T03:48:39.108Z",
-                "updatedAt": "2022-10-11T03:48:39.108Z"
+                "value": 9,
+                "specialTypeId": 1,
             },
             {
                 "name": "PIZZETTA ALLE MELANZANE",
                 "description": "Flat bread topped with eggplant, gorgonzola cheese, mozzarella di bufala, DOP pomodoro sauce, basil, EVOO",
-                "isPrice": true,
-                "price": 9,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d58",
-                "createdAt": "2022-10-11T03:48:39.108Z",
-                "updatedAt": "2022-10-11T03:48:39.108Z"
+                "value": 9,
+                "specialTypeId": 1,
+                
             },
             {
                 "name": "BRESAOLA & UBRIACO",
                 "description": "Sliced bresaola, Ubriaco di Piave cheese, giardiera",
-                "isPrice": true,
-                "price": 10,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d59",
-                "createdAt": "2022-10-11T03:48:39.108Z",
-                "updatedAt": "2022-10-11T03:48:39.108Z"
+                "value": 10,
+                "specialTypeId": 1,
             },
             {
                 "name": "BURRATA & POMODORI",
                 "description": "burrata, heirloom tomatoes, Taggiasca olives, basil",
-                "isPrice": true,
-                "price": 11,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d5a",
-                "createdAt": "2022-10-11T03:48:39.108Z",
-                "updatedAt": "2022-10-11T03:48:39.108Z"
+                "value": 11,
+                "specialTypeId": 1,
             }
         ],
         "drinkMenu": [
             {
                 "name": "WINE",
                 "description": "Red, White, Prosecco",
-                "isPrice": true,
-                "price": 10,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d5b",
-                "createdAt": "2022-10-11T03:48:39.109Z",
-                "updatedAt": "2022-10-11T03:48:39.109Z"
+                "value": 10,
+                "specialTypeId": 1,
             },
             {
                 "name": "BEER",
                 "description": "All Beers",
-                "isPrice": true,
-                "price": 6,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d5c",
-                "createdAt": "2022-10-11T03:48:39.110Z",
-                "updatedAt": "2022-10-11T03:48:39.110Z"
+                "value": 6,
+                "specialTypeId": 1,
             },
             {
                 "name": "APEROL SPRTIZ",
                 "description": "Aperol, Prosecco, soda water",
-                "isPrice": true,
-                "price": 10,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d5d",
-                "createdAt": "2022-10-11T03:48:39.110Z",
-                "updatedAt": "2022-10-11T03:48:39.110Z"
+                "value": 10,
+                "specialTypeId": 1,
             },
             {
                 "name": "IL DOTTORE",
                 "description": "Vodka, lemongrass syrup, simple syrup, ginger",
-                "isPrice": true,
-                "price": 10,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d5e",
-                "createdAt": "2022-10-11T03:48:39.110Z",
-                "updatedAt": "2022-10-11T03:48:39.110Z"
+                "value": 10,
+                "specialTypeId": 1,
             },
             {
                 "name": "OLD FASHIONED",
                 "description": "Bourbon, bitters, demerara",
-                "isPrice": true,
-                "price": 10,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d5f",
-                "createdAt": "2022-10-11T03:48:39.110Z",
-                "updatedAt": "2022-10-11T03:48:39.110Z"
+                "value": 10,
+                "specialTypeId": 1,
             },
             {
                 "name": "SIDECAR",
                 "description": "Copper and Kings Brandy, triple sec, lemon",
-                "isPrice": true,
-                "price": 10,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d60",
-                "createdAt": "2022-10-11T03:48:39.110Z",
-                "updatedAt": "2022-10-11T03:48:39.110Z"
+                "value": 10,
+                "specialTypeId": 1,
             },
             {
                 "name": "MANHATTAN",
                 "description": "Rye Whiskey, vermouth, bitters",
-                "isPrice": true,
-                "price": 10,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d61",
-                "createdAt": "2022-10-11T03:48:39.110Z",
-                "updatedAt": "2022-10-11T03:48:39.110Z"
+                "value": 10,
+                "specialTypeId": 1,
             },
             {
                 "name": "WELL LIBATIONS",
                 "description": "Vodka, Gin, Rum, Tequila, Bourbon, Rye Whiskey",
-                "isPrice": true,
-                "price": 10,
-                "isPercentDiscount": false,
-                "isDollarsOff": false,
-                "dollarsOff": 0,
-                "_id": "6344e797065fcdb559a84d62",
-                "createdAt": "2022-10-11T03:48:39.110Z",
-                "updatedAt": "2022-10-11T03:48:39.110Z"
+                "value": 10,
+                "specialTypeId": 1,
             }
-        ],
-        "createdAt": "2022-10-11T03:48:39.050Z",
-        "updatedAt": "2022-10-11T03:48:39.111Z",
-        "__v": 1
+        ]
     }
 }
 

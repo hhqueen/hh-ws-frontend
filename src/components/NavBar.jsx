@@ -4,8 +4,7 @@ import jwt_decode from 'jwt-decode'
 
 export default function NavBar() {
     const navigate = useNavigate()
-    const [adminAuth, setAdminAuth] = useState(false)
-
+   
     // function to remove token for logging out here
     const handleLogOut = () => {
         console.log("log out")
@@ -13,22 +12,22 @@ export default function NavBar() {
         if (localStorage.getItem('jwt')) {
             // if so, delete it 
             localStorage.removeItem('jwt')
-            setAdminAuth(false)
             navigate('/')
         }
         
     }
 
-    useEffect(() => {
-        if (localStorage.getItem('jwt')) {
-            const token = localStorage.getItem('jwt')
-            const decoded = jwt_decode(token)
-            console.log(decoded)
-            // renderAddRest = checkAdmin(decoded)
-            if (decoded.auth = "Admin") {setAdminAuth(true)}
-        }
+    // useEffect(() => {
+    //     if (localStorage.getItem('jwt')) {
+    //         const token = localStorage.getItem('jwt')
+    //         const decoded = jwt_decode(token)
+    //         console.log(decoded)
+    //         // renderAddRest = checkAdmin(decoded)
+    //         if (decoded.auth = "Admin") {setAdminAuth(true)}
+    //     }
         
-    })
+    // })
+    
 
     return (
         <>
@@ -63,15 +62,18 @@ export default function NavBar() {
                 }
 
                 {
-                    adminAuth &&
                     
-                    <>
-                        <Link
-                            to="/addnewrestaurant"
-                        >
-                            Add New Restaurant
-                        </Link>
-                    </>
+                    
+                    localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
+                        <>
+                            <Link
+                                to="/addnewrestaurant"
+                                >
+                                Add New Restaurant
+                            </Link>
+                        </>
+                    
+                    
                 }
                 
 

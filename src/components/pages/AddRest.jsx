@@ -2,28 +2,24 @@
 import { useState } from 'react'
 import { checkboxFilters } from "../../sourceData/filters"
 import { dowList } from "../../sourceData/dowList"
+
 // import {useQuery} from "@tanstack/react-query"
 
 // Components
 import Checkbox from '../Checkbox'
+import newMenuItem from '../newMenuItem'
 import ModalForArray from '../ModalForArray'
 // import { Button } from 'flowbite-react'
 
 export default function AddRest() {
-    const menuItemTypeText = {
-        1: "$",
-        2: "% Off",
-        3: "$ Off"
-    }
+    
     const foodMenuItemTemplate = {
         name: "",
         description: "",
         Type: "Food",
         specialTypeId: 1,
         // 1 = price, 2 = percentDiscount, 3 = dollarsOff
-        price: 0,
-        percentDiscout: 0.5,
-        dollarsOff: 0,
+        value: 0
     }
     const drinkMenuItemTemplate = {
         name: "",
@@ -31,9 +27,7 @@ export default function AddRest() {
         Type: "Food",
         specialTypeId: 1,
         // 1 = price, 2 = percentDiscount, 3 = dollarsOff
-        price: 0,
-        percentDiscout: 0.5,
-        dollarsOff: 0,
+        value: 0
     }
     const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
@@ -158,12 +152,21 @@ export default function AddRest() {
         )
     })
 
+    const handleAddNewMenuItem = (arr) => {
+
+    }
+
+    const handleRemoveNewMenuItem = (arr,idx) => {
+
+    }
     const options = checkboxFilters
-    console.log("options", options)
+    // console.log("options", options)
 
     const filtersMap = filterParams.map((filterVal, idx) => {
         return (
-            <li>
+            <li
+                key={`AddRestFilter${idx}`}
+            >
                 <Checkbox
                     idx={idx}
                     filterParams={filterParams}
@@ -250,22 +253,37 @@ export default function AddRest() {
 
                 {/* div that holds menu input */}
                 <div>
+                    {/* Main Menu Inputs */}
+                    <p>Menu</p>
                     <div>
+
+                        {/* food/drink checkbox */}
                         <div>
-                            <input
-                                id='foodSpecialsBoolean'
-                                type="checkbox"
-                            />
-                            <label
-                                htmlFor='foodSpecialsBoolean'
-                            >
-                                Has Food Specials
-                            </label>
+                            <div>
+                                <input
+                                    id='foodSpecialsBoolean'
+                                    type="checkbox"
+                                    checked={mainMenuData.hasFoodSpecials}
+                                    onChange={(e) => {
+                                        setMainMenuData({ ...mainMenuData, hasFoodSpecials: e.target.checked })
+                                    }}
+                                />
+                                <label
+                                    htmlFor='foodSpecialsBoolean'
+                                >
+                                    Has Food Specials
+                                </label>
+                            </div>
+
                         </div>
                         <div>
                             <input
                                 id='drinkSpecialsBoolean'
                                 type="checkbox"
+                                checked={mainMenuData.hasDrinkSpecials}
+                                onChange={(e) => {
+                                    setMainMenuData({ ...mainMenuData, hasDrinkSpecials: e.target.checked })
+                                }}
                             />
                             <label
                                 htmlFor='drinkSpecialsBoolean'
@@ -273,19 +291,14 @@ export default function AddRest() {
                                 has Drink Specials
                             </label>
                         </div>
-                    </div>
 
-                    {/* Main Menu Inputs */}
-                    <p>Menu</p>
-                    <div>
-                        
                         {/* Food Menu Items */}
                         {mainMenuData.hasFoodSpecials &&
                             <div
-                            className='border'
+                                className='border'
                             >
-                            <p>Add Food Menu/Items:</p>
-                            
+                                <p>Add Food Menu/Items:</p>
+
                                 <label
                                     htmlFor='foodSpecialDescription'
                                 >
@@ -294,28 +307,44 @@ export default function AddRest() {
                                 <br></br>
                                 <textarea
                                     id='foodSpecialDescription'
-                                    onChange={(e)=>{setMainMenuData({...mainMenuData, foodSpecialsDescriptions:e.target.value})}}
+                                    onChange={(e) => { setMainMenuData({ ...mainMenuData, foodSpecialsDescriptions: e.target.value }) }}
                                 />
+                                {/* div that holds food menu items as they are added */}
+                                <div>
+
+                                </div>
+
+                                {/* div that holds the add new items button */}
+                                <div>
+                                    <newMenuItem/>
+                                    <input
+                                        type="text"
+                                        value=""
+                                        onChange=""
+                                    />
+                                </div>
+
+
                             </div>
                         }
 
 
-                        {/* Drink Menu Items */}
-                        {mainMenuData.hasDrinkSpecials &&
-                            <div>
-                                <label
-                                    htmlFor='drinkSpecialDescription'
-                                >
-                                    Drink Special Description:
-                                </label>
-                                <br></br>
-                                <textarea
-                                    id='drinkSpecialDescription'
-                                    onChange={(e)=>{setMainMenuData({...mainMenuData, drinkSpecialsDescriptions:e.target.value})}}
-                                />
+                                {/* Drink Menu Items */}
+                                {mainMenuData.hasDrinkSpecials &&
+                                    <div>
+                                        <label
+                                            htmlFor='drinkSpecialDescription'
+                                        >
+                                            Drink Special Description:
+                                        </label>
+                                        <br></br>
+                                        <textarea
+                                            id='drinkSpecialDescription'
+                                            onChange={(e) => { setMainMenuData({ ...mainMenuData, drinkSpecialsDescriptions: e.target.value }) }}
+                                        />
+                                    </div>
+                                }
                             </div>
-                        }
-                    </div>
                 </div>
             </form>
         </div>
