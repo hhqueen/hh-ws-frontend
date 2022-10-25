@@ -12,7 +12,7 @@ import ModalForArray from '../ModalForArray'
 // import { Button } from 'flowbite-react'
 
 export default function AddRest() {
-    
+
     const foodMenuItemTemplate = {
         name: "",
         description: "",
@@ -156,7 +156,7 @@ export default function AddRest() {
 
     }
 
-    const handleRemoveNewMenuItem = (arr,idx) => {
+    const handleRemoveNewMenuItem = (arr, idx) => {
 
     }
     const options = checkboxFilters
@@ -316,12 +316,8 @@ export default function AddRest() {
 
                                 {/* div that holds the add new items button */}
                                 <div>
-                                    <newMenuItem/>
-                                    <input
-                                        type="text"
-                                        value=""
-                                        onChange=""
-                                    />
+                                    <newMenuItem />
+                                    
                                 </div>
 
 
@@ -329,22 +325,22 @@ export default function AddRest() {
                         }
 
 
-                                {/* Drink Menu Items */}
-                                {mainMenuData.hasDrinkSpecials &&
-                                    <div>
-                                        <label
-                                            htmlFor='drinkSpecialDescription'
-                                        >
-                                            Drink Special Description:
-                                        </label>
-                                        <br></br>
-                                        <textarea
-                                            id='drinkSpecialDescription'
-                                            onChange={(e) => { setMainMenuData({ ...mainMenuData, drinkSpecialsDescriptions: e.target.value }) }}
-                                        />
-                                    </div>
-                                }
+                        {/* Drink Menu Items */}
+                        {mainMenuData.hasDrinkSpecials &&
+                            <div>
+                                <label
+                                    htmlFor='drinkSpecialDescription'
+                                >
+                                    Drink Special Description:
+                                </label>
+                                <br></br>
+                                <textarea
+                                    id='drinkSpecialDescription'
+                                    onChange={(e) => { setMainMenuData({ ...mainMenuData, drinkSpecialsDescriptions: e.target.value }) }}
+                                />
                             </div>
+                        }
+                    </div>
                 </div>
             </form>
         </div>

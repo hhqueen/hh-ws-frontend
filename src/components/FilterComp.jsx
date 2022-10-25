@@ -37,7 +37,7 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
     return (
         <>
             <aside
-            className='w-full sm:w-64 sticky top-[48px] border bg-gray-50 rounded dark:bg-gray-800'
+            className='w-full sm:w-64 grow pb-2 sticky top-[48px] bg-white dark:bg-gray-800'
             aria-label='Sidebar'
             >
                 

@@ -105,17 +105,17 @@ export default function SignUp() {
       </div>
 
 
-      <div
+      {/* <div
         className="">
         <div>
           <Label
             htmlFor='userName'
             value='User Name'
           />
-        </div>
+        </div> */}
 
         {/* <label htmlFor='userName'>User Name:</label> */}
-        <TextInput
+        {/* <TextInput
           className="border border-sm w-80"
           type="text"
           id="userName"
@@ -124,7 +124,8 @@ export default function SignUp() {
           value={userName}
           required
         />
-      </div>
+      </div> */}
+
       <div>
         <div>
           <Label
@@ -166,7 +167,7 @@ export default function SignUp() {
         <div>
           <Label
             htmlFor='password2'
-            value='Password'
+            value='Re-Enter Password'
           />
         </div>
         {/* <label htmlFor='password'>Password:</label> */}
