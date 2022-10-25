@@ -12,8 +12,8 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
 // import components
 import NavBar from "./components/NavBar";
-// import Main from './components/pages/Main';
-// import RestDetail from './components/pages/RestDetail';
+import Main from './components/pages/Main';
+import RestDetail from './components/pages/RestDetail';
 import SignUp from './components/pages/SignUp';
 import Login from './components/pages/Login';
 import AddRest from "./components/pages/AddRest"
@@ -30,8 +30,8 @@ import geoLocation from "./helperFunctions/geoLocation"
 // const dateConverter = require("./helperFunctions/dateConverter")
 // const getCoord = require("./helperFunctions/getCoord.js")
 // const geoLocation = require("./helperFunctions/geoLocation.js")
-const Main = lazy(() => import('./components/pages/Main'))
-const RestDetail = lazy(() => import('./components/pages/RestDetail'))
+// const Main = lazy(() => import('./components/pages/Main'))
+// const RestDetail = lazy(() => import('./components/pages/RestDetail'))
 
 function App() {
   // variables
@@ -140,7 +140,7 @@ function App() {
       <Router>
 
         <NavBar />
-        <Suspense fallback={<LoadingComp />}>
+        
           <Routes>
             {/* website routes */}
             <Route
@@ -187,7 +187,7 @@ function App() {
             />        
 
           </Routes>
-        </Suspense>
+        
       </Router>
     </QueryClientProvider>
   );
