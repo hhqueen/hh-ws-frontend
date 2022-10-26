@@ -1,7 +1,7 @@
 import React from 'react'
 import {Label,Button,Checkbox} from "flowbite-react"
 
-export default function newMenuItem({menuItemData, handleButtonClick}) {
+export default function NewMenuItem({menuItemData, handleButtonClick}) {
   return (
     <div>
       <div>

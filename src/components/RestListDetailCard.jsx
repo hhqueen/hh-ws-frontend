@@ -35,6 +35,7 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
             onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
         >
             <img
+                loading="lazy"
                 src={restaurantInfo.image_url}
                 alt={restaurantInfo.name}
                 className="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"

@@ -1,17 +1,83 @@
 // Libraries
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { checkboxFilters } from "../../sourceData/filters"
 import { dowList } from "../../sourceData/dowList"
+import { useImmer } from "use-immer"
+import { Checkbox, Label } from 'flowbite-react'
 
 // import {useQuery} from "@tanstack/react-query"
 
 // Components
-import Checkbox from '../Checkbox'
-import newMenuItem from '../newMenuItem'
-import ModalForArray from '../ModalForArray'
-// import { Button } from 'flowbite-react'
+// import Checkbox from '../Checkbox'
 
-export default function AddRest() {
+const emptyRestaurantData = {
+    yelpRestaurantId: null,
+    name: null,
+    telNumber: null,
+    displayNumber: null,
+    address1: null,
+    address2: null,
+    address3: null,
+    city: null,
+    zip_code: null,
+    country: null,
+    state: null,
+    latitude: null,
+    longitude: null,
+    image_url: null,
+    hasDrinks: false,
+    hasFood: false,
+    dogFriendly: false,
+    hasPatio: false,
+    cuisines: [],
+    hours: [
+        { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //monday
+        { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //tuesday
+        { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //weds
+        { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, // thurs
+        { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, //friday
+        { day: 5, hasHH1: false, start1: -1, end1: -1, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, //sat
+        { day: 6, hasHH1: false, start1: -1, end1: -1, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //sun
+    ],
+    menu: {
+        restaurantname: "",
+        isChain: false,
+        hasFoodSpecials: true,
+        foodSpecialsDescriptions: "",
+        foodMenu: [],
+        hasDrinkSpecials: true,
+        drinkSpecialsDescriptions: "",
+        drinkMenu: []
+    }
+}
+
+const hourStateGenerator = () =>{
+    const weekLength = 7
+    const hoursStateTemplate = {
+        hour1start:3,
+        minute1start:0,
+        ampm1start:"PM",
+        hour1end:6,
+        minute1end:0,
+        ampm1end:"PM",
+        hour2start:9,
+        minute2start:0,
+        ampm2start:"PM",
+        hour2end:11,
+        minute2end:0,
+        ampm2end:"PM",
+    }
+    let HoursArr = []
+    for(let i=0;i<weekLength;i++){
+        HoursArr.push(hoursStateTemplate)
+    }
+    return HoursArr
+}
+
+
+export default function AddRest({ newRestFlag = true, passedRestData = null }) {
+
+    const [restaurantData, setRestaurantData] = useImmer(newRestFlag ? emptyRestaurantData : passedRestData)
 
     const foodMenuItemTemplate = {
         name: "",
@@ -32,15 +98,11 @@ export default function AddRest() {
     const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
     const [yelpRestData, setYelpRestData] = useState({})
-    const [hoursData, setHoursData] = useState([
-        { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //monday
-        { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //tuesday
-        { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //weds
-        { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, // thurs
-        { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, //friday
-        { day: 5, hasHH1: false, start1: -1, end1: -1, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, //sat
-        { day: 6, hasHH1: false, start1: -1, end1: -1, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //sun
-    ])
+    
+    
+    const [hoursData, setHoursData] = useImmer(hourStateGenerator())
+    
+
     const [mainMenuData, setMainMenuData] = useState({
         restaurantname: "",
         isChain: false,
@@ -63,12 +125,20 @@ export default function AddRest() {
         }
     })
 
-    const hhHoursMap = dowList.map((day) => {
+    const hhHoursMap = dowList.map((day,idx) => {
         return (
             <li
                 className='grid grid-cols-auto'
-            >
+            >   
                 <div>{day}</div>
+                <Label>
+                    <Checkbox
+                    checked={restaurantData.hours[idx].hasHH1}
+                    onChange={(e)=>setRestaurantData(
+                        (draft)=>{draft.hours[idx].hasHH1 = e.target.checked}
+                    )}
+
+                />Has Happy Hour</Label>
                 <div>
 
                     <label
@@ -79,9 +149,12 @@ export default function AddRest() {
                             min={0}
                             max={12}
                             type="number"
-                            step={0.25}
+                            step={1}
                             className='border'
-                            defaultValue={4}
+                            defaultValue={hoursData[idx].hour1start}
+                            onChange={(e)=>setHoursData((draft)=>{
+                                draft[idx].hour1start = e.target.value
+                            })}
                         />
                     </label>
                     <label
@@ -94,7 +167,10 @@ export default function AddRest() {
                             type="number"
                             step={1}
                             className='border'
-                            defaultValue={0}
+                            defaultValue={hoursData[idx].minute1start}
+                            onChange={(e)=>setHoursData((draft)=>{
+                                draft[idx].minute1start = e.target.value
+                            })}
                         />
                     </label>
                     <label
@@ -103,6 +179,9 @@ export default function AddRest() {
                         <select
                             id='ampm'
                             name='ampm'
+                            onChange={(e)=>setHoursData((draft)=>{
+                                draft[idx].ampm1start = e.target.value
+                            })}
                         >
                             <option value="PM">PM</option>
                             <option value="AM">AM</option>
@@ -113,14 +192,25 @@ export default function AddRest() {
                     <label
                         htmlFor={`${day}Hour2`}
                     >Late Night
+                    <Label>
+                    <Checkbox
+                    checked={restaurantData.hours[idx].hasHH2}
+                    onChange={(e)=>setRestaurantData(
+                        (draft)=>{draft.hours[idx].hasHH2 = e.target.checked}
+                    )}
+
+                />HasLate Night</Label>
                         <input
                             id={`${day}Hour2`}
                             min={0}
                             max={12}
                             type="number"
-                            step={0.25}
+                            step={1}
                             className='border'
-                            defaultValue={4}
+                            defaultValue={hoursData[idx].hour2start}
+                            onChange={(e)=>setHoursData((draft)=>{
+                                draft[idx].hour2start = e.target.value
+                            })}
                         />
                     </label>
                     <label
@@ -133,7 +223,10 @@ export default function AddRest() {
                             type="number"
                             step={1}
                             className='border'
-                            defaultValue={0}
+                            defaultValue={hoursData[idx].minute2start}
+                            onChange={(e)=>setHoursData((draft)=>{
+                                draft[idx].minute2start = e.target.value
+                            })}
                         />
                     </label>
                     <label
@@ -152,6 +245,15 @@ export default function AddRest() {
         )
     })
 
+    useEffect(() => {
+        filterParams.forEach((filter) => {
+            setRestaurantData((draft) => {
+                const filterItem = draft[filter.name] = filter.value
+            });
+            console.log("i-restaurantData", restaurantData)
+        })
+    }, [filterParams])
+
     const handleAddNewMenuItem = (arr) => {
 
     }
@@ -162,19 +264,27 @@ export default function AddRest() {
     const options = checkboxFilters
     // console.log("options", options)
 
-    const filtersMap = filterParams.map((filterVal, idx) => {
+    const filtersMap = checkboxFilters.map((filterVal, idx) => {
         return (
             <li
                 key={`AddRestFilter${idx}`}
             >
-                <Checkbox
-                    idx={idx}
-                    filterParams={filterParams}
-                    data={filterVal}
-                    setFilterParams={setFilterParams}
-                />
-            </li>
+                <label>
+                    <Checkbox
+                        checked={restaurantData[filterVal.name]}
+                        name={filterVal.name}
+                        onChange={
+                            (e) => {
+                                setRestaurantData((draft) => {
+                                    draft[filterVal.name] = e.target.checked
+                                })
+                            }
+                        }
+                    />
+                    {filterVal.display}
+                </label>
 
+            </li>
         )
     })
 
@@ -263,9 +373,11 @@ export default function AddRest() {
                                 <input
                                     id='foodSpecialsBoolean'
                                     type="checkbox"
-                                    checked={mainMenuData.hasFoodSpecials}
+                                    checked={restaurantData.menu.hasFoodSpecials}
                                     onChange={(e) => {
-                                        setMainMenuData({ ...mainMenuData, hasFoodSpecials: e.target.checked })
+                                        setRestaurantData((draft) => {
+                                            draft.menu.hasFoodSpecials = e.target.checked
+                                        })
                                     }}
                                 />
                                 <label
@@ -280,9 +392,11 @@ export default function AddRest() {
                             <input
                                 id='drinkSpecialsBoolean'
                                 type="checkbox"
-                                checked={mainMenuData.hasDrinkSpecials}
+                                checked={restaurantData.menu.hasDrinkSpecials}
                                 onChange={(e) => {
-                                    setMainMenuData({ ...mainMenuData, hasDrinkSpecials: e.target.checked })
+                                    setRestaurantData((draft) => {
+                                        draft.menu.hasDrinkSpecials = e.target.checked
+                                    })
                                 }}
                             />
                             <label
@@ -293,7 +407,7 @@ export default function AddRest() {
                         </div>
 
                         {/* Food Menu Items */}
-                        {mainMenuData.hasFoodSpecials &&
+                        {restaurantData.menu.hasFoodSpecials &&
                             <div
                                 className='border'
                             >
@@ -307,7 +421,11 @@ export default function AddRest() {
                                 <br></br>
                                 <textarea
                                     id='foodSpecialDescription'
-                                    onChange={(e) => { setMainMenuData({ ...mainMenuData, foodSpecialsDescriptions: e.target.value }) }}
+                                    onChange={(e) => {
+                                        setRestaurantData((draft) => {
+                                            draft.menu.foodSpecialsDescriptions = e.target.value
+                                        })
+                                    }}
                                 />
                                 {/* div that holds food menu items as they are added */}
                                 <div>
@@ -316,8 +434,8 @@ export default function AddRest() {
 
                                 {/* div that holds the add new items button */}
                                 <div>
-                                    <newMenuItem />
-                                    
+
+
                                 </div>
 
 
@@ -326,7 +444,7 @@ export default function AddRest() {
 
 
                         {/* Drink Menu Items */}
-                        {mainMenuData.hasDrinkSpecials &&
+                        {restaurantData.menu.hasDrinkSpecials &&
                             <div>
                                 <label
                                     htmlFor='drinkSpecialDescription'
@@ -336,7 +454,11 @@ export default function AddRest() {
                                 <br></br>
                                 <textarea
                                     id='drinkSpecialDescription'
-                                    onChange={(e) => { setMainMenuData({ ...mainMenuData, drinkSpecialsDescriptions: e.target.value }) }}
+                                    onChange={(e) => { 
+                                        setRestaurantData((draft) => {
+                                            draft.menu.drinkSpecialsDescriptions = e.target.value
+                                        })    
+                                    }}
                                 />
                             </div>
                         }

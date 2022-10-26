@@ -23,10 +23,10 @@ import ModalTest from './components/pages/ModalTest';
 // import source data
 import { checkboxFilters } from "./sourceData/filters"
 
+// require functions
 import getCoord from "./helperFunctions/getCoord"
 import dateConverter from "./helperFunctions/dateConverter"
 import geoLocation from "./helperFunctions/geoLocation"
-// require functions
 // const dateConverter = require("./helperFunctions/dateConverter")
 // const getCoord = require("./helperFunctions/getCoord.js")
 // const geoLocation = require("./helperFunctions/geoLocation.js")
