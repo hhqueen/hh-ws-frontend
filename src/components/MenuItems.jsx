@@ -1,10 +1,9 @@
 import React from 'react'
 import {menuDiscountType} from "../sourceData/menuDiscountType"
 
-export default function MenuItems({ItemsArr, menuType}) {
+export default function MenuItems({ItemsArr, menuType, handleRemove = null}) {
     
-    
-    const ItemsMap = ItemsArr.map((item)=>{
+    const ItemsMap = ItemsArr.map((item,idx)=>{
         // console.log(item)
         const priceStringFunction = (value, id) => {
             if (id = 1) {
@@ -29,6 +28,21 @@ export default function MenuItems({ItemsArr, menuType}) {
                     <p
                     className='text-xs text-center'
                     >{priceString}</p>
+
+                    {
+                        handleRemove != null && 
+                        <>
+                            <button
+                            type="button"
+                            onClick={(e)=>{
+                                handleRemove(e,item.Type,idx)
+
+                            }}
+                            >
+                            Remove
+                            </button>
+                        </>
+                    }
                     
             </li>
         )

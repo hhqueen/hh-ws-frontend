@@ -8,6 +8,7 @@ import { TabItem } from 'flowbite-react/lib/esm/components/Tab/TabItem'
 import { TableBody } from 'flowbite-react/lib/esm/components/Table/TableBody'
 import { TableCell } from 'flowbite-react/lib/esm/components/Table/TableCell'
 import { TableRow } from 'flowbite-react/lib/esm/components/Table/TableRow'
+import EditMenuItems from "../EditMenuItems"
 
 // import {useQuery} from "@tanstack/react-query"
 
@@ -91,14 +92,19 @@ export default function AddRest({ newRestFlag = true, passedRestData = {} }) {
         // 1 = price, 2 = percentDiscount, 3 = dollarsOff
         value: 0
     }
+
     const drinkMenuItemTemplate = {
         name: "",
         description: "",
-        Type: "Food",
+        Type: "Drink",
         specialTypeId: 1,
         // 1 = price, 2 = percentDiscount, 3 = dollarsOff
         value: 0
     }
+
+    const [newFoodMenuItemState, setNewFoodMenuItemState] = useImmer(foodMenuItemTemplate)
+    const [newDrinkMenuItemState, setNewDrinkMenuItemState] = useImmer(drinkMenuItemTemplate)
+
     const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
     const [yelpRestData, setYelpRestData] = useState({})
@@ -133,7 +139,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = {} }) {
         return (
             <>
                 <div
-                className='p-3'
+                    className='p-3'
                 >
                     {day}
                     <div>
@@ -221,15 +227,48 @@ export default function AddRest({ newRestFlag = true, passedRestData = {} }) {
         })
     }, [filterParams])
 
-    const handleAddNewMenuItem = (arr) => {
-
+    const handleAddFoodNewMenuItem = (e,type) => {
+        e.preventDefault()
+        console.log(newFoodMenuItemState)
+        setRestaurantData((draft) => {
+            draft.menu.foodMenu.push(newFoodMenuItemState)
+        })
+        
+        setNewFoodMenuItemState(foodMenuItemTemplate)
+    }
+    const handleAddDrinkNewMenuItem = (e) => {
+        e.preventDefault()
+        console.log(newDrinkMenuItemState)
+        setRestaurantData((draft) => {
+            draft.menu.drinkMenu.push(newDrinkMenuItemState)
+        })
+        setNewDrinkMenuItemState(drinkMenuItemTemplate)
     }
 
-    const handleRemoveNewMenuItem = (arr, idx) => {
-
+    const handleRemoveNewMenuItem = (e, type, idx) => {
+        e.preventDefault()
+        // console.log(item)
+        // console.log(draft.menu[`${item.type}`])
+        console.log("clicky")
+        console.log(type)
+        const typeVar = type.toLowerCase()
+        setRestaurantData((draft) => {
+            // let tempArr = []
+            // if (type === "Food") {
+            //     tempArr = draft.menu.foodMenu
+            //     tempArr.splice(idx, 1)
+            //     draft.menu.foodMenu = tempArr
+            // } else if (type === "Drink") {
+            //     tempArr = draft.menu.drinkMenu
+            //     tempArr.splice(idx, 1)
+            //     draft.menu.drinkMenu = tempArr
+            // }
+            draft.menu[`${typeVar}Menu`].splice(idx, 1)
+        })
     }
-    const options = checkboxFilters
-    // console.log("options", options)
+
+    const option = checkboxFilters
+    // console.log("option", option)
 
     const filtersMap = checkboxFilters.map((filterVal, idx) => {
         return (
@@ -307,7 +346,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = {} }) {
                     <button></button>
                 </div>
 
-                {/* div that holds options input */}
+                {/* div that holds option input */}
                 <div>
                     <p>Filters:</p>
                     <ul>
@@ -318,22 +357,21 @@ export default function AddRest({ newRestFlag = true, passedRestData = {} }) {
                 {/* div that holds hours input */}
                 <div>
                     <p>Hours:</p>
-                    <ul
-                        className=''
-                    >
-                        {/* <p>Day</p>
+
+                    {/* <p>Day</p>
                         <p>Happy Hour</p>
                         <p>Late Night</p> */}
-                        {hhHoursMap}
-                    </ul>
+                    {hhHoursMap}
                 </div>
 
                 {/* div that holds menu input */}
-                <div>
-                    {/* Main Menu Inputs */}
-                    <p>Menu</p>
-                    <div>
 
+                {/* Main Menu Inputs */}
+                <p>Menu</p>
+                <div>
+                    <div
+                        className='py-10'
+                    >
                         {/* food/drink checkbox */}
                         <div>
                             <div>
@@ -355,23 +393,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = {} }) {
                             </div>
 
                         </div>
-                        <div>
-                            <input
-                                id='drinkSpecialsBoolean'
-                                type="checkbox"
-                                checked={restaurantData.menu.hasDrinkSpecials}
-                                onChange={(e) => {
-                                    setRestaurantData((draft) => {
-                                        draft.menu.hasDrinkSpecials = e.target.checked
-                                    })
-                                }}
-                            />
-                            <label
-                                htmlFor='drinkSpecialsBoolean'
-                            >
-                                has Drink Specials
-                            </label>
-                        </div>
+
 
                         {/* Food Menu Items */}
                         {restaurantData.menu.hasFoodSpecials &&
@@ -394,43 +416,199 @@ export default function AddRest({ newRestFlag = true, passedRestData = {} }) {
                                         })
                                     }}
                                 />
-                                {/* div that holds food menu items as they are added */}
-                                <div>
 
-                                </div>
 
                                 {/* div that holds the add new items button */}
                                 <div>
+                                    <p>new Food Item</p>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            placeholder='name'
+                                            value={newFoodMenuItemState.name}
+                                            onChange={(e) => {
+                                                setNewFoodMenuItemState((draft) => {
+                                                    draft.name = e.target.value
+                                                })
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            placeholder='description'
+                                            value={newFoodMenuItemState.description}
+                                            onChange={(e) => {
+                                                setNewFoodMenuItemState((draft) => {
+                                                    draft.description = e.target.value
+                                                })
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='newFoodDiscountType'>Discount Type</label>
+                                        <select
+                                            name="newFoodDiscountType"
+                                            id="newFoodDiscountType"
+                                            onChange={(e) => {
+                                                setNewFoodMenuItemState((draft) => {
+                                                    draft.specialTypeId = e.target.value
+                                                })
+                                            }}
+                                        >
+                                            {/* // 1 = price, 2 = percentDiscount, 3 = dollarsOff */}
+                                            <option value={1}>$ </option>
+                                            <option value={2}>% Off</option>
+                                            <option value={3}>$ Off</option>
+                                        </select>
+                                    </div>
 
-
+                                    <input
+                                        type="number"
+                                        value={newFoodMenuItemState.value}
+                                        onChange={(e) => {
+                                            setNewFoodMenuItemState((draft) => {
+                                                draft.value = e.target.value
+                                            })
+                                        }}
+                                    />
+                                    <button
+                                        type='button'
+                                        onClick={handleAddFoodNewMenuItem}
+                                    >Add New Food Item</button>
                                 </div>
 
+                                {/* div that holds food menu items as they are added */}
+                                <div>
+                                    {
+                                        restaurantData.menu.foodMenu.length > 0 &&
+                                        <EditMenuItems
+                                            ItemsArr={restaurantData.menu.foodMenu}
+                                            handleRemove={handleRemoveNewMenuItem}
+                                        />
+                                    }
+                                </div>
 
-                            </div>
-                        }
-
-
-                        {/* Drink Menu Items */}
-                        {restaurantData.menu.hasDrinkSpecials &&
-                            <div>
-                                <label
-                                    htmlFor='drinkSpecialDescription'
-                                >
-                                    Drink Special Description:
-                                </label>
-                                <br></br>
-                                <textarea
-                                    id='drinkSpecialDescription'
-                                    onChange={(e) => {
-                                        setRestaurantData((draft) => {
-                                            draft.menu.drinkSpecialsDescriptions = e.target.value
-                                        })
-                                    }}
-                                />
                             </div>
                         }
                     </div>
+                    {/* DRINKS AREA */}
+                    <div>
+
+
+                        <div>
+                            <input
+                                id='drinkSpecialsBoolean'
+                                type="checkbox"
+                                checked={restaurantData.menu.hasDrinkSpecials}
+                                onChange={(e) => {
+                                    setRestaurantData((draft) => {
+                                        draft.menu.hasDrinkSpecials = e.target.checked
+                                    })
+                                }}
+                            />
+                            <label
+                                htmlFor='drinkSpecialsBoolean'
+                            >
+                                has Drink Specials
+                            </label>
+                        </div>
+                        {/* Drink Menu Items */}
+                        {restaurantData.menu.hasDrinkSpecials &&
+                            <>
+                                <div>
+                                    <label
+                                        htmlFor='drinkSpecialDescription'
+                                    >
+                                        Drink Special Description:
+                                    </label>
+                                    <br></br>
+                                    <textarea
+                                        id='drinkSpecialDescription'
+                                        onChange={(e) => {
+                                            setRestaurantData((draft) => {
+                                                draft.menu.drinkSpecialsDescriptions = e.target.value
+                                            })
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <p>new Drink Item</p>
+                                        <div>
+                                            <input
+                                                type="text"
+                                                placeholder='name'
+                                                value={newDrinkMenuItemState.name}
+                                                onChange={(e) => {
+                                                    setNewDrinkMenuItemState((draft) => {
+                                                        draft.name = e.target.value
+                                                    })
+                                                }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <input
+                                                type="text"
+                                                placeholder='description'
+                                                value={newDrinkMenuItemState.description}
+                                                onChange={(e) => {
+                                                    setNewDrinkMenuItemState((draft) => {
+                                                        draft.description = e.target.value
+                                                    })
+                                                }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor='newDrinkDiscountType'>Discount Type</label>
+                                            <select
+                                                name="newDrinkDiscountType"
+                                                id="newDrinkDiscountType"
+                                                onChange={(e) => {
+                                                    setNewDrinkMenuItemState((draft) => {
+                                                        draft.specialTypeId = e.target.value
+                                                    })
+                                                }}
+                                            >
+                                                {/* // 1 = price, 2 = percentDiscount, 3 = dollarsOff */}
+                                                <option value={1}>$ </option>
+                                                <option value={2}>% Off</option>
+                                                <option value={3}>$ Off</option>
+                                            </select>
+                                        </div>
+
+                                        <input
+                                            type="number"
+                                            value={newDrinkMenuItemState.value}
+                                            onChange={(e) => {
+                                                setNewDrinkMenuItemState((draft) => {
+                                                    draft.value = e.target.value
+                                                })
+                                            }}
+                                        />
+                                        <button
+                                            type='button'
+                                            onClick={handleAddDrinkNewMenuItem}
+                                        >Add New Drink Item</button>
+                                    </div>
+
+                                    {/* div that holds food menu items as they are added */}
+                                    <div>
+                                        {
+                                            restaurantData.menu.drinkMenu.length > 0 &&
+                                            <EditMenuItems
+                                                ItemsArr={restaurantData.menu.drinkMenu}
+                                                handleRemove={handleRemoveNewMenuItem}
+                                            />
+                                        }
+                                    </div>
+                                </div>
+                            </>
+                        }
+                    </div>
                 </div>
+
             </form>
         </div>
     )
