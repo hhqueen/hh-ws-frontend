@@ -3,7 +3,11 @@ import { useState, useEffect } from 'react'
 import { checkboxFilters } from "../../sourceData/filters"
 import { dowList } from "../../sourceData/dowList"
 import { useImmer } from "use-immer"
-import { Checkbox, Label } from 'flowbite-react'
+import { Checkbox, Label, Table } from 'flowbite-react'
+import { TabItem } from 'flowbite-react/lib/esm/components/Tab/TabItem'
+import { TableBody } from 'flowbite-react/lib/esm/components/Table/TableBody'
+import { TableCell } from 'flowbite-react/lib/esm/components/Table/TableCell'
+import { TableRow } from 'flowbite-react/lib/esm/components/Table/TableRow'
 
 // import {useQuery} from "@tanstack/react-query"
 
@@ -51,31 +55,31 @@ const emptyRestaurantData = {
     }
 }
 
-const hourStateGenerator = () =>{
+const hourStateGenerator = () => {
     const weekLength = 7
     const hoursStateTemplate = {
-        hour1start:3,
-        minute1start:0,
-        ampm1start:"PM",
-        hour1end:6,
-        minute1end:0,
-        ampm1end:"PM",
-        hour2start:9,
-        minute2start:0,
-        ampm2start:"PM",
-        hour2end:11,
-        minute2end:0,
-        ampm2end:"PM",
+        hour1start: 3,
+        minute1start: 0,
+        ampm1start: "PM",
+        hour1end: 6,
+        minute1end: 0,
+        ampm1end: "PM",
+        hour2start: 9,
+        minute2start: 0,
+        ampm2start: "PM",
+        hour2end: 11,
+        minute2end: 0,
+        ampm2end: "PM",
     }
     let HoursArr = []
-    for(let i=0;i<weekLength;i++){
+    for (let i = 0; i < weekLength; i++) {
         HoursArr.push(hoursStateTemplate)
     }
     return HoursArr
 }
 
 
-export default function AddRest({ newRestFlag = true, passedRestData = null }) {
+export default function AddRest({ newRestFlag = true, passedRestData = {} }) {
 
     const [restaurantData, setRestaurantData] = useImmer(newRestFlag ? emptyRestaurantData : passedRestData)
 
@@ -98,10 +102,10 @@ export default function AddRest({ newRestFlag = true, passedRestData = null }) {
     const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
     const [yelpRestData, setYelpRestData] = useState({})
-    
-    
+
+
     const [hoursData, setHoursData] = useImmer(hourStateGenerator())
-    
+
 
     const [mainMenuData, setMainMenuData] = useState({
         restaurantname: "",
@@ -125,123 +129,86 @@ export default function AddRest({ newRestFlag = true, passedRestData = null }) {
         }
     })
 
-    const hhHoursMap = dowList.map((day,idx) => {
+    const hhHoursMap = dowList.map((day, idx) => {
         return (
-            <li
-                className='grid grid-cols-auto'
-            >   
-                <div>{day}</div>
-                <Label>
-                    <Checkbox
-                    checked={restaurantData.hours[idx].hasHH1}
-                    onChange={(e)=>setRestaurantData(
-                        (draft)=>{draft.hours[idx].hasHH1 = e.target.checked}
-                    )}
+            <>
+                <div
+                className='p-3'
+                >
+                    {day}
+                    <div>
+                        <Label>
+                            <Checkbox
+                                name='hasHH1'
+                                checked={restaurantData.hours[idx].hasHH1}
+                                onChange={(e) => setRestaurantData(
+                                    (draft) => { draft.hours[idx].hasHH1 = e.target.checked }
+                                )}
 
-                />Has Happy Hour</Label>
-                <div>
+                            />Happy Hour</Label>
+                        <div>
+                            <input
+                                id={`${day}Hour1Start`}
+                                className="min-w-[50px] text-xs"
+                                type="time"
+                                defaultValue="15:00"
+                                onChange={(e) => setHoursData((draft) => {
+                                    draft[idx].hour1start = e.target.value
+                                })}
+                                disabled={!restaurantData.hours[idx].hasHH1}
+                            />
 
-                    <label
-                        htmlFor={`${day}Hour1`}
-                    >Happy Hour
-                        <input
-                            id={`${day}Hour1`}
-                            min={0}
-                            max={12}
-                            type="number"
-                            step={1}
-                            className='border'
-                            defaultValue={hoursData[idx].hour1start}
-                            onChange={(e)=>setHoursData((draft)=>{
-                                draft[idx].hour1start = e.target.value
-                            })}
-                        />
-                    </label>
-                    <label
-                        htmlFor={`${day}Minute1`}
-                    >
-                        <input
-                            id={`${day}Minute1`}
-                            min={0}
-                            max={59}
-                            type="number"
-                            step={1}
-                            className='border'
-                            defaultValue={hoursData[idx].minute1start}
-                            onChange={(e)=>setHoursData((draft)=>{
-                                draft[idx].minute1start = e.target.value
-                            })}
-                        />
-                    </label>
-                    <label
-                        htmlFor='ampm'
-                    >
-                        <select
-                            id='ampm'
-                            name='ampm'
-                            onChange={(e)=>setHoursData((draft)=>{
-                                draft[idx].ampm1start = e.target.value
-                            })}
-                        >
-                            <option value="PM">PM</option>
-                            <option value="AM">AM</option>
-                        </select>
-                    </label>
+                            <input
+                                id={`${day}Hour1end`}
+                                className="min-w-[50px] text-xs"
+                                type="time"
+                                defaultValue="18:00"
+                                onChange={(e) => setHoursData((draft) => {
+                                    draft[idx].hour1end = e.target.value
+                                })}
+                                disabled={!restaurantData.hours[idx].hasHH1}
+                            />
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <Label>
+                            <Checkbox
+                                checked={restaurantData.hours[idx].hasHH2}
+                                onChange={(e) => setRestaurantData(
+                                    (draft) => { draft.hours[idx].hasHH2 = e.target.checked }
+                                )}
+
+                            />Late Night</Label>
+                        <div>
+                            <input
+                                id={`${day}Hour2Start`}
+                                className="min-w-[50px] text-xs"
+                                type="time"
+                                defaultValue="15:00"
+                                onChange={(e) => setHoursData((draft) => {
+                                    draft[idx].hour2start = e.target.value
+                                })}
+                                disabled={!restaurantData.hours[idx].hasHH2}
+                            />
+                            <input
+                                id={`${day}Hour2end`}
+                                className="min-w-[50px] text-xs"
+                                type="time"
+                                defaultValue="18:00"
+                                onChange={(e) => {
+                                    console.log(e.target.value)
+                                    setHoursData((draft) => {
+                                        draft[idx].hour2end = e.target.value
+                                    })
+                                }}
+                                disabled={!restaurantData.hours[idx].hasHH2}
+                            />
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label
-                        htmlFor={`${day}Hour2`}
-                    >Late Night
-                    <Label>
-                    <Checkbox
-                    checked={restaurantData.hours[idx].hasHH2}
-                    onChange={(e)=>setRestaurantData(
-                        (draft)=>{draft.hours[idx].hasHH2 = e.target.checked}
-                    )}
-
-                />HasLate Night</Label>
-                        <input
-                            id={`${day}Hour2`}
-                            min={0}
-                            max={12}
-                            type="number"
-                            step={1}
-                            className='border'
-                            defaultValue={hoursData[idx].hour2start}
-                            onChange={(e)=>setHoursData((draft)=>{
-                                draft[idx].hour2start = e.target.value
-                            })}
-                        />
-                    </label>
-                    <label
-                        htmlFor={`${day}Minute2`}
-                    >
-                        <input
-                            id={`${day}Minute2`}
-                            min={0}
-                            max={59}
-                            type="number"
-                            step={1}
-                            className='border'
-                            defaultValue={hoursData[idx].minute2start}
-                            onChange={(e)=>setHoursData((draft)=>{
-                                draft[idx].minute2start = e.target.value
-                            })}
-                        />
-                    </label>
-                    <label
-                        htmlFor='ampm'
-                    >
-                        <select
-                            id='ampm'
-                            name='ampm'
-                        >
-                            <option value="PM">PM</option>
-                            <option value="AM">AM</option>
-                        </select>
-                    </label>
-                </div>
-            </li>
+            </>
         )
     })
 
@@ -454,10 +421,10 @@ export default function AddRest({ newRestFlag = true, passedRestData = null }) {
                                 <br></br>
                                 <textarea
                                     id='drinkSpecialDescription'
-                                    onChange={(e) => { 
+                                    onChange={(e) => {
                                         setRestaurantData((draft) => {
                                             draft.menu.drinkSpecialsDescriptions = e.target.value
-                                        })    
+                                        })
                                     }}
                                 />
                             </div>
