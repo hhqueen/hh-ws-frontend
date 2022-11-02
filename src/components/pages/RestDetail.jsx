@@ -51,7 +51,7 @@ export default function RestDetail() {
       }
     }
     getRestData()
-  })
+  },[id])
 
   // const showApplicableFilters = (restData) => {
   //   let applFilterArr = []
