@@ -112,13 +112,16 @@ function App() {
     const loadInitialData = async () => {
       const allRests = await getRestaurants()
       setAllRestaurants(allRests)
-      const restArrByDay = filterRestByDay(allRests, fmtDate)
+      const restArrByDay = await filterRestByDay(allRests, fmtDate)
       setShowRestaurants(restArrByDay)
 
       // const coords = await getCoord("1281 Westreef, Costa Mesa, CA")
       // console.log(coords)
 
-      const latLong = geoLocation()
+      const latLong = await geoLocation()
+      if (latLong.geoLocAvail) {
+        setCurrentLocation(latLong)
+      } 
       // console.log(latLong)
 
       // setLocParams({ ...locParams, ...locParams.coordinates.lat = latLong.latitude })
@@ -127,6 +130,7 @@ function App() {
     loadInitialData()
     setDow(fmtDate)
     setFilterParams(checkboxFilters)
+    
 
   }, [])
 
@@ -169,7 +173,9 @@ function App() {
 
             <Route
               path="/addnewrestaurant"
-              element={<AddRest />}
+              element={<AddRest 
+                currentLocation={currentLocation}
+              />}
             />
             <Route
               path="/signup"

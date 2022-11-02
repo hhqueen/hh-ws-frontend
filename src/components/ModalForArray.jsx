@@ -1,83 +1,63 @@
 import React from 'react'
-import {Modal} from "flowbite"
-import { Button, Label } from 'flowbite-react'
+import { Button, Label, Modal } from 'flowbite-react'
+import YelpCard from './YelpCard'
 
-export default function ModalForArray({}) {
+export default function ModalForArray({yelpList, onClose, onModalClick,modalOpen,handlePickOneYelpRestaurant}) {
+  console.log(yelpList)
+  const mapYelpBusinesses = yelpList.businesses.map((business,idx)=>{
+    return(
+      <>
+      <div
+      className=''
+        onClick={()=>{
+          handlePickOneYelpRestaurant(business)
+          onClose()
+        }}
+      >
+        <YelpCard
+          business={business}
+        />
+      </div>
+      </>
+    )
+  })
+  
   return (
-//     <React.Fragment>
-//   <Button onClick={onClick}>
-//     Toggle modal
-//   </Button>
-//   <Modal
-//     show={false}
-//     size="md"
-//     popup={true}
-//     onClose={onClose}
-//   >
-//     <Modal.Header />
-//     <Modal.Body>
-//       <div className="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8">
-//         <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-//           Sign in to our platform
-//         </h3>
-//         <div>
-//           <div className="mb-2 block">
-//             <Label
-//               htmlFor="email"
-//               value="Your email"
-//             />
-//           </div>
-//           <TextInput
-//             id="email"
-//             placeholder="name@company.com"
-//             required={true}
-//           />
-//         </div>
-//         <div>
-//           <div className="mb-2 block">
-//             <Label
-//               htmlFor="password"
-//               value="Your password"
-//             />
-//           </div>
-//           <TextInput
-//             id="password"
-//             type="password"
-//             required={true}
-//           />
-//         </div>
-//         <div className="flex justify-between">
-//           <div className="flex items-center gap-2">
-//             <Checkbox id="remember" />
-//             <Label htmlFor="remember">
-//               Remember me
-//             </Label>
-//           </div>
-//           <a
-//             href="/modal"
-//             className="text-sm text-blue-700 hover:underline dark:text-blue-500"
-//           >
-//             Lost Password?
-//           </a>
-//         </div>
-//         <div className="w-full">
-//           <Button>
-//             Log in to your account
-//           </Button>
-//         </div>
-//         <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-//           Not registered?{' '}
-//           <a
-//             href="/modal"
-//             className="text-blue-700 hover:underline dark:text-blue-500"
-//           >
-//             Create account
-//           </a>
-//         </div>
-//       </div>
-//     </Modal.Body>
-//   </Modal>
-// </React.Fragment>
-<></>
+    <>
+      <Modal
+        show={modalOpen}
+        onClose={onClose}
+      >
+        <Modal.Header>
+        Header
+        </Modal.Header>
+        <Modal.Body>
+          <div
+          className='h-[70vh] overflow-y-auto'
+          >
+            {mapYelpBusinesses}
+          </div>
+          {/* <div className="space-y-6">
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+            </p>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
+            </p>
+          </div> */}
+        </Modal.Body>
+        <Modal.Footer>
+          {/* <Button onClick={onModalClick}>
+            I accept
+          </Button> */}
+          {/* <Button
+            color="gray"
+            onClick={onModalClick}
+          >
+              Decline
+          </Button> */}
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }

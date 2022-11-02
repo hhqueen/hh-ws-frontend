@@ -31,7 +31,7 @@ export default function HHHours({ hour }) {
     // console.log(hour)
     return (
         <div
-            className='grid grid-cols-5'
+            className='grid grid-cols-5 border-b'
         >           
             <p
             className={`${timePTagClass} col-start-1 col-end-1`}
@@ -47,7 +47,7 @@ export default function HHHours({ hour }) {
                 </div>
                 :
                 <div
-                    className='flex mx-5 justify-self-center col-start-2 col-span-2'
+                className='flex mx-5 justify-self-center col-start-2 col-span-2'
                 >
                     <p
                     className={timePTagClass}
@@ -56,7 +56,7 @@ export default function HHHours({ hour }) {
             }
 
             {
-                hour.hasHH2 &&
+                hour.hasHH2 ?
                 <div
                 className='flex mx-5 justify-self-center col-start-4 col-span-2'
                 >
@@ -64,6 +64,14 @@ export default function HHHours({ hour }) {
                     className={timePTagClass}
                     >{`${displayStart2} - ${displayEnd2}`}</p>
                    
+                </div>
+                :
+                <div
+                    className='flex mx-5 justify-self-center col-start-4 col-span-2'
+                >
+                    <p
+                    className={timePTagClass}
+                    >No Happy Hour :,(</p>
                 </div>
             }
 
