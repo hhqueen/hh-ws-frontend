@@ -275,6 +275,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             draft.address1 = business.location.address1
             draft.address2 = business.location.address2
             draft.address3 = business.location.address3
+            draft.state = business.location.state
             draft.city = business.location.city
             draft.zip_code = business.location.zip_code
             draft.country = business.location.country
