@@ -30,6 +30,7 @@ export default function RestDetail() {
   const [filterString, setFilterString] = useState("")
   const [restHours, setRestHours] = useState([])
   const [isLoaded, setIsloaded] = useState(false)
+  const [address, setAddress] = useState("")
   useEffect(() => {
     console.log(id)
     const getRestData = async () => {
@@ -44,6 +45,8 @@ export default function RestDetail() {
         // setFilterString(
         //   showApplicableFilters(response.data)
         // )
+        await setAddress(`${response.data.address1} ${response.data.city} ${response.data.state} ${response.data.zip_code}`)
+        
         setIsloaded(true)
         // setIsloaded(true)
       } catch (error) {
@@ -89,7 +92,13 @@ export default function RestDetail() {
           <p>{restData?.name}</p>
           <p>{restData?.cuisines.join(", ")}</p>
           <p>{showApplicableFilters(restData)}</p>
-          <p>{`${restData?.address1} ${restData?.city} ${restData?.state} ${restData?.zip_code}`}</p>
+          {/* https://www.google.com/maps/place/ */}
+          <a 
+          href={`https://www.google.com/maps/place/${address.replace(" ","+")}`} 
+          target="_blank" 
+          rel="noopener noreferrer">
+            <p>{address}</p>
+          </a>
           <a href={`tel:${restData?.telNumber}`}>{restData.displayNumber}</a>
         </div>
 
