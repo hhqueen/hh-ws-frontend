@@ -51,7 +51,7 @@ export default function HHHours({ hour }) {
                 >
                     <p
                     className={timePTagClass}
-                    >No Happy Hour :,(</p>
+                    ></p>
                 </div>
             }
 
@@ -71,7 +71,7 @@ export default function HHHours({ hour }) {
                 >
                     <p
                     className={timePTagClass}
-                    >No Happy Hour :,(</p>
+                    ></p>
                 </div>
             }
 
