@@ -56,19 +56,6 @@ export default function RestDetail() {
     getRestData()
   },[id])
 
-  // const showApplicableFilters = (restData) => {
-  //   let applFilterArr = []
-  //   checkboxFilters.forEach((filter) => {
-  //     if (restData[filter.name]) {
-  //       applFilterArr.push(filter.display)
-  //     }
-  //   })
-  //   let filterString = applFilterArr.join(", ")
-  //   // console.log("filterString:",filterString)
-  //   // setFilterString(filterString)
-  //   return filterString
-  // }
-
   const mapHours = restData.hours.map((hour, idx) => {
     return (
       <HHHours
@@ -92,11 +79,11 @@ export default function RestDetail() {
           <p>{restData?.name}</p>
           <p>{restData?.cuisines.join(", ")}</p>
           <p>{showApplicableFilters(restData)}</p>
-          {/* https://www.google.com/maps/place/ */}
+
           <a 
-          href={`https://www.google.com/maps/place/${address.replace(" ","+")}`} 
-          target="_blank" 
-          rel="noopener noreferrer">
+            href={`https://www.google.com/maps/place/${address.replace(" ","+")}`} 
+            target="_blank" 
+            rel="noopener noreferrer">
             <p>{address}</p>
           </a>
           <a href={`tel:${restData?.telNumber}`}>{restData.displayNumber}</a>

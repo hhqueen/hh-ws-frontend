@@ -39,13 +39,13 @@ const emptyRestaurantData = {
     hasPatio: false,
     cuisines: [],
     hours: [
-        { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //monday
-        { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //tuesday
-        { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //weds
-        { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, // thurs
-        { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, //friday
-        { day: 5, hasHH1: false, start1: -1, end1: -1, end1close: false, hasHH2: false, start2: -1, end2: -1, end2close: true }, //sat
-        { day: 6, hasHH1: false, start1: -1, end1: -1, end1close: false, hasHH2: true, start2: 22, end2: -1, end2close: true }, //sun
+        { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 22, end2: -1, end2close: false }, //monday
+        { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 22, end2: -1, end2close: false }, //tuesday
+        { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 22, end2: -1, end2close: false }, //weds
+        { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 22, end2: -1, end2close: false }, // thurs
+        { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 22, end2: -1, end2close: false }, //friday
+        { day: 5, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 22, end2: -1, end2close: false }, //sat
+        { day: 6, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 22, end2: -1, end2close: false }, //sun
     ],
     menu: {
         restaurantname: "",
@@ -165,7 +165,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
                             />Happy Hour</Label>
                         <div>
-                        <div>
+                            {/* <div>
                             <Label>
                                 <Checkbox
                                     checked={restaurantData.hours[idx].end1close}
@@ -174,7 +174,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     )}
 
                                 />Til-Close</Label>
-                        </div>
+                        </div> */}
                             <input
                                 id={`${day}Hour1Start`}
                                 className="min-w-[50px] text-xs"
@@ -207,17 +207,10 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 )}
 
                             />Late Night</Label>
-                        <div>
-                        <div>
-                            <Label>
-                                <Checkbox
-                                    checked={restaurantData.hours[idx].end2close}
-                                    onChange={(e) => setRestaurantData(
-                                        (draft) => { draft.hours[idx].end2close = e.target.checked }
-                                    )}
-
-                                />Til-Close</Label>
-                        </div>
+                        <div
+                        className='flex'
+                        >
+                           
                             <input
                                 id={`${day}Hour2Start`}
                                 className="min-w-[50px] text-xs"
@@ -227,6 +220,15 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 onChange={(e) => handleHourInputChange(e, idx)}
                                 disabled={restaurantData.hours[idx].hasHH2 === false}
                             />
+                            {
+                                restaurantData.hours[idx].end2close ?
+                            
+                            <div
+                                className="min-w-[50px]  w-[110px] text-center "
+                            >
+                               to Close
+                            </div>
+                                :
                             <input
                                 id={`${day}Hour2end`}
                                 className="min-w-[50px] text-xs"
@@ -236,6 +238,17 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 onChange={(e) => handleHourInputChange(e, idx)}
                                 disabled={restaurantData.hours[idx].hasHH2 === false || restaurantData.hours[idx].end2close === true}
                             />
+                             }
+                             <div>
+                                <Label>
+                                    <Checkbox
+                                        checked={restaurantData.hours[idx].end2close}
+                                        onChange={(e) => setRestaurantData(
+                                            (draft) => { draft.hours[idx].end2close = e.target.checked }
+                                        )}
+
+                                    />Til-Close</Label>
+                            </div>
                         </div>
                     </div>
                 </div>
