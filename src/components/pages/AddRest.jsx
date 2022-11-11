@@ -6,12 +6,12 @@ import { useImmer } from "use-immer"
 import { Checkbox, Label } from 'flowbite-react'
 import EditMenuItems from "../EditMenuItems"
 import { menuDiscountType } from "../../sourceData/menuDiscountType"
-import * as geolib from "geolib"
-import geoLocation from "../../helperFunctions/geoLocation"
+import militaryTimeConverter from '../../helperFunctions/militaryTimeConverter'
 import axios from "axios"
 import date from "date-and-time"
 
-import ModalForArray from '../ModalForArray'
+import YelpResponseModal from '../YelpResponseModal'
+import BulkHoursUpdateModal from '../BulkHoursUpdateModal'
 // const ModalForArray = React.lazy(()=>import('../ModalForArray'))
 // import {useQuery} from "@tanstack/react-query"
 
@@ -59,35 +59,36 @@ const emptyRestaurantData = {
     }
 }
 
-const hourStateGenerator = () => {
-    const weekLength = 7
-    const hoursStateTemplate = {
-        day: 0,
-        hour1start: 3,
-        minute1start: 0,
-        ampm1start: "PM",
-        hour1end: 6,
-        minute1end: 0,
-        ampm1end: "PM",
-        hour2start: 9,
-        minute2start: 0,
-        ampm2start: "PM",
-        hour2end: 11,
-        minute2end: 0,
-        ampm2end: "PM",
-    }
-    let HoursArr = []
-    for (let i = 0; i < weekLength; i++) {
-        HoursArr.push(hoursStateTemplate)
-    }
-    return HoursArr
-}
+// const hourStateGenerator = () => {
+//     const weekLength = 7
+//     const hoursStateTemplate = {
+//         day: 0,
+//         hour1start: 3,
+//         minute1start: 0,
+//         ampm1start: "PM",
+//         hour1end: 6,
+//         minute1end: 0,
+//         ampm1end: "PM",
+//         hour2start: 9,
+//         minute2start: 0,
+//         ampm2start: "PM",
+//         hour2end: 11,
+//         minute2end: 0,
+//         ampm2end: "PM",
+//     }
+//     let HoursArr = []
+//     for (let i = 0; i < weekLength; i++) {
+//         HoursArr.push(hoursStateTemplate)
+//     }
+//     return HoursArr
+// }
 
 
 export default function AddRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
 
     // variables
     const [modalOpen, setModalOpen] = useState(false)
+    const [bulkHourModalOpen, setBulkHourModalOpen] = useState(false)
     const foodMenuItemTemplate = {
         name: "",
         description: "",
@@ -110,23 +111,23 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
     const [newDrinkMenuItemState, setNewDrinkMenuItemState] = useImmer(drinkMenuItemTemplate)
     const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
-    const [yelpRestData, setYelpRestData] = useImmer({})
+    // const [yelpRestData, setYelpRestData] = useImmer({})
     const [yelpRestResponse, setYelpRestResponse] = useImmer({
         businesses: []
     })
-    const [hoursData, setHoursData] = useImmer(hourStateGenerator())
-    const [mainMenuData, setMainMenuData] = useState({
-        restaurantname: "",
-        isChain: false,
-        hasFoodSpecials: true,
-        foodSpecialsDescriptions: "",
-        foodMenu: [],
-        hasDrinkSpecials: true,
-        drinkSpecialsDescriptions: "",
-        drinkMenu: []
-    })
-    const [foodMenuData, setFoodMenuData] = useState([])
-    const [drinksMenuData, setDrinksMenuData] = useState([])
+    // const [hoursData, setHoursData] = useImmer(hourStateGenerator())
+    // const [mainMenuData, setMainMenuData] = useState({
+    //     restaurantname: "",
+    //     isChain: false,
+    //     hasFoodSpecials: true,
+    //     foodSpecialsDescriptions: "",
+    //     foodMenu: [],
+    //     hasDrinkSpecials: true,
+    //     drinkSpecialsDescriptions: "",
+    //     drinkMenu: []
+    // })
+    // const [foodMenuData, setFoodMenuData] = useState([])
+    // const [drinksMenuData, setDrinksMenuData] = useState([])
     const [searchParams, setSearchParams] = useImmer({
         term: "",
         location: {
@@ -180,7 +181,8 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 className="min-w-[50px] text-xs"
                                 name="start1"
                                 type="time"
-                                defaultValue="15:00"
+                                value={militaryTimeConverter(restaurantData.hours[idx].start1)}
+                                // defaultValue="15:00"
                                 onChange={(e) => handleHourInputChange(e, idx)}
                                 disabled={restaurantData.hours[idx].hasHH1 === false}
                             />
@@ -190,7 +192,8 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 className="min-w-[50px] text-xs"
                                 name="end1"
                                 type="time"
-                                defaultValue="18:00"
+                                value={militaryTimeConverter(restaurantData.hours[idx].end1)}
+                                // defaultValue="18:00"
                                 onChange={(e) => handleHourInputChange(e, idx)}
                                 disabled={restaurantData.hours[idx].hasHH1 === false || restaurantData.hours[idx].end1close === true}
                             />
@@ -216,7 +219,8 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 className="min-w-[50px] text-xs"
                                 name="start2"
                                 type="time"
-                                defaultValue="15:00"
+                                value={militaryTimeConverter(restaurantData.hours[idx].start2)}
+                                // defaultValue="15:00"
                                 onChange={(e) => handleHourInputChange(e, idx)}
                                 disabled={restaurantData.hours[idx].hasHH2 === false}
                             />
@@ -234,7 +238,8 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 className="min-w-[50px] text-xs"
                                 name="end2"
                                 type="time"
-                                defaultValue="18:00"
+                                value={militaryTimeConverter(restaurantData.hours[idx].end2)}
+                                // defaultValue="18:00"
                                 onChange={(e) => handleHourInputChange(e, idx)}
                                 disabled={restaurantData.hours[idx].hasHH2 === false || restaurantData.hours[idx].end2close === true}
                             />
@@ -259,7 +264,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
     useEffect(() => {
         filterParams.forEach((filter) => {
             setRestaurantData((draft) => {
-                const filterItem = draft[filter.name] = filter.value
+                draft[filter.name] = filter.value
             });
             // console.log("i-restaurantData", restaurantData)
         })
@@ -330,16 +335,11 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         const typeVar = type.toLowerCase()
         setRestaurantData((draft) => {
             draft.menu[`${typeVar}Menu`][idx][e.target.name] = e.target.value
-            // draft.menu.drinkMenu.push(newDrinkMenuItemState)
         })
     }
 
     const handleRemoveNewMenuItem = (e, type, idx) => {
         e.preventDefault()
-        // console.log(item)
-        // console.log(draft.menu[`${item.type}`])
-        console.log("clicky")
-        console.log(type)
         const typeVar = type.toLowerCase()
         setRestaurantData((draft) => {
             draft.menu[`${typeVar}Menu`].splice(idx, 1)
@@ -355,6 +355,30 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         } catch (error) {
             console.warn(error)
         }
+
+    }
+
+    const handleBulkHourSubmit = (e,daysArr,hourData)=>{
+        e.preventDefault()
+        // console.log("Click")
+        console.log("click")
+        const filteredDaysArr = daysArr.filter(day=>day.updateBool === true)
+        setRestaurantData((draft)=>{
+            filteredDaysArr.forEach((filteredDay)=>{
+                console.log("filteredDay.dayIdx",filteredDay.dayIdx)
+                let foundDay = draft.hours.find(hour=>hour.day===filteredDay.dayIdx)
+                console.log(foundDay.hasHH1)
+                foundDay.hasHH1 = hourData.hasHH1
+                foundDay.start1 = hourData.start1
+                foundDay.end1 = hourData.end1
+                foundDay.hasHH2 = hourData.hasHH2
+                foundDay.start2 = hourData.start2
+                foundDay.end2 = hourData.end2
+                foundDay.end2close = hourData.end2close
+                console.log(`${foundDay.day} found and updated`)
+            })
+        })
+        setBulkHourModalOpen(false)
 
     }
 
@@ -394,7 +418,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     type="submit"
                 >Submit</button>
 
-                <ModalForArray
+                <YelpResponseModal
                     yelpList={yelpRestResponse}
                     modalOpen={modalOpen}
                     onClose={onClose}
@@ -433,7 +457,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     onChange={(e) => {
                                         setSearchParams((draft) => {
                                             draft.location.address = e.target.value
-                                            if (e.target.value == "Current Location") {
+                                            if (e.target.value === "Current Location") {
                                                 draft.location.long = currentLocation.longitude
                                                 draft.location.lat = currentLocation.latitude
                                             }
@@ -457,6 +481,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             <div>
                                 <p>Yelp Results Container</p>
                                 <img
+                                    alt={restaurantData.name}
                                     src={restaurantData.image_url}
                                 />
                                 <p>{restaurantData.name}</p>
@@ -487,7 +512,23 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                 {/* div that holds hours input */}
                 <div>
                     <p>Hours:</p>
+                    <button
+                    type="button"
+                    className='border rounded-xl'
+                    onClick={()=>{
+                        setBulkHourModalOpen(true)
+                    }}
+                    >
+                        Bulk Update Hours
+                    </button>
 
+                    <BulkHoursUpdateModal
+                    bulkHourModalOpen={bulkHourModalOpen}
+                    setBulkHourModalOpen={setBulkHourModalOpen}
+                    handleFormSubmit={handleBulkHourSubmit}
+                    />
+
+                    
                     {/* <p>Day</p>
                         <p>Happy Hour</p>
                         <p>Late Night</p> */}
