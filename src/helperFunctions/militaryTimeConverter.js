@@ -1,6 +1,6 @@
 // converts a value bewteen 0 and 24 
 const militaryTimeConverter = (value) => {
-  console.log("value",value)
+  // console.log("value",value)
     if (value < 0 || value > 24) {
       return "Error, input value out of range (should be betwen 0 to 24)"
     }
@@ -22,14 +22,14 @@ const militaryTimeConverter = (value) => {
     //calculate minute
     if (value % 1 != 0){
       minute = Math.floor((value % 1)*60)
-      console.log("minute if 1")
+      // console.log("minute if 1")
       value = value - value % 1
     } 
     if (minute < 10) {
       minute = `0${minute}`
-      console.log("minute if 2")
+      // console.log("minute if 2")
     }
-    console.log("minute:",minute)
+    // console.log("minute:",minute)
     
     
     //calculate hour
@@ -42,13 +42,13 @@ const militaryTimeConverter = (value) => {
     if (hour < 10) {
       hour = `0${hour}`
     }
-    console.log("hour",hour)
+    // console.log("hour",hour)
 
     // need to add code to convert and return a string
     // timeString = `${hour}:${minute} ${ampm}`
 
     timeString = `${hour}:${minute}`
-    console.log("timeString",timeString)
+    // console.log("timeString",timeString)
     return timeString
 
   }

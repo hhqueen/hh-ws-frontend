@@ -128,6 +128,7 @@ function App() {
 
     }
     loadInitialData()
+    console.log("fmtDate", fmtDate)
     setDow(fmtDate)
     setFilterParams(checkboxFilters)
     

@@ -27,8 +27,8 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
 
     // const dowList = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
     const dowOptionsMap = dowList.map((day,idx) => {
-        if (dow === day) {
-            return <option key={`day-option${idx}`} value={day} defaultValue>{day}</option>
+        if (dow == day) {
+            return <option key={`day-option${idx}`} value={day} selected>{day}</option>
         } else {
             return <option key={`day-option${idx}`} value={day}>{day}</option>
         }
@@ -52,8 +52,6 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
                             className="border"
                         >APPLY</button>
 
-
-
                         <ul
                             className='grid grid-cols-3 sm:flex sm:flex-col sm:space-y-2'
                         >
@@ -62,7 +60,6 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
                                     <Select
                                         id='dow'
                                         name='dow'
-                                        size=""
                                         className=''
                                         onChange={(e) => setDow(e.target.value)}
                                     >
