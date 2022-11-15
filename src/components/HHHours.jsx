@@ -27,51 +27,51 @@ export default function HHHours({ hour, timeOutputVal }) {
     }
 
     
-    const timePTagClass = 'text-[11px] justify-self-center'
+    const timePTagClass = 'text-[11px] justify-items-start'
     // console.log(hour)
     return (
         <div
-            className='grid grid-cols-7 border-b'
+            className='grid grid-cols-7 pl-3'
         >           
             <p
-                className={`${timePTagClass} col-start-1 col-end-1`}
+                className={`${timePTagClass} col-start-1 col-end-1 `}
             >{dayOweek}</p>
             {
                 hour.hasHH1 ?
                 <div
-                    className='flex mx-5 justify-self-center col-start-2 col-span-3'
+                    className='flex mx-5 col-start-2 col-span-3'
                 >
                     <p
                         className={timePTagClass}
-                    >{`${displayStart1} - ${displayEnd1}`}</p>
+                    >{`${displayStart1}-${displayEnd1}`}</p>
                 </div>
                 :
                 <div
-                    className='flex mx-5 justify-self-center col-start-2 col-span-3'
+                    className='flex mx-5 col-start-2 col-span-3'
                 >
                     <p
                         className={timePTagClass}
-                    ></p>
+                    >N/A</p>
                 </div>
             }
 
             {
                 hour.hasHH2 ?
                 <div
-                className='flex mx-5 justify-self-center col-start-5 col-span-3'
+                className='flex mx-5 col-start-5 col-span-3'
                 >
                     <p
                     className={timePTagClass}
-                    >{`${displayStart2} - ${displayEnd2}`}</p>
+                    >{`${displayStart2}-${displayEnd2}`}</p>
                    
                 </div>
                 :
                 <div
-                    className='flex mx-5 justify-self-center col-start-5 col-span-3'
+                    className='flex mx-5 col-start-5 col-span-3'
                 >
                     <p
                     className={timePTagClass}
-                    ></p>
+                    >N/A</p>
                 </div>
             }
 

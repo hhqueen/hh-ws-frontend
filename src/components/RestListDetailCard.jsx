@@ -32,14 +32,15 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
     return (
         // container div
         <div
-            className='mb-3 flex flex-col items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
-            onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
+            className='mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+            
         >
             <img
                 loading="lazy"
+                onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
                 src={restaurantInfo.image_url}
                 alt={restaurantInfo.name}
-                className="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
+                className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full w-3/12 rounded-l-lg md:h-full md:w-48 md:rounded-none md:rounded-l-lg"
             />
 
             {/* image and Info Container Div */}
@@ -49,18 +50,19 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
 
                 {/* info div */}
                 <p
-                    className='font-semibold text-sm'
+                    className='font-semibold text-sm hover:underline hover:cursor-pointer'
+                    onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
                 >{restaurantInfo.name}</p>
                 
                 <p
-                    className='text-xs my-1'
+                    className='text-[11px] my-1'
                 >{applicableFilters}</p>
 
                 <p
-                    className='text-xs my-1'
+                    className='text-[11px] my-1'
                 >{cuisineString}</p>
                 <p
-                    className='text-xs my-1'
+                    className='text-[11px] my-1'
                 >{restaurantInfo.city}</p>
                 {/* hours Div */}
                 {dowHours}

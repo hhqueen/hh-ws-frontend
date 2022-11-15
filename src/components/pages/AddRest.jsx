@@ -315,6 +315,9 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 )}
 
                             />Happy Hour</Label>
+                        {
+                            restaurantData.hours[idx].hasHH1 &&
+                        
                         <div>
                             {/* <div>
                             <Label>
@@ -325,7 +328,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     )}
 
                                 />Til-Close</Label>
-                        </div> */}
+                            </div> */}
                             <input
                                 id={`${day}Hour1Start`}
                                 className="min-w-[50px] text-xs"
@@ -348,7 +351,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 disabled={restaurantData.hours[idx].hasHH1 === false || restaurantData.hours[idx].end1close === true}
                             />
                         </div>
-
+                        }
                     </div>
 
                     <div>
@@ -360,6 +363,10 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 )}
 
                             />Late Night</Label>
+                        
+                        {
+                            restaurantData.hours[idx].hasHH2 &&
+                        
                         <div
                         className='flex'
                         >
@@ -405,6 +412,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     />Til-Close</Label>
                             </div>
                         </div>
+                        }
                     </div>
                 </div>
             </>

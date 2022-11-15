@@ -25,12 +25,12 @@ export default function Main({dow, setDow, allRestaurants, filterParams, setFilt
         />
 
         
-        <Suspense fallback={<LoadingComp/>}>
+        {/* <Suspense fallback={<LoadingComp/>}> */}
           <ListViewComp
             allRestaurants={allRestaurants}
             dow={dow}
           />
-        </Suspense>       
+        {/* </Suspense>        */}
           
         
     </div>
