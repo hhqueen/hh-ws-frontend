@@ -23,7 +23,7 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
         end1close: false,
         hasHH2: false,
         start2: 22,
-        end2: 24,
+        end2: 0,
         end2close: false
     })
 
@@ -141,7 +141,7 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                                             className="min-w-[50px] text-xs"
                                             name="end2"
                                             type="time"
-                                            defaultValue="23:00"
+                                            defaultValue="00:00"
                                             onChange={(e) => handleHourInputChange(e)}
                                             disabled={hourData.hasHH2 === false || hourData.end2close === true}
                                         />

@@ -39,13 +39,13 @@ const emptyRestaurantData = {
     hasPatio: false,
     cuisines: [],
     hours: [
-        { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 23, end2close: false }, //monday
-        { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 23, end2close: false }, //tuesday
-        { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 23, end2close: false }, //weds
-        { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 23, end2close: false }, // thurs
-        { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 23, end2close: false }, //friday
-        { day: 5, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 23, end2close: false }, //sat
-        { day: 6, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 23, end2close: false }, //sun
+        { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //monday
+        { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //tuesday
+        { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //weds
+        { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, // thurs
+        { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //friday
+        { day: 5, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //sat
+        { day: 6, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //sun
     ],
     menu: {
         restaurantname: "",
@@ -149,6 +149,154 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             draft.hours[idx][e.target.name] = time
         })
     }
+
+  
+
+    useEffect(() => {
+        filterParams.forEach((filter) => {
+            setRestaurantData((draft) => {
+                draft[filter.name] = filter.value
+            });
+            // console.log("i-restaurantData", restaurantData)
+        })
+    }, [filterParams])
+
+    // Handler Functions
+
+    const handleSearchButton = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/yelpSearch?search=${searchParams.term}&lat=${searchParams.location.lat}&long=${searchParams.location.long}&address=${searchParams.location.address}`)
+            const yelpRestList = response.data
+            console.log(yelpRestList)
+            setYelpRestResponse(yelpRestList)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const handlePickOneYelpRestaurant = (business) => {
+        setRestaurantData((draft) => {
+            draft.yelpRestaurantId = business.id
+            draft.name = business.name
+            draft.telNumber = business.phone
+            draft.cuisines = business.categories
+            draft.displayNumber = business.display_phone
+            draft.address1 = business.location.address1
+            draft.address2 = business.location.address2
+            draft.address3 = business.location.address3
+            draft.state = business.location.state
+            draft.city = business.location.city
+            draft.zip_code = business.location.zip_code
+            draft.country = business.location.country
+            draft.longitude = business.coordinates.longitude
+            draft.latitude = business.coordinates.latitude
+            draft.image_url = business.image_url
+        })
+        setSearchRestBool(false)
+    }
+
+    const onModalClick = () => {
+        setYelpModalOpen(!yelpModalOpen)
+    }
+
+    const onClose = () => {
+        setYelpModalOpen(false)
+        // setSearchRestBool(false)
+    }
+    const handleAddFoodNewMenuItem = (e, type) => {
+        e.preventDefault()
+        // console.log(newFoodMenuItemState)
+        setRestaurantData((draft) => {
+            draft.menu.foodMenu.push(newFoodMenuItemState)
+        })
+
+        setNewFoodMenuItemState(foodMenuItemTemplate)
+    }
+
+    const handleAddDrinkNewMenuItem = (e) => {
+        e.preventDefault()
+        // console.log(newDrinkMenuItemState)
+        setRestaurantData((draft) => {
+            draft.menu.drinkMenu.push(newDrinkMenuItemState)
+        })
+        setNewDrinkMenuItemState(drinkMenuItemTemplate)
+    }
+
+    const handleEditNewMenuItem = (e, type, idx) => {
+        e.preventDefault()
+        const typeVar = type.toLowerCase()
+        setRestaurantData((draft) => {
+            draft.menu[`${typeVar}Menu`][idx][e.target.name] = e.target.value
+        })
+    }
+
+    const handleRemoveNewMenuItem = (e, type, idx) => {
+        e.preventDefault()
+        const typeVar = type.toLowerCase()
+        setRestaurantData((draft) => {
+            draft.menu[`${typeVar}Menu`].splice(idx, 1)
+        })
+    }
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault()
+        const reqbody = { restaurantData }
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/restaurants/newRestaurant`, reqbody)
+            console.log(response)
+
+        } catch (error) {
+            console.warn(error)
+        }
+
+    }
+
+    const handleBulkHourSubmit = (e,daysArr,hourData)=>{
+        e.preventDefault()
+        // console.log("Click")
+        console.log("click")
+        const filteredDaysArr = daysArr.filter(day=>day.updateBool === true)
+        setRestaurantData((draft)=>{
+            filteredDaysArr.forEach((filteredDay)=>{
+                console.log("hourData.end2",hourData.end2)
+                let foundDay = draft.hours.find(hour=>hour.day===filteredDay.dayIdx)
+                console.log(foundDay.hasHH1)
+                foundDay.hasHH1 = hourData.hasHH1
+                foundDay.start1 = hourData.start1
+                foundDay.end1 = hourData.end1
+                foundDay.hasHH2 = hourData.hasHH2
+                foundDay.start2 = hourData.start2
+                foundDay.end2 = hourData.end2
+                foundDay.end2close = hourData.end2close
+                console.log(`${foundDay.day} found and updated`)
+            })
+        })
+        setBulkHourModalOpen(false)
+
+    }
+
+    const filtersMap = checkboxFilters.map((filterVal, idx) => {
+        return (
+            <li
+                key={`AddRestFilter${idx}`}
+            >
+                <label>
+                    <Checkbox
+                        checked={restaurantData[filterVal.name]}
+                        name={filterVal.name}
+                        onChange={
+                            (e) => {
+                                setRestaurantData((draft) => {
+                                    draft[filterVal.name] = e.target.checked
+                                })
+                            }
+                        }
+                    />
+                    {filterVal.display}
+                </label>
+
+            </li>
+        )
+    })
 
     const hhHoursMap = dowList.map((day, idx) => {
         return (
@@ -260,152 +408,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     </div>
                 </div>
             </>
-        )
-    })
-
-    useEffect(() => {
-        filterParams.forEach((filter) => {
-            setRestaurantData((draft) => {
-                draft[filter.name] = filter.value
-            });
-            // console.log("i-restaurantData", restaurantData)
-        })
-    }, [filterParams])
-
-    // Handler Functions
-
-    const handleSearchButton = async () => {
-        try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/yelpSearch?search=${searchParams.term}&lat=${searchParams.location.lat}&long=${searchParams.location.long}&address=${searchParams.location.address}`)
-            const yelpRestList = response.data
-            console.log(yelpRestList)
-            setYelpRestResponse(yelpRestList)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    const handlePickOneYelpRestaurant = (business) => {
-        setRestaurantData((draft) => {
-            draft.yelpRestaurantId = business.id
-            draft.name = business.name
-            draft.telNumber = business.phone
-            draft.cuisines = business.categories
-            draft.displayNumber = business.display_phone
-            draft.address1 = business.location.address1
-            draft.address2 = business.location.address2
-            draft.address3 = business.location.address3
-            draft.state = business.location.state
-            draft.city = business.location.city
-            draft.zip_code = business.location.zip_code
-            draft.country = business.location.country
-            draft.longitude = business.coordinates.longitude
-            draft.latitude = business.coordinates.latitude
-            draft.image_url = business.image_url
-        })
-        setSearchRestBool(false)
-    }
-
-    const onModalClick = () => {
-        setYelpModalOpen(!yelpModalOpen)
-    }
-
-    const onClose = () => {
-        setYelpModalOpen(false)
-        // setSearchRestBool(false)
-    }
-    const handleAddFoodNewMenuItem = (e, type) => {
-        e.preventDefault()
-        // console.log(newFoodMenuItemState)
-        setRestaurantData((draft) => {
-            draft.menu.foodMenu.push(newFoodMenuItemState)
-        })
-
-        setNewFoodMenuItemState(foodMenuItemTemplate)
-    }
-
-    const handleAddDrinkNewMenuItem = (e) => {
-        e.preventDefault()
-        // console.log(newDrinkMenuItemState)
-        setRestaurantData((draft) => {
-            draft.menu.drinkMenu.push(newDrinkMenuItemState)
-        })
-        setNewDrinkMenuItemState(drinkMenuItemTemplate)
-    }
-
-    const handleEditNewMenuItem = (e, type, idx) => {
-        e.preventDefault()
-        const typeVar = type.toLowerCase()
-        setRestaurantData((draft) => {
-            draft.menu[`${typeVar}Menu`][idx][e.target.name] = e.target.value
-        })
-    }
-
-    const handleRemoveNewMenuItem = (e, type, idx) => {
-        e.preventDefault()
-        const typeVar = type.toLowerCase()
-        setRestaurantData((draft) => {
-            draft.menu[`${typeVar}Menu`].splice(idx, 1)
-        })
-    }
-
-    const handleFormSubmit = async (e) => {
-        e.preventDefault()
-        const reqbody = { restaurantData }
-        try {
-            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/restaurants/newRestaurant`, reqbody)
-            console.log(response)
-
-        } catch (error) {
-            console.warn(error)
-        }
-
-    }
-
-    const handleBulkHourSubmit = (e,daysArr,hourData)=>{
-        e.preventDefault()
-        // console.log("Click")
-        console.log("click")
-        const filteredDaysArr = daysArr.filter(day=>day.updateBool === true)
-        setRestaurantData((draft)=>{
-            filteredDaysArr.forEach((filteredDay)=>{
-                console.log("filteredDay.dayIdx",filteredDay.dayIdx)
-                let foundDay = draft.hours.find(hour=>hour.day===filteredDay.dayIdx)
-                console.log(foundDay.hasHH1)
-                foundDay.hasHH1 = hourData.hasHH1
-                foundDay.start1 = hourData.start1
-                foundDay.end1 = hourData.end1
-                foundDay.hasHH2 = hourData.hasHH2
-                foundDay.start2 = hourData.start2
-                foundDay.end2 = hourData.end2
-                foundDay.end2close = hourData.end2close
-                console.log(`${foundDay.day} found and updated`)
-            })
-        })
-        setBulkHourModalOpen(false)
-
-    }
-
-    const filtersMap = checkboxFilters.map((filterVal, idx) => {
-        return (
-            <li
-                key={`AddRestFilter${idx}`}
-            >
-                <label>
-                    <Checkbox
-                        checked={restaurantData[filterVal.name]}
-                        name={filterVal.name}
-                        onChange={
-                            (e) => {
-                                setRestaurantData((draft) => {
-                                    draft[filterVal.name] = e.target.checked
-                                })
-                            }
-                        }
-                    />
-                    {filterVal.display}
-                </label>
-
-            </li>
         )
     })
 
