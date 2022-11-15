@@ -9,6 +9,7 @@ import { useState, useEffect, Suspense, lazy } from 'react';
 import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import jwt_decode from 'jwt-decode';
 
 // import components
 import NavBar from "./components/NavBar";
@@ -128,10 +129,16 @@ function App() {
 
     }
     loadInitialData()
-    console.log("fmtDate", fmtDate)
+    // console.log("test")
+    // if (localStorage.getItem('jwt') !== null) {
+    //   const token = localStorage.getItem('jwt')
+    //   const decoded = jwt_decode(token)
+    //   console.log("decoded",decoded)
+    //   // renderAddRest = checkAdmin(decoded)
+    // }
+    // console.log("fmtDate", fmtDate)
     setDow(fmtDate)
     setFilterParams(checkboxFilters)
-    
 
   }, [])
 

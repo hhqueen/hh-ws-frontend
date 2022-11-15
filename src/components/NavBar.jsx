@@ -1,12 +1,19 @@
-// import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-import { Avatar, Navbar, Dropdown } from 'flowbite-react'
-
+import { Navbar, Dropdown, Avatar } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
+import { useImmer } from 'use-immer'
+
+const emptyUserInfo = {
+    "firstName": "",
+    "lastName": "",
+    "email": "",
+    "id": "",
+}
 
 export default function NavBar() {
     const navigate = useNavigate()
-
+    const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
     // function to remove token for logging out here
     const handleLogOut = () => {
         console.log("log out")
@@ -16,19 +23,25 @@ export default function NavBar() {
             localStorage.removeItem('jwt')
             navigate('/')
         }
+        setUserInfo(emptyUserInfo)
 
     }
-
-    // useEffect(() => {
-    //     if (localStorage.getItem('jwt')) {
-    //         const token = localStorage.getItem('jwt')
-    //         const decoded = jwt_decode(token)
-    //         console.log(decoded)
-    //         // renderAddRest = checkAdmin(decoded)
-    //         if (decoded.auth = "Admin") {setAdminAuth(true)}
-    //     }
-
-    // })
+    // console.log("navbar useEffect1")
+    useEffect(() => {
+        // console.log("navbar useEffect")
+        if (localStorage.getItem('jwt')) {
+            const token = localStorage.getItem('jwt')
+            const decoded = jwt_decode(token)
+            console.log("decoded",decoded)
+            setUserInfo((draft)=>{
+                draft.firstName = decoded.firstName
+                draft.lastName = decoded.lastName
+                draft.email = decoded.email
+                draft.id = decoded.id
+            })
+            // renderAddRest = checkAdmin(decoded)
+        }
+    })
 
 
     return (
@@ -57,41 +70,29 @@ export default function NavBar() {
                     <label></label>
                 </div> */}
 
-
-
-                    {
-                        localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
-                        <>
-                            <Link
-                                to="/addnewrestaurant"
-                            >
-                                Add New Restaurant
-                            </Link>
-                        </>
-                    }
-
-
-
-
                     <div className="flex md:order-2">
                         <Dropdown
                             arrowIcon={false}
                             inline={true}
-                            label={<Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded={true} />}
+                            label={
+                                <Avatar
+                                    placeholderInitials={localStorage.getItem('jwt') && `${userInfo.firstName[0]}${userInfo.lastName[0]}`}
+                                    rounded={true}
+                                />}
                         >
-                            
 
-                                {
-                                    localStorage.getItem('jwt') &&
+
+                            {
+                                localStorage.getItem('jwt') &&
                                 <>
-                                <Dropdown.Header>
-                                    <span className="block text-sm">
-                                        Bonnie Green
-                                    </span>
-                                    <span className="block truncate text-sm font-medium">
-                                        name@flowbite.com
-                                    </span>
-                                </Dropdown.Header>
+                                    <Dropdown.Header>
+                                        <span className="block text-sm">
+                                            {`${userInfo.firstName} ${userInfo.lastName}`}
+                                        </span>
+                                        <span className="block truncate text-sm font-medium">
+                                            {userInfo.email}
+                                        </span>
+                                    </Dropdown.Header>
                                 </>
                             }
 
@@ -102,7 +103,7 @@ export default function NavBar() {
                                     <Link
                                         to="/login"
                                     >
-                                        <Dropdown.Item>                                        
+                                        <Dropdown.Item>
                                             Log In
                                         </Dropdown.Item>
                                     </Link>
@@ -111,13 +112,25 @@ export default function NavBar() {
                                     <Link
                                         to="/signup"
                                     >
-                                        <Dropdown.Item>                                        
+                                        <Dropdown.Item>
                                             Sign Up
                                         </Dropdown.Item>
                                     </Link>
                                 </>
                             }
-                            <Dropdown.Item>
+                            {
+                                localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
+                                <>
+                                    <Link
+                                        to="/addnewrestaurant"
+                                    >
+                                        <Dropdown.Item>
+                                        Add New Restaurant
+                                        </Dropdown.Item>
+                                    </Link>
+                                </>
+                            }
+                            {/* <Dropdown.Item>
                                 Dashboard
                             </Dropdown.Item>
                             <Dropdown.Item>
@@ -126,7 +139,7 @@ export default function NavBar() {
                             <Dropdown.Item>
                                 Earnings
                             </Dropdown.Item>
-                            <Dropdown.Divider />
+                            <Dropdown.Divider /> */}
 
                             {
                                 localStorage.getItem('jwt') &&
