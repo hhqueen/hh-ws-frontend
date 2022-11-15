@@ -624,7 +624,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
 
                                 {/* div that holds the add new items button */}
-                                <div>
+                                {/* <div>
                                     <p>new Food Item</p>
                                     <div>
                                         <input
@@ -661,7 +661,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                                 })
                                             }}
                                         >
-                                            {/* // 1 = price, 2 = percentDiscount, 3 = dollarsOff */}
+                                           
                                             <option value={1}>$ </option>
                                             <option value={2}>% Off</option>
                                             <option value={3}>$ Off</option>
@@ -676,12 +676,12 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                                 draft.value = e.target.value
                                             })
                                         }}
-                                    />
+                                    /> */}
                                     <Button
                                         type='button'
                                         onClick={handleAddFoodNewMenuItem}
                                     >Add New Food Item</Button>
-                                </div>
+                                {/* </div> */}
 
                                 {/* div that holds food menu items as they are added */}
                                 <div>
@@ -741,7 +741,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
                                 <div>
                                     <div>
-                                        <p>new Drink Item</p>
+                                        {/* <p>new Drink Item</p>
                                         <div>
                                             <input
                                                 type="text"
@@ -777,7 +777,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                                     })
                                                 }}
                                             >
-                                                {/* // 1 = price, 2 = percentDiscount, 3 = dollarsOff */}
                                                 {
                                                     Object.entries(menuDiscountType).map((discount) => {
                                                         return <option value={discount[0]}>{discount[1]}</option>
@@ -794,7 +793,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                                     draft.value = e.target.value
                                                 })
                                             }}
-                                        />
+                                        /> */}
                                         <Button
                                             type='button'
                                             onClick={handleAddDrinkNewMenuItem}
