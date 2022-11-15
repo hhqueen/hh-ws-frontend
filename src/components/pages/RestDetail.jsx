@@ -1,18 +1,13 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useParams } from "react-router-dom"
-// import { checkboxFilters } from "../../sourceData/filters"
 import showApplicableFilters from "../../helperFunctions/showApplicableFilters"
 
 import axios from "axios"
 
+//Components
 import HHHours from '../HHHours'
 import MenuItems from '../MenuItems'
-
 import LoadingComp from '../LoadingComp'
-
-// const dateConverter = require("../../helperFunctions/dateConverter")
-
-// NOTE TO SELF: add restaurant website URL to code
 
 export default function RestDetail() {
   let { id } = useParams()
@@ -26,9 +21,6 @@ export default function RestDetail() {
       drinkMenu: []
     }
   })
-  const [cuisineString, setCuisineString] = useState("")
-  const [filterString, setFilterString] = useState("")
-  const [restHours, setRestHours] = useState([])
   const [isLoaded, setIsloaded] = useState(false)
   const [address, setAddress] = useState("")
   useEffect(() => {
@@ -61,6 +53,7 @@ export default function RestDetail() {
       <HHHours
         key={`${id}-${hour}-${idx}`}
         hour={hour}
+        timeOutputVal={1}
       />
     )
   })

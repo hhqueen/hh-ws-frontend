@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { checkboxFilters } from "../../sourceData/filters"
 import { dowList } from "../../sourceData/dowList"
 import { useImmer } from "use-immer"
-import { Checkbox, Label } from 'flowbite-react'
+import { Checkbox, Label, Button, TextInput } from 'flowbite-react'
 import EditMenuItems from "../EditMenuItems"
 import { menuDiscountType } from "../../sourceData/menuDiscountType"
 import militaryTimeConverter from '../../helperFunctions/militaryTimeConverter'
@@ -87,7 +87,9 @@ const emptyRestaurantData = {
 export default function AddRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
 
     // variables
-    const [modalOpen, setModalOpen] = useState(false)
+    const [formSubmitted, setFormSubmitted] = useState(false)
+    const [messageModalOpen, setMessageModalOpen] = useState(false)
+    const [yelpModalOpen, setYelpModalOpen] = useState(false)
     const [bulkHourModalOpen, setBulkHourModalOpen] = useState(false)
     const foodMenuItemTemplate = {
         name: "",
@@ -277,8 +279,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/yelpSearch?search=${searchParams.term}&lat=${searchParams.location.lat}&long=${searchParams.location.long}&address=${searchParams.location.address}`)
             const yelpRestList = response.data
             console.log(yelpRestList)
-            setYelpRestResponse(
-                (draft) => draft = yelpRestList)
+            setYelpRestResponse(yelpRestList)
         } catch (error) {
             console.log(error)
         }
@@ -301,15 +302,16 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             draft.latitude = business.coordinates.latitude
             draft.image_url = business.image_url
         })
+        setSearchRestBool(false)
     }
 
     const onModalClick = () => {
-        setModalOpen(!modalOpen)
+        setYelpModalOpen(!yelpModalOpen)
     }
 
     const onClose = () => {
-        setModalOpen(false)
-        setSearchRestBool(false)
+        setYelpModalOpen(false)
+        // setSearchRestBool(false)
     }
     const handleAddFoodNewMenuItem = (e, type) => {
         e.preventDefault()
@@ -352,6 +354,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         try {
             const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/restaurants/newRestaurant`, reqbody)
             console.log(response)
+
         } catch (error) {
             console.warn(error)
         }
@@ -408,32 +411,40 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
     return (
         <div
-            className='ml-10'
+            className='px-2'
         >
             <form
                 onSubmit={(e) => handleFormSubmit(e)}
             >
-                <button
+                <Button
                     className='border'
                     type="submit"
-                >Submit</button>
+                    disabled={formSubmitted}
+                    onClick={()=>{
+                        setFormSubmitted(true)
+                    }}
+                >Submit</Button>
 
                 <YelpResponseModal
                     yelpList={yelpRestResponse}
-                    modalOpen={modalOpen}
+                    modalOpen={yelpModalOpen}
                     onClose={onClose}
                     onModalClick={onModalClick}
                     handlePickOneYelpRestaurant={handlePickOneYelpRestaurant}
                 />
                 {/* div that holds yelp search input */}
-                <div>
+                <div
+                className='py-3'
+                >
+                    <h1>Search Yelp Restaurant:</h1>
                     {
                         searchRestBool ?
                             // {/* search container */}
                             <div>
+                                <div>
                                 <label
                                     htmlFor='yelpSearchTerm'
-                                >Search:</label>
+                                >Search Term:</label>
                                 <input
                                     id='yelpSearchTerm'
                                     className='border'
@@ -445,6 +456,8 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                         })
                                     }}
                                 />
+                                </div>
+                                <div>
                                 <label
                                     htmlFor='yelpSearchLoc'
                                 >Location:</label>
@@ -464,17 +477,19 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                         })
                                     }}
                                 />
+                                
                                 <datalist id="yelpSearchLocList">
                                     <option className="font-['Roboto']" value="Current Location">Current Location</option>
                                 </datalist>
-                                <button
+                                </div>
+                                <Button
                                     onClick={() => {
                                         handleSearchButton()
                                         onModalClick()
                                     }}
                                     type='button'
                                     className="border"
-                                >Search</button>
+                                >Search</Button>
                             </div>
                             :
                             // {/* results Container */}
@@ -487,22 +502,26 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 <p>{restaurantData.name}</p>
                                 <p>{restaurantData.address1}</p>
                                 <p>{restaurantData.city}</p>
-                                <button
+                                <Button
                                     type='button'
                                     className='border'
                                     onClick={() => {
                                         setSearchRestBool(true)
-                                        onModalClick()
+                                        // onModalClick()
+                                        console.log(searchRestBool)
+                                        console.log("Reset Search Clicked")
                                     }}
-                                >Reset Search</button>
+                                >Reset Search</Button>
                             </div>
                     }
 
-                    <button></button>
+                    {/* <Button></Button> */}
                 </div>
 
-                {/* div that holds option input */}
-                <div>
+                {/* div that filters option input */}
+                <div
+                className='py-3'
+                >
                     <p>Filters:</p>
                     <ul>
                         {filtersMap}
@@ -510,9 +529,11 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                 </div>
 
                 {/* div that holds hours input */}
-                <div>
+                <div
+                className='py-3'
+                >
                     <p>Hours:</p>
-                    <button
+                    <Button
                     type="button"
                     className='border rounded-xl'
                     onClick={()=>{
@@ -520,7 +541,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     }}
                     >
                         Bulk Update Hours
-                    </button>
+                    </Button>
 
                     <BulkHoursUpdateModal
                     bulkHourModalOpen={bulkHourModalOpen}
@@ -538,13 +559,17 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                 {/* div that holds menu input */}
 
                 {/* Main Menu Inputs */}
-                <p>Menu</p>
-                <div>
+                <div
+                className='py-3'
+                >
+                <p>Menu:</p>
                     <div
-                        className='py-10'
+                        
                     >
                         {/* food/drink checkbox */}
-                        <div>
+                        <div
+                        
+                        >
                             <div>
                                 <input
                                     id='foodSpecialsBoolean'
@@ -568,7 +593,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         {/* Food Menu Items */}
                         {restaurantData.menu.hasFoodSpecials &&
                             <div
-                                className='border'
+                                className='border mb-3'
                             >
                                 <p>Add Food Menu/Items:</p>
 
@@ -642,10 +667,10 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                             })
                                         }}
                                     />
-                                    <button
+                                    <Button
                                         type='button'
                                         onClick={handleAddFoodNewMenuItem}
-                                    >Add New Food Item</button>
+                                    >Add New Food Item</Button>
                                 </div>
 
                                 {/* div that holds food menu items as they are added */}
@@ -760,10 +785,10 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                                 })
                                             }}
                                         />
-                                        <button
+                                        <Button
                                             type='button'
                                             onClick={handleAddDrinkNewMenuItem}
-                                        >Add New Drink Item</button>
+                                        >Add New Drink Item</Button>
                                     </div>
 
                                     {/* div that holds food menu items as they are added */}

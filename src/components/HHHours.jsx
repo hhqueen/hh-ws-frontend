@@ -6,51 +6,51 @@ import React from 'react'
 import militaryTimeConverter from "../helperFunctions/militaryTimeConverter"
 import dateConverter from "../helperFunctions/dateConverter"
 
-export default function HHHours({ hour }) {
-
+export default function HHHours({ hour, timeOutputVal }) {
+    // console.log(timeOutputVal)
     const dayOweek = dateConverter(hour.day, true)
-    const displayStart1 = militaryTimeConverter(hour.start1)
-    const displayStart2 = militaryTimeConverter(hour.start2)
+    const displayStart1 = militaryTimeConverter(hour.start1,timeOutputVal)
+    const displayStart2 = militaryTimeConverter(hour.start2,timeOutputVal)
     
     let displayEnd1 = null
     if (hour.end1close) {
         displayEnd1 = "Close"
     } else {
-        displayEnd1 = militaryTimeConverter(hour.end1)
+        displayEnd1 = militaryTimeConverter(hour.end1, timeOutputVal)
     }
 
     let displayEnd2 = null
     if (hour.end2close) {
         displayEnd2 = "Close"
     } else {
-        displayEnd2 = militaryTimeConverter(hour.end2)
+        displayEnd2 = militaryTimeConverter(hour.end2, timeOutputVal)
     }
 
     
-    const timePTagClass = 'text-xs justify-self-center'
+    const timePTagClass = 'text-[11px] justify-self-center'
     // console.log(hour)
     return (
         <div
-            className='grid grid-cols-5 border-b'
+            className='grid grid-cols-7 border-b'
         >           
             <p
-            className={`${timePTagClass} col-start-1 col-end-1`}
+                className={`${timePTagClass} col-start-1 col-end-1`}
             >{dayOweek}</p>
             {
                 hour.hasHH1 ?
                 <div
-                className='flex mx-5 justify-self-center col-start-2 col-span-2'
+                    className='flex mx-5 justify-self-center col-start-2 col-span-3'
                 >
                     <p
-                    className={timePTagClass}
+                        className={timePTagClass}
                     >{`${displayStart1} - ${displayEnd1}`}</p>
                 </div>
                 :
                 <div
-                className='flex mx-5 justify-self-center col-start-2 col-span-2'
+                    className='flex mx-5 justify-self-center col-start-2 col-span-3'
                 >
                     <p
-                    className={timePTagClass}
+                        className={timePTagClass}
                     ></p>
                 </div>
             }
@@ -58,7 +58,7 @@ export default function HHHours({ hour }) {
             {
                 hour.hasHH2 ?
                 <div
-                className='flex mx-5 justify-self-center col-start-4 col-span-2'
+                className='flex mx-5 justify-self-center col-start-5 col-span-3'
                 >
                     <p
                     className={timePTagClass}
@@ -67,7 +67,7 @@ export default function HHHours({ hour }) {
                 </div>
                 :
                 <div
-                    className='flex mx-5 justify-self-center col-start-4 col-span-2'
+                    className='flex mx-5 justify-self-center col-start-5 col-span-3'
                 >
                     <p
                     className={timePTagClass}

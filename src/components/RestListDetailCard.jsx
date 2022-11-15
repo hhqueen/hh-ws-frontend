@@ -23,6 +23,7 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
             <HHHours
                 key={`restDetailCard-${restaurantInfo._id}-${idx}`}
                 hour={hour}
+                timeOutputVal={1}
             />
         )
 
