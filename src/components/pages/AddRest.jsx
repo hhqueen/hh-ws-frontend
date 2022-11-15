@@ -150,7 +150,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         })
     }
 
-  
+
 
     useEffect(() => {
         filterParams.forEach((filter) => {
@@ -250,15 +250,15 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
     }
 
-    const handleBulkHourSubmit = (e,daysArr,hourData)=>{
+    const handleBulkHourSubmit = (e, daysArr, hourData) => {
         e.preventDefault()
         // console.log("Click")
         console.log("click")
-        const filteredDaysArr = daysArr.filter(day=>day.updateBool === true)
-        setRestaurantData((draft)=>{
-            filteredDaysArr.forEach((filteredDay)=>{
-                console.log("hourData.end2",hourData.end2)
-                let foundDay = draft.hours.find(hour=>hour.day===filteredDay.dayIdx)
+        const filteredDaysArr = daysArr.filter(day => day.updateBool === true)
+        setRestaurantData((draft) => {
+            filteredDaysArr.forEach((filteredDay) => {
+                console.log("hourData.end2", hourData.end2)
+                let foundDay = draft.hours.find(hour => hour.day === filteredDay.dayIdx)
                 console.log(foundDay.hasHH1)
                 foundDay.hasHH1 = hourData.hasHH1
                 foundDay.start1 = hourData.start1
@@ -317,9 +317,9 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             />Happy Hour</Label>
                         {
                             restaurantData.hours[idx].hasHH1 &&
-                        
-                        <div>
-                            {/* <div>
+
+                            <div>
+                                {/* <div>
                             <Label>
                                 <Checkbox
                                     checked={restaurantData.hours[idx].end1close}
@@ -329,28 +329,28 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
                                 />Til-Close</Label>
                             </div> */}
-                            <input
-                                id={`${day}Hour1Start`}
-                                className="min-w-[50px] text-xs"
-                                name="start1"
-                                type="time"
-                                value={militaryTimeConverter(restaurantData.hours[idx].start1)}
-                                // defaultValue="15:00"
-                                onChange={(e) => handleHourInputChange(e, idx)}
-                                disabled={restaurantData.hours[idx].hasHH1 === false}
-                            />
+                                <input
+                                    id={`${day}Hour1Start`}
+                                    className="min-w-[50px] text-xs"
+                                    name="start1"
+                                    type="time"
+                                    value={militaryTimeConverter(restaurantData.hours[idx].start1)}
+                                    // defaultValue="15:00"
+                                    onChange={(e) => handleHourInputChange(e, idx)}
+                                    disabled={restaurantData.hours[idx].hasHH1 === false}
+                                />
 
-                            <input
-                                id={`${day}Hour1end`}
-                                className="min-w-[50px] text-xs"
-                                name="end1"
-                                type="time"
-                                value={militaryTimeConverter(restaurantData.hours[idx].end1)}
-                                // defaultValue="18:00"
-                                onChange={(e) => handleHourInputChange(e, idx)}
-                                disabled={restaurantData.hours[idx].hasHH1 === false || restaurantData.hours[idx].end1close === true}
-                            />
-                        </div>
+                                <input
+                                    id={`${day}Hour1end`}
+                                    className="min-w-[50px] text-xs"
+                                    name="end1"
+                                    type="time"
+                                    value={militaryTimeConverter(restaurantData.hours[idx].end1)}
+                                    // defaultValue="18:00"
+                                    onChange={(e) => handleHourInputChange(e, idx)}
+                                    disabled={restaurantData.hours[idx].hasHH1 === false || restaurantData.hours[idx].end1close === true}
+                                />
+                            </div>
                         }
                     </div>
 
@@ -363,55 +363,55 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 )}
 
                             />Late Night</Label>
-                        
+
                         {
                             restaurantData.hours[idx].hasHH2 &&
-                        
-                        <div
-                        className='flex'
-                        >
-                           
-                            <input
-                                id={`${day}Hour2Start`}
-                                className="min-w-[50px] text-xs"
-                                name="start2"
-                                type="time"
-                                value={militaryTimeConverter(restaurantData.hours[idx].start2)}
-                                // defaultValue="15:00"
-                                onChange={(e) => handleHourInputChange(e, idx)}
-                                disabled={restaurantData.hours[idx].hasHH2 === false}
-                            />
-                            {
-                                restaurantData.hours[idx].end2close ?
-                            
-                            <div
-                                className="min-w-[50px]  w-[110px] text-center "
-                            >
-                               to Close
-                            </div>
-                                :
-                            <input
-                                id={`${day}Hour2end`}
-                                className="min-w-[50px] text-xs"
-                                name="end2"
-                                type="time"
-                                value={militaryTimeConverter(restaurantData.hours[idx].end2)}
-                                // defaultValue="18:00"
-                                onChange={(e) => handleHourInputChange(e, idx)}
-                                disabled={restaurantData.hours[idx].hasHH2 === false || restaurantData.hours[idx].end2close === true}
-                            />
-                             }
-                             <div>
-                                <Label>
-                                    <Checkbox
-                                        checked={restaurantData.hours[idx].end2close}
-                                        onChange={(e) => setRestaurantData(
-                                            (draft) => { draft.hours[idx].end2close = e.target.checked }
-                                        )}
 
-                                    />Til-Close</Label>
+                            <div
+                                className='flex'
+                            >
+
+                                <input
+                                    id={`${day}Hour2Start`}
+                                    className="min-w-[50px] text-xs"
+                                    name="start2"
+                                    type="time"
+                                    value={militaryTimeConverter(restaurantData.hours[idx].start2)}
+                                    // defaultValue="15:00"
+                                    onChange={(e) => handleHourInputChange(e, idx)}
+                                    disabled={restaurantData.hours[idx].hasHH2 === false}
+                                />
+                                {
+                                    restaurantData.hours[idx].end2close ?
+
+                                        <div
+                                            className="min-w-[50px]  w-[110px] text-center "
+                                        >
+                                            to Close
+                                        </div>
+                                        :
+                                        <input
+                                            id={`${day}Hour2end`}
+                                            className="min-w-[50px] text-xs"
+                                            name="end2"
+                                            type="time"
+                                            value={militaryTimeConverter(restaurantData.hours[idx].end2)}
+                                            // defaultValue="18:00"
+                                            onChange={(e) => handleHourInputChange(e, idx)}
+                                            disabled={restaurantData.hours[idx].hasHH2 === false || restaurantData.hours[idx].end2close === true}
+                                        />
+                                }
+                                <div>
+                                    <Label>
+                                        <Checkbox
+                                            checked={restaurantData.hours[idx].end2close}
+                                            onChange={(e) => setRestaurantData(
+                                                (draft) => { draft.hours[idx].end2close = e.target.checked }
+                                            )}
+
+                                        />Til-Close</Label>
+                                </div>
                             </div>
-                        </div>
                         }
                     </div>
                 </div>
@@ -426,14 +426,18 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             <form
                 onSubmit={(e) => handleFormSubmit(e)}
             >
-                <Button
-                    className='border'
-                    type="submit"
-                    disabled={formSubmitted}
-                    onClick={()=>{
-                        setFormSubmitted(true)
-                    }}
-                >Submit</Button>
+                <div
+                    className='flex flex-wrap gap-2 md:w-3/12'
+                >
+                    <Button
+                        className='border'
+                        type="submit"
+                        disabled={formSubmitted}
+                        onClick={() => {
+                            setFormSubmitted(true)
+                        }}
+                    >Submit</Button>
+                </div>
 
                 <YelpResponseModal
                     yelpList={yelpRestResponse}
@@ -444,7 +448,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                 />
                 {/* div that holds yelp search input */}
                 <div
-                className='py-3'
+                    className='py-3'
                 >
                     <h1>Search Yelp Restaurant:</h1>
                     {
@@ -452,54 +456,58 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             // {/* search container */}
                             <div>
                                 <div>
-                                <label
-                                    htmlFor='yelpSearchTerm'
-                                >Search Term:</label>
-                                <input
-                                    id='yelpSearchTerm'
-                                    className='border'
-                                    type="text"
-                                    value={searchParams.term}
-                                    onChange={(e) => {
-                                        setSearchParams((draft) => {
-                                            draft.term = e.target.value
-                                        })
-                                    }}
-                                />
+                                    <label
+                                        htmlFor='yelpSearchTerm'
+                                    >Search Term:</label>
+                                    <input
+                                        id='yelpSearchTerm'
+                                        className='border'
+                                        type="text"
+                                        value={searchParams.term}
+                                        onChange={(e) => {
+                                            setSearchParams((draft) => {
+                                                draft.term = e.target.value
+                                            })
+                                        }}
+                                    />
                                 </div>
                                 <div>
-                                <label
-                                    htmlFor='yelpSearchLoc'
-                                >Location:</label>
-                                <input
-                                    id='yelpSearchLoc'
-                                    className='border'
-                                    list="yelpSearchLocList"
-                                    type="text"
-                                    value={searchParams.location.address}
-                                    onChange={(e) => {
-                                        setSearchParams((draft) => {
-                                            draft.location.address = e.target.value
-                                            if (e.target.value === "Current Location") {
-                                                draft.location.long = currentLocation.longitude
-                                                draft.location.lat = currentLocation.latitude
-                                            }
-                                        })
-                                    }}
-                                />
-                                
-                                <datalist id="yelpSearchLocList">
-                                    <option className="font-['Roboto']" value="Current Location">Current Location</option>
-                                </datalist>
+                                    <label
+                                        htmlFor='yelpSearchLoc'
+                                    >Location:</label>
+                                    <input
+                                        id='yelpSearchLoc'
+                                        className='border'
+                                        list="yelpSearchLocList"
+                                        type="text"
+                                        value={searchParams.location.address}
+                                        onChange={(e) => {
+                                            setSearchParams((draft) => {
+                                                draft.location.address = e.target.value
+                                                if (e.target.value === "Current Location") {
+                                                    draft.location.long = currentLocation.longitude
+                                                    draft.location.lat = currentLocation.latitude
+                                                }
+                                            })
+                                        }}
+                                    />
+
+                                    <datalist id="yelpSearchLocList">
+                                        <option className="font-['Roboto']" value="Current Location">Current Location</option>
+                                    </datalist>
                                 </div>
-                                <Button
-                                    onClick={() => {
-                                        handleSearchButton()
-                                        onModalClick()
-                                    }}
-                                    type='button'
-                                    className="border"
-                                >Search</Button>
+                                <div
+                                    className='flex flex-wrap gap-2 md:w-3/12'
+                                >
+                                    <Button
+                                        onClick={() => {
+                                            handleSearchButton()
+                                            onModalClick()
+                                        }}
+                                        type='button'
+                                        className="border"
+                                    >Search</Button>
+                                </div>
                             </div>
                             :
                             // {/* results Container */}
@@ -512,16 +520,21 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 <p>{restaurantData.name}</p>
                                 <p>{restaurantData.address1}</p>
                                 <p>{restaurantData.city}</p>
-                                <Button
-                                    type='button'
-                                    className='border'
-                                    onClick={() => {
-                                        setSearchRestBool(true)
-                                        // onModalClick()
-                                        console.log(searchRestBool)
-                                        console.log("Reset Search Clicked")
-                                    }}
-                                >Reset Search</Button>
+
+                                <div
+                                    className='flex flex-wrap gap-2 md:w-3/12'
+                                >
+                                    <Button
+                                        type='button'
+                                        className='border'
+                                        onClick={() => {
+                                            setSearchRestBool(true)
+                                            // onModalClick()
+                                            console.log(searchRestBool)
+                                            console.log("Reset Search Clicked")
+                                        }}
+                                    >Reset Search</Button>
+                                </div>
                             </div>
                     }
 
@@ -530,7 +543,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
                 {/* div that filters option input */}
                 <div
-                className='py-3'
+                    className='py-3'
                 >
                     <p>Filters:</p>
                     <ul>
@@ -540,26 +553,30 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
                 {/* div that holds hours input */}
                 <div
-                className='py-3'
+                    className='py-3'
                 >
                     <p>Hours:</p>
-                    <Button
-                    type="button"
-                    className='border rounded-xl'
-                    onClick={()=>{
-                        setBulkHourModalOpen(true)
-                    }}
+                    <div
+                        className="flex flex-wrap gap-2 md:w-3/12"
                     >
-                        Bulk Update Hours
-                    </Button>
+                        <Button
+                            type="button"
+                            className='border rounded-xl'
+                            onClick={() => {
+                                setBulkHourModalOpen(true)
+                            }}
+                        >
+                            Bulk Update Hours
+                        </Button>
+                    </div>
 
                     <BulkHoursUpdateModal
-                    bulkHourModalOpen={bulkHourModalOpen}
-                    setBulkHourModalOpen={setBulkHourModalOpen}
-                    handleFormSubmit={handleBulkHourSubmit}
+                        bulkHourModalOpen={bulkHourModalOpen}
+                        setBulkHourModalOpen={setBulkHourModalOpen}
+                        handleFormSubmit={handleBulkHourSubmit}
                     />
 
-                    
+
                     {/* <p>Day</p>
                         <p>Happy Hour</p>
                         <p>Late Night</p> */}
@@ -570,15 +587,15 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
                 {/* Main Menu Inputs */}
                 <div
-                className='py-3'
+                    className='py-3'
                 >
-                <p>Menu:</p>
+                    <p>Menu:</p>
                     <div
-                        
+
                     >
                         {/* food/drink checkbox */}
                         <div
-                        
+
                         >
                             <div>
                                 <input
@@ -677,10 +694,14 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                             })
                                         }}
                                     /> */}
+                                <div
+                                    className="flex flex-wrap gap-2 md:w-3/12"
+                                >
                                     <Button
                                         type='button'
                                         onClick={handleAddFoodNewMenuItem}
                                     >Add New Food Item</Button>
+                                </div>
                                 {/* </div> */}
 
                                 {/* div that holds food menu items as they are added */}
@@ -794,10 +815,15 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                                 })
                                             }}
                                         /> */}
-                                        <Button
-                                            type='button'
-                                            onClick={handleAddDrinkNewMenuItem}
-                                        >Add New Drink Item</Button>
+                                        <div
+                                            className="flex flex-wrap gap-2 md:w-3/12"
+                                        >
+                                            <Button
+                                                type='button'
+                                                className=""
+                                                onClick={handleAddDrinkNewMenuItem}
+                                            >Add New Drink Item</Button>
+                                        </div>
                                     </div>
 
                                     {/* div that holds food menu items as they are added */}
@@ -818,6 +844,11 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                 </div>
 
             </form>
+            <footer
+                className='h-[5rem]'
+            >
+
+            </footer>
         </div>
     )
 }

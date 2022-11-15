@@ -64,7 +64,9 @@ export default function RestDetail() {
     {
       isLoaded ?
     
-      <div>
+      <div
+      className='mt-[60px]'
+      >
         < img src={restData?.image_url} alt={restData?.name} />
         <div
           className='py-3'

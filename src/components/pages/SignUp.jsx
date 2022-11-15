@@ -60,7 +60,7 @@ export default function SignUp() {
 
   return (
       <form
-      className='flex flex-col gap-4 mx-[10vw] md:mx-[30vw]'
+      className='flex flex-col gap-4 mx-[10vw] md:mx-[30vw] mt-[60px]'
       onSubmit={handleSubmit}>
       
       <p

@@ -18,15 +18,15 @@ export default function ListViewComp({ dow, allRestaurants }) {
   })
   return (
     <>
+    <Suspense fallback={<LoadingComp/>}>
       <div
-        className='w-full'
+        className='w-full mt-[60px]'
       >
-    {/* <Suspense fallback={<LoadingComp/>}> */}
         <ul>
           {listRestaurants}
         </ul>
-    {/* </Suspense> */}
       </div>
+    </Suspense>
     </>
   )
 }
