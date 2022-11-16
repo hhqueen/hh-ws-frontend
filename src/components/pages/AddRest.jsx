@@ -1,5 +1,6 @@
 // Libraries
 import React, { useState, useEffect } from 'react'
+import {useNavigate} from "react-router-dom"
 import { checkboxFilters } from "../../sourceData/filters"
 import { dowList } from "../../sourceData/dowList"
 import { useImmer } from "use-immer"
@@ -10,8 +11,10 @@ import militaryTimeConverter from '../../helperFunctions/militaryTimeConverter'
 import axios from "axios"
 import date from "date-and-time"
 
-import YelpResponseModal from '../YelpResponseModal'
-import BulkHoursUpdateModal from '../BulkHoursUpdateModal'
+import YelpResponseModal from '../modals/YelpResponseModal'
+import BulkHoursUpdateModal from '../modals/BulkHoursUpdateModal'
+import MessageModal from '../modals/MessageModal'
+import LoadingComp from '../LoadingComp'
 // const ModalForArray = React.lazy(()=>import('../ModalForArray'))
 // import {useQuery} from "@tanstack/react-query"
 
@@ -85,10 +88,19 @@ const emptyRestaurantData = {
 
 
 export default function AddRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
-
     // variables
+    const navigate = useNavigate()
     const [formSubmitted, setFormSubmitted] = useState(false)
-    const [messageModalOpen, setMessageModalOpen] = useState(false)
+    const [messageModalProps, setMessageModalProps] = useImmer({
+        modalOpen: false,
+        onClose: null,
+        header: null,
+        body: null,
+        button1text: "",
+        button2text:"",
+        handleButton1Click: null,
+        handleButton2Click: null,
+    })
     const [yelpModalOpen, setYelpModalOpen] = useState(false)
     const [bulkHourModalOpen, setBulkHourModalOpen] = useState(false)
     const foodMenuItemTemplate = {
@@ -113,23 +125,9 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
     const [newDrinkMenuItemState, setNewDrinkMenuItemState] = useImmer(drinkMenuItemTemplate)
     const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
-    // const [yelpRestData, setYelpRestData] = useImmer({})
     const [yelpRestResponse, setYelpRestResponse] = useImmer({
         businesses: []
     })
-    // const [hoursData, setHoursData] = useImmer(hourStateGenerator())
-    // const [mainMenuData, setMainMenuData] = useState({
-    //     restaurantname: "",
-    //     isChain: false,
-    //     hasFoodSpecials: true,
-    //     foodSpecialsDescriptions: "",
-    //     foodMenu: [],
-    //     hasDrinkSpecials: true,
-    //     drinkSpecialsDescriptions: "",
-    //     drinkMenu: []
-    // })
-    // const [foodMenuData, setFoodMenuData] = useState([])
-    // const [drinksMenuData, setDrinksMenuData] = useState([])
     const [searchParams, setSearchParams] = useImmer({
         term: "",
         location: {
@@ -237,12 +235,74 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         })
     }
 
+    const handleResetSearch = () =>{
+        setSearchRestBool(true)
+        // onModalClick()
+        console.log(searchRestBool)
+        console.log("Reset Search Clicked")
+        setRestaurantData((draft) => {
+            draft.yelpRestaurantId = null
+            draft.name = null
+            draft.telNumber = null
+            draft.cuisines = null
+            draft.displayNumber = null
+            draft.address1 = null
+            draft.address2 = null
+            draft.address3 = null
+            draft.state = null
+            draft.city = null
+            draft.zip_code = null
+            draft.country = null
+            draft.longitude = null
+            draft.latitude = null
+            draft.image_url = null
+        })
+    }
+
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         const reqbody = { restaurantData }
         try {
+            console.log("Form Submitted")
+            setMessageModalProps((draft)=>{
+                draft.modalOpen = true
+                draft.body = <LoadingComp/>
+            })
             const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/restaurants/newRestaurant`, reqbody)
-            console.log(response)
+            console.log(response)           
+                setMessageModalProps((draft)=>{
+                    
+                    if (response.status === 200 ){
+                        draft.body = response.data.msg
+                        draft.button1text = "Add Another Restaurant"
+                        draft.handleButton1Click = ()=>{
+                            setMessageModalProps((draft)=>{
+                                draft.header = null
+                                draft.body = null
+                                draft.modalOpen = false
+                                draft.button1text = ""
+                                draft.handButton1Click = null
+                                draft.button2text = ""
+                                draft.handButton2Click = null
+                            })
+                            setRestaurantData(emptyRestaurantData)
+                            setFormSubmitted(false)
+                            handleResetSearch()
+
+                        }
+
+                        draft.button2text = "See Created Restaurant"
+                        draft.handleButton2Click = ()=>{
+                            console.log(response.data.id)
+                            navigate(`/restaurant/${response.data.id}`)
+                        }
+                    } else {
+                        draft.body = response.response.data.msg
+                        draft.button1text = "Go back to Add New Restaurant Page"
+                        draft.handleButton1Click = ()=>{setMessageModalProps((draft)=>{draft.modalOpen = false})}
+                    }
+                })
+           
 
         } catch (error) {
             console.warn(error)
@@ -421,10 +481,10 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
     return (
         <div
-            className='px-2'
+            className='px-2 mt-[70px]'
         >
             <form
-                onSubmit={(e) => handleFormSubmit(e)}
+                // onSubmit={(e) => handleFormSubmit(e)}
             >
                 <div
                     className='flex flex-wrap gap-2 md:w-3/12'
@@ -433,11 +493,23 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         className='border'
                         type="submit"
                         disabled={formSubmitted}
-                        onClick={() => {
+                        onClick={(e) => {
                             setFormSubmitted(true)
+                            handleFormSubmit(e)
                         }}
                     >Submit</Button>
                 </div>
+
+                <MessageModal
+                modalOpen={messageModalProps.modalOpen}
+                header={messageModalProps.header}
+                body={messageModalProps.body}
+                onClose={()=>{setMessageModalProps((draft)=>{draft.modalOpen = false})}}
+                button1text={messageModalProps.button1text}
+                handleButton1Click={messageModalProps.handleButton1Click}
+                button2text={messageModalProps.button2text}
+                handleButton2Click={messageModalProps.handleButton2Click}
+                />
 
                 <YelpResponseModal
                     yelpList={yelpRestResponse}
@@ -527,12 +599,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     <Button
                                         type='button'
                                         className='border'
-                                        onClick={() => {
-                                            setSearchRestBool(true)
-                                            // onModalClick()
-                                            console.log(searchRestBool)
-                                            console.log("Reset Search Clicked")
-                                        }}
+                                        onClick={handleResetSearch}
                                     >Reset Search</Button>
                                 </div>
                             </div>
