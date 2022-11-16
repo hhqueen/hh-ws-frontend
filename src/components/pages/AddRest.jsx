@@ -137,7 +137,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
     const handleSearchButton = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/yelpSearch?search=${searchParams.term}&lat=${searchParams.location.lat}&long=${searchParams.location.long}&address=${searchParams.location.address}`)
-            // console.log(response)
+            console.log(response)
             // return
             const yelpRestList = response.data.businesses
             console.log("yelpRestList",yelpRestList)
