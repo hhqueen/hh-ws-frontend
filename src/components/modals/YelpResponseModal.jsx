@@ -3,7 +3,7 @@ import { Modal } from 'flowbite-react'
 import YelpCard from '../YelpCard'
 
 export default function YelpResponseModal({yelpList, onClose,modalOpen,handlePickOneYelpRestaurant}) {
-  // console.log(yelpList)
+  console.log(yelpList)
   const mapYelpBusinesses = yelpList.businesses.map((business,idx)=>{
     return(
       <>

@@ -62,31 +62,6 @@ const emptyRestaurantData = {
     }
 }
 
-// const hourStateGenerator = () => {
-//     const weekLength = 7
-//     const hoursStateTemplate = {
-//         day: 0,
-//         hour1start: 3,
-//         minute1start: 0,
-//         ampm1start: "PM",
-//         hour1end: 6,
-//         minute1end: 0,
-//         ampm1end: "PM",
-//         hour2start: 9,
-//         minute2start: 0,
-//         ampm2start: "PM",
-//         hour2end: 11,
-//         minute2end: 0,
-//         ampm2end: "PM",
-//     }
-//     let HoursArr = []
-//     for (let i = 0; i < weekLength; i++) {
-//         HoursArr.push(hoursStateTemplate)
-//     }
-//     return HoursArr
-// }
-
-
 export default function AddRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
     // variables
     const navigate = useNavigate()
@@ -501,14 +476,14 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                 </div>
 
                 <MessageModal
-                modalOpen={messageModalProps.modalOpen}
-                header={messageModalProps.header}
-                body={messageModalProps.body}
-                onClose={()=>{setMessageModalProps((draft)=>{draft.modalOpen = false})}}
-                button1text={messageModalProps.button1text}
-                handleButton1Click={messageModalProps.handleButton1Click}
-                button2text={messageModalProps.button2text}
-                handleButton2Click={messageModalProps.handleButton2Click}
+                    modalOpen={messageModalProps.modalOpen}
+                    header={messageModalProps.header}
+                    body={messageModalProps.body}
+                    onClose={()=>{setMessageModalProps((draft)=>{draft.modalOpen = false})}}
+                    button1text={messageModalProps.button1text}
+                    handleButton1Click={messageModalProps.handleButton1Click}
+                    button2text={messageModalProps.button2text}
+                    handleButton2Click={messageModalProps.handleButton2Click}
                 />
 
                 <YelpResponseModal
