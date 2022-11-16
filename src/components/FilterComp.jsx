@@ -48,9 +48,20 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
                     }}
                 >
                     <div
-                    className='flex justify-center'
+                        className='flex justify-center'
                     >
-
+                        <label
+                            className='w-full'
+                            htmlFor='dow'>
+                            <Select
+                                id='dow'
+                                name='dow'
+                                className=''
+                                onChange={(e) => setDow(e.target.value)}
+                            >
+                                {dowOptionsMap}
+                            </Select>
+                        </label>
                         <div
                             className='w-full'
                         >
@@ -59,25 +70,14 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
                                 className="border"
                             >APPLY</Button>
                         </div>
-                        
-                            <label 
-                            className='w-full'
-                            htmlFor='dow'>
-                                <Select
-                                    id='dow'
-                                    name='dow'
-                                    className=''
-                                    onChange={(e) => setDow(e.target.value)}
-                                >
-                                    {dowOptionsMap}
-                                </Select>
-                            </label>
+
+
                     </div>
 
                     <ul
                         className='grid grid-cols-2 pt-3 px-10 sm:flex sm:flex-col sm:space-y-2'
                     >
-                        
+
                         {filtersMap}
                     </ul>
                 </form>

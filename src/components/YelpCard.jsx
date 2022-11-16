@@ -8,6 +8,7 @@ export default function YelpCard({ business }) {
             className='flex my-2 border rounded-xl'
             >
                 <img
+                loading='lazy'
                 className='h-[5rem]'
                 src={business.image_url}
                 />

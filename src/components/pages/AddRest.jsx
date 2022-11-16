@@ -137,9 +137,9 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
     const handleSearchButton = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/yelpSearch?search=${searchParams.term}&lat=${searchParams.location.lat}&long=${searchParams.location.long}&address=${searchParams.location.address}`)
-            console.log(response)
+            // console.log(response)
             // return
-            const yelpRestList = response.data.businesses
+            const yelpRestList = response.data.results.businesses
             console.log("yelpRestList",yelpRestList)
             setYelpRestResponse((draft)=>draft = yelpRestList)
             onModalClick()
@@ -569,8 +569,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 </div>
                             </div>
                     }
-
-                    {/* <Button></Button> */}
                 </div>
 
                 {/* div that filters option input */}
@@ -607,11 +605,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         setBulkHourModalOpen={setBulkHourModalOpen}
                         handleFormSubmit={handleBulkHourSubmit}
                     />
-
-
-                    {/* <p>Day</p>
-                        <p>Happy Hour</p>
-                        <p>Late Night</p> */}
                     {hhHoursMap}
                 </div>
 
@@ -670,62 +663,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                         })
                                     }}
                                 />
-
-
-                                {/* div that holds the add new items button */}
-                                {/* <div>
-                                    <p>new Food Item</p>
-                                    <div>
-                                        <input
-                                            type="text"
-                                            placeholder='name'
-                                            value={newFoodMenuItemState.name}
-                                            onChange={(e) => {
-                                                setNewFoodMenuItemState((draft) => {
-                                                    draft.name = e.target.value
-                                                })
-                                            }}
-                                        />
-                                    </div>
-                                    <div>
-                                        <input
-                                            type="text"
-                                            placeholder='description'
-                                            value={newFoodMenuItemState.description}
-                                            onChange={(e) => {
-                                                setNewFoodMenuItemState((draft) => {
-                                                    draft.description = e.target.value
-                                                })
-                                            }}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='newFoodDiscountType'>Discount Type</label>
-                                        <select
-                                            name="newFoodDiscountType"
-                                            id="newFoodDiscountType"
-                                            onChange={(e) => {
-                                                setNewFoodMenuItemState((draft) => {
-                                                    draft.specialTypeId = e.target.value
-                                                })
-                                            }}
-                                        >
-                                           
-                                            <option value={1}>$ </option>
-                                            <option value={2}>% Off</option>
-                                            <option value={3}>$ Off</option>
-                                        </select>
-                                    </div>
-
-                                    <input
-                                        type="number"
-                                        value={newFoodMenuItemState.value}
-                                        onChange={(e) => {
-                                            setNewFoodMenuItemState((draft) => {
-                                                draft.value = e.target.value
-                                            })
-                                        }}
-                                    /> */}
                                 <div
                                     className="flex flex-wrap gap-2 md:w-3/12"
                                 >
@@ -734,7 +671,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                         onClick={handleAddFoodNewMenuItem}
                                     >Add New Food Item</Button>
                                 </div>
-                                {/* </div> */}
 
                                 {/* div that holds food menu items as they are added */}
                                 <div>
@@ -794,59 +730,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
                                 <div>
                                     <div>
-                                        {/* <p>new Drink Item</p>
-                                        <div>
-                                            <input
-                                                type="text"
-                                                placeholder='name'
-                                                value={newDrinkMenuItemState.name}
-                                                onChange={(e) => {
-                                                    setNewDrinkMenuItemState((draft) => {
-                                                        draft.name = e.target.value
-                                                    })
-                                                }}
-                                            />
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="text"
-                                                placeholder='description'
-                                                value={newDrinkMenuItemState.description}
-                                                onChange={(e) => {
-                                                    setNewDrinkMenuItemState((draft) => {
-                                                        draft.description = e.target.value
-                                                    })
-                                                }}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label htmlFor='newDrinkDiscountType'>Discount Type</label>
-                                            <select
-                                                name="newDrinkDiscountType"
-                                                id="newDrinkDiscountType"
-                                                onChange={(e) => {
-                                                    setNewDrinkMenuItemState((draft) => {
-                                                        draft.specialTypeId = e.target.value
-                                                    })
-                                                }}
-                                            >
-                                                {
-                                                    Object.entries(menuDiscountType).map((discount) => {
-                                                        return <option value={discount[0]}>{discount[1]}</option>
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-
-                                        <input
-                                            type="number"
-                                            value={newDrinkMenuItemState.value}
-                                            onChange={(e) => {
-                                                setNewDrinkMenuItemState((draft) => {
-                                                    draft.value = e.target.value
-                                                })
-                                            }}
-                                        /> */}
+                                        
                                         <div
                                             className="flex flex-wrap gap-2 md:w-3/12"
                                         >
