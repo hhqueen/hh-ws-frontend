@@ -140,7 +140,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             // console.log(response)
             // return
             const yelpRestList = response.data.results.businesses
-            console.log("yelpRestList",yelpRestList)
+            // console.log("yelpRestList",yelpRestList)
             setYelpRestResponse((draft)=>draft = yelpRestList)
             onModalClick()
         } catch (error) {
