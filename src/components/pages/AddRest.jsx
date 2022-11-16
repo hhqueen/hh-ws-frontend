@@ -100,9 +100,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
     const [newDrinkMenuItemState, setNewDrinkMenuItemState] = useImmer(drinkMenuItemTemplate)
     const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
-    const [yelpRestResponse, setYelpRestResponse] = useImmer({
-        businesses: []
-    })
+    const [yelpRestResponse, setYelpRestResponse] = useImmer([])
     const [searchParams, setSearchParams] = useImmer({
         term: "",
         location: {
@@ -139,9 +137,11 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
     const handleSearchButton = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/yelpSearch?search=${searchParams.term}&lat=${searchParams.location.lat}&long=${searchParams.location.long}&address=${searchParams.location.address}`)
-            const yelpRestList = response.data
-            console.log(yelpRestList)
-            setYelpRestResponse((draft)=>{draft = yelpRestList})
+            // console.log(response)
+            // return
+            const yelpRestList = response.data.businesses
+            console.log("yelpRestList",yelpRestList)
+            setYelpRestResponse((draft)=>draft = yelpRestList)
             onModalClick()
         } catch (error) {
             console.log(error)
@@ -355,16 +355,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             restaurantData.hours[idx].hasHH1 &&
 
                             <div>
-                                {/* <div>
-                            <Label>
-                                <Checkbox
-                                    checked={restaurantData.hours[idx].end1close}
-                                    onChange={(e) => setRestaurantData(
-                                        (draft) => { draft.hours[idx].end1close = e.target.checked }
-                                    )}
-
-                                />Til-Close</Label>
-                            </div> */}
                                 <input
                                     id={`${day}Hour1Start`}
                                     className="min-w-[50px] text-xs"
