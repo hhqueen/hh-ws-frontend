@@ -2,8 +2,8 @@ import React from 'react'
 import { Modal } from 'flowbite-react'
 import YelpCard from '../YelpCard'
 
-export default function YelpResponseModal({yelpList = {businesses:[]}, onClose,modalOpen,handlePickOneYelpRestaurant}) {
-  console.log(yelpList)
+export default function YelpResponseModal({yelpList, onClose,modalOpen,handlePickOneYelpRestaurant}) {
+  console.log("yelpList",yelpList)
   const mapYelpBusinesses = yelpList.businesses.map((business,idx)=>{
     return(
       <>
