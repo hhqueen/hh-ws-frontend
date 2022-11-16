@@ -112,6 +112,7 @@ function App() {
   useEffect(() => {
     const loadInitialData = async () => {
       const allRests = await getRestaurants()
+      // console.log(allRests)
       setAllRestaurants(allRests)
       const restArrByDay = await filterRestByDay(allRests, fmtDate)
       setShowRestaurants(restArrByDay)
@@ -137,6 +138,7 @@ function App() {
     //   // renderAddRest = checkAdmin(decoded)
     // }
     // console.log("fmtDate", fmtDate)
+    
     setDow(fmtDate)
     setFilterParams(checkboxFilters)
 

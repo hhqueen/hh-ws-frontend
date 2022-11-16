@@ -18,6 +18,7 @@ export default function Checkbox({ data, filterParams, setFilterParams, idx }) {
             >
                 <input
                     type="checkbox"
+                    className=''
                     id={filterParams[idx].name}
                     checked={checkState}
                     onChange={handleChecking}

@@ -1,7 +1,7 @@
 // import { useState } from 'react'
 import Checkbox from './Checkbox'
 import { dowList } from "../sourceData/dowList"
-import {Select} from "flowbite-react"
+import { Select, Button } from "flowbite-react"
 
 // const dateConverter = require("../helperFunctions/dateConverter")
 
@@ -26,7 +26,7 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
     })
 
     // const dowList = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
-    const dowOptionsMap = dowList.map((day,idx) => {
+    const dowOptionsMap = dowList.map((day, idx) => {
         if (dow == day) {
             return <option key={`day-option${idx}`} value={day} selected>{day}</option>
         } else {
@@ -37,39 +37,50 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
     return (
         <>
             <aside
-            className='w-full sm:w-64 grow pb-2 sticky top-[60px] bg-white dark:bg-gray-800'
-            aria-label='Sidebar'
+                className='w-full sm:w-64 grow pb-2 sticky mt-[60px] bg-white dark:bg-gray-800'
+                aria-label='Sidebar'
             >
-                
-                    <form
-                        className='sm:overflow-y-auto sm:py-4 sm:px-3 '
-                        onSubmit={(e) => {
-                            filterFormSubmitHandler(e)
-                        }}
-                    >
-                        <button
-                            type='submit'
-                            className="border"
-                        >APPLY</button>
 
-                        <ul
-                            className='grid grid-cols-3 sm:flex sm:flex-col sm:space-y-2'
+                <form
+                    className='sm:overflow-y-auto sm:py-4 sm:px-3 '
+                    onSubmit={(e) => {
+                        filterFormSubmitHandler(e)
+                    }}
+                >
+                    <div
+                    className='flex justify-center'
+                    >
+
+                        <div
+                            className='w-full'
                         >
-                            <li>
-                                <label htmlFor='dow'>
-                                    <Select
-                                        id='dow'
-                                        name='dow'
-                                        className=''
-                                        onChange={(e) => setDow(e.target.value)}
-                                    >
-                                        {dowOptionsMap}
-                                    </Select>
-                                </label>
-                            </li>
-                            {filtersMap}
-                        </ul>
-                    </form>
+                            <Button
+                                type='submit'
+                                className="border"
+                            >APPLY</Button>
+                        </div>
+                        
+                            <label 
+                            className='w-full'
+                            htmlFor='dow'>
+                                <Select
+                                    id='dow'
+                                    name='dow'
+                                    className=''
+                                    onChange={(e) => setDow(e.target.value)}
+                                >
+                                    {dowOptionsMap}
+                                </Select>
+                            </label>
+                    </div>
+
+                    <ul
+                        className='grid grid-cols-2 pt-3 px-10 sm:flex sm:flex-col sm:space-y-2'
+                    >
+                        
+                        {filtersMap}
+                    </ul>
+                </form>
             </aside>
         </>
     )
