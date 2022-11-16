@@ -141,7 +141,8 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/yelpSearch?search=${searchParams.term}&lat=${searchParams.location.lat}&long=${searchParams.location.long}&address=${searchParams.location.address}`)
             const yelpRestList = response.data
             console.log(yelpRestList)
-            setYelpRestResponse(yelpRestList)
+            setYelpRestResponse((draft)=>{draft = yelpRestList})
+            onModalClick()
         } catch (error) {
             console.log(error)
         }
@@ -549,7 +550,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     <Button
                                         onClick={() => {
                                             handleSearchButton()
-                                            onModalClick()
                                         }}
                                         type='button'
                                         className="border"
