@@ -30,51 +30,22 @@ export default function HHHours({ hour, timeOutputVal }) {
     const timePTagClass = 'text-[11px] justify-items-start'
     // console.log(hour)
     return (
-        <div
-            className='grid grid-cols-7 pl-3'
-        >           
+        <div className='grid grid-cols-7 pl-3'>   
             <p
                 className={`${timePTagClass} col-start-1 col-end-1 `}
             >{dayOweek}</p>
-            {
-                hour.hasHH1 ?
-                <div
-                    className='flex mx-5 col-start-2 col-span-3'
-                >
-                    <p
-                        className={timePTagClass}
-                    >{`${displayStart1}-${displayEnd1}`}</p>
-                </div>
-                :
-                <div
-                    className='flex mx-5 col-start-2 col-span-3'
-                >
-                    <p
-                        className={timePTagClass}
-                    >N/A</p>
-                </div>
-            }
 
-            {
-                hour.hasHH2 ?
-                <div
-                className='flex mx-5 col-start-5 col-span-3'
-                >
-                    <p
+            <div className='flex mx-5 col-start-2 col-span-3'>
+                <p
                     className={timePTagClass}
-                    >{`${displayStart2}-${displayEnd2}`}</p>
-                   
-                </div>
-                :
-                <div
-                    className='flex mx-5 col-start-5 col-span-3'
-                >
-                    <p
-                    className={timePTagClass}
-                    >N/A</p>
-                </div>
-            }
-
+                >{hour.hasHH1 ? `${displayStart1}-${displayEnd1}` : `N/A`}</p>
+            </div>
+            
+            <div className='flex mx-5 col-start-5 col-span-3'>
+                <p
+                className={timePTagClass}
+                >{hour.hasHH2 ? `${displayStart2}-${displayEnd2}` : `N/A`}</p>
+            </div>
         </div>
     )
 }
