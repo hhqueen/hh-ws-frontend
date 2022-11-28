@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState, useEffect } from 'react'
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { checkboxFilters } from "../../sourceData/filters"
 import { dowList } from "../../sourceData/dowList"
 import { useImmer } from "use-immer"
@@ -15,6 +15,7 @@ import YelpResponseModal from '../modals/YelpResponseModal'
 import BulkHoursUpdateModal from '../modals/BulkHoursUpdateModal'
 import MessageModal from '../modals/MessageModal'
 import LoadingComp from '../LoadingComp'
+import ImageUploadModal from '../modals/ImageUploadModal'
 // const ModalForArray = React.lazy(()=>import('../ModalForArray'))
 // import {useQuery} from "@tanstack/react-query"
 
@@ -56,15 +57,25 @@ const emptyRestaurantData = {
         hasFoodSpecials: true,
         foodSpecialsDescriptions: "",
         foodMenu: [],
+        foodMenuImg: {
+            _id: ""
+        },
         hasDrinkSpecials: true,
         drinkSpecialsDescriptions: "",
-        drinkMenu: []
+        drinkMenu: [],
+        drinkMenuImg: {
+            _id: ""
+        }
     }
 }
-
+const showImgMenu = true
 export default function AddRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
+
     // variables
     const navigate = useNavigate()
+    const [foodMenuImgModalState, setFoodMenuImgModalState] = useState(false)
+    const [drinkMenuImgModalState, setDrinkMenuImgModalState] = useState(false)
+
     const [formSubmitted, setFormSubmitted] = useState(false)
     const [messageModalProps, setMessageModalProps] = useImmer({
         modalOpen: false,
@@ -72,7 +83,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         header: null,
         body: null,
         button1text: "",
-        button2text:"",
+        button2text: "",
         handleButton1Click: null,
         handleButton2Click: null,
     })
@@ -111,18 +122,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         }
     })
 
-    const handleHourInputChange = (e, idx) => {
-        setRestaurantData((draft) => {
-            const hour = Number(date.transform(e.target.value, "HH:mm", "HH"))
-            const minute = Number(date.transform(e.target.value, "HH:mm", "mm")) / 60
-            const time = hour + minute
-            console.log(time)
-            draft.hours[idx][e.target.name] = time
-        })
-    }
-
-
-
     useEffect(() => {
         filterParams.forEach((filter) => {
             setRestaurantData((draft) => {
@@ -134,6 +133,16 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
     // Handler Functions
 
+    const handleHourInputChange = (e, idx) => {
+        setRestaurantData((draft) => {
+            const hour = Number(date.transform(e.target.value, "HH:mm", "HH"))
+            const minute = Number(date.transform(e.target.value, "HH:mm", "mm")) / 60
+            const time = hour + minute
+            console.log(time)
+            draft.hours[idx][e.target.name] = time
+        })
+    }
+
     const handleSearchButton = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/yelpSearch?search=${searchParams.term}&lat=${searchParams.location.lat}&long=${searchParams.location.long}&address=${searchParams.location.address}`)
@@ -141,12 +150,14 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             // return
             const yelpRestList = response.data.results.businesses
             // console.log("yelpRestList",yelpRestList)
-            setYelpRestResponse((draft)=>draft = yelpRestList)
+            setYelpRestResponse((draft) => draft = yelpRestList)
             onModalClick()
         } catch (error) {
             console.log(error)
         }
     }
+
+
     const handlePickOneYelpRestaurant = (business) => {
         setRestaurantData((draft) => {
             draft.yelpRestaurantId = business.id
@@ -211,7 +222,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         })
     }
 
-    const handleResetSearch = () =>{
+    const handleResetSearch = () => {
         setSearchRestBool(true)
         // onModalClick()
         console.log(searchRestBool)
@@ -240,45 +251,45 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         const reqbody = { restaurantData }
         try {
             console.log("Form Submitted")
-            setMessageModalProps((draft)=>{
+            setMessageModalProps((draft) => {
                 draft.modalOpen = true
-                draft.body = <LoadingComp/>
+                draft.body = <LoadingComp />
             })
             const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/restaurants/newRestaurant`, reqbody)
-            console.log(response)           
-                setMessageModalProps((draft)=>{
-                    
-                    if (response.status === 200 ){
-                        draft.body = response.data.msg
-                        draft.button1text = "Add Another Restaurant"
-                        draft.handleButton1Click = ()=>{
-                            setMessageModalProps((draft)=>{
-                                draft.header = null
-                                draft.body = null
-                                draft.modalOpen = false
-                                draft.button1text = ""
-                                draft.handButton1Click = null
-                                draft.button2text = ""
-                                draft.handButton2Click = null
-                            })
-                            setRestaurantData(emptyRestaurantData)
-                            setFormSubmitted(false)
-                            handleResetSearch()
+            console.log(response)
+            setMessageModalProps((draft) => {
 
-                        }
+                if (response.status === 200) {
+                    draft.body = response.data.msg
+                    draft.button1text = "Add Another Restaurant"
+                    draft.handleButton1Click = () => {
+                        setMessageModalProps((draft) => {
+                            draft.header = null
+                            draft.body = null
+                            draft.modalOpen = false
+                            draft.button1text = ""
+                            draft.handButton1Click = null
+                            draft.button2text = ""
+                            draft.handButton2Click = null
+                        })
+                        setRestaurantData(emptyRestaurantData)
+                        setFormSubmitted(false)
+                        handleResetSearch()
 
-                        draft.button2text = "See Created Restaurant"
-                        draft.handleButton2Click = ()=>{
-                            console.log(response.data.id)
-                            navigate(`/restaurant/${response.data.id}`)
-                        }
-                    } else {
-                        draft.body = response.response.data.msg
-                        draft.button1text = "Go back to Add New Restaurant Page"
-                        draft.handleButton1Click = ()=>{setMessageModalProps((draft)=>{draft.modalOpen = false})}
                     }
-                })
-           
+
+                    draft.button2text = "See Created Restaurant"
+                    draft.handleButton2Click = () => {
+                        console.log(response.data.id)
+                        navigate(`/restaurant/${response.data.id}`)
+                    }
+                } else {
+                    draft.body = response.response.data.msg
+                    draft.button1text = "Go back to Add New Restaurant Page"
+                    draft.handleButton1Click = () => { setMessageModalProps((draft) => { draft.modalOpen = false }) }
+                }
+            })
+
 
         } catch (error) {
             console.warn(error)
@@ -310,6 +321,11 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
     }
 
+    const handleSetFoodMenuImg = (uploadedImgObj) => { setRestaurantData((draft) => { draft.menu.foodMenuImg = uploadedImgObj }) }
+    const handleSetDrinkMenuImg = (uploadedImgObj) => { setRestaurantData((draft) => { draft.menu.drinkMenuImg = uploadedImgObj }) }
+
+
+    // Map functions:
     const filtersMap = checkboxFilters.map((filterVal, idx) => {
         return (
             <li
@@ -445,12 +461,14 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         )
     })
 
+
+
     return (
         <div
             className='px-2 mt-[70px]'
         >
             <form
-                // onSubmit={(e) => handleFormSubmit(e)}
+            // onSubmit={(e) => handleFormSubmit(e)}
             >
                 <div
                     className='flex flex-wrap gap-2 md:w-3/12'
@@ -470,7 +488,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     modalOpen={messageModalProps.modalOpen}
                     header={messageModalProps.header}
                     body={messageModalProps.body}
-                    onClose={()=>{setMessageModalProps((draft)=>{draft.modalOpen = false})}}
+                    onClose={() => { setMessageModalProps((draft) => { draft.modalOpen = false }) }}
                     button1text={messageModalProps.button1text}
                     handleButton1Click={messageModalProps.handleButton1Click}
                     button2text={messageModalProps.button2text}
@@ -647,43 +665,59 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             <div
                                 className='border mb-3'
                             >
-                                <p>Add Food Menu/Items:</p>
+                                {showImgMenu ?
+                                    <>
+                                        <div>
+                                            <Button
+                                                onClick={() => setFoodMenuImgModalState(true)}
+                                            >Upload Food Menu</Button>
 
-                                <label
-                                    htmlFor='foodSpecialDescription'
-                                >
-                                    Food Special Description:
-                                </label>
-                                <br></br>
-                                <textarea
-                                    id='foodSpecialDescription'
-                                    onChange={(e) => {
-                                        setRestaurantData((draft) => {
-                                            draft.menu.foodSpecialsDescriptions = e.target.value
-                                        })
-                                    }}
-                                />
-                                <div
-                                    className="flex flex-wrap gap-2 md:w-3/12"
-                                >
-                                    <Button
-                                        type='button'
-                                        onClick={handleAddFoodNewMenuItem}
-                                    >Add New Food Item</Button>
-                                </div>
-
-                                {/* div that holds food menu items as they are added */}
-                                <div>
-                                    {
-                                        restaurantData.menu.foodMenu.length > 0 &&
-                                        <EditMenuItems
-                                            ItemsArr={restaurantData.menu.foodMenu}
-                                            handleInputChange={handleEditNewMenuItem}
-                                            handleRemove={handleRemoveNewMenuItem}
+                                            <ImageUploadModal
+                                                title="Food Menu Picture Upload"
+                                                modalState={foodMenuImgModalState}
+                                                setModalState={setFoodMenuImgModalState}
+                                                handleAfterSubmit={handleSetFoodMenuImg}
+                                                imgType={1}
+                                            />
+                                        </div>
+                                    </>
+                                    :
+                                    <>
+                                        <label
+                                            htmlFor='foodSpecialDescription'
+                                        >
+                                            Food Special Description:
+                                        </label>
+                                        <br></br>
+                                        <textarea
+                                            id='foodSpecialDescription'
+                                            onChange={(e) => {
+                                                setRestaurantData((draft) => {
+                                                    draft.menu.foodSpecialsDescriptions = e.target.value
+                                                })
+                                            }}
                                         />
-                                    }
-                                </div>
+                                        <div
+                                            className="flex flex-wrap gap-2 md:w-3/12"
+                                        >
+                                            <Button
+                                                type='button'
+                                                onClick={handleAddFoodNewMenuItem}
+                                            >Add New Food Item</Button>
+                                        </div>
 
+                                        <div>
+                                            {
+                                                restaurantData.menu.foodMenu.length > 0 &&
+                                                <EditMenuItems
+                                                    ItemsArr={restaurantData.menu.foodMenu}
+                                                    handleInputChange={handleEditNewMenuItem}
+                                                    handleRemove={handleRemoveNewMenuItem}
+                                                />
+                                            }
+                                        </div>
+                                    </>
+                                }
                             </div>
                         }
                     </div>
@@ -711,49 +745,70 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         {/* Drink Menu Items */}
                         {restaurantData.menu.hasDrinkSpecials &&
                             <>
-                                <div>
-                                    <label
-                                        htmlFor='drinkSpecialDescription'
-                                    >
-                                        Drink Special Description:
-                                    </label>
-                                    <br></br>
-                                    <textarea
-                                        id='drinkSpecialDescription'
-                                        onChange={(e) => {
-                                            setRestaurantData((draft) => {
-                                                draft.menu.drinkSpecialsDescriptions = e.target.value
-                                            })
-                                        }}
-                                    />
-                                </div>
-
-                                <div>
-                                    <div>
-                                        
-                                        <div
-                                            className="flex flex-wrap gap-2 md:w-3/12"
-                                        >
+                                {
+                                    showImgMenu ?
+                                        <div>
                                             <Button
-                                                type='button'
-                                                className=""
-                                                onClick={handleAddDrinkNewMenuItem}
-                                            >Add New Drink Item</Button>
-                                        </div>
-                                    </div>
+                                                onClick={() => setFoodMenuImgModalState(true)}
+                                            >Upload Drink Menu</Button>
 
-                                    {/* div that holds food menu items as they are added */}
-                                    <div>
-                                        {
-                                            restaurantData.menu.drinkMenu.length > 0 &&
-                                            <EditMenuItems
-                                                ItemsArr={restaurantData.menu.drinkMenu}
-                                                handleInputChange={handleEditNewMenuItem}
-                                                handleRemove={handleRemoveNewMenuItem}
+                                            <ImageUploadModal
+                                                title="Drink Menu Picture Upload"
+                                                modalState={drinkMenuImgModalState}
+                                                setModalState={setDrinkMenuImgModalState}
+                                                handleAfterSubmit={handleSetDrinkMenuImg}
+                                                imgType={2}
                                             />
-                                        }
-                                    </div>
-                                </div>
+                                        </div>
+                                        :
+                                        <>
+                                            <div>
+                                                <label
+                                                    htmlFor='drinkSpecialDescription'
+                                                >
+                                                    Drink Special Description:
+                                                </label>
+                                                <br></br>
+                                                <textarea
+                                                    id='drinkSpecialDescription'
+                                                    onChange={(e) => {
+                                                        setRestaurantData((draft) => {
+                                                            draft.menu.drinkSpecialsDescriptions = e.target.value
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+
+
+
+                                            <div>
+                                                <div>
+
+                                                    <div
+                                                        className="flex flex-wrap gap-2 md:w-3/12"
+                                                    >
+                                                        <Button
+                                                            type='button'
+                                                            className=""
+                                                            onClick={handleAddDrinkNewMenuItem}
+                                                        >Add New Drink Item</Button>
+                                                    </div>
+                                                </div>
+
+                                                {/* div that holds food menu items as they are added */}
+                                                <div>
+                                                    {
+                                                        restaurantData.menu.drinkMenu.length > 0 &&
+                                                        <EditMenuItems
+                                                            ItemsArr={restaurantData.menu.drinkMenu}
+                                                            handleInputChange={handleEditNewMenuItem}
+                                                            handleRemove={handleRemoveNewMenuItem}
+                                                        />
+                                                    }
+                                                </div>
+                                            </div>
+                                        </>
+                                }
                             </>
                         }
                     </div>
