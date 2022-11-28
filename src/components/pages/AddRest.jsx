@@ -57,13 +57,11 @@ const emptyRestaurantData = {
         hasFoodSpecials: true,
         foodSpecialsdescription: "",
         foodMenu: [],
-        foodMenuImg: {
-        },
+        foodMenuImg: null,
         hasDrinkSpecials: true,
         drinkSpecialsdescription: "",
         drinkMenu: [],
-        drinkMenuImg: {
-        }
+        drinkMenuImg: null
     }
 }
 const showImgMenu = true
