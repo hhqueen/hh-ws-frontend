@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function YelpCard({ business }) {
-    console.log("yelpcard business:", business)
+    // console.log("yelpcard business:", business)
     return (
             <>
             <div

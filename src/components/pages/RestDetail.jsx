@@ -181,9 +181,7 @@ export default function RestDetail() {
               </div>
             </div>
           </div>
-
           :
-
           <LoadingComp />
       }
     </>
