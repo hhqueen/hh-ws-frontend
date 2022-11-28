@@ -8,6 +8,12 @@ export default function FileUploader({imgFile, setImgFile}) {
 	// useEffect to render image preview
 	useEffect(()=>{
 		// resets preview to undefined if there is no file selected
+		if (imgFile === null ) {
+			setSelectedFile(undefined)
+			setPreview(undefined)
+			return
+		}
+		
 		if (!selectedFile) {
             setPreview(undefined)
             return
@@ -18,7 +24,7 @@ export default function FileUploader({imgFile, setImgFile}) {
 		setPreview(objURL)
 		//revokes URL on unmount
 		return () => URL.revokeObjectURL(objURL)
-	},[selectedFile])
+	},[selectedFile, imgFile])
 
 	// handles file input / image selection
 	const handleFileInput = async (e) => {
@@ -36,18 +42,6 @@ export default function FileUploader({imgFile, setImgFile}) {
 			// console.log("input completed?")
 		}
 
-	// handles sending image file to the server
-	const handleImageSubmit = async e => {
-		e.preventDefault()
-		("submit image")
-		// creates new empty formData Object
-		const fd = new FormData()
-		fd.append("image", imgFile)
-
-		// axios.post to send image to backend server
-
-	}
-	
 	return (
 		<div
 		className="max-h-[200px] font-press-start text-[8px] text-black dark:font-sans dark:text-[14px] dark:text-white dark:font-bold"
@@ -63,13 +57,6 @@ export default function FileUploader({imgFile, setImgFile}) {
 				// <img src={preview} className={`object-contain h-[10px] w-[10px]`}/>
 				}
 			</div>
-
-			{/* multi-part form for file upload */}
-			{/* <form
-				onSubmit={handleImageSubmit}
-				encType="multipart/form"
-				className="border"
-			> */}
 				{/* file upload input */}
 				<label htmlFor='image' hidden>Upload an Image</label>
                 <input
@@ -82,13 +69,6 @@ export default function FileUploader({imgFile, setImgFile}) {
 						handleFileInput(e)
 					}}
                 />
-
-				{/* submit input */}
-				{/* <input 
-                className="border-2 border-slate-200"
-                type='submit' />
-
-			</form> */}
 		</div>
 	)
 }

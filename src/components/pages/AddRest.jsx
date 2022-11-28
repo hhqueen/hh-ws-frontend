@@ -55,13 +55,13 @@ const emptyRestaurantData = {
         restaurantname: "",
         isChain: false,
         hasFoodSpecials: true,
-        foodSpecialsDescriptions: "",
+        foodSpecialsdescription: "",
         foodMenu: [],
         foodMenuImg: {
             _id: ""
         },
         hasDrinkSpecials: true,
-        drinkSpecialsDescriptions: "",
+        drinkSpecialsdescription: "",
         drinkMenu: [],
         drinkMenuImg: {
             _id: ""
@@ -249,6 +249,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         const reqbody = { restaurantData }
+        console.log("reqbody clientside:", reqbody)
         try {
             console.log("Form Submitted")
             setMessageModalProps((draft) => {
@@ -321,8 +322,16 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
     }
 
-    const handleSetFoodMenuImg = (uploadedImgObj) => { setRestaurantData((draft) => { draft.menu.foodMenuImg = uploadedImgObj }) }
-    const handleSetDrinkMenuImg = (uploadedImgObj) => { setRestaurantData((draft) => { draft.menu.drinkMenuImg = uploadedImgObj }) }
+    const handleSetFoodMenuImg = (uploadedImgObj) => { 
+        console.log("uploadedImgObj",uploadedImgObj) 
+        setRestaurantData((draft) => { draft.menu.foodMenuImg = uploadedImgObj }) 
+        setFoodMenuImgModalState(false)
+    }
+    const handleSetDrinkMenuImg = (uploadedImgObj) => { 
+        console.log("uploadedImgObj",uploadedImgObj)
+        setRestaurantData((draft) => { draft.menu.drinkMenuImg = uploadedImgObj }) 
+        setDrinkMenuImgModalState(false)
+    }
 
 
     // Map functions:
@@ -667,6 +676,12 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             >
                                 {showImgMenu ?
                                     <>
+                                        {
+                                            restaurantData.menu.foodMenuImg?.imgUrl &&
+                                            <div>
+                                                <img src={restaurantData.menu.foodMenuImg.imgUrl}/>
+                                            </div>
+                                        }
                                         <div>
                                             <Button
                                                 onClick={() => setFoodMenuImgModalState(true)}
@@ -693,7 +708,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                             id='foodSpecialDescription'
                                             onChange={(e) => {
                                                 setRestaurantData((draft) => {
-                                                    draft.menu.foodSpecialsDescriptions = e.target.value
+                                                    draft.menu.foodSpecialsdescription = e.target.value
                                                 })
                                             }}
                                         />
@@ -747,9 +762,16 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             <>
                                 {
                                     showImgMenu ?
+                                    <>
+                                        {
+                                            restaurantData.menu.drinkMenuImg?.imgUrl &&
+                                            <div>
+                                                <img src={restaurantData.menu.drinkMenuImg.imgUrl}/>
+                                            </div>
+                                        }
                                         <div>
                                             <Button
-                                                onClick={() => setFoodMenuImgModalState(true)}
+                                                onClick={() => setDrinkMenuImgModalState(true)}
                                             >Upload Drink Menu</Button>
 
                                             <ImageUploadModal
@@ -760,6 +782,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                                 imgType={2}
                                             />
                                         </div>
+                                        </>
                                         :
                                         <>
                                             <div>
@@ -773,7 +796,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                                     id='drinkSpecialDescription'
                                                     onChange={(e) => {
                                                         setRestaurantData((draft) => {
-                                                            draft.menu.drinkSpecialsDescriptions = e.target.value
+                                                            draft.menu.drinkSpecialsdescription = e.target.value
                                                         })
                                                     }}
                                                 />

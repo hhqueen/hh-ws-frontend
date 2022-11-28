@@ -7,11 +7,16 @@ export default function ImageUploadModal({title = "", handleAfterSubmit, modalSt
     const [imgFile, setImgFile] = useState(null)
     
     const handleUploadImage = async ()=>{
-        imgFile.set("cloud_folder_name","Menu Images")
-        imgFile.set("imgType", imgType)
-        // console.log("imgFile",imgFile)
-        const uploadImgResponse = await axios.post(`${process.env.REACT_APP_SERVER_URL}/images/upload`, imgFile)
-        return uploadImgResponse.data
+        try {
+            imgFile.set("cloud_folder_name","Menu Images")
+            imgFile.set("imgType", imgType)
+            // console.log("imgFile",imgFile)
+            const uploadImgResponse = await axios.post(`${process.env.REACT_APP_SERVER_URL}/images/upload`, imgFile)
+            return uploadImgResponse.data
+        } catch (error) {
+            return error
+        }
+
     }
 
     return (
@@ -23,11 +28,15 @@ export default function ImageUploadModal({title = "", handleAfterSubmit, modalSt
             encType='multipart/form'
             className=""
             action="#"
-            onSubmit={(e)=>{
+            onSubmit={ async (e)=>{
                 e.preventDefault()
-                const imgData = handleUploadImage()
+                const imgData = await handleUploadImage()
                 console.log("imgData",imgData)
-                // handleAfterSubmit()
+                handleAfterSubmit(imgData)
+                imgFile.delete("cloud_folder_name")
+                imgFile.delete("imgType")
+                imgFile.delete("image")
+                setImgFile(null)
             }}
         >
         <Modal.Header>
