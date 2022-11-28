@@ -58,13 +58,11 @@ const emptyRestaurantData = {
         foodSpecialsdescription: "",
         foodMenu: [],
         foodMenuImg: {
-            _id: ""
         },
         hasDrinkSpecials: true,
         drinkSpecialsdescription: "",
         drinkMenu: [],
         drinkMenuImg: {
-            _id: ""
         }
     }
 }
