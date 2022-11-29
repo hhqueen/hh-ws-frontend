@@ -16,7 +16,9 @@ import LoadingComp from '../LoadingComp'
 export default function RestDetail() {
   let { id } = useParams()
   const [restData, setRestData] = useState({
-    hours: [],
+    hourSet: {
+      hours:[]
+    },
     cuisines: [],
     menu: {
       foodSpecialsDescription: "",
@@ -52,7 +54,7 @@ export default function RestDetail() {
     getRestData()
   }, [id])
 
-  const mapHours = restData.hours.map((hour, idx) => {
+  const mapHours = restData.hourSet.hours.map((hour, idx) => {
     return (
       <HHHours
         key={`${id}-${hour}-${idx}`}

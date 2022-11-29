@@ -90,7 +90,7 @@ function App() {
 
     const numOweek = dateConverter(dow, false)
     const filterRestsByDay = filteredRests.filter((rest) => {
-      const filterFlag = rest.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
+      const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
       console.log(filterFlag)
       return filterFlag
     })
@@ -101,7 +101,7 @@ function App() {
   const filterRestByDay = (filteredRests, dayOweek) => {
     const numOweek = dateConverter(dayOweek, false)
     const filterRestsByDay = filteredRests.filter((rest) => {
-      const filterFlag = rest.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
+      const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
       console.log(filterFlag)
       return filterFlag
     })
@@ -114,31 +114,19 @@ function App() {
       const allRests = await getRestaurants()
       // console.log(allRests)
       setAllRestaurants(allRests)
+      
       const restArrByDay = await filterRestByDay(allRests, fmtDate)
+      
       setShowRestaurants(restArrByDay)
-
-      // const coords = await getCoord("1281 Westreef, Costa Mesa, CA")
-      // console.log(coords)
 
       const latLong = await geoLocation()
       if (latLong.geoLocAvail) {
         setCurrentLocation(latLong)
       } 
-      // console.log(latLong)
 
-      // setLocParams({ ...locParams, ...locParams.coordinates.lat = latLong.latitude })
 
     }
-    loadInitialData()
-    // console.log("test")
-    // if (localStorage.getItem('jwt') !== null) {
-    //   const token = localStorage.getItem('jwt')
-    //   const decoded = jwt_decode(token)
-    //   console.log("decoded",decoded)
-    //   // renderAddRest = checkAdmin(decoded)
-    // }
-    // console.log("fmtDate", fmtDate)
-    
+    loadInitialData()    
     setDow(fmtDate)
     setFilterParams(checkboxFilters)
 

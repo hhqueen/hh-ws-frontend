@@ -42,15 +42,17 @@ const emptyRestaurantData = {
     dogFriendly: false,
     hasPatio: false,
     cuisines: [],
-    hours: [
-        { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //monday
-        { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //tuesday
-        { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //weds
-        { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, // thurs
-        { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //friday
-        { day: 5, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //sat
-        { day: 6, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //sun
-    ],
+    hourSet: {
+        hours:[
+            { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //monday
+            { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //tuesday
+            { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //weds
+            { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, // thurs
+            { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //friday
+            { day: 5, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //sat
+            { day: 6, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //sun
+        ],
+    },   
     menu: {
         restaurantname: "",
         isChain: false,
@@ -135,7 +137,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             const minute = Number(date.transform(e.target.value, "HH:mm", "mm")) / 60
             const time = hour + minute
             console.log(time)
-            draft.hours[idx][e.target.name] = time
+            draft.hourSet.hours[idx][e.target.name] = time
         })
     }
 
@@ -302,7 +304,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         setRestaurantData((draft) => {
             filteredDaysArr.forEach((filteredDay) => {
                 console.log("hourData.end2", hourData.end2)
-                let foundDay = draft.hours.find(hour => hour.day === filteredDay.dayIdx)
+                let foundDay = draft.hourSet.hours.find(hour => hour.day === filteredDay.dayIdx)
                 console.log(foundDay.hasHH1)
                 foundDay.hasHH1 = hourData.hasHH1
                 foundDay.start1 = hourData.start1
@@ -366,14 +368,14 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         <Label>
                             <Checkbox
                                 name='hasHH1'
-                                checked={restaurantData.hours[idx].hasHH1}
+                                checked={restaurantData.hourSet.hours[idx].hasHH1}
                                 onChange={(e) => setRestaurantData(
-                                    (draft) => { draft.hours[idx].hasHH1 = e.target.checked }
+                                    (draft) => { draft.hourSet.hours[idx].hasHH1 = e.target.checked }
                                 )}
 
                             />Happy Hour</Label>
                         {
-                            restaurantData.hours[idx].hasHH1 &&
+                            restaurantData.hourSet.hours[idx].hasHH1 &&
 
                             <div>
                                 <input
@@ -381,10 +383,10 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     className="min-w-[50px] text-xs"
                                     name="start1"
                                     type="time"
-                                    value={militaryTimeConverter(restaurantData.hours[idx].start1)}
+                                    value={militaryTimeConverter(restaurantData.hourSet.hours[idx].start1)}
                                     // defaultValue="15:00"
                                     onChange={(e) => handleHourInputChange(e, idx)}
-                                    disabled={restaurantData.hours[idx].hasHH1 === false}
+                                    disabled={restaurantData.hourSet.hours[idx].hasHH1 === false}
                                 />
 
                                 <input
@@ -392,10 +394,10 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     className="min-w-[50px] text-xs"
                                     name="end1"
                                     type="time"
-                                    value={militaryTimeConverter(restaurantData.hours[idx].end1)}
+                                    value={militaryTimeConverter(restaurantData.hourSet.hours[idx].end1)}
                                     // defaultValue="18:00"
                                     onChange={(e) => handleHourInputChange(e, idx)}
-                                    disabled={restaurantData.hours[idx].hasHH1 === false || restaurantData.hours[idx].end1close === true}
+                                    disabled={restaurantData.hourSet.hours[idx].hasHH1 === false || restaurantData.hourSet.hours[idx].end1close === true}
                                 />
                             </div>
                         }
@@ -404,15 +406,15 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     <div>
                         <Label>
                             <Checkbox
-                                checked={restaurantData.hours[idx].hasHH2}
+                                checked={restaurantData.hourSet.hours[idx].hasHH2}
                                 onChange={(e) => setRestaurantData(
-                                    (draft) => { draft.hours[idx].hasHH2 = e.target.checked }
+                                    (draft) => { draft.hourSet.hours[idx].hasHH2 = e.target.checked }
                                 )}
 
                             />Late Night</Label>
 
                         {
-                            restaurantData.hours[idx].hasHH2 &&
+                            restaurantData.hourSet.hours[idx].hasHH2 &&
 
                             <div
                                 className='flex'
@@ -423,13 +425,13 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     className="min-w-[50px] text-xs"
                                     name="start2"
                                     type="time"
-                                    value={militaryTimeConverter(restaurantData.hours[idx].start2)}
+                                    value={militaryTimeConverter(restaurantData.hourSet.hours[idx].start2)}
                                     // defaultValue="15:00"
                                     onChange={(e) => handleHourInputChange(e, idx)}
-                                    disabled={restaurantData.hours[idx].hasHH2 === false}
+                                    disabled={restaurantData.hourSet.hours[idx].hasHH2 === false}
                                 />
                                 {
-                                    restaurantData.hours[idx].end2close ?
+                                    restaurantData.hourSet.hours[idx].end2close ?
 
                                         <div
                                             className="min-w-[50px]  w-[110px] text-center "
@@ -442,18 +444,18 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                             className="min-w-[50px] text-xs"
                                             name="end2"
                                             type="time"
-                                            value={militaryTimeConverter(restaurantData.hours[idx].end2)}
+                                            value={militaryTimeConverter(restaurantData.hourSet.hours[idx].end2)}
                                             // defaultValue="18:00"
                                             onChange={(e) => handleHourInputChange(e, idx)}
-                                            disabled={restaurantData.hours[idx].hasHH2 === false || restaurantData.hours[idx].end2close === true}
+                                            disabled={restaurantData.hourSet.hours[idx].hasHH2 === false || restaurantData.hourSet.hours[idx].end2close === true}
                                         />
                                 }
                                 <div>
                                     <Label>
                                         <Checkbox
-                                            checked={restaurantData.hours[idx].end2close}
+                                            checked={restaurantData.hourSet.hours[idx].end2close}
                                             onChange={(e) => setRestaurantData(
-                                                (draft) => { draft.hours[idx].end2close = e.target.checked }
+                                                (draft) => { draft.hourSet.hours[idx].end2close = e.target.checked }
                                             )}
 
                                         />Til-Close</Label>
