@@ -1,3 +1,3 @@
 export const siteSettings = {
-    showMenuImg: true
+    showImgMenu: true
 }

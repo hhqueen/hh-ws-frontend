@@ -563,7 +563,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 <div>
                                     <Button
                                         onClick={() => setFoodAndDrinkMenuImgModalState(true)}
-                                    >Upload Food Menu</Button>
+                                    >Upload Combined Menu</Button>
 
                                     <ImageUploadModal
                                         title="Food And Drink (Combined) Menu Picture Upload"
@@ -599,7 +599,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         }
 
                         {/* Food Menu Items */}
-                        {restaurantData.menu.hasFoodSpecials && !restaurantData.menu.isFoodAndDrinkMenu &&
+                        {restaurantData.menu.hasFoodSpecials &&
                             <div
                                 className='border mb-3'
                             >
@@ -687,7 +687,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             </div>
                         }
                         {/* Drink Menu Items */}
-                        {restaurantData.menu.hasDrinkSpecials && !restaurantData.menu.isFoodAndDrinkMenu &&
+                        {restaurantData.menu.hasDrinkSpecials && 
                             <>
                                 {
                                     siteSettings.showImgMenu ?
