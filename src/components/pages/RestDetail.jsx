@@ -67,8 +67,9 @@ export default function RestDetail() {
   return (
 
     <>
+      { !isLoaded && <LoadingComp /> }
       {
-        isLoaded ?
+        isLoaded &&
 
           <div
             className='mt-[60px] px-3'
@@ -144,7 +145,7 @@ export default function RestDetail() {
               {!restData.menu.isFoodAndDrinkMenu &&
                 <>
                   {
-                    !restData.menu.drinkMenuImg === null &&
+                    restData.menu.drinkMenuImg !== null &&
 
                     <div
                       className='flex flex-col items-center justify-center py-3'>
@@ -174,7 +175,7 @@ export default function RestDetail() {
                   }
 
                   {
-                    !restData.menu.drinkMenuImg === null &&
+                    restData.menu.drinkMenuImg !== null &&
                     <div
                       className='flex flex-col items-center justify-center py-3'
                     >
@@ -206,8 +207,6 @@ export default function RestDetail() {
               }
             </div>
           </div>
-          :
-          <LoadingComp />
       }
     </>
   )
