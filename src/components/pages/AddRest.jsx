@@ -189,7 +189,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                 } else {
                     draft.body = response.data.msg
                     draft.button1text = "Go back to Add New Restaurant Page"
-                    draft.handleButton1Click = () => { setMessageModalProps((draft) => { draft.modalOpen = false }) }
+                    draft.handleButton1Click = () => { setMessageModalProps((draft) => { draft.modalOpen = false })}
                 }
             })
         } catch (error) {
@@ -248,7 +248,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     <Checkbox
                         checked={restaurantData.filterParams[filterVal.name]}
                         name={filterVal.name}
-                        onChange={(e) => { setRestaurantData((draft) => draft.filterParams[filterVal.name] = e.target.checked) }}
+                        onChange={(e) => { setRestaurantData((draft) => {draft.filterParams[filterVal.name] = e.target.checked})}}
                     />
                     {filterVal.display}
                 </label>
