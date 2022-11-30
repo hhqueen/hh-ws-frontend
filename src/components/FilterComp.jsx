@@ -8,11 +8,8 @@ import { Select, Button, Dropdown,Checkbox } from "flowbite-react"
 
 export default function FilterComp({ dow, setDow, filterParams, setFilterParams }) {
 
-    // enhancement idea: untie filter date from restaurant cards
-
     const filtersMap = filterParams.map((filterVal) => {
         return (
-
             <Dropdown.Item
                 onClick={()=>{
                     setFilterParams((draft)=>{
@@ -21,17 +18,16 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams 
                     })
                 }}
             >
-                <div
-                className="flex"
+                <label
+                    htmlFor={`${filterVal.name}_checkbox`}
                 >
                 <Checkbox
+                    id={`${filterVal.name}_checkbox`}
                     checked={filterVal.value}
                     readOnly
                 />
-                <p>{filterVal.display}</p>
-                </div>
+                {filterVal.display}</label>
             </Dropdown.Item>
-            // </li>
         )
     })
 
@@ -54,7 +50,7 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams 
                         className='flex justify-center sm:overflow-y-auto sm:py-4 sm:px-3 '
                     >
                         <label
-                            className='w-full'
+                            className='w-[50%]'
                             htmlFor='dow'>
                             <Select
                                 id='dow'
@@ -68,9 +64,9 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams 
                         <div
                             className='w-full'
                         >
+
                             <Dropdown 
                                 label="Filters"
-                                dismissOnClick={false}
                             >
                             {filtersMap}
                             </Dropdown>
