@@ -1,27 +1,37 @@
 // import { useState } from 'react'
-import Checkbox from './Checkbox'
+// import Checkbox from './Checkbox'
 import { dowList } from "../sourceData/dowList"
-import { Select, Button } from "flowbite-react"
+import { Select, Button, Dropdown,Checkbox } from "flowbite-react"
+
 
 // const dateConverter = require("../helperFunctions/dateConverter")
 
-export default function FilterComp({ dow, setDow, filterParams, setFilterParams, filterFormSubmitHandler }) {
+export default function FilterComp({ dow, setDow, filterParams, setFilterParams }) {
 
     // enhancement idea: untie filter date from restaurant cards
 
-    const filtersMap = filterParams.map((filterVal, idx) => {
+    const filtersMap = filterParams.map((filterVal) => {
         return (
-            <li
-                key={`filter${idx}`}
+
+            <Dropdown.Item
+                onClick={()=>{
+                    setFilterParams((draft)=>{
+                        const foundItem = draft.find(item=>item.name == filterVal.name)
+                        foundItem.value = !foundItem.value
+                    })
+                }}
             >
+                <div
+                className="flex"
+                >
                 <Checkbox
-                    key={`filterCheckbox${idx}`}
-                    idx={idx}
-                    filterParams={filterParams}
-                    data={filterVal}
-                    setFilterParams={setFilterParams}
+                    checked={filterVal.value}
+                    readOnly
                 />
-            </li>
+                <p>{filterVal.display}</p>
+                </div>
+            </Dropdown.Item>
+            // </li>
         )
     })
 
@@ -40,15 +50,8 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
                 className='w-full sm:w-64 grow pb-2 sticky mt-[60px] bg-white dark:bg-gray-800'
                 aria-label='Sidebar'
             >
-
-                <form
-                    className='sm:overflow-y-auto sm:py-4 sm:px-3 '
-                    onSubmit={(e) => {
-                        filterFormSubmitHandler(e)
-                    }}
-                >
                     <div
-                        className='flex justify-center'
+                        className='flex justify-center sm:overflow-y-auto sm:py-4 sm:px-3 '
                     >
                         <label
                             className='w-full'
@@ -65,22 +68,14 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams,
                         <div
                             className='w-full'
                         >
-                            <Button
-                                type='submit'
-                                className="border"
-                            >APPLY</Button>
+                            <Dropdown 
+                                label="Filters"
+                                dismissOnClick={false}
+                            >
+                            {filtersMap}
+                            </Dropdown>
                         </div>
-
-
                     </div>
-
-                    <ul
-                        className='grid grid-cols-2 pt-3 px-10 sm:flex sm:flex-col sm:space-y-2'
-                    >
-
-                        {filtersMap}
-                    </ul>
-                </form>
             </aside>
         </>
     )

@@ -23,7 +23,7 @@ export default function Checkbox({ data, filterParams, setFilterParams, idx }) {
                     checked={checkState}
                     onChange={handleChecking}
                 />
-                {data.display}
+                {` ${data.display}`}
             </label>
         </>
     )

@@ -37,10 +37,12 @@ const emptyRestaurantData = {
     latitude: null,
     longitude: null,
     image_url: null,
-    hasDrinks: false,
-    hasFood: false,
-    dogFriendly: false,
-    hasPatio: false,
+    filterParams:{
+        hasDrinks: false,
+        hasFood: false,
+        dogFriendly: false,
+        hasPatio: false,
+    },
     cuisines: [],
     hourSet: {
         hours:[
@@ -258,7 +260,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             console.log(response)
             setMessageModalProps((draft) => {
 
-                if (response.status === 200) {
+                if (response.status === 201) {
                     draft.body = response.data.msg
                     draft.button1text = "Add Another Restaurant"
                     draft.handleButton1Click = () => {
@@ -340,12 +342,12 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             >
                 <label>
                     <Checkbox
-                        checked={restaurantData[filterVal.name]}
+                        checked={restaurantData.filterParams[filterVal.name]}
                         name={filterVal.name}
                         onChange={
                             (e) => {
                                 setRestaurantData((draft) => {
-                                    draft[filterVal.name] = e.target.checked
+                                    draft.filterParams[filterVal.name] = e.target.checked
                                 })
                             }
                         }

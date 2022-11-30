@@ -3,7 +3,7 @@ import { checkboxFilters } from "../sourceData/filters"
 const showApplicableFilters = (restData) => {
     let applFilterArr = []
     checkboxFilters.forEach((filter) => {
-      if (restData[filter.name]) {
+      if (restData.filterParams[filter.name]) {
         applFilterArr.push(filter.display)
       }
     })

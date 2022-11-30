@@ -10,6 +10,7 @@ import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import jwt_decode from 'jwt-decode';
+import {useImmer} from "use-immer"
 
 // import components
 import NavBar from "./components/NavBar";
@@ -37,7 +38,7 @@ import geoLocation from "./helperFunctions/geoLocation"
 function App() {
   // variables
   const [allRestaurants, setAllRestaurants] = useState([])
-  const [filterParams, setFilterParams] = useState([])
+  const [filterParams, setFilterParams] = useImmer([])
   const [currentLocation, setCurrentLocation] = useState({})
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [showRestaurants, setShowRestaurants] = useState([])
@@ -60,7 +61,7 @@ function App() {
       // console.log(rest)  
       for (let i = 0; i < trueFilters.length; i++) {
         // console.log(rest[trueFilters[i].name])
-        if (!rest[trueFilters[i].name]) {
+        if (!rest.filterParams[trueFilters[i].name]) {
           return false
         }
       }
@@ -82,22 +83,6 @@ function App() {
     }
   }
 
-  // filter submit hander (filter apply)
-  const filterFormSubmitHandler = async (e) => {
-    e.preventDefault()
-    const filteredRests = filterRests(filterParams, allRestaurants)
-    // console.log(filteredRests)
-
-    const numOweek = dateConverter(dow, false)
-    const filterRestsByDay = filteredRests.filter((rest) => {
-      const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
-      console.log(filterFlag)
-      return filterFlag
-    })
-    // setShowRestaurants(filteredRests)
-    setShowRestaurants(filterRestsByDay)
-  }
-
   const filterRestByDay = (filteredRests, dayOweek) => {
     const numOweek = dateConverter(dayOweek, false)
     const filterRestsByDay = filteredRests.filter((rest) => {
@@ -114,23 +99,30 @@ function App() {
       const allRests = await getRestaurants()
       // console.log(allRests)
       setAllRestaurants(allRests)
-      
       const restArrByDay = await filterRestByDay(allRests, fmtDate)
-      
       setShowRestaurants(restArrByDay)
-
       const latLong = await geoLocation()
       if (latLong.geoLocAvail) {
         setCurrentLocation(latLong)
       } 
-
-
     }
     loadInitialData()    
     setDow(fmtDate)
     setFilterParams(checkboxFilters)
-
   }, [])
+
+
+  // re-render list on filterParams Change. may want to change this to a server call. 
+  useEffect(()=>{
+        const filteredRests = filterRests(filterParams, allRestaurants)   
+        const numOweek = dateConverter(dow, false)
+        const filterRestsByDay = filteredRests.filter((rest) => {
+          const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
+          console.log(filterFlag)
+          return filterFlag
+        })
+        setShowRestaurants(filterRestsByDay)
+  },[filterParams])
 
   // useEffect(() => {
   //   return console.log("dow", dow)
@@ -151,7 +143,6 @@ function App() {
                 allRestaurants={showRestaurants}
                 setFilterParams={setFilterParams}
                 filterParams={filterParams}
-                filterFormSubmitHandler={filterFormSubmitHandler}
                 setDow={setDow}
                 dow={dow}
               />}
