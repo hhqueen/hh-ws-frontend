@@ -16,59 +16,16 @@ import BulkHoursUpdateModal from '../modals/BulkHoursUpdateModal'
 import MessageModal from '../modals/MessageModal'
 import LoadingComp from '../LoadingComp'
 import ImageUploadModal from '../modals/ImageUploadModal'
+import {siteSettings} from "../../sourceData/siteSettings"
+import {emptyRestaurantData} from "../../sourceData/emptyRestaurantData"
 // const ModalForArray = React.lazy(()=>import('../ModalForArray'))
 // import {useQuery} from "@tanstack/react-query"
 
 // Components
 // import Checkbox from '../Checkbox'
 
-const emptyRestaurantData = {
-    yelpRestaurantId: null,
-    name: null,
-    telNumber: null,
-    displayNumber: null,
-    address1: null,
-    address2: null,
-    address3: null,
-    city: null,
-    zip_code: null,
-    country: null,
-    state: null,
-    latitude: null,
-    longitude: null,
-    image_url: null,
-    filterParams:{
-        hasDrinks: false,
-        hasFood: false,
-        dogFriendly: false,
-        hasPatio: false,
-    },
-    cuisines: [],
-    hourSet: {
-        hours:[
-            { day: 0, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //monday
-            { day: 1, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //tuesday
-            { day: 2, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //weds
-            { day: 3, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, // thurs
-            { day: 4, hasHH1: true, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //friday
-            { day: 5, hasHH1: false, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //sat
-            { day: 6, hasHH1: false, start1: 15, end1: 18, end1close: false, hasHH2: false, start2: 21, end2: 0, end2close: false }, //sun
-        ],
-    },   
-    menu: {
-        restaurantname: "",
-        isChain: false,
-        hasFoodSpecials: true,
-        foodSpecialsdescription: "",
-        foodMenu: [],
-        foodMenuImg: null,
-        hasDrinkSpecials: true,
-        drinkSpecialsdescription: "",
-        drinkMenu: [],
-        drinkMenuImg: null
-    }
-}
-const showImgMenu = true
+
+// const siteSettings.showImgMenu = true
 export default function AddRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
 
     // variables
@@ -674,7 +631,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             <div
                                 className='border mb-3'
                             >
-                                {showImgMenu ?
+                                {siteSettings.showImgMenu ?
                                     <>
                                         {
                                             restaurantData.menu.foodMenuImg?.imgUrl &&
@@ -761,7 +718,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         {restaurantData.menu.hasDrinkSpecials &&
                             <>
                                 {
-                                    showImgMenu ?
+                                    siteSettings.showImgMenu ?
                                     <>
                                         {
                                             restaurantData.menu.drinkMenuImg?.imgUrl &&
