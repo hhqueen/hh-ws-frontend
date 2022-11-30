@@ -17,7 +17,7 @@ export default function RestDetail() {
   let { id } = useParams()
   const [restData, setRestData] = useState({
     hourSet: {
-      hours:[]
+      hours: []
     },
     cuisines: [],
     menu: {
@@ -125,62 +125,85 @@ export default function RestDetail() {
 
             <div
             >
-              <div
-                className='flex flex-col items-center justify-center py-3'>
-                <p
-                  className='border-b'
-                >Food Menu</p>
-                {
-                  siteSettings.showMenuImg ?
-                    <>
-                      <img
-                        src={`${restData.menu.foodMenuImg?.imgUrl}`}
-                        alt="image"
-                      />
-                    </>
-                    :
-                    <>
+              {
+                restData.menu.isFoodAndDrinkMenu &&
+                <>
+                  <div
+                    className='flex flex-col items-center justify-center py-3'>
+                    <p
+                      className='border-b'
+                    >Food And Drink Menu</p>
+                    <img
+                      src={`${restData.menu.foodAndDrinkMenuImg?.imgUrl}`}
+                      alt="image"
+                    />
+                  </div>
+                </>
+              }
+
+              {!restData.menu.isFoodAndDrinkMenu &&
+                <>
+                  {
+                    !restData.menu.drinkMenuImg === null &&
+
+                    <div
+                      className='flex flex-col items-center justify-center py-3'>
                       <p
-                        className='px-10 text-center'
-                      >{restData?.menu.foodSpecialsDescription}</p>
-                      <MenuItems
-                        ItemsArr={restData?.menu.foodMenu}
-                        menuType="Food"
-                      />
-                    </>
-                }
+                        className='border-b'
+                      >Food Menu</p>
+                      {
+                        siteSettings.showMenuImg ?
+                          <>
+                            <img
+                              src={`${restData.menu.foodMenuImg?.imgUrl}`}
+                              alt="image"
+                            />
+                          </>
+                          :
+                          <>
+                            <p
+                              className='px-10 text-center'
+                            >{restData?.menu.foodSpecialsDescription}</p>
+                            <MenuItems
+                              ItemsArr={restData?.menu.foodMenu}
+                              menuType="Food"
+                            />
+                          </>
+                      }
+                    </div>
+                  }
 
-              </div>
-
-              <div
-                className='flex flex-col items-center justify-center py-3'
-              >
-                <p
-                  className='border-b'
-                >Drink Menu</p>
-
-                {
-                  siteSettings.showMenuImg ?
-                    <>
-                      <img
-                        src={`${restData.menu.drinkMenuImg?.imgUrl}`}
-                        alt="image"
-                      />
-                    </>
-                    :
-                    <>
+                  {
+                    !restData.menu.drinkMenuImg === null &&
+                    <div
+                      className='flex flex-col items-center justify-center py-3'
+                    >
                       <p
-                        className='px-10 text-center'
-                      >{restData?.menu.drinkSpecialsDescription}</p>
-                      <MenuItems
-                        ItemsArr={restData?.menu.drinkMenu}
-                        menuType="Drink"
-                      />
-                    </>
-                }
-
-
-              </div>
+                        className='border-b'
+                      >Drink Menu</p>
+                      {
+                        siteSettings.showMenuImg ?
+                          <>
+                            <img
+                              src={`${restData.menu.drinkMenuImg?.imgUrl}`}
+                              alt="image"
+                            />
+                          </>
+                          :
+                          <>
+                            <p
+                              className='px-10 text-center'
+                            >{restData?.menu.drinkSpecialsDescription}</p>
+                            <MenuItems
+                              ItemsArr={restData?.menu.drinkMenu}
+                              menuType="Drink"
+                            />
+                          </>
+                      }
+                    </div>
+                  }
+                </>
+              }
             </div>
           </div>
           :

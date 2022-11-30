@@ -2,8 +2,6 @@ import React from 'react'
 import { Modal } from 'flowbite-react'
 import { useImmer } from "use-immer"
 import { Checkbox, Label } from 'flowbite-react'
-
-
 import { dowList } from "../../sourceData/dowList"
 
 const date = require('date-and-time');

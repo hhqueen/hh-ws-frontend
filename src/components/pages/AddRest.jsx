@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { checkboxFilters } from "../../sourceData/filters"
 import { dowList } from "../../sourceData/dowList"
 import { useImmer } from "use-immer"
-import { Checkbox, Label, Button, TextInput } from 'flowbite-react'
+import { Checkbox, Label, Button, TextInput, Select } from 'flowbite-react'
 import EditMenuItems from "../EditMenuItems"
 import { menuDiscountType } from "../../sourceData/menuDiscountType"
 import militaryTimeConverter from '../../helperFunctions/militaryTimeConverter'
@@ -16,11 +16,11 @@ import BulkHoursUpdateModal from '../modals/BulkHoursUpdateModal'
 import MessageModal from '../modals/MessageModal'
 import LoadingComp from '../LoadingComp'
 import ImageUploadModal from '../modals/ImageUploadModal'
-import {siteSettings} from "../../sourceData/siteSettings"
+import { siteSettings } from "../../sourceData/siteSettings"
 import {
-    emptyRestaurantData, 
-    foodMenuItemTemplate, 
-    drinkMenuItemTemplate, 
+    emptyRestaurantData,
+    foodMenuItemTemplate,
+    drinkMenuItemTemplate,
     emptyMessageModalProp,
     emptySearchParams
 } from "../../sourceData/emptyDataTemplates"
@@ -32,6 +32,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
     // variables
     const navigate = useNavigate()
+    const [foodAndDrinkMenuImgModalState, setFoodAndDrinkMenuImgModalState] = useState(false)
     const [foodMenuImgModalState, setFoodMenuImgModalState] = useState(false)
     const [drinkMenuImgModalState, setDrinkMenuImgModalState] = useState(false)
     const [formSubmitted, setFormSubmitted] = useState(false)
@@ -186,7 +187,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         navigate(`/restaurant/${response.data.id}`)
                     }
                 } else {
-                    draft.body = response.response.data.msg
+                    draft.body = response.data.msg
                     draft.button1text = "Go back to Add New Restaurant Page"
                     draft.handleButton1Click = () => { setMessageModalProps((draft) => { draft.modalOpen = false }) }
                 }
@@ -219,17 +220,24 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         setBulkHourModalOpen(false)
     }
 
-    const handleSetFoodMenuImg = (uploadedImgObj) => { 
-        console.log("uploadedImgObj",uploadedImgObj) 
-        setRestaurantData((draft) => { draft.menu.foodMenuImg = uploadedImgObj }) 
+    const handleSetFoodMenuImg = (uploadedImgObj) => {
+        console.log("uploadedImgObj", uploadedImgObj)
+        setRestaurantData((draft) => { draft.menu.foodMenuImg = uploadedImgObj })
         setFoodMenuImgModalState(false)
     }
 
-    const handleSetDrinkMenuImg = (uploadedImgObj) => { 
-        console.log("uploadedImgObj",uploadedImgObj)
-        setRestaurantData((draft) => { draft.menu.drinkMenuImg = uploadedImgObj }) 
+    const handleSetDrinkMenuImg = (uploadedImgObj) => {
+        console.log("uploadedImgObj", uploadedImgObj)
+        setRestaurantData((draft) => { draft.menu.drinkMenuImg = uploadedImgObj })
         setDrinkMenuImgModalState(false)
     }
+
+    const handleSetFoodAndDrinkMenuImg = (uploadedImgObj) => {
+        console.log("uploadedImgObj", uploadedImgObj)
+        setRestaurantData((draft) => { draft.menu.foodAndDrinkMenuImg = uploadedImgObj })
+        setFoodAndDrinkMenuImgModalState(false)
+    }
+
 
 
     // Map functions:
@@ -240,7 +248,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     <Checkbox
                         checked={restaurantData.filterParams[filterVal.name]}
                         name={filterVal.name}
-                        onChange={(e) => {setRestaurantData((draft) => draft.filterParams[filterVal.name] = e.target.checked)}}
+                        onChange={(e) => { setRestaurantData((draft) => draft.filterParams[filterVal.name] = e.target.checked) }}
                     />
                     {filterVal.display}
                 </label>
@@ -524,13 +532,52 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     className='py-3'
                 >
                     <p>Menu:</p>
-                    <div
+                    <div>
 
-                    >
+                        {/* Food AND Drink Menu Img Upload */}
+                        <div>
+                            <label>Food And Drink Menu:</label>
+                            {/* <Select
+                                id="isFoodAndDrinkMenu"
+                                onChange={(e)=>{setRestaurantData((draft)=>{draft.menu.isFoodAndDrinkMenu = e.target.value})}}
+                            >
+                                <option value={true} defaultValue={true}>Combined</option>
+                                <option value={false}>Separated</option>
+                            </Select> */}
+                            <input
+                                type="checkbox"
+                                checked={restaurantData.menu.isFoodAndDrinkMenu}
+                                onClick={(e) => { setRestaurantData((draft) => { draft.menu.isFoodAndDrinkMenu = e.target.checked }) }}
+                            />
+                        </div>
+
+                        {
+                            restaurantData.menu.isFoodAndDrinkMenu &&
+                            <>
+                                {
+                                    restaurantData.menu.foodAndDrinkMenuImg?.imgUrl &&
+                                    <div>
+                                        <img src={restaurantData.menu.foodAndDrinkMenuImg.imgUrl} />
+                                    </div>
+                                }
+                                <div>
+                                    <Button
+                                        onClick={() => setFoodAndDrinkMenuImgModalState(true)}
+                                    >Upload Food Menu</Button>
+
+                                    <ImageUploadModal
+                                        title="Food And Drink (Combined) Menu Picture Upload"
+                                        modalState={foodAndDrinkMenuImgModalState}
+                                        setModalState={setFoodAndDrinkMenuImgModalState}
+                                        handleAfterSubmit={handleSetFoodAndDrinkMenuImg}
+                                        imgType={2}
+                                    />
+                                </div>
+                            </>
+                        }
                         {/* food/drink checkbox */}
-                        <div
-
-                        >
+                        {
+                            !restaurantData.menu.isFoodAndDrinkMenu &&
                             <div>
                                 <input
                                     id='foodSpecialsBoolean'
@@ -548,11 +595,11 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     Has Food Specials
                                 </label>
                             </div>
-                        </div>
 
+                        }
 
                         {/* Food Menu Items */}
-                        {restaurantData.menu.hasFoodSpecials &&
+                        {restaurantData.menu.hasFoodSpecials && !restaurantData.menu.isFoodAndDrinkMenu &&
                             <div
                                 className='border mb-3'
                             >
@@ -561,7 +608,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                         {
                                             restaurantData.menu.foodMenuImg?.imgUrl &&
                                             <div>
-                                                <img src={restaurantData.menu.foodMenuImg.imgUrl}/>
+                                                <img src={restaurantData.menu.foodMenuImg.imgUrl} />
                                             </div>
                                         }
                                         <div>
@@ -620,50 +667,50 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     </div>
                     {/* DRINKS AREA */}
                     <div>
-
-
-                        <div>
-                            <input
-                                id='drinkSpecialsBoolean'
-                                type="checkbox"
-                                checked={restaurantData.menu.hasDrinkSpecials}
-                                onChange={(e) => {
-                                    setRestaurantData((draft) => {
-                                        draft.menu.hasDrinkSpecials = e.target.checked
-                                    })
-                                }}
-                            />
-                            <label
-                                htmlFor='drinkSpecialsBoolean'
-                            >
-                                has Drink Specials
-                            </label>
-                        </div>
+                        {!restaurantData.menu.isFoodAndDrinkMenu &&
+                            <div>
+                                <input
+                                    id='drinkSpecialsBoolean'
+                                    type="checkbox"
+                                    checked={restaurantData.menu.hasDrinkSpecials}
+                                    onChange={(e) => {
+                                        setRestaurantData((draft) => {
+                                            draft.menu.hasDrinkSpecials = e.target.checked
+                                        })
+                                    }}
+                                />
+                                <label
+                                    htmlFor='drinkSpecialsBoolean'
+                                >
+                                    has Drink Specials
+                                </label>
+                            </div>
+                        }
                         {/* Drink Menu Items */}
-                        {restaurantData.menu.hasDrinkSpecials &&
+                        {restaurantData.menu.hasDrinkSpecials && !restaurantData.menu.isFoodAndDrinkMenu &&
                             <>
                                 {
                                     siteSettings.showImgMenu ?
-                                    <>
-                                        {
-                                            restaurantData.menu.drinkMenuImg?.imgUrl &&
+                                        <>
+                                            {
+                                                restaurantData.menu.drinkMenuImg?.imgUrl &&
+                                                <div>
+                                                    <img src={restaurantData.menu.drinkMenuImg.imgUrl} />
+                                                </div>
+                                            }
                                             <div>
-                                                <img src={restaurantData.menu.drinkMenuImg.imgUrl}/>
-                                            </div>
-                                        }
-                                        <div>
-                                            <Button
-                                                onClick={() => setDrinkMenuImgModalState(true)}
-                                            >Upload Drink Menu</Button>
+                                                <Button
+                                                    onClick={() => setDrinkMenuImgModalState(true)}
+                                                >Upload Drink Menu</Button>
 
-                                            <ImageUploadModal
-                                                title="Drink Menu Picture Upload"
-                                                modalState={drinkMenuImgModalState}
-                                                setModalState={setDrinkMenuImgModalState}
-                                                handleAfterSubmit={handleSetDrinkMenuImg}
-                                                imgType={2}
-                                            />
-                                        </div>
+                                                <ImageUploadModal
+                                                    title="Drink Menu Picture Upload"
+                                                    modalState={drinkMenuImgModalState}
+                                                    setModalState={setDrinkMenuImgModalState}
+                                                    handleAfterSubmit={handleSetDrinkMenuImg}
+                                                    imgType={2}
+                                                />
+                                            </div>
                                         </>
                                         :
                                         <>

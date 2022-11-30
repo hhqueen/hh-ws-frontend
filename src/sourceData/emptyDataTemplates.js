@@ -41,7 +41,9 @@ export const emptyRestaurantData = {
         hasDrinkSpecials: true,
         drinkSpecialsdescription: "",
         drinkMenu: [],
-        drinkMenuImg: null
+        drinkMenuImg: null,
+        isFoodAndDrinkMenu: true,
+        foodAndDrinkMenuImg: null
     }
 }
 

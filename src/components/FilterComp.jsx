@@ -1,10 +1,5 @@
-// import { useState } from 'react'
-// import Checkbox from './Checkbox'
 import { dowList } from "../sourceData/dowList"
 import { Select, Button, Dropdown,Checkbox } from "flowbite-react"
-
-
-// const dateConverter = require("../helperFunctions/dateConverter")
 
 export default function FilterComp({ dow, setDow, filterParams, setFilterParams }) {
 
@@ -64,7 +59,6 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams 
                         <div
                             className='w-full'
                         >
-
                             <Dropdown 
                                 label="Filters"
                             >
