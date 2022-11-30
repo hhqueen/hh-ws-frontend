@@ -44,3 +44,42 @@ export const emptyRestaurantData = {
         drinkMenuImg: null
     }
 }
+
+export const foodMenuItemTemplate = {
+    name: "",
+    description: "",
+    Type: "Food",
+    specialTypeId: 1,
+    // 1 = price, 2 = percentDiscount, 3 = dollarsOff
+    value: 0
+}
+
+export const drinkMenuItemTemplate = {
+    name: "",
+    description: "",
+    Type: "Drink",
+    specialTypeId: 1,
+    // 1 = price, 2 = percentDiscount, 3 = dollarsOff
+    value: 0
+}
+
+export const emptyMessageModalProp = {
+    modalOpen: false,
+    onClose: null,
+    header: null,
+    body: null,
+    button1text: "",
+    button2text: "",
+    handleButton1Click: null,
+    handleButton2Click: null,
+}
+
+export const emptySearchParams = {
+    term: "",
+    location: {
+        isCoordinates: false,
+        address: "",
+        lat: 0,
+        long: 0
+    }
+}

@@ -17,96 +17,56 @@ import MessageModal from '../modals/MessageModal'
 import LoadingComp from '../LoadingComp'
 import ImageUploadModal from '../modals/ImageUploadModal'
 import {siteSettings} from "../../sourceData/siteSettings"
-import {emptyRestaurantData} from "../../sourceData/emptyRestaurantData"
-// const ModalForArray = React.lazy(()=>import('../ModalForArray'))
-// import {useQuery} from "@tanstack/react-query"
+import {
+    emptyRestaurantData, 
+    foodMenuItemTemplate, 
+    drinkMenuItemTemplate, 
+    emptyMessageModalProp,
+    emptySearchParams
+} from "../../sourceData/emptyDataTemplates"
 
 // Components
 // import Checkbox from '../Checkbox'
 
-
-// const siteSettings.showImgMenu = true
 export default function AddRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
 
     // variables
     const navigate = useNavigate()
     const [foodMenuImgModalState, setFoodMenuImgModalState] = useState(false)
     const [drinkMenuImgModalState, setDrinkMenuImgModalState] = useState(false)
-
     const [formSubmitted, setFormSubmitted] = useState(false)
-    const [messageModalProps, setMessageModalProps] = useImmer({
-        modalOpen: false,
-        onClose: null,
-        header: null,
-        body: null,
-        button1text: "",
-        button2text: "",
-        handleButton1Click: null,
-        handleButton2Click: null,
-    })
+    const [messageModalProps, setMessageModalProps] = useImmer(emptyMessageModalProp)
     const [yelpModalOpen, setYelpModalOpen] = useState(false)
     const [bulkHourModalOpen, setBulkHourModalOpen] = useState(false)
-    const foodMenuItemTemplate = {
-        name: "",
-        description: "",
-        Type: "Food",
-        specialTypeId: 1,
-        // 1 = price, 2 = percentDiscount, 3 = dollarsOff
-        value: 0
-    }
-
-    const drinkMenuItemTemplate = {
-        name: "",
-        description: "",
-        Type: "Drink",
-        specialTypeId: 1,
-        // 1 = price, 2 = percentDiscount, 3 = dollarsOff
-        value: 0
-    }
     const [restaurantData, setRestaurantData] = useImmer(newRestFlag ? emptyRestaurantData : passedRestData)
     const [newFoodMenuItemState, setNewFoodMenuItemState] = useImmer(foodMenuItemTemplate)
     const [newDrinkMenuItemState, setNewDrinkMenuItemState] = useImmer(drinkMenuItemTemplate)
     const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
     const [yelpRestResponse, setYelpRestResponse] = useImmer([])
-    const [searchParams, setSearchParams] = useImmer({
-        term: "",
-        location: {
-            isCoordinates: false,
-            address: "",
-            lat: 0,
-            long: 0
-        }
-    })
+    const [searchParams, setSearchParams] = useImmer(emptySearchParams)
 
     useEffect(() => {
         filterParams.forEach((filter) => {
             setRestaurantData((draft) => {
                 draft[filter.name] = filter.value
             });
-            // console.log("i-restaurantData", restaurantData)
         })
     }, [filterParams])
 
     // Handler Functions
-
     const handleHourInputChange = (e, idx) => {
         setRestaurantData((draft) => {
             const hour = Number(date.transform(e.target.value, "HH:mm", "HH"))
             const minute = Number(date.transform(e.target.value, "HH:mm", "mm")) / 60
-            const time = hour + minute
-            console.log(time)
-            draft.hourSet.hours[idx][e.target.name] = time
+            draft.hourSet.hours[idx][e.target.name] = hour + minute
         })
     }
 
     const handleSearchButton = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/yelpSearch?search=${searchParams.term}&lat=${searchParams.location.lat}&long=${searchParams.location.long}&address=${searchParams.location.address}`)
-            // console.log(response)
-            // return
             const yelpRestList = response.data.results.businesses
-            // console.log("yelpRestList",yelpRestList)
             setYelpRestResponse((draft) => draft = yelpRestList)
             onModalClick()
         } catch (error) {
@@ -142,41 +102,28 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
 
     const onClose = () => {
         setYelpModalOpen(false)
-        // setSearchRestBool(false)
     }
     const handleAddFoodNewMenuItem = (e, type) => {
         e.preventDefault()
-        // console.log(newFoodMenuItemState)
-        setRestaurantData((draft) => {
-            draft.menu.foodMenu.push(newFoodMenuItemState)
-        })
-
+        setRestaurantData((draft) => draft.menu.foodMenu.push(newFoodMenuItemState))
         setNewFoodMenuItemState(foodMenuItemTemplate)
     }
 
     const handleAddDrinkNewMenuItem = (e) => {
         e.preventDefault()
-        // console.log(newDrinkMenuItemState)
-        setRestaurantData((draft) => {
-            draft.menu.drinkMenu.push(newDrinkMenuItemState)
-        })
+        setRestaurantData((draft) => draft.menu.drinkMenu.push(newDrinkMenuItemState))
         setNewDrinkMenuItemState(drinkMenuItemTemplate)
     }
 
     const handleEditNewMenuItem = (e, type, idx) => {
         e.preventDefault()
         const typeVar = type.toLowerCase()
-        setRestaurantData((draft) => {
-            draft.menu[`${typeVar}Menu`][idx][e.target.name] = e.target.value
-        })
+        setRestaurantData((draft) => draft.menu[`${typeVar}Menu`][idx][e.target.name] = e.target.value)
     }
 
     const handleRemoveNewMenuItem = (e, type, idx) => {
         e.preventDefault()
-        const typeVar = type.toLowerCase()
-        setRestaurantData((draft) => {
-            draft.menu[`${typeVar}Menu`].splice(idx, 1)
-        })
+        setRestaurantData((draft) => draft.menu[`${type.toLowerCase()}Menu`].splice(idx, 1))
     }
 
     const handleResetSearch = () => {
@@ -216,7 +163,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/restaurants/newRestaurant`, reqbody)
             console.log(response)
             setMessageModalProps((draft) => {
-
                 if (response.status === 201) {
                     draft.body = response.data.msg
                     draft.button1text = "Add Another Restaurant"
@@ -233,9 +179,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         setRestaurantData(emptyRestaurantData)
                         setFormSubmitted(false)
                         handleResetSearch()
-
                     }
-
                     draft.button2text = "See Created Restaurant"
                     draft.handleButton2Click = () => {
                         console.log(response.data.id)
@@ -247,12 +191,9 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     draft.handleButton1Click = () => { setMessageModalProps((draft) => { draft.modalOpen = false }) }
                 }
             })
-
-
         } catch (error) {
             console.warn(error)
         }
-
     }
 
     const handleBulkHourSubmit = (e, daysArr, hourData) => {
@@ -276,7 +217,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
             })
         })
         setBulkHourModalOpen(false)
-
     }
 
     const handleSetFoodMenuImg = (uploadedImgObj) => { 
@@ -284,6 +224,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
         setRestaurantData((draft) => { draft.menu.foodMenuImg = uploadedImgObj }) 
         setFoodMenuImgModalState(false)
     }
+
     const handleSetDrinkMenuImg = (uploadedImgObj) => { 
         console.log("uploadedImgObj",uploadedImgObj)
         setRestaurantData((draft) => { draft.menu.drinkMenuImg = uploadedImgObj }) 
@@ -294,24 +235,15 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
     // Map functions:
     const filtersMap = checkboxFilters.map((filterVal, idx) => {
         return (
-            <li
-                key={`AddRestFilter${idx}`}
-            >
+            <li key={`AddRestFilter${idx}`}>
                 <label>
                     <Checkbox
                         checked={restaurantData.filterParams[filterVal.name]}
                         name={filterVal.name}
-                        onChange={
-                            (e) => {
-                                setRestaurantData((draft) => {
-                                    draft.filterParams[filterVal.name] = e.target.checked
-                                })
-                            }
-                        }
+                        onChange={(e) => {setRestaurantData((draft) => draft.filterParams[filterVal.name] = e.target.checked)}}
                     />
                     {filterVal.display}
                 </label>
-
             </li>
         )
     })
@@ -331,11 +263,9 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 onChange={(e) => setRestaurantData(
                                     (draft) => { draft.hourSet.hours[idx].hasHH1 = e.target.checked }
                                 )}
-
                             />Happy Hour</Label>
                         {
                             restaurantData.hourSet.hours[idx].hasHH1 &&
-
                             <div>
                                 <input
                                     id={`${day}Hour1Start`}
@@ -347,7 +277,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                     onChange={(e) => handleHourInputChange(e, idx)}
                                     disabled={restaurantData.hourSet.hours[idx].hasHH1 === false}
                                 />
-
                                 <input
                                     id={`${day}Hour1end`}
                                     className="min-w-[50px] text-xs"
@@ -361,7 +290,6 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                             </div>
                         }
                     </div>
-
                     <div>
                         <Label>
                             <Checkbox
@@ -371,14 +299,11 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                                 )}
 
                             />Late Night</Label>
-
                         {
                             restaurantData.hourSet.hours[idx].hasHH2 &&
-
                             <div
                                 className='flex'
                             >
-
                                 <input
                                     id={`${day}Hour2Start`}
                                     className="min-w-[50px] text-xs"
