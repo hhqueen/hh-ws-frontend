@@ -189,7 +189,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                 } else {
                     draft.body = response.data.msg
                     draft.button1text = "Go back to Add New Restaurant Page"
-                    draft.handleButton1Click = () => { setMessageModalProps((draft) => { draft.modalOpen = false })}
+                    draft.handleButton1Click = () => { setMessageModalProps((draft) => { draft.modalOpen = false }) }
                 }
             })
         } catch (error) {
@@ -248,7 +248,7 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                     <Checkbox
                         checked={restaurantData.filterParams[filterVal.name]}
                         name={filterVal.name}
-                        onChange={(e) => { setRestaurantData((draft) => {draft.filterParams[filterVal.name] = e.target.checked})}}
+                        onChange={(e) => { setRestaurantData((draft) => { draft.filterParams[filterVal.name] = e.target.checked }) }}
                     />
                     {filterVal.display}
                 </label>
@@ -578,188 +578,195 @@ export default function AddRest({ newRestFlag = true, passedRestData = null, cur
                         {/* food/drink checkbox */}
                         {
                             !restaurantData.menu.isFoodAndDrinkMenu &&
-                            <div>
-                                <input
-                                    id='foodSpecialsBoolean'
-                                    type="checkbox"
-                                    checked={restaurantData.menu.hasFoodSpecials}
-                                    onChange={(e) => {
-                                        setRestaurantData((draft) => {
-                                            draft.menu.hasFoodSpecials = e.target.checked
-                                        })
-                                    }}
-                                />
-                                <label
-                                    htmlFor='foodSpecialsBoolean'
-                                >
-                                    Has Food Specials
-                                </label>
-                            </div>
-
-                        }
-
-                        {/* Food Menu Items */}
-                        {restaurantData.menu.hasFoodSpecials &&
-                            <div
-                                className='border mb-3'
-                            >
-                                {siteSettings.showImgMenu ?
-                                    <>
-                                        {
-                                            restaurantData.menu.foodMenuImg?.imgUrl &&
-                                            <div>
-                                                <img src={restaurantData.menu.foodMenuImg.imgUrl} />
-                                            </div>
-                                        }
-                                        <div>
-                                            <Button
-                                                onClick={() => setFoodMenuImgModalState(true)}
-                                            >Upload Food Menu</Button>
-
-                                            <ImageUploadModal
-                                                title="Food Menu Picture Upload"
-                                                modalState={foodMenuImgModalState}
-                                                setModalState={setFoodMenuImgModalState}
-                                                handleAfterSubmit={handleSetFoodMenuImg}
-                                                imgType={1}
-                                            />
-                                        </div>
-                                    </>
-                                    :
-                                    <>
-                                        <label
-                                            htmlFor='foodSpecialDescription'
-                                        >
-                                            Food Special Description:
-                                        </label>
-                                        <br></br>
-                                        <textarea
-                                            id='foodSpecialDescription'
-                                            onChange={(e) => {
-                                                setRestaurantData((draft) => {
-                                                    draft.menu.foodSpecialsdescription = e.target.value
-                                                })
-                                            }}
-                                        />
-                                        <div
-                                            className="flex flex-wrap gap-2 md:w-3/12"
-                                        >
-                                            <Button
-                                                type='button'
-                                                onClick={handleAddFoodNewMenuItem}
-                                            >Add New Food Item</Button>
-                                        </div>
-
-                                        <div>
-                                            {
-                                                restaurantData.menu.foodMenu.length > 0 &&
-                                                <EditMenuItems
-                                                    ItemsArr={restaurantData.menu.foodMenu}
-                                                    handleInputChange={handleEditNewMenuItem}
-                                                    handleRemove={handleRemoveNewMenuItem}
-                                                />
-                                            }
-                                        </div>
-                                    </>
-                                }
-                            </div>
-                        }
-                    </div>
-                    {/* DRINKS AREA */}
-                    <div>
-                        {!restaurantData.menu.isFoodAndDrinkMenu &&
-                            <div>
-                                <input
-                                    id='drinkSpecialsBoolean'
-                                    type="checkbox"
-                                    checked={restaurantData.menu.hasDrinkSpecials}
-                                    onChange={(e) => {
-                                        setRestaurantData((draft) => {
-                                            draft.menu.hasDrinkSpecials = e.target.checked
-                                        })
-                                    }}
-                                />
-                                <label
-                                    htmlFor='drinkSpecialsBoolean'
-                                >
-                                    has Drink Specials
-                                </label>
-                            </div>
-                        }
-                        {/* Drink Menu Items */}
-                        {restaurantData.menu.hasDrinkSpecials && 
                             <>
-                                {
-                                    siteSettings.showImgMenu ?
-                                        <>
-                                            {
-                                                restaurantData.menu.drinkMenuImg?.imgUrl &&
-                                                <div>
-                                                    <img src={restaurantData.menu.drinkMenuImg.imgUrl} />
-                                                </div>
-                                            }
-                                            <div>
-                                                <Button
-                                                    onClick={() => setDrinkMenuImgModalState(true)}
-                                                >Upload Drink Menu</Button>
+                                <div>
+                                    <input
+                                        id='foodSpecialsBoolean'
+                                        type="checkbox"
+                                        checked={restaurantData.menu.hasFoodSpecials}
+                                        onChange={(e) => {
+                                            setRestaurantData((draft) => {
+                                                draft.menu.hasFoodSpecials = e.target.checked
+                                            })
+                                        }}
+                                    />
+                                    <label
+                                        htmlFor='foodSpecialsBoolean'
+                                    >
+                                        Has Food Specials
+                                    </label>
+                                </div>
 
-                                                <ImageUploadModal
-                                                    title="Drink Menu Picture Upload"
-                                                    modalState={drinkMenuImgModalState}
-                                                    setModalState={setDrinkMenuImgModalState}
-                                                    handleAfterSubmit={handleSetDrinkMenuImg}
-                                                    imgType={2}
-                                                />
-                                            </div>
-                                        </>
-                                        :
-                                        <>
-                                            <div>
+
+                                {/* Food Menu Items */}
+                                {restaurantData.menu.hasFoodSpecials &&
+                                    <div
+                                        className='border mb-3'
+                                    >
+                                        {siteSettings.showImgMenu ?
+                                            <>
+                                                {
+                                                    restaurantData.menu.foodMenuImg?.imgUrl &&
+                                                    <div>
+                                                        <img src={restaurantData.menu.foodMenuImg.imgUrl} />
+                                                    </div>
+                                                }
+                                                <div>
+                                                    <Button
+                                                        onClick={() => setFoodMenuImgModalState(true)}
+                                                    >Upload Food Menu</Button>
+
+                                                    <ImageUploadModal
+                                                        title="Food Menu Picture Upload"
+                                                        modalState={foodMenuImgModalState}
+                                                        setModalState={setFoodMenuImgModalState}
+                                                        handleAfterSubmit={handleSetFoodMenuImg}
+                                                        imgType={1}
+                                                    />
+                                                </div>
+                                            </>
+                                            :
+                                            <>
                                                 <label
-                                                    htmlFor='drinkSpecialDescription'
+                                                    htmlFor='foodSpecialDescription'
                                                 >
-                                                    Drink Special Description:
+                                                    Food Special Description:
                                                 </label>
                                                 <br></br>
                                                 <textarea
-                                                    id='drinkSpecialDescription'
+                                                    id='foodSpecialDescription'
                                                     onChange={(e) => {
                                                         setRestaurantData((draft) => {
-                                                            draft.menu.drinkSpecialsdescription = e.target.value
+                                                            draft.menu.foodSpecialsdescription = e.target.value
                                                         })
                                                     }}
                                                 />
-                                            </div>
-
-
-
-                                            <div>
-                                                <div>
-
-                                                    <div
-                                                        className="flex flex-wrap gap-2 md:w-3/12"
-                                                    >
-                                                        <Button
-                                                            type='button'
-                                                            className=""
-                                                            onClick={handleAddDrinkNewMenuItem}
-                                                        >Add New Drink Item</Button>
-                                                    </div>
+                                                <div
+                                                    className="flex flex-wrap gap-2 md:w-3/12"
+                                                >
+                                                    <Button
+                                                        type='button'
+                                                        onClick={handleAddFoodNewMenuItem}
+                                                    >Add New Food Item</Button>
                                                 </div>
 
-                                                {/* div that holds food menu items as they are added */}
                                                 <div>
                                                     {
-                                                        restaurantData.menu.drinkMenu.length > 0 &&
+                                                        restaurantData.menu.foodMenu.length > 0 &&
                                                         <EditMenuItems
-                                                            ItemsArr={restaurantData.menu.drinkMenu}
+                                                            ItemsArr={restaurantData.menu.foodMenu}
                                                             handleInputChange={handleEditNewMenuItem}
                                                             handleRemove={handleRemoveNewMenuItem}
                                                         />
                                                     }
                                                 </div>
-                                            </div>
-                                        </>
+                                            </>
+                                        }
+                                    </div>
+                                }
+                            </>
+                        }
+                    </div>
+                    {/* DRINKS AREA */}
+                    <div>
+                        {!restaurantData.menu.isFoodAndDrinkMenu &&
+                            <>
+                                <div>
+                                    <input
+                                        id='drinkSpecialsBoolean'
+                                        type="checkbox"
+                                        checked={restaurantData.menu.hasDrinkSpecials}
+                                        onChange={(e) => {
+                                            setRestaurantData((draft) => {
+                                                draft.menu.hasDrinkSpecials = e.target.checked
+                                            })
+                                        }}
+                                    />
+                                    <label
+                                        htmlFor='drinkSpecialsBoolean'
+                                    >
+                                        has Drink Specials
+                                    </label>
+                                </div>
+
+                                {/* Drink Menu Items */}
+                                {restaurantData.menu.hasDrinkSpecials &&
+                                    <>
+                                        {
+                                            siteSettings.showImgMenu ?
+                                                <>
+
+
+                                                    {
+                                                        restaurantData.menu.drinkMenuImg?.imgUrl &&
+                                                        <div>
+                                                            <img src={restaurantData.menu.drinkMenuImg.imgUrl} />
+                                                        </div>
+                                                    }
+                                                    <div>
+                                                        <Button
+                                                            onClick={() => setDrinkMenuImgModalState(true)}
+                                                        >Upload Drink Menus</Button>
+
+                                                        <ImageUploadModal
+                                                            title="Drink Menu Picture Upload"
+                                                            modalState={drinkMenuImgModalState}
+                                                            setModalState={setDrinkMenuImgModalState}
+                                                            handleAfterSubmit={handleSetDrinkMenuImg}
+                                                            imgType={2}
+                                                        />
+                                                    </div>
+                                                </>
+                                                :
+                                                <>
+                                                    <div>
+                                                        <label
+                                                            htmlFor='drinkSpecialDescription'
+                                                        >
+                                                            Drink Special Description:
+                                                        </label>
+                                                        <br></br>
+                                                        <textarea
+                                                            id='drinkSpecialDescription'
+                                                            onChange={(e) => {
+                                                                setRestaurantData((draft) => {
+                                                                    draft.menu.drinkSpecialsdescription = e.target.value
+                                                                })
+                                                            }}
+                                                        />
+                                                    </div>
+
+
+
+                                                    <div>
+                                                        <div>
+
+                                                            <div
+                                                                className="flex flex-wrap gap-2 md:w-3/12"
+                                                            >
+                                                                <Button
+                                                                    type='button'
+                                                                    className=""
+                                                                    onClick={handleAddDrinkNewMenuItem}
+                                                                >Add New Drink Item</Button>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* div that holds food menu items as they are added */}
+                                                        <div>
+                                                            {
+                                                                restaurantData.menu.drinkMenu.length > 0 &&
+                                                                <EditMenuItems
+                                                                    ItemsArr={restaurantData.menu.drinkMenu}
+                                                                    handleInputChange={handleEditNewMenuItem}
+                                                                    handleRemove={handleRemoveNewMenuItem}
+                                                                />
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </>
+                                        }
+                                    </>
                                 }
                             </>
                         }
