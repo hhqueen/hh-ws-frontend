@@ -35,24 +35,22 @@ import geoLocation from "./helperFunctions/geoLocation"
 // const Main = lazy(() => import('./components/pages/Main'))
 // const RestDetail = lazy(() => import('./components/pages/RestDetail'))
 
+const fmtDate = date.format(new Date(), 'dddd')
+
 function App() {
   // variables
   const [allRestaurants, setAllRestaurants] = useState([])
-  const [filterParams, setFilterParams] = useImmer([])
+  const [filterParams, setFilterParams] = useImmer(checkboxFilters)
   const [currentLocation, setCurrentLocation] = useState({})
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [showRestaurants, setShowRestaurants] = useState([])
-  const [dow, setDow] = useState("")
-  const [locParams, setLocParams] = useState({
-    coordinates: {
-      lat: null,
-      long: null
-    },
+  const [dow, setDow] = useState(fmtDate)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [locParams, setLocParams] = useImmer({
+    lat: null,
+    long: null,
     location: null
-  })
-
-  const now = new Date()
-  const fmtDate = date.format(now, 'dddd')
+  })  
 
   // restaurant filter function
   const filterRests = (filterArr, restData) => {
@@ -74,6 +72,28 @@ function App() {
   // API call to backend for all restaurant data. 
   // need to be filtered on server side based on location distance
   const getRestaurants = async () => {
+    let queryString = "?"
+    let andAdder = ""
+    let globalIdx = 0
+    console.log("filterParams:", filterParams)
+    filterParams.forEach((param,idx)=>{
+      if (globalIdx !== 0) {
+        andAdder = "&"
+      }
+      if (param.value === true) {
+        queryString += `${andAdder}${param.name}=${true}`
+        globalIdx += 1
+      }
+    })
+    console.log("locParams:", locParams)
+    const locParamsArr = Object.entries(locParams)
+    locParamsArr.forEach((locParam)=>{
+      if (globalIdx !== 0) {andAdder = "&"}
+        queryString += `${andAdder}${locParam[0]}=${locParam[1]}`
+        globalIdx += 1
+    })
+    console.log("queryString:",queryString)
+
     try {
       // console.log(filterObj)   
       const gotRests = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants`)
@@ -96,20 +116,38 @@ function App() {
   // initial loading of data
   useEffect(() => {
     const loadInitialData = async () => {
-      const allRests = await getRestaurants()
-      // console.log(allRests)
-      setAllRestaurants(allRests)
-      const restArrByDay = await filterRestByDay(allRests, fmtDate)
-      setShowRestaurants(restArrByDay)
-      const latLong = await geoLocation()
-      if (latLong.geoLocAvail) {
-        setCurrentLocation(latLong)
-      } 
+      try {
+        const allRests = await getRestaurants()
+        setAllRestaurants(allRests)
+        setShowRestaurants(await filterRestByDay(allRests, dow))
+      } catch (error) {
+        console.warn(error)
+      }
     }
     loadInitialData()    
-    setDow(fmtDate)
-    setFilterParams(checkboxFilters)
   }, [])
+
+  // geolocation setter
+  useEffect(()=>{
+    const geoLocationSetter = async () => {
+      try {
+        const latLong = await geoLocation()
+        // console.log("geo location permission:",latLong.geoLocAvail)
+        console.log("latLong:",latLong)
+        if (latLong.geoLocAvail) {
+         setLocParams((draft)=>{
+            draft.lat = latLong.latitude
+            draft.long = latLong.longitude
+            draft.location = "Current Location"
+          })
+        } 
+      } catch (error) {
+        console.warn(error)
+      }
+    }
+    geoLocationSetter()
+  },[geoLocation(), locParams])
+
 
 
   // re-render list on filterParams Change. may want to change this to a server call. 
