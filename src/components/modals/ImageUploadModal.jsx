@@ -8,7 +8,7 @@ export default function ImageUploadModal({title = "", handleAfterSubmit, modalSt
     
     const handleUploadImage = async ()=>{
         try {
-            imgFile.set("cloud_folder_name","Menu Images")
+            imgFile.set("cloud_folder_name","Menu_Images")
             imgFile.set("imgType", imgType)
             // console.log("imgFile",imgFile)
             const uploadImgResponse = await axios.post(`${process.env.REACT_APP_SERVER_URL}/images/upload`, imgFile)
