@@ -7,14 +7,11 @@ const geoLocation = async () => {
         longitude:0
     }
     if ("geolocation" in navigator) {
-        console.log("Available");
         geoLocCoords.geoLocAvail = true
       } else {
-        console.log("Not Available");
         geoLocCoords.geoLocAvail = false
       }
       console.log("geolocation permission",geoLocCoords.geoLocAvail)
-    
     
       await navigator.geolocation.getCurrentPosition(function(position) {
         console.log("Latitude is :", position.coords.latitude);

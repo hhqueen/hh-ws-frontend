@@ -4,6 +4,8 @@ import HHHours from './HHHours'
 import MenuItems from './MenuItems'
 import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
+
+import { Dropdown } from 'flowbite-react'
 // const dateConverter = require("../helperFunctions/dateConverter")
 
 
@@ -83,6 +85,26 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
                 {/* Hour */}
                 {dowHours}
 
+            </div>
+
+            <div
+                className="absolute top-0 right-0 hover:color-[blue]"
+            >
+                <Dropdown
+                    label="..."
+                    size="sm"
+                    arrowIcon={false}
+                    color=""
+                >
+                    <Dropdown.Item onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}>
+                        Edit
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={()=>{
+                        // ARE YOU SURE MODAL -> API call to server to set rest as inActive
+                    }}>
+                        Delete
+                    </Dropdown.Item>
+                </Dropdown>
             </div>
 
         </div>

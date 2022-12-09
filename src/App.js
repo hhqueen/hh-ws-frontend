@@ -41,15 +41,18 @@ function App() {
   // variables
   const [allRestaurants, setAllRestaurants] = useState([])
   const [filterParams, setFilterParams] = useImmer(checkboxFilters)
-  const [currentLocation, setCurrentLocation] = useState({})
+  const [currentLocation, setCurrentLocation] = useImmer({
+    latitude:0,
+    longitude:0
+  })
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [showRestaurants, setShowRestaurants] = useState([])
   const [dow, setDow] = useState(fmtDate)
   const [searchTerm, setSearchTerm] = useState("")
   const [locParams, setLocParams] = useImmer({
-    lat: null,
-    long: null,
-    location: null
+    lat: 0,
+    long: 0,
+    location: ""
   })  
 
   // restaurant filter function
@@ -117,6 +120,7 @@ function App() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
+        await geoLocationSetter()
         const allRests = await getRestaurants()
         setAllRestaurants(allRests)
         setShowRestaurants(await filterRestByDay(allRests, dow))
@@ -127,28 +131,29 @@ function App() {
     loadInitialData()    
   }, [])
 
-  // geolocation setter
-  useEffect(()=>{
-    const geoLocationSetter = async () => {
-      try {
-        const latLong = await geoLocation()
-        // console.log("geo location permission:",latLong.geoLocAvail)
-        console.log("latLong:",latLong)
-        if (latLong.geoLocAvail) {
-         setLocParams((draft)=>{
-            draft.lat = latLong.latitude
-            draft.long = latLong.longitude
-            draft.location = "Current Location"
-          })
-        } 
-      } catch (error) {
-        console.warn(error)
-      }
+  // // geolocation setter
+  // useEffect(()=>{
+  //   geoLocationSetter()
+  // })
+
+  const geoLocationSetter = async () => {
+    try {
+      const latLong = await geoLocation()
+      console.log("latLong:",latLong)
+       setLocParams((draft)=>{
+          draft.lat = latLong.latitude
+          draft.long = latLong.longitude
+          draft.location = "Current Location"
+        })
+        setCurrentLocation((draft)=>{
+          draft.latitude = latLong.latitude
+          draft.longitude = latLong.longitude
+        })
+      //   console.log(locParams)
+    } catch (error) {
+      console.warn(error)
     }
-    geoLocationSetter()
-  },[geoLocation(), locParams])
-
-
+  }
 
   // re-render list on filterParams Change. may want to change this to a server call. 
   useEffect(()=>{
@@ -191,7 +196,13 @@ function App() {
               element={<RestDetail />}
             />
 
-            
+            <Route
+              path='/editrestaurant/:id'
+              element={<AddEditRest 
+                currentLocation={currentLocation}
+              />}
+            />
+
 
             {/* <Route
           path="/account"
