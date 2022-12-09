@@ -18,7 +18,7 @@ import Main from './components/pages/Main';
 import RestDetail from './components/pages/RestDetail';
 import SignUp from './components/pages/SignUp';
 import Login from './components/pages/Login';
-import AddRest from "./components/pages/AddRest"
+import AddEditRest from "./components/pages/AddEditRest"
 import LoadingComp from './components/LoadingComp';
 import ModalTest from './components/pages/ModalTest';
 
@@ -200,7 +200,7 @@ function App() {
 
             <Route
               path="/addnewrestaurant"
-              element={<AddRest 
+              element={<AddEditRest 
                 currentLocation={currentLocation}
               />}
             />

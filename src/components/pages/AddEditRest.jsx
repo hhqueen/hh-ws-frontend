@@ -28,7 +28,7 @@ import {
 // Components
 // import Checkbox from '../Checkbox'
 
-export default function AddRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
+export default function AddEditRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
 
     // variables
     const navigate = useNavigate()
