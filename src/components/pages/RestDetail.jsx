@@ -35,19 +35,9 @@ export default function RestDetail() {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
         console.log("async data", response.data)
-        // console.log("foodAndDrinkMenuImg.imgUrl",response.data.menu.foodAndDrinkMenuImg.imgUrl)
         await setRestData(response.data)
-        // console.log("rest hours?", response.data.hours)
-        // setRestHours(response.data.hours)
-        // setCuisineString(response.data.cuisines.join(", "))
-
-        // setFilterString(
-        //   showApplicableFilters(response.data)
-        // )
         await setAddress(`${response.data.address1} ${response.data.city} ${response.data.state} ${response.data.zip_code}`)
-
         setIsloaded(true)
-        // setIsloaded(true)
       } catch (error) {
         console.log(error)
       }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom"
 import HHHours from './HHHours'
-import MenuItems from './MenuItems'
+import jwt_decode from 'jwt-decode'
 import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
 
@@ -11,6 +11,7 @@ import { Dropdown } from 'flowbite-react'
 
 export default function RestListDetailCard({ dow, restaurantInfo }) {
     const navigate = useNavigate()
+
 
     const cuisineString = restaurantInfo.cuisines.join(", ")
     const applicableFilters = showApplicableFilters(restaurantInfo.filterParams)
@@ -86,26 +87,28 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
                 {dowHours}
 
             </div>
-
-            <div
-                className="absolute top-0 right-0"
-            >
-                <Dropdown
-                    label="..."
-                    size="sm"
-                    arrowIcon={false}
-                    color=""
+            {
+                localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
+                <div
+                    className="absolute top-0 right-0"
                 >
-                    <Dropdown.Item onClick={() => navigate(`/editrestaurant/${restaurantInfo._id}`)}>
-                        Edit
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={()=>{
-                        // ARE YOU SURE MODAL -> API call to server to set rest as inActive
-                    }}>
-                        Delete
-                    </Dropdown.Item>
-                </Dropdown>
-            </div>
+                    <Dropdown
+                        label="..."
+                        size="sm"
+                        arrowIcon={false}
+                        color=""
+                    >
+                        <Dropdown.Item onClick={() => navigate(`/editrestaurant/${restaurantInfo._id}`)}>
+                            Edit
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => {
+                            // ARE YOU SURE MODAL -> API call to server to set rest as inActive
+                        }}>
+                            Delete
+                        </Dropdown.Item>
+                    </Dropdown>
+                </div>
+            }
 
         </div>
     )
