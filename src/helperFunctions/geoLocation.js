@@ -11,12 +11,12 @@ const geoLocation = async () => {
       } else {
         geoLocCoords.geoLocAvail = false
       }
-      console.log("geolocation permission",geoLocCoords.geoLocAvail)
+      // console.log("geolocation permission",geoLocCoords.geoLocAvail)
     
-      await navigator.geolocation.getCurrentPosition(function(position) {
-        console.log("Latitude is :", position.coords.latitude);
+      navigator.geolocation.getCurrentPosition(function(position) {
+        // console.log("Latitude is :", position.coords.latitude);
         geoLocCoords.latitude = position.coords.latitude
-        console.log("Longitude is :", position.coords.longitude);
+        // console.log("Longitude is :", position.coords.longitude);
         geoLocCoords.longitude = position.coords.longitude
       });
     
