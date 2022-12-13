@@ -23,7 +23,7 @@ import LoadingComp from './components/LoadingComp';
 import ModalTest from './components/pages/ModalTest';
 
 // import source data
-import { checkboxFilters } from "./sourceData/filters"
+import { checkboxFilters } from "./sourceData/emptyDataTemplates"
 
 // require functions
 import getCoord from "./helperFunctions/getCoord"

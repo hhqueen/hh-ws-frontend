@@ -1,3 +1,10 @@
+export const checkboxFilters = [
+    { name: "dogFriendly", display: "Dog Friendly", value: false },
+    { name: "hasPatio", display: "Patio", value: false  },
+    { name: "hasFood", display: "Food", value: false  },
+    { name: "hasDrinks", display: "Drinks", value: false  },
+  ]
+
 export const emptyRestaurantData = {
     yelpRestaurantId: null,
     name: null,
@@ -13,12 +20,7 @@ export const emptyRestaurantData = {
     latitude: null,
     longitude: null,
     image_url: null,
-    filterParams:{
-        hasDrinks: false,
-        hasFood: false,
-        dogFriendly: false,
-        hasPatio: false,
-    },
+    filterParams: checkboxFilters,
     cuisines: [],
     hourSet: {
         hours:[

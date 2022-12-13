@@ -34,7 +34,7 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
     return (
         // container div
         <div
-            className='mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+            className='relative mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
         >
             <img
                 loading="lazy"
@@ -88,7 +88,7 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
             </div>
 
             <div
-                className="absolute top-0 right-0 hover:color-[blue]"
+                className="absolute top-0 right-0"
             >
                 <Dropdown
                     label="..."
@@ -96,7 +96,7 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
                     arrowIcon={false}
                     color=""
                 >
-                    <Dropdown.Item onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}>
+                    <Dropdown.Item onClick={() => navigate(`/editrestaurant/${restaurantInfo._id}`)}>
                         Edit
                     </Dropdown.Item>
                     <Dropdown.Item onClick={()=>{
