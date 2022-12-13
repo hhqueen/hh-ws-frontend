@@ -1,13 +1,14 @@
+// libraries
 import React from 'react'
 import { useNavigate } from "react-router-dom"
-import HHHours from './HHHours'
+import { Dropdown } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
+// components
+import HHHours from './HHHours'
+// function/data imports
 import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
-
-import { Dropdown } from 'flowbite-react'
-// const dateConverter = require("../helperFunctions/dateConverter")
-
+import EditDeleteRestComp from './EditDeleteRestComp'
 
 export default function RestListDetailCard({ dow, restaurantInfo }) {
     const navigate = useNavigate()
@@ -29,7 +30,6 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
                 timeOutputVal={1}
             />
         )
-
     })
 
     return (
@@ -87,28 +87,10 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
                 {dowHours}
 
             </div>
-            {
-                localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
-                <div
-                    className="absolute top-0 right-0"
-                >
-                    <Dropdown
-                        label="..."
-                        size="sm"
-                        arrowIcon={false}
-                        color=""
-                    >
-                        <Dropdown.Item onClick={() => navigate(`/editrestaurant/${restaurantInfo._id}`)}>
-                            Edit
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={() => {
-                            // ARE YOU SURE MODAL -> API call to server to set rest as inActive
-                        }}>
-                            Delete
-                        </Dropdown.Item>
-                    </Dropdown>
-                </div>
-            }
+           
+           <EditDeleteRestComp
+            id={restaurantInfo._id}
+           />
 
         </div>
     )
