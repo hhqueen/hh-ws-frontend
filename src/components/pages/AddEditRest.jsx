@@ -772,7 +772,7 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
                             setFormSubmitted(true)
                             handleFormSubmit(e)
                         }}
-                    >Submit</Button>
+                    >Submit</Button> 
                 </div>
 
             </form>
