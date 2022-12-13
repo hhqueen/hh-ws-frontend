@@ -369,19 +369,7 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
             <form
             // onSubmit={(e) => handleFormSubmit(e)}
             >
-                <div
-                    className='flex flex-wrap gap-2 md:w-3/12'
-                >
-                    <Button
-                        className='border'
-                        type="submit"
-                        disabled={formSubmitted}
-                        onClick={(e) => {
-                            setFormSubmitted(true)
-                            handleFormSubmit(e)
-                        }}
-                    >Submit</Button>
-                </div>
+
 
                 <MessageModal
                     modalOpen={messageModalProps.modalOpen}
@@ -771,6 +759,20 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
                             </>
                         }
                     </div>
+                </div>
+
+                <div
+                    className='flex flex-wrap gap-2 md:w-3/12'
+                >
+                    <Button
+                        className='border'
+                        type="submit"
+                        disabled={formSubmitted}
+                        onClick={(e) => {
+                            setFormSubmitted(true)
+                            handleFormSubmit(e)
+                        }}
+                    >Submit</Button>
                 </div>
 
             </form>

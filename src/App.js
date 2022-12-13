@@ -120,7 +120,6 @@ function App() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        await geoLocationSetter()
         const allRests = await getRestaurants()
         setAllRestaurants(allRests)
         setShowRestaurants(await filterRestByDay(allRests, dow))
@@ -128,13 +127,9 @@ function App() {
         console.warn(error)
       }
     }
-    loadInitialData()    
+    loadInitialData()
+    geoLocationSetter()
   }, [])
-
-  // // geolocation setter
-  // useEffect(()=>{
-  //   geoLocationSetter()
-  // })
 
   const geoLocationSetter = async () => {
     try {
