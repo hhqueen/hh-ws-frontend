@@ -1,11 +1,16 @@
 import { checkboxFilters } from "../sourceData/filters"
 
-const showApplicableFilters = (restData) => {
+const showApplicableFilters = (passedArr) => {
     let applFilterArr = []
-    checkboxFilters.forEach((filter) => {
-      if (restData.filterParams[filter.name]) {
-        applFilterArr.push(filter.display)
-      }
+    // checkboxFilters.forEach((filter) => {
+    //   if (restData.filterParams[filter.name]) {
+    //     applFilterArr.push(filter.display)
+    //   }
+    // })
+    passedArr.filter((item)=>{
+      return item.value === true
+    }).forEach((item) =>{
+      applFilterArr.push(item.display)
     })
     let filterString = applFilterArr.join(", ")
     // console.log("filterString:",filterString)
