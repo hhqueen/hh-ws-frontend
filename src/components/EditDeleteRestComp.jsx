@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from "react-router-dom"
 import { Dropdown } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
+import axios from "axios"
 
 export default function EditDeleteRestComp({id}) {
     const navigate = useNavigate()
@@ -21,8 +22,13 @@ export default function EditDeleteRestComp({id}) {
                 <Dropdown.Item onClick={() => navigate(`/editrestaurant/${id}`)}>
                     Edit
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => {
+                <Dropdown.Item onClick={async () => {
+                    const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
                     // ARE YOU SURE MODAL -> API call to server to set rest as inActive
+                    console.log(response)
+                    if(response.status === 200) {
+                        navigate("/")
+                    }
                 }}>
                     Delete
                 </Dropdown.Item>
