@@ -13,7 +13,7 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
     const navigate = useNavigate()
 
     const cuisineString = restaurantInfo.cuisines.join(", ")
-    const applicableFilters = showApplicableFilters(restaurantInfo)
+    const applicableFilters = showApplicableFilters(restaurantInfo.filterParams)
 
     const dowHours = restaurantInfo.hourSet.hours.filter((day) => {
         const numOfDay = dateConverter(dow, false)

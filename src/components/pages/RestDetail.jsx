@@ -35,7 +35,7 @@ export default function RestDetail() {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
         console.log("async data", response.data)
-        console.log("foodAndDrinkMenuImg.imgUrl",response.data.menu.foodAndDrinkMenuImg.imgUrl)
+        // console.log("foodAndDrinkMenuImg.imgUrl",response.data.menu.foodAndDrinkMenuImg.imgUrl)
         await setRestData(response.data)
         // console.log("rest hours?", response.data.hours)
         // setRestHours(response.data.hours)
@@ -81,7 +81,7 @@ export default function RestDetail() {
             >
               <p>{restData?.name}</p>
               <p>{restData?.cuisines.join(", ")}</p>
-              <p>{showApplicableFilters(restData)}</p>
+              <p>{showApplicableFilters(restData.filterParams)}</p>
 
               <a
                 href={`https://www.google.com/maps/place/${address.replace(" ", "+")}`}
@@ -136,7 +136,7 @@ export default function RestDetail() {
                       className='border-b'
                     >Food And Drink Menu</p>
                     <img
-                      src={`${restData.menu.foodAndDrinkMenuImg.imgUrl}`}
+                      src={`${restData.menu.foodAndDrinkMenuImg?.imgUrl}`}
                       alt="image"
                     />
                   </div>
@@ -157,7 +157,7 @@ export default function RestDetail() {
                         siteSettings.showMenuImg ?
                           <>
                             <img
-                              src={`${restData.menu.foodMenuImg.imgUrl}`}
+                              src={`${restData.menu.foodMenuImg?.imgUrl}`}
                               alt="image"
                             />
                           </>
@@ -187,7 +187,7 @@ export default function RestDetail() {
                         siteSettings.showMenuImg ?
                           <>
                             <img
-                              src={`${restData.menu.drinkMenuImg.imgUrl}`}
+                              src={`${restData.menu.drinkMenuImg?.imgUrl}`}
                               alt="image"
                             />
                           </>
