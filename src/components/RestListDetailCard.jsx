@@ -1,16 +1,18 @@
+// libraries
 import React from 'react'
 import { useNavigate } from "react-router-dom"
+import { Dropdown } from 'flowbite-react'
+import jwt_decode from 'jwt-decode'
+// components
 import HHHours from './HHHours'
-import MenuItems from './MenuItems'
+// function/data imports
 import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
-
-import { Dropdown } from 'flowbite-react'
-// const dateConverter = require("../helperFunctions/dateConverter")
-
+import EditDeleteRestComp from './EditDeleteRestComp'
 
 export default function RestListDetailCard({ dow, restaurantInfo }) {
     const navigate = useNavigate()
+
 
     const cuisineString = restaurantInfo.cuisines.join(", ")
     const applicableFilters = showApplicableFilters(restaurantInfo.filterParams)
@@ -28,13 +30,12 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
                 timeOutputVal={1}
             />
         )
-
     })
 
     return (
         // container div
         <div
-            className='mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+            className='relative mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
         >
             <img
                 loading="lazy"
@@ -86,26 +87,10 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
                 {dowHours}
 
             </div>
-
-            <div
-                className="absolute top-0 right-0 hover:color-[blue]"
-            >
-                <Dropdown
-                    label="..."
-                    size="sm"
-                    arrowIcon={false}
-                    color=""
-                >
-                    <Dropdown.Item onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}>
-                        Edit
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={()=>{
-                        // ARE YOU SURE MODAL -> API call to server to set rest as inActive
-                    }}>
-                        Delete
-                    </Dropdown.Item>
-                </Dropdown>
-            </div>
+           
+           <EditDeleteRestComp
+            id={restaurantInfo._id}
+           />
 
         </div>
     )

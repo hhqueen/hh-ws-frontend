@@ -1,7 +1,6 @@
 // Libraries
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom"
-import { checkboxFilters } from "../../sourceData/filters"
+import { useNavigate, useParams } from "react-router-dom"
 import { dowList } from "../../sourceData/dowList"
 import { useImmer } from "use-immer"
 import { Checkbox, Label, Button, TextInput, Select } from 'flowbite-react'
@@ -22,15 +21,25 @@ import {
     foodMenuItemTemplate,
     drinkMenuItemTemplate,
     emptyMessageModalProp,
-    emptySearchParams
+    emptySearchParams,
+    checkboxFilters
 } from "../../sourceData/emptyDataTemplates"
 
 // Components
 // import Checkbox from '../Checkbox'
 
-export default function AddEditRest({ newRestFlag = true, passedRestData = null, currentLocation }) {
+const getOneRestaurantInfo = async (id) => {
+    console.log("restId for Edit:", id)
+    const getOneRest = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
+    console.log("get One Async Data", getOneRest.data)
+    return getOneRest.data
+}
+
+
+export default function AddEditRest({ currentLocation }) {
 
     // variables
+    const { id } = useParams()
     const navigate = useNavigate()
     const [foodAndDrinkMenuImgModalState, setFoodAndDrinkMenuImgModalState] = useState(false)
     const [foodMenuImgModalState, setFoodMenuImgModalState] = useState(false)
@@ -39,21 +48,24 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
     const [messageModalProps, setMessageModalProps] = useImmer(emptyMessageModalProp)
     const [yelpModalOpen, setYelpModalOpen] = useState(false)
     const [bulkHourModalOpen, setBulkHourModalOpen] = useState(false)
-    const [restaurantData, setRestaurantData] = useImmer(newRestFlag ? emptyRestaurantData : passedRestData)
+    const [restaurantData, setRestaurantData] = useImmer(emptyRestaurantData)
     const [newFoodMenuItemState, setNewFoodMenuItemState] = useImmer(foodMenuItemTemplate)
     const [newDrinkMenuItemState, setNewDrinkMenuItemState] = useImmer(drinkMenuItemTemplate)
-    const [filterParams, setFilterParams] = useState(checkboxFilters)
     const [searchRestBool, setSearchRestBool] = useState(true)
     const [yelpRestResponse, setYelpRestResponse] = useImmer([])
     const [searchParams, setSearchParams] = useImmer(emptySearchParams)
 
     useEffect(() => {
-        filterParams.forEach((filter) => {
-            setRestaurantData((draft) => {
-                draft[filter.name] = filter.value
-            });
-        })
-    }, [filterParams])
+        const execute = async () => {
+            console.log("id:", id)
+            const restResponse = await getOneRestaurantInfo(id)
+            setRestaurantData(restResponse)
+            setSearchRestBool(false)
+        }
+        execute()
+    }, [id])
+
+
 
     // Handler Functions
     const handleHourInputChange = (e, idx) => {
@@ -241,16 +253,21 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
 
 
     // Map functions:
-    const filtersMap = checkboxFilters.map((filterVal, idx) => {
+    const filtersMap = restaurantData.filterParams.map((param, idx) => {
         return (
             <li key={`AddRestFilter${idx}`}>
                 <label>
                     <Checkbox
-                        checked={restaurantData.filterParams[filterVal.name]}
-                        name={filterVal.name}
-                        onChange={(e) => { setRestaurantData((draft) => { draft.filterParams[filterVal.name] = e.target.checked }) }}
+                        checked={param.value}
+                        name={param.name}
+                        onChange={(e) => {
+                            setRestaurantData((draft) => {
+                                const foundParam = draft.filterParams.find((item) => item.name === param.name)
+                                foundParam.value = e.target.checked
+                            })
+                        }}
                     />
-                    {filterVal.display}
+                    {param.display}
                 </label>
             </li>
         )
@@ -393,7 +410,6 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
                 <div
                     className='py-3'
                 >
-                    <h1>Search Yelp Restaurant:</h1>
                     {
                         searchRestBool ?
                             // {/* search container */}
@@ -454,7 +470,6 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
                             :
                             // {/* results Container */}
                             <div>
-                                <p>Yelp Results Container</p>
                                 <img
                                     alt={restaurantData.name}
                                     src={restaurantData.image_url}
@@ -463,15 +478,19 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
                                 <p>{restaurantData.address1}</p>
                                 <p>{restaurantData.city}</p>
 
-                                <div
-                                    className='flex flex-wrap gap-2 md:w-3/12'
-                                >
-                                    <Button
-                                        type='button'
-                                        className='border'
-                                        onClick={handleResetSearch}
-                                    >Reset Search</Button>
-                                </div>
+                                {
+                                    !id === undefined &&
+
+                                    <div
+                                        className='flex flex-wrap gap-2 md:w-3/12'
+                                    >
+                                        <Button
+                                            type='button'
+                                            className='border'
+                                            onClick={handleResetSearch}
+                                        >Reset Search</Button>
+                                    </div>
+                                }
                             </div>
                     }
                 </div>
@@ -525,13 +544,6 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
                         {/* Food AND Drink Menu Img Upload */}
                         <div>
                             <label>Food And Drink Menu:</label>
-                            {/* <Select
-                                id="isFoodAndDrinkMenu"
-                                onChange={(e)=>{setRestaurantData((draft)=>{draft.menu.isFoodAndDrinkMenu = e.target.value})}}
-                            >
-                                <option value={true} defaultValue={true}>Combined</option>
-                                <option value={false}>Separated</option>
-                            </Select> */}
                             <input
                                 type="checkbox"
                                 checked={restaurantData.menu.isFoodAndDrinkMenu}
@@ -772,7 +784,7 @@ export default function AddEditRest({ newRestFlag = true, passedRestData = null,
                             setFormSubmitted(true)
                             handleFormSubmit(e)
                         }}
-                    >Submit</Button> 
+                    >Submit</Button>
                 </div>
 
             </form>
