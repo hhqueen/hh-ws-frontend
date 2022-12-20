@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { Navbar, Dropdown, Avatar } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
 import { useImmer } from 'use-immer'
+import { useState } from 'react'
+import Alpha2BannerComp from './Alpha2BannerComp'
 
 const emptyUserInfo = {
     "firstName": "",
@@ -13,6 +15,7 @@ const emptyUserInfo = {
 
 export default function NavBar() {
     const navigate = useNavigate()
+    const [alpha2 , setAlpha2] = useState(true)
     const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
     // function to remove token for logging out here
     const handleLogOut = () => {
@@ -47,7 +50,7 @@ export default function NavBar() {
     return (
         <>
             <div
-                className='fixed w-full top-0 bg-white z-50'
+                className='fixed flex flex-col w-full top-0 bg-white z-50'
             >
                 <Navbar
                     className="flex justify-between"
@@ -165,6 +168,11 @@ export default function NavBar() {
 
                     </div>
                 </Navbar>
+                
+                {alpha2 &&
+                    <Alpha2BannerComp/>
+                }
+
             </div>
         </>
     )
