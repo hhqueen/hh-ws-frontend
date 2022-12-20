@@ -55,12 +55,18 @@ export default function AddEditRest({ currentLocation }) {
     const [yelpRestResponse, setYelpRestResponse] = useImmer([])
     const [searchParams, setSearchParams] = useImmer(emptySearchParams)
 
-    useEffect(() => {
+    useEffect(() => {    
         const execute = async () => {
-            console.log("id:", id)
-            const restResponse = await getOneRestaurantInfo(id)
-            setRestaurantData(restResponse)
-            setSearchRestBool(false)
+            try {
+                if(id !== undefined) {
+                    console.log("id:", id)
+                    const restResponse = await getOneRestaurantInfo(id)
+                    setRestaurantData(restResponse)
+                    setSearchRestBool(false)
+                }
+            } catch (error) {
+                console.log(error)
+            }
         }
         execute()
     }, [id])
