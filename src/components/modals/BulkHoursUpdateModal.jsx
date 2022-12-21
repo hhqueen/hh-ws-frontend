@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal } from 'flowbite-react'
 import { useImmer } from "use-immer"
-import { Checkbox, Label } from 'flowbite-react'
+import { Checkbox, Label, Button } from 'flowbite-react'
 import { dowList } from "../../sourceData/dowList"
 
 const date = require('date-and-time');
@@ -161,13 +161,17 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                 </div>
             </Modal.Body>
             <Modal.Footer>
-            <button
-                            type='submit'
-                            className='border rounded-xs'
-                            onClick={(e) => handleFormSubmit(e, daysArr, hourData)}
-                        >
-                            Submit
-                        </button>
+            <div
+                className='flex flex-wrap gap-2 md:w-3/12'
+            >
+                <Button
+                    type='submit'
+                    className='border rounded-xs'
+                    onClick={(e) => handleFormSubmit(e, daysArr, hourData)}
+                >
+                    Submit
+                </Button>
+            </div>
             </Modal.Footer>
         </Modal>
     )
