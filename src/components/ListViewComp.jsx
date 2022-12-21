@@ -20,7 +20,7 @@ export default function ListViewComp({ dow, allRestaurants }) {
     <>
     <Suspense fallback={<LoadingComp/>}>
       <div
-        className='w-full mt-[10px] md:mt-[60px]'
+        className='w-full mt-[20px] md:mt-[60px]'
       >
         <ul>
           {listRestaurants}
