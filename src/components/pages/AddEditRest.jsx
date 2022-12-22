@@ -387,7 +387,7 @@ export default function AddEditRest({ currentLocation }) {
 
     return (
         <div
-            className='px-2 mt-[70px]'
+            className='px-2 mt-[200px]'
         >
             <form
             // onSubmit={(e) => handleFormSubmit(e)}
@@ -485,7 +485,7 @@ export default function AddEditRest({ currentLocation }) {
                                 <p>{restaurantData.city}</p>
 
                                 {
-                                    !id === undefined &&
+                                    id === undefined &&
 
                                     <div
                                         className='flex flex-wrap gap-2 md:w-3/12'

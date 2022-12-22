@@ -57,10 +57,11 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams 
                             </Select>
                         </label>
                         <div
-                            className='w-full'
+                            className='w-full z-50'
                         >
                             <Dropdown 
                                 label="Filters"
+                                className="z-50"
                             >
                             {filtersMap}
                             </Dropdown>
