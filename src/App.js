@@ -42,17 +42,18 @@ function App() {
   const [allRestaurants, setAllRestaurants] = useState([])
   const [filterParams, setFilterParams] = useImmer(checkboxFilters)
   const [currentLocation, setCurrentLocation] = useImmer({
-    latitude:0,
-    longitude:0
+    latitude:null,
+    longitude:null
   })
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [showRestaurants, setShowRestaurants] = useState([])
   const [dow, setDow] = useState(fmtDate)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [locParams, setLocParams] = useImmer({
-    lat: 0,
-    long: 0,
-    location: ""
+  const [searchParams, setSearchParams] = useImmer({
+    searchTerm:"",
+    currentLatitude: null,
+    currentLongitude: null,
+    address: "",
+    searchButtonClicked: false
   })  
 
   // restaurant filter function
@@ -76,30 +77,27 @@ function App() {
   // need to be filtered on server side based on location distance
   const getRestaurants = async () => {
     let queryString = "?"
-    let andAdder = ""
-    let globalIdx = 0
     console.log("filterParams:", filterParams)
-    filterParams.forEach((param,idx)=>{
-      if (globalIdx !== 0) {
-        andAdder = "&"
+    
+    // Build Query String
+    Object.entries(searchParams).map((param,idx)=>{
+      if (queryString !== "?") {
+        queryString += "&"
       }
-      if (param.value === true) {
-        queryString += `${andAdder}${param.name}=${true}`
-        globalIdx += 1
-      }
+      queryString += `${param[0]}=${param[1]}`
     })
-    console.log("locParams:", locParams)
-    const locParamsArr = Object.entries(locParams)
-    locParamsArr.forEach((locParam)=>{
-      if (globalIdx !== 0) {andAdder = "&"}
-        queryString += `${andAdder}${locParam[0]}=${locParam[1]}`
-        globalIdx += 1
+
+    filterParams.forEach((param)=>{
+      if (param.value === true) {
+        queryString += `&${param.name}=${true}`
+      }
     })
     console.log("queryString:",queryString)
 
+    // Execute API Query based on state filters and search values
     try {
       // console.log(filterObj)   
-      const gotRests = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants`)
+      const gotRests = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`)
       return gotRests.data
     } catch (error) {
       console.warn(error)
@@ -120,6 +118,7 @@ function App() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
+        await geoLocationSetter()
         const allRests = await getRestaurants()
         setAllRestaurants(allRests)
         setShowRestaurants(await filterRestByDay(allRests, dow))
@@ -128,25 +127,32 @@ function App() {
       }
     }
     loadInitialData()
-    geoLocationSetter()
   }, [])
 
   const geoLocationSetter = async () => {
     try {
       const latLong = await geoLocation()
       console.log("latLong:",latLong)
-       setLocParams((draft)=>{
-          draft.lat = latLong.latitude
-          draft.long = latLong.longitude
-          draft.location = "Current Location"
-        })
-        setCurrentLocation((draft)=>{
-          draft.latitude = latLong.latitude
-          draft.longitude = latLong.longitude
-        })
-      //   console.log(locParams)
+      await setCurrentLocation((draft)=>{
+        draft.latitude = latLong.latitude
+        draft.longitude = latLong.longitude
+      })
+      await setSearchParams((draft)=>{
+        draft.currentLatitude = latLong.latitude
+        draft.currentLongitude = latLong.longitude  
+    })
     } catch (error) {
       console.warn(error)
+    }
+  }
+  
+  const handleSearchFormSubmit = async (e) =>{
+    // e.preventDefault()
+    try {
+      console.log("handleSearchFormSubmit submitted")
+      const gotRests = getRestaurants()
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -171,7 +177,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
 
-        <NavBar />
+        <NavBar 
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          handleSearchFormSubmit={handleSearchFormSubmit}
+        />
         
           <Routes>
             {/* website routes */}

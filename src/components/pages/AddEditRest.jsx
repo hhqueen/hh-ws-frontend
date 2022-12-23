@@ -712,7 +712,7 @@ export default function AddEditRest({ currentLocation }) {
                                                     <div>
                                                         <Button
                                                             onClick={() => setDrinkMenuImgModalState(true)}
-                                                        >Upload Drink Menus</Button>
+                                                        >Upload Drink Menu</Button>
 
                                                         <ImageUploadModal
                                                             title="Drink Menu Picture Upload"
