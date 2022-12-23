@@ -26,7 +26,11 @@ export default function RestDetail() {
       foodSpecialsDescription: "",
       drinkSpecialsDescription: "",
       foodMenu: [],
-      drinkMenu: []
+      drinkMenu: [],
+      foodAndDrinkMenuImg:null,
+      foodMenuImg:null,
+      drinkMenuImg:null
+
     }
   })
   const [isLoaded, setIsloaded] = useState(false)
@@ -37,8 +41,8 @@ export default function RestDetail() {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
         console.log("async data", response.data)
-        await setRestData(response.data)
-        await setAddress(`${response.data.address1} ${response.data.city} ${response.data.state} ${response.data.zip_code}`)
+        setRestData(response.data)
+        setAddress(`${response.data.address1} ${response.data.city} ${response.data.state} ${response.data.zip_code}`)
         setIsloaded(true)
       } catch (error) {
         console.log(error)
@@ -145,7 +149,7 @@ export default function RestDetail() {
             {!restData.menu.isFoodAndDrinkMenu &&
               <>
                 {
-                  restData.menu.drinkMenuImg !== null &&
+                  restData.menu.foodMenuImg !== null &&
 
                   <div
                     className='flex flex-col items-center justify-center py-3'>
@@ -153,10 +157,10 @@ export default function RestDetail() {
                       className='border-b'
                     >Food Menu</p>
                     {
-                      siteSettings.showMenuImg ?
+                      siteSettings.showImgMenu ?
                         <>
                           <img
-                            src={`${restData.menu.foodMenuImg?.imgUrl}`}
+                            src={`${restData.menu.foodMenuImg.imgUrl}`}
                             alt="image"
                           />
                         </>
@@ -183,10 +187,10 @@ export default function RestDetail() {
                       className='border-b'
                     >Drink Menu</p>
                     {
-                      siteSettings.showMenuImg ?
+                      siteSettings.showImgMenu ?
                         <>
                           <img
-                            src={`${restData.menu.drinkMenuImg?.imgUrl}`}
+                            src={`${restData.menu.drinkMenuImg.imgUrl}`}
                             alt="image"
                           />
                         </>
