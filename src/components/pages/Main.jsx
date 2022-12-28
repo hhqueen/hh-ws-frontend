@@ -1,21 +1,21 @@
-import React, {Suspense} from 'react'
-import FilterComp from '../FilterComp'
+import { Suspense, lazy } from 'react'
+// import FilterComp from '../FilterComp'
 // import ListViewComp from '../ListViewComp'
-import MapViewComp from '../MapViewComp'
+// import MapViewComp from '../MapViewComp'
 import LoadingComp from '../LoadingComp'
 
-import { Alert } from 'flowbite-react'
+const ListViewComp = lazy(() => import('../ListViewComp'))
+const FilterComp = lazy(() => import('../FilterComp'))
 
-const ListViewComp = React.lazy(()=> import('../ListViewComp'))
+export default function Main({ dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
 
-export default function Main({dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
-  
-  
+
   return (
     <div
       className='flex flex-col 
       sm:flex-row sm:my-10'
     >
+      <Suspense fallback={<LoadingComp />}>
         <FilterComp
           setFilterParams={setFilterParams}
           filterParams={filterParams}
@@ -23,16 +23,16 @@ export default function Main({dow, setDow, allRestaurants, filterParams, setFilt
           setDow={setDow}
           dow={dow}
         />
+      </Suspense>
 
-        
-        <Suspense fallback={<LoadingComp/>}>
-          <ListViewComp
-            allRestaurants={allRestaurants}
-            dow={dow}
-          />
-        </Suspense>       
-          
-        
+      <Suspense fallback={<LoadingComp />}>
+        <ListViewComp
+          allRestaurants={allRestaurants}
+          dow={dow}
+        />
+      </Suspense>
+
+
     </div>
   )
 }

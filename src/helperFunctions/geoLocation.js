@@ -1,10 +1,8 @@
-
-
 const geoLocation = async () => {
     let geoLocCoords = {
         geoLocAvail: null,
-        latitude:0,
-        longitude:0
+        latitude:null,
+        longitude:null
     }
     if ("geolocation" in navigator) {
         geoLocCoords.geoLocAvail = true
@@ -13,13 +11,13 @@ const geoLocation = async () => {
       }
       // console.log("geolocation permission",geoLocCoords.geoLocAvail)
     
-      navigator.geolocation.getCurrentPosition(function(position) {
-        // console.log("Latitude is :", position.coords.latitude);
+      await navigator.geolocation.getCurrentPosition(function(position) {
+        // console.log("geoLocation_Latitude is :", position.coords.latitude);
         geoLocCoords.latitude = position.coords.latitude
-        // console.log("Longitude is :", position.coords.longitude);
+        // console.log("geoLocation_Longitude is :", position.coords.longitude);
         geoLocCoords.longitude = position.coords.longitude
       });
-    
+    // console.log("geoLocCoords:", geoLocCoords)
     return geoLocCoords
 }
 

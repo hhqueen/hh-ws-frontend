@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-import { Navbar, Dropdown, Avatar } from 'flowbite-react'
+import { Navbar, Dropdown, Avatar, TextInput } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
 import { useImmer } from 'use-immer'
 import { useState } from 'react'
 import Alpha2BannerComp from './Alpha2BannerComp'
+import { RxMagnifyingGlass } from 'react-icons/rx'
+import geoLocation from '../helperFunctions/geoLocation'
 
 const emptyUserInfo = {
     "firstName": "",
@@ -13,9 +15,9 @@ const emptyUserInfo = {
     "id": "",
 }
 
-export default function NavBar() {
+export default function NavBar({ searchParams, setSearchParams, handleSearchFormSubmit }) {
     const navigate = useNavigate()
-    const [alpha2 , setAlpha2] = useState(true)
+    const [alpha2, setAlpha2] = useState(true)
     const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
     // function to remove token for logging out here
     const handleLogOut = () => {
@@ -35,8 +37,8 @@ export default function NavBar() {
         if (localStorage.getItem('jwt')) {
             const token = localStorage.getItem('jwt')
             const decoded = jwt_decode(token)
-            console.log("decoded",decoded)
-            setUserInfo((draft)=>{
+            // console.log("decoded",decoded)
+            setUserInfo((draft) => {
                 draft.firstName = decoded.firstName
                 draft.lastName = decoded.lastName
                 draft.email = decoded.email
@@ -45,6 +47,20 @@ export default function NavBar() {
             // renderAddRest = checkAdmin(decoded)
         }
     })
+
+    // useEffect(()=>{
+    //     if (searchParams.address === "Current Location") {
+    //         const getCurrentGeoLoc =  async () => {
+    //             const getLocation = await geoLocation()
+    //             console.log("navBar_getLocation:", getLocation)
+    //             setSearchParams((draft)=>{
+    //                 draft.currentLatitude = getLocation.latitude
+    //                 draft.currentLongitude = getLocation.longitude  
+    //             })
+    //         }
+    //         getCurrentGeoLoc()
+    //     }
+    // },[searchParams.address])
 
 
     return (
@@ -66,12 +82,45 @@ export default function NavBar() {
                         {/* </Link> */}
                     </Navbar.Brand>
 
-                    {/* <div>
-                    <input />
-                    <label></label>
-                    <input />
-                    <label></label>
-                </div> */}
+                    {/* Search Inputs */}
+                    <div>
+
+                        {/* search Term Input */}
+                        <input
+                            className='border w-[30vw] rounded-t p-0 m-0'
+                            value={searchParams.searchTerm}
+                            onChange={(e) => {
+                                setSearchParams((draft) => { draft.searchTerm = e.target.value }
+                                )
+                            }}
+                        />
+
+                        <div>
+                            {/* Location Input */}
+                            <input
+                                className='border w-[25vw] rounded-bl p-0 m-0'
+                                value={searchParams.address}
+                                list="searchLocationList"
+                                onChange={(e) => {
+                                    setSearchParams((draft) => { draft.address = e.target.value }
+                                    )
+                                }}
+                            />
+
+                            <datalist id="searchLocationList">
+                                <option className="font-['Roboto']" value="Current Location">Current Location</option>
+                            </datalist>
+
+                            {/* Submit Button */}
+                            <button
+                                className='border w-[5vw] rounded-br h-[26px] bg-gray-100'
+                                type='button'
+                                onClick={() => {
+                                    handleSearchFormSubmit()
+                                }}
+                            ><RxMagnifyingGlass /></button>
+                        </div>
+                    </div>
 
                     <div className="flex md:order-2">
                         <Dropdown
@@ -128,7 +177,7 @@ export default function NavBar() {
                                         to="/addnewrestaurant"
                                     >
                                         <Dropdown.Item>
-                                        Add New Restaurant
+                                            Add New Restaurant
                                         </Dropdown.Item>
                                     </Link>
                                 </>
@@ -168,9 +217,9 @@ export default function NavBar() {
 
                     </div>
                 </Navbar>
-                
+
                 {alpha2 &&
-                    <Alpha2BannerComp/>
+                    <Alpha2BannerComp />
                 }
 
             </div>
