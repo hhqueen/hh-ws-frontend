@@ -1,12 +1,10 @@
-
-
 const geoLocation = async () => {
     let geoLocCoords = {
         geoLocAvail: null,
         latitude:null,
         longitude:null
     }
-    if (await "geolocation" in navigator) {
+    if ("geolocation" in navigator) {
         geoLocCoords.geoLocAvail = true
       } else {
         geoLocCoords.geoLocAvail = false
