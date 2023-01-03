@@ -19,6 +19,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
     const navigate = useNavigate()
     const [alpha2, setAlpha2] = useState(true)
     const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
+    
     // function to remove token for logging out here
     const handleLogOut = () => {
         console.log("log out")
@@ -29,9 +30,12 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
             navigate('/')
         }
         setUserInfo(emptyUserInfo)
-
     }
-    // console.log("navbar useEffect1")
+
+    
+
+
+    // set user Info for NavBar use from jwt token
     useEffect(() => {
         // console.log("navbar useEffect")
         if (localStorage.getItem('jwt')) {
@@ -48,20 +52,28 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
         }
     })
 
-    // useEffect(()=>{
-    //     if (searchParams.address === "Current Location") {
-    //         const getCurrentGeoLoc =  async () => {
-    //             const getLocation = await geoLocation()
-    //             console.log("navBar_getLocation:", getLocation)
-    //             setSearchParams((draft)=>{
-    //                 draft.currentLatitude = getLocation.latitude
-    //                 draft.currentLongitude = getLocation.longitude  
-    //             })
-    //         }
-    //         getCurrentGeoLoc()
-    //     }
-    // },[searchParams.address])
-
+    // create / update search history
+    const appendSearchHistory = (searchParam) =>{
+        const now = new Date()
+        const newEntry = {
+            searchTerm: searchParam.searchTerm,
+            address: searchParam.address,
+            date_UTC_ISO: now.toUTCString()
+        }
+        if (localStorage.getItem('sh')){
+            const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
+            getHistoryArr.push(newEntry)
+            if (getHistoryArr.length > 3) {
+                getHistoryArr.shift()
+            }
+            localStorage.setItem('sh', JSON.stringify(getHistoryArr))
+            console.log("getHistoryArr:",localStorage.getItem('sh'))
+        } else {
+            const newHistoryArr = [newEntry]
+            localStorage.setItem('sh', JSON.stringify(newHistoryArr))
+            console.log("newHistoryArr:",localStorage.getItem('sh'))
+        }
+    }
 
     return (
         <>
@@ -116,6 +128,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                 className='border w-[5vw] rounded-br h-[26px] bg-gray-100'
                                 type='button'
                                 onClick={() => {
+                                    appendSearchHistory(searchParams)
                                     handleSearchFormSubmit()
                                 }}
                             ><RxMagnifyingGlass /></button>

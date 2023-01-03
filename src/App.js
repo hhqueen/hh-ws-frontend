@@ -17,9 +17,12 @@ import LoadingComp from './components/LoadingComp';
 // import source data
 import { checkboxFilters } from "./sourceData/emptyDataTemplates"
 
+// import Custom Hoosk
+import useGeolocation from "../src/components/customHooks/useGeolocation.js"
+
 // require functions
 import dateConverter from "./helperFunctions/dateConverter"
-import geoLocation from "./helperFunctions/geoLocation"
+// import geoLocation from "./helperFunctions/geoLocation"
 // const dateConverter = require("./helperFunctions/dateConverter")
 // const getCoord = require("./helperFunctions/getCoord.js")
 // const geoLocation = require("./helperFunctions/geoLocation.js")
@@ -40,22 +43,35 @@ const SignUp = lazy(() => import('./components/pages/SignUp'))
 const Login = lazy(() => import('./components/pages/Login'))
 // import Login from './components/pages/Login';
 
+
+
+// get recent search address
+const getMostRecentlySearchedAddress = () => {
+  if (localStorage.getItem('sh')){
+      const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
+      const mostRecentVal = getHistoryArr.length - 1
+      // setSearchParams((draft) => { draft.address = getHistoryArr[mostRecentVal].address })
+      return getHistoryArr[mostRecentVal].address
+  } else {
+    return ""
+  }
+}
+
 function App() {
   // variables
+  const [geoLocAvail, setGeoLocAvail] = useState(navigator.geolocation)
+  const latLong = useGeolocation(geoLocAvail)
   const [allRestaurants, setAllRestaurants] = useState([])
   const [filterParams, setFilterParams] = useImmer(checkboxFilters)
-  const [currentLocation, setCurrentLocation] = useImmer({
-    latitude: null,
-    longitude: null
-  })
+  const [currentLocation, setCurrentLocation] = useImmer(latLong)
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [showRestaurants, setShowRestaurants] = useState([])
   const [dow, setDow] = useState(fmtDate)
   const [searchParams, setSearchParams] = useImmer({
     searchTerm: "",
-    currentLatitude: null,
-    currentLongitude: null,
-    address: "",
+    currentLatitude: latLong.latitude,
+    currentLongitude: latLong.longitude,
+    address: getMostRecentlySearchedAddress(),
     searchButtonClicked: false
   })
 
@@ -83,35 +99,13 @@ function App() {
       setAllRestaurants([])
       setShowRestaurants([])
       let queryString = "?"
-      console.log("filterParams:", filterParams)
+      // console.log("filterParams:", filterParams)
 
-      const latLong = await geoLocation()
-      console.log("latLong_getrestaraunts:", latLong)
-      let revisedSearchParams = {
-        searchTerm: searchParams.searchTerm,
-        currentLatitude: 0,
-        currentLongitude:0,
-        address: searchParams.address,
-        searchButtonClicked: false
-      }
-
-      if (latLong.geoLocAvail) {
-        setCurrentLocation((draft) => {
-          draft.latitude = latLong.latitude
-          draft.longitude = latLong.longitude
-        })
-        setSearchParams((draft) => {
-          draft.currentLatitude = latLong.latitude
-          draft.currentLongitude = latLong.longitude
-        })
-        revisedSearchParams.currentLatitude = latLong.latitude
-        revisedSearchParams.currentLongitude = latLong.longitude
-      }
-
-      console.log("revisedSearchParams:", revisedSearchParams)
+      // const latLong = await geoLocation()
+      // console.log("latLong_getrestaraunts:", latLong)
 
       // Build Query String
-      Object.entries(revisedSearchParams).map((param) => {
+      Object.entries(searchParams).map((param) => {
         if (queryString !== "?") {
           queryString += "&"
         }
@@ -145,20 +139,10 @@ function App() {
 
   // initial loading of data
   useEffect(() => {
+    
     const loadInitialData = async () => {
+      
       try {
-        const latLong = await geoLocation()
-        console.log("latLong:", latLong)
-        if (latLong.geoLocAvail) {
-          setCurrentLocation((draft) => {
-            draft.latitude = latLong.latitude
-            draft.longitude = latLong.longitude
-          })
-          setSearchParams((draft) => {
-            draft.currentLatitude = latLong.latitude
-            draft.currentLongitude = latLong.longitude
-          })
-        }
         const allRests = await getRestaurants()
         setAllRestaurants(allRests)
         setShowRestaurants(await filterRestByDay(allRests, dow))
@@ -169,22 +153,8 @@ function App() {
     loadInitialData()
   }, [])
 
-  const geoLocationSetter = async () => {
-    try {
-      const latLong = await geoLocation()
-      console.log("latLong:", latLong)
-      setCurrentLocation((draft) => {
-        draft.latitude = latLong.latitude
-        draft.longitude = latLong.longitude
-      })
-      setSearchParams((draft) => {
-        draft.currentLatitude = latLong.latitude
-        draft.currentLongitude = latLong.longitude
-      })
-    } catch (error) {
-      console.warn(error)
-    }
-  }
+
+
 
   const handleSearchFormSubmit = async (e) => {
     // e.preventDefault()
@@ -256,11 +226,9 @@ function App() {
           <Route
             path='/editrestaurant/:id'
             element={
-              <Suspense fallback={<LoadingComp />}>
                 <AddEditRest
                   currentLocation={currentLocation}
                 />
-              </Suspense>
             }
           />
 
@@ -272,9 +240,13 @@ function App() {
 
           < Route
             path="/addnewrestaurant"
-            element={<AddEditRest
+            element={
+              <Suspense fallback={<LoadingComp />}>
+            <AddEditRest
               currentLocation={currentLocation}
-            />}
+            />
+            </Suspense>
+            }
           />
           <Route
             path="/signup"
