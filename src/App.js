@@ -59,6 +59,7 @@ const getMostRecentlySearchedAddress = () => {
 
 function App() {
   // variables
+  const [isFetchingRestData , setIsFetchingRestData] = useState(false)
   const [geoLocAvail, setGeoLocAvail] = useState(navigator.geolocation)
   const latLong = useGeolocation(geoLocAvail)
   // console.log("useGeolocation latLong:",latLong)
@@ -115,6 +116,7 @@ function App() {
         address: searchParams.address,
         searchButtonClicked: false
       }
+      console.log("revisedSearchParams:",revisedSearchParams)
 
       // Build Query String
       Object.entries(revisedSearchParams).map((param) => {
@@ -133,6 +135,7 @@ function App() {
       // console.log(filterObj)   
       // Execute API Query based on state filters and search values
       const gotRests = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`)
+      setIsFetchingRestData(false)
       return gotRests.data
     } catch (error) {
       console.warn(error)
@@ -151,9 +154,9 @@ function App() {
 
   // initial loading of data
   useEffect(() => {
-    
     const loadInitialData = async () => {
       try {
+        setIsFetchingRestData(true)
         const allRests = await getRestaurants()
         setAllRestaurants(allRests)
         setShowRestaurants(await filterRestByDay(allRests, dow))
@@ -162,6 +165,10 @@ function App() {
       }
     }
     loadInitialData()
+    setCurrentLocation((draft)=>{
+      draft.latitude = latLong.latitude
+      draft.longitude = latLong.longitude
+    })
   }, [latLong])
 
 
@@ -171,6 +178,7 @@ function App() {
     // e.preventDefault()
     try {
       console.log("handleSearchFormSubmit submitted")
+      setIsFetchingRestData(true)
       const gotRests = await getRestaurants()
       console.log("gotRests:", gotRests)
       setAllRestaurants(gotRests)
@@ -215,6 +223,7 @@ function App() {
             element={
               <Suspense fallback={<LoadingComp />}>
                 <Main
+                isFetchingRestData={isFetchingRestData}
                   allRestaurants={showRestaurants}
                   setFilterParams={setFilterParams}
                   filterParams={filterParams}

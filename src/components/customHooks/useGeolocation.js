@@ -7,16 +7,23 @@ export default function useGeolocation(geoLocAvail) {
         longitude:null
     })
 
+    let geoLocationCoordinates = {
+        latitude:null,
+        longitude:null
+    }
+
     useEffect(()=>{
         navigator.geolocation.getCurrentPosition(function(position) {
             setLocation((draft)=>{
                 draft.latitude = position.coords.latitude
                 draft.longitude = position.coords.longitude
             })
+            geoLocationCoordinates.latitude = position.coords.latitude
+            geoLocationCoordinates.longitude = position.coords.longitude
             // console.log("useGeolocation Latitude is :", position.coords.latitude);
             // console.log("useGeolocation Longitude is :", position.coords.longitude);
         });
-    },[geoLocAvail])
+    },[])
 
     const getGeoLocation = () =>{
         if ("geolocation" in navigator) {
@@ -41,6 +48,6 @@ export default function useGeolocation(geoLocAvail) {
     }
 
     // getGeoLocation()
-    console.log("getGeoLocation_location:",location)
+    // console.log("getGeoLocation_location:",location)
     return location
 }
