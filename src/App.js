@@ -61,6 +61,7 @@ function App() {
   // variables
   const [geoLocAvail, setGeoLocAvail] = useState(navigator.geolocation)
   const latLong = useGeolocation(geoLocAvail)
+  // console.log("useGeolocation latLong:",latLong)
   const [allRestaurants, setAllRestaurants] = useState([])
   const [filterParams, setFilterParams] = useImmer(checkboxFilters)
   const [currentLocation, setCurrentLocation] = useImmer(latLong)
@@ -69,12 +70,14 @@ function App() {
   const [dow, setDow] = useState(fmtDate)
   const [searchParams, setSearchParams] = useImmer({
     searchTerm: "",
-    currentLatitude: latLong.latitude,
-    currentLongitude: latLong.longitude,
+    currentLatitude: null,
+    currentLongitude: null,
     address: getMostRecentlySearchedAddress(),
     searchButtonClicked: false
   })
 
+
+  // console.log(searchParams)
   // restaurant filter function
   const filterRests = (filterArr, restData) => {
     const trueFilters = filterArr.filter(filterParam => filterParam.value)
@@ -95,6 +98,7 @@ function App() {
   // API call to backend for all restaurant data. 
   // need to be filtered on server side based on location distance
   const getRestaurants = async () => {
+    console.log("getRestaurants_latLong:",latLong)
     try {
       setAllRestaurants([])
       setShowRestaurants([])
@@ -104,8 +108,16 @@ function App() {
       // const latLong = await geoLocation()
       // console.log("latLong_getrestaraunts:", latLong)
 
+      const revisedSearchParams = {
+        searchTerm: "",
+        currentLatitude: latLong.latitude,
+        currentLongitude: latLong.longitude,
+        address: searchParams.address,
+        searchButtonClicked: false
+      }
+
       // Build Query String
-      Object.entries(searchParams).map((param) => {
+      Object.entries(revisedSearchParams).map((param) => {
         if (queryString !== "?") {
           queryString += "&"
         }
@@ -141,7 +153,6 @@ function App() {
   useEffect(() => {
     
     const loadInitialData = async () => {
-      
       try {
         const allRests = await getRestaurants()
         setAllRestaurants(allRests)
@@ -151,7 +162,7 @@ function App() {
       }
     }
     loadInitialData()
-  }, [])
+  }, [latLong])
 
 
 

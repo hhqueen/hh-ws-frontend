@@ -41,5 +41,6 @@ export default function useGeolocation(geoLocAvail) {
     }
 
     // getGeoLocation()
+    console.log("getGeoLocation_location:",location)
     return location
 }
