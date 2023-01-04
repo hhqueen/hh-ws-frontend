@@ -7,7 +7,7 @@ import LoadingComp from '../LoadingComp'
 const ListViewComp = lazy(() => import('../ListViewComp'))
 const FilterComp = lazy(() => import('../FilterComp'))
 
-export default function Main({ dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
+export default function Main({ isFetchingRestData,dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
 
 
   return (
@@ -27,6 +27,7 @@ export default function Main({ dow, setDow, allRestaurants, filterParams, setFil
 
       <Suspense fallback={<LoadingComp />}>
         <ListViewComp
+          isFetchingRestData={isFetchingRestData}
           allRestaurants={allRestaurants}
           dow={dow}
         />
