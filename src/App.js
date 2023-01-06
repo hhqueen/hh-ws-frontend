@@ -152,36 +152,14 @@ function App() {
     // console.log("numOweek:",numOweek)
     // console.log("filteredRests:",filteredRests)
     const filterRestsByDay = filteredRests.filter((rest,idx) => {
-      // console.log(`rest${idx}:`, rest)
-      const filterFlag = rest.hourSet.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
+      console.log(`rest${idx}:`, rest)
+      const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
       // const filterFlag = rest.hourSet.hours
-      // console.log(`filterFlag rest${idx}:`,filterFlag)
+      console.log(`filterFlag rest${idx}:`,filterFlag)
       return filterFlag
     })
     return filterRestsByDay
   }
-
-  // initial loading of data
-  useEffect(() => {
-    const loadInitialData = async () => {
-      try {
-        setIsFetchingRestData(true)
-        const allRests = await getRestaurants()
-        setAllRestaurants(allRests)
-        setShowRestaurants(filterRestByDay(allRests, dow))
-      } catch (error) {
-        console.warn(error)
-      }
-    }
-    loadInitialData()
-    setCurrentLocation((draft)=>{
-      draft.latitude = latLong.latitude
-      draft.longitude = latLong.longitude
-    })
-  }, [latLong, dow])
-
-
-
 
   const handleSearchFormSubmit = async (e) => {
     // e.preventDefault()
@@ -197,18 +175,40 @@ function App() {
     }
   }
 
-  // re-render list on filterParams Change. may want to change this to a server call. 
+
+  // initial loading of data
   useEffect(() => {
-    const filteredRests = filterRests(filterParams, allRestaurants)
-    // console.log("filteredRests:",filteredRests)
-    const numOweek = dateConverter(dow, false)
-    const filterRestsByDay = filteredRests.filter((rest) => {
-      const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
-      console.log(filterFlag)
-      return filterFlag
+    const loadInitialData = async () => {
+      try {
+        setIsFetchingRestData(true)
+        const allRests = await getRestaurants()
+        setAllRestaurants(allRests)
+        const filteredRestsByDay = filterRestByDay(allRests, dow)
+        const filteredRestbyFilterParams = filterRests(filterParams, filteredRestsByDay)
+        setShowRestaurants(filteredRestbyFilterParams)
+      } catch (error) {
+        console.warn(error)
+      }
+    }
+    loadInitialData()
+    setCurrentLocation((draft)=>{
+      draft.latitude = latLong.latitude
+      draft.longitude = latLong.longitude
     })
-    setShowRestaurants(filterRestsByDay)
-  }, [filterParams])
+  }, [latLong, dow])
+
+    // re-render list on filterParams Change. may want to change this to a server call. 
+    useEffect(() => {
+      const filterRestsByDay = filterRestByDay(allRestaurants, dow)
+      const filteredRests = filterRests(filterParams, filterRestsByDay)
+      setShowRestaurants(filteredRests)
+    }, [filterParams])
+
+
+
+
+
+
 
   // useEffect(() => {
   //   return console.log("dow", dow)
@@ -256,9 +256,11 @@ function App() {
           <Route
             path='/editrestaurant/:id'
             element={
+              <Suspense fallback={<LoadingComp />}>
                 <AddEditRest
                   currentLocation={currentLocation}
                 />
+              </Suspense>
             }
           />
 
@@ -272,10 +274,10 @@ function App() {
             path="/addnewrestaurant"
             element={
               <Suspense fallback={<LoadingComp />}>
-            <AddEditRest
-              currentLocation={currentLocation}
-            />
-            </Suspense>
+                <AddEditRest
+                  currentLocation={currentLocation}
+                />
+              </Suspense>
             }
           />
           <Route
