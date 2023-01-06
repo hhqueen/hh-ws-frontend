@@ -81,18 +81,23 @@ function App() {
   // console.log(searchParams)
   // restaurant filter function
   const filterRests = (filterArr, restData) => {
+    console.log("filterArr:",filterArr)
     const trueFilters = filterArr.filter(filterParam => filterParam.value)
+    console.log("trueFilters:",trueFilters)
     const filteredRestaurants = restData.filter((rest) => {
-      // console.log(rest)  
+      console.log("rest:",rest)  
       for (let i = 0; i < trueFilters.length; i++) {
-        // console.log(rest[trueFilters[i].name])
-        if (!rest.filterParams[trueFilters[i].name]) {
-          return false
-        }
+        // console.log("rest[trueFilters[i].name]:",rest.filterParams.name === [trueFilters[i].name])
+        // if (!rest.filterParams.name === [trueFilters[i].name]) {
+        //   return false
+        // }
+        const foundParam = rest.filterParams.find(({name, value}) => name === trueFilters[i].name && value === true )
+        console.log("foundParam:",foundParam)
+        if (!foundParam) return false
       }
       return true
     })
-    // console.log("filteredRestaurants", filteredRestaurants)
+    console.log("filteredRestaurants", filteredRestaurants)
     return filteredRestaurants
   }
 
@@ -144,9 +149,13 @@ function App() {
 
   const filterRestByDay = (filteredRests, dayOweek) => {
     const numOweek = dateConverter(dayOweek, false)
-    const filterRestsByDay = filteredRests.filter((rest) => {
-      const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
-      console.log(filterFlag)
+    // console.log("numOweek:",numOweek)
+    // console.log("filteredRests:",filteredRests)
+    const filterRestsByDay = filteredRests.filter((rest,idx) => {
+      // console.log(`rest${idx}:`, rest)
+      const filterFlag = rest.hourSet.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
+      // const filterFlag = rest.hourSet.hours
+      // console.log(`filterFlag rest${idx}:`,filterFlag)
       return filterFlag
     })
     return filterRestsByDay
@@ -159,7 +168,7 @@ function App() {
         setIsFetchingRestData(true)
         const allRests = await getRestaurants()
         setAllRestaurants(allRests)
-        setShowRestaurants(await filterRestByDay(allRests, dow))
+        setShowRestaurants(filterRestByDay(allRests, dow))
       } catch (error) {
         console.warn(error)
       }
@@ -169,7 +178,7 @@ function App() {
       draft.latitude = latLong.latitude
       draft.longitude = latLong.longitude
     })
-  }, [latLong])
+  }, [latLong, dow])
 
 
 
@@ -191,6 +200,7 @@ function App() {
   // re-render list on filterParams Change. may want to change this to a server call. 
   useEffect(() => {
     const filteredRests = filterRests(filterParams, allRestaurants)
+    // console.log("filteredRests:",filteredRests)
     const numOweek = dateConverter(dow, false)
     const filterRestsByDay = filteredRests.filter((rest) => {
       const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
