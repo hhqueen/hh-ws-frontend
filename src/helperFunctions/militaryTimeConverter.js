@@ -17,13 +17,11 @@ const militaryTimeConverter = (value, outputVal = 0) => {
 
     let ampm = ""
     //calculate AM/PM
-    if (value >= 0 && value < 12) {
+    if (value > 0 && value < 12) {
       ampm = "AM"
-    } else if (value >= 12 && value < 24 ) {
+    } else if (value >= 12 && value < 24 || value === 0 ) {
       ampm = "PM"
-    } else if (value === 24) {
-      ampm = "AM"
-    }
+    } 
     // console.log("ampm:",ampm)
 
     let minute = 0// default 0
@@ -45,9 +43,12 @@ const militaryTimeConverter = (value, outputVal = 0) => {
     if(outputVal === 1) {
       if (value > 12){
         hour = value - 12
-      } else {
+      } else if (value > 0 && value <= 12) {
         hour = value
+      } else if( value === 0 ) {
+        hour = 12
       }
+
     }
     if (hour < 10) {
       hour = `0${hour}`

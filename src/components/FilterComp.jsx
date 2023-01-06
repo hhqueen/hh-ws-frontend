@@ -38,7 +38,7 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams 
     return (
         <>
             <aside
-                className='w-full sm:w-64 grow pb-2 sticky mt-[180px] bg-white dark:bg-gray-800'
+                className='w-full sm:w-[20rem] grow pb-2 sticky mt-[180px] bg-white dark:bg-gray-800'
                 aria-label='Sidebar'
             >
                     <div
@@ -57,11 +57,11 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams 
                             </Select>
                         </label>
                         <div
-                            className='w-full z-50'
+                            className='w-full sm:w-fit'
                         >
                             <Dropdown 
                                 label="Filters"
-                                className="z-50"
+                                className=""
                             >
                             {filtersMap}
                             </Dropdown>

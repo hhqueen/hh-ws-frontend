@@ -115,7 +115,7 @@ function App() {
       // console.log("latLong_getrestaraunts:", latLong)
 
       const revisedSearchParams = {
-        searchTerm: "",
+        searchTerm: searchParams.searchTerm,
         currentLatitude: latLong.latitude,
         currentLongitude: latLong.longitude,
         address: searchParams.address,
@@ -161,19 +161,28 @@ function App() {
     return filterRestsByDay
   }
 
+  const getAndShowFilteredRestaurants = async () =>{
+    try {
+      const allRests = await getRestaurants()
+      setAllRestaurants(allRests)
+      const filteredRestsByDay = filterRestByDay(allRests, dow)
+      const filteredRestbyFilterParams = filterRests(filterParams, filteredRestsByDay)
+      setShowRestaurants(filteredRestbyFilterParams)
+    } catch (error) {
+      console.warn(error)
+    }
+
+  }
+
   const handleSearchFormSubmit = async (e) => {
     // e.preventDefault()
     try {
-      console.log("handleSearchFormSubmit submitted")
-      setIsFetchingRestData(true)
-      const gotRests = await getRestaurants()
-      console.log("gotRests:", gotRests)
-      setAllRestaurants(gotRests)
-      setShowRestaurants(await filterRestByDay(gotRests, dow))
+      await getAndShowFilteredRestaurants()
     } catch (error) {
       console.log(error)
     }
   }
+
 
 
   // initial loading of data
@@ -181,11 +190,7 @@ function App() {
     const loadInitialData = async () => {
       try {
         setIsFetchingRestData(true)
-        const allRests = await getRestaurants()
-        setAllRestaurants(allRests)
-        const filteredRestsByDay = filterRestByDay(allRests, dow)
-        const filteredRestbyFilterParams = filterRests(filterParams, filteredRestsByDay)
-        setShowRestaurants(filteredRestbyFilterParams)
+        await getAndShowFilteredRestaurants()
       } catch (error) {
         console.warn(error)
       }
@@ -195,14 +200,14 @@ function App() {
       draft.latitude = latLong.latitude
       draft.longitude = latLong.longitude
     })
-  }, [latLong, dow])
+  }, [latLong, dow, filterParams])
 
     // re-render list on filterParams Change. may want to change this to a server call. 
-    useEffect(() => {
-      const filterRestsByDay = filterRestByDay(allRestaurants, dow)
-      const filteredRests = filterRests(filterParams, filterRestsByDay)
-      setShowRestaurants(filteredRests)
-    }, [filterParams])
+    // useEffect(() => {
+    //   const filterRestsByDay = filterRestByDay(allRestaurants, dow)
+    //   const filteredRests = filterRests(filterParams, filterRestsByDay)
+    //   setShowRestaurants(filteredRests)
+    // }, [filterParams])
 
 
 

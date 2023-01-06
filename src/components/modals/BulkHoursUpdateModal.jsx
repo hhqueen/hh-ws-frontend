@@ -10,20 +10,21 @@ let initDaysArr = []
 dowList.forEach((dow, idx) => {
     initDaysArr.push({ dayIdx: idx, dayText: dow, updateBool: idx < 5 ? true : false })
 })
+const defaultHourData = {
+    hasHH1: true,
+    start1: 15,
+    end1: 18,
+    end1close: false,
+    hasHH2: false,
+    start2: 22,
+    end2: 0,
+    end2close: false
+}
 
 export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOpen, setBulkHourModalOpen }) {
     const [daysArr, setDaysArr] = useImmer(initDaysArr)
 
-    const [hourData, setHourData] = useImmer({
-        hasHH1: true,
-        start1: 15,
-        end1: 18,
-        end1close: false,
-        hasHH2: false,
-        start2: 22,
-        end2: 0,
-        end2close: false
-    })
+    const [hourData, setHourData] = useImmer(defaultHourData)
 
     const handleHourInputChange = (e) => {
         setHourData((draft) => {
@@ -167,7 +168,10 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                 <Button
                     type='submit'
                     className='border rounded-xs'
-                    onClick={(e) => handleFormSubmit(e, daysArr, hourData)}
+                    onClick={(e) => {
+                        handleFormSubmit(e, daysArr, hourData)
+                        // setHourData(defaultHourData)
+                    }}
                 >
                     Submit
                 </Button>

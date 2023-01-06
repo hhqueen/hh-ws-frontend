@@ -74,7 +74,10 @@ export default function RestDetail() {
           <div
           className='relative'
           >
-            < img src={restData?.image_url} alt={restData?.name} />
+            <img
+              className='w-[500px]' 
+              src={restData?.image_url} 
+              alt={restData?.name} />
             <EditDeleteRestComp
               id={restData._id}
             />
@@ -134,7 +137,7 @@ export default function RestDetail() {
               restData.menu.isFoodAndDrinkMenu &&
               <>
                 <div
-                  className='flex flex-col items-center justify-center py-3'>
+                  className='flex flex-col items-center justify-center py-3 w-[800px]'>
                   <p
                     className='border-b'
                   >Food And Drink Menu</p>
