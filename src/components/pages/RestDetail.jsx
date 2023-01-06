@@ -27,9 +27,9 @@ export default function RestDetail() {
       drinkSpecialsDescription: "",
       foodMenu: [],
       drinkMenu: [],
-      foodAndDrinkMenuImg:null,
-      foodMenuImg:null,
-      drinkMenuImg:null
+      foodAndDrinkMenuImg: null,
+      foodMenuImg: null,
+      drinkMenuImg: null
 
     }
   })
@@ -69,66 +69,75 @@ export default function RestDetail() {
         isLoaded &&
 
         <div
-          className=' mt-[60px] px-3'
+          className='md:flex md:flex-col mt-[200px] px-3 md:items-center'
         >
           <div
-          className='relative'
+          className='md:flex md:px-10'
           >
-            <img
-              className='w-[500px]' 
-              src={restData?.image_url} 
-              alt={restData?.name} />
-            <EditDeleteRestComp
-              id={restData._id}
-            />
-          </div>
-          <div
-            className='py-3'
-          >
-            <p>{restData?.name}</p>
-            <p>{restData?.cuisines.join(", ")}</p>
-            <p>{showApplicableFilters(restData.filterParams)}</p>
-
-            <a
-              href={`https://www.google.com/maps/place/${address.replace(" ", "+")}`}
-              target="_blank"
-              className="flex"
-              rel="noopener noreferrer">
-              <FaDirections />
-              <p
-                className='text-[blue] underline'
-              >{address}</p>
-            </a>
-            <a
-              href={`tel:${restData?.telNumber}`}
-              className="flex"
+            <div
+              className='relative md:w-[35vw]'
             >
-              <TbPhoneCall />
-              <p
-                className='text-[blue] underline'
-              >{restData.displayNumber}</p>
-            </a>
-          </div>
-          {/* Hour Header */}
-          <div
-            className='grid grid-cols-7 pl-3'
-          >
-            <p
-              className={`text-[11px] justify-items-start col-start-1 col-end-1 `}
-            >Day</p>
+              <img
+                className='md:w-full md:max-h-[300px] md:object-cover'
+                src={restData?.image_url}
+                alt={restData?.name} />
+              <EditDeleteRestComp
+                id={restData._id}
+              />
+            </div>
 
-            <p
-              className={`text-[11px] justify-items-start flex mx-5 col-start-2 col-span-3`}
-            >Happy Hour</p>
+            <div
+            className='px-10'
+            >
+              <div
+                className='py-3'
+              >
+                <p>{restData?.name}</p>
+                <p>{restData?.cuisines.join(", ")}</p>
+                <p>{showApplicableFilters(restData.filterParams)}</p>
 
-            <p
-              className={`text-[11px] justify-items-start flex mx-5 col-start-5 col-span-3`}
-            >Late Night</p>
-          </div>
-          <div
-            className='py-3'
-          >
-            {mapHours}
+                <a
+                  href={`https://www.google.com/maps/place/${address.replace(" ", "+")}`}
+                  target="_blank"
+                  className="flex"
+                  rel="noopener noreferrer">
+                  <FaDirections />
+                  <p
+                    className='text-[blue] underline'
+                  >{address}</p>
+                </a>
+                <a
+                  href={`tel:${restData?.telNumber}`}
+                  className="flex"
+                >
+                  <TbPhoneCall />
+                  <p
+                    className='text-[blue] underline'
+                  >{restData.displayNumber}</p>
+                </a>
+              </div>
+              {/* Hour Header */}
+              <div
+                className='grid grid-cols-7 pl-3'
+              >
+                <p
+                  className={`text-[11px] justify-items-start col-start-1 col-end-1 `}
+                >Day</p>
+
+                <p
+                  className={`text-[11px] justify-items-start flex mx-5 col-start-2 col-span-3`}
+                >Happy Hour</p>
+
+                <p
+                  className={`text-[11px] justify-items-start flex mx-5 col-start-5 col-span-3`}
+                >Late Night</p>
+              </div>
+              <div
+                className='py-3'
+              >
+                {mapHours}
+              </div>
+            </div>
           </div>
 
           <div

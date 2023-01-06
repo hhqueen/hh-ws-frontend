@@ -19,7 +19,7 @@ const militaryTimeConverter = (value, outputVal = 0) => {
     //calculate AM/PM
     if (value > 0 && value < 12) {
       ampm = "AM"
-    } else if (value >= 12 && value < 24 || value === 0 ) {
+    } else if ((value >= 12 && value < 24) || value === 0 ) {
       ampm = "PM"
     } 
     // console.log("ampm:",ampm)

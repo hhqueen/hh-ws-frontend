@@ -42,7 +42,7 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
                 onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
                 src={restaurantInfo.image_url}
                 alt={restaurantInfo.name}
-                className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full w-3/12 rounded-l-lg md:h-full md:w-3/12 md:rounded-none md:rounded-l-lg"
+                className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full min-w-[25%] w-3/12 rounded-l-lg md:rounded-none md:rounded-l-lg"
             />
 
             {/* image and Info Container Div */}

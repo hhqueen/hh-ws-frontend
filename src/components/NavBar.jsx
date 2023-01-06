@@ -99,7 +99,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
 
                         {/* search Term Input */}
                         <input
-                            className='border w-[30vw] rounded-t p-0 m-0'
+                            className='border w-[50vw] rounded-t p-0 m-0'
                             value={searchParams.searchTerm}
                             onChange={(e) => {
                                 setSearchParams((draft) => { draft.searchTerm = e.target.value }
@@ -110,7 +110,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                         <div>
                             {/* Location Input */}
                             <input
-                                className='border w-[25vw] rounded-bl p-0 m-0'
+                                className='border w-[45vw] rounded-bl p-0 m-0'
                                 value={searchParams.address}
                                 list="searchLocationList"
                                 onChange={(e) => {

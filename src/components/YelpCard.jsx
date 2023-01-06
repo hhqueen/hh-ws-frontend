@@ -9,7 +9,7 @@ export default function YelpCard({ business }) {
             >
                 <img
                 // loading='lazy'
-                className='h-[5rem]'
+                className='w-[94px]'
                 src={business.image_url}
                 />
                 <div>
