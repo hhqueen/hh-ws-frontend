@@ -1,11 +1,41 @@
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, lazy, useState } from 'react'
+import { useEffect } from 'react'
 import LoadingComp from './LoadingComp'
 import RestListDetailCard from './RestListDetailCard'
 // const RestListDetailCard = lazy(() => import('./RestListDetailCard'))
 
-export default function ListViewComp({ dow, allRestaurants,isFetchingRestData }) {
+export default function ListViewComp({ dow, allRestaurants,isFetchingRestData, searchParams }) {
 
   // console.log(allRestaurants)
+  const [errorMessage, setErrorMessage] = useState("")
+
+  const messageHandler = () =>{
+    setErrorMessage("")
+    if (!isFetchingRestData) {
+      if (allRestaurants.length === 0 && searchParams.address.length > 0 && searchParams.searchTerm.length > 0 ) {
+        setErrorMessage(`There are no restaurants that match your search! =(`)
+        return
+      }
+
+      
+      if( allRestaurants.length === 0 && searchParams.address.length === 0  ) {
+        setErrorMessage(`Please enter a city or address!`)
+        return
+      }
+
+      // if( allRestaurants.length === 0 && searchParams.address.length === 0 AND GEOLOCATION FALSE ) {
+      //   setErrorMessage(`CURRENT LOCATION ERROR MESSAGE!`)
+      //   return
+      // }
+
+
+      return ""
+    }    
+  }
+
+  useEffect(()=>{
+    messageHandler()
+  })
 
   const listRestaurants = allRestaurants.map((restaurant) => {
     return (
@@ -28,9 +58,9 @@ export default function ListViewComp({ dow, allRestaurants,isFetchingRestData })
             isFetchingRestData && <LoadingComp />
           }
           {/* renders No restaurants message */}
-          {allRestaurants.length === 0 && !isFetchingRestData &&
+          {errorMessage.length > 0 && !isFetchingRestData &&
           <>
-            <p>There is No Restaurants, please suggest new ones here Or come back later</p>
+            <p>{errorMessage}</p>
           </>
           }
 

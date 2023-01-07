@@ -7,7 +7,7 @@ import LoadingComp from '../LoadingComp'
 const ListViewComp = lazy(() => import('../ListViewComp'))
 const FilterComp = lazy(() => import('../FilterComp'))
 
-export default function Main({ isFetchingRestData,dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
+export default function Main({ searchParams,isFetchingRestData,dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
 
 
   return (
@@ -30,6 +30,7 @@ export default function Main({ isFetchingRestData,dow, setDow, allRestaurants, f
           isFetchingRestData={isFetchingRestData}
           allRestaurants={allRestaurants}
           dow={dow}
+          searchParams={searchParams}
         />
       </Suspense>
 

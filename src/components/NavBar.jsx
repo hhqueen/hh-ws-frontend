@@ -6,7 +6,6 @@ import { useImmer } from 'use-immer'
 import { useState } from 'react'
 import Alpha2BannerComp from './Alpha2BannerComp'
 import { RxMagnifyingGlass } from 'react-icons/rx'
-import geoLocation from '../helperFunctions/geoLocation'
 
 const emptyUserInfo = {
     "firstName": "",
@@ -15,11 +14,11 @@ const emptyUserInfo = {
     "id": "",
 }
 
-export default function NavBar({ searchParams, setSearchParams, handleSearchFormSubmit }) {
+export default function NavBar({ searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
     const navigate = useNavigate()
     const [alpha2, setAlpha2] = useState(true)
     const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
-    
+
     // function to remove token for logging out here
     const handleLogOut = () => {
         console.log("log out")
@@ -32,7 +31,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
         setUserInfo(emptyUserInfo)
     }
 
-    
+
 
 
     // set user Info for NavBar use from jwt token
@@ -49,29 +48,45 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                 draft.id = decoded.id
             })
             // renderAddRest = checkAdmin(decoded)
+
         }
     })
 
+    useEffect(() => {
+        // console.log("searchParams:",searchParams)
+        if (searchParams.address.length === 0) {
+            setSearchParams((draft) => { draft.address = "Current Location" })
+        }
+    }, [])
+
     // create / update search history
-    const appendSearchHistory = (searchParam) =>{
+    const appendSearchHistory = (searchParam) => {
         const now = new Date()
         const newEntry = {
             searchTerm: searchParam.searchTerm,
             address: searchParam.address,
             date_UTC_ISO: now.toUTCString()
         }
-        if (localStorage.getItem('sh')){
+        if (localStorage.getItem('sh')) {
             const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
             getHistoryArr.push(newEntry)
             if (getHistoryArr.length > 3) {
                 getHistoryArr.shift()
             }
             localStorage.setItem('sh', JSON.stringify(getHistoryArr))
-            console.log("getHistoryArr:",localStorage.getItem('sh'))
+            console.log("getHistoryArr:", localStorage.getItem('sh'))
         } else {
             const newHistoryArr = [newEntry]
             localStorage.setItem('sh', JSON.stringify(newHistoryArr))
-            console.log("newHistoryArr:",localStorage.getItem('sh'))
+            // console.log("newHistoryArr:",localStorage.getItem('sh'))
+        }
+    }
+
+    const getMostRecentSearchHistory = () => {
+        if (localStorage.getItem('sh')) {
+            const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
+            const mostRecent = getHistoryArr[getHistoryArr.length - 1]
+            return mostRecent
         }
     }
 
@@ -96,106 +111,112 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
 
                     {/* Search Inputs */}
                     <div>
-
-                        {/* search Term Input */}
-                        <input
-                            className='border w-[50vw] rounded-t p-0 m-0'
-                            value={searchParams.searchTerm}
-                            onChange={(e) => {
-                                setSearchParams((draft) => { draft.searchTerm = e.target.value }
-                                )
-                            }}
-                        />
-
-                        <div>
-                            {/* Location Input */}
+                        <form
+                        onSubmit={(e)=>{
+                            e.preventDefault()
+                            appendSearchHistory(searchParams)
+                            handleSearchFormSubmit()
+                        }}
+                        >
+                            {/* search Term Input */}
                             <input
-                                className='border w-[45vw] rounded-bl p-0 m-0'
-                                value={searchParams.address}
-                                list="searchLocationList"
+                                className='border w-[50vw] rounded-t p-0 m-0'
+                                value={searchParams.searchTerm}
                                 onChange={(e) => {
-                                    setSearchParams((draft) => { draft.address = e.target.value }
+                                    setSearchParams((draft) => { draft.searchTerm = e.target.value }
                                     )
                                 }}
                             />
 
-                            <datalist id="searchLocationList">
-                                <option className="font-['Roboto']" value="Current Location">Current Location</option>
-                            </datalist>
+                            <div>
+                                {/* Location Input */}
+                                <input
+                                    className='border w-[45vw] rounded-bl p-0 m-0'
+                                    value={searchParams.address}
+                                    list="searchLocationList"
+                                    onChange={(e) => {
+                                        setSearchParams((draft) => { draft.address = e.target.value }
+                                        )
+                                    }}
+                                />
 
-                            {/* Submit Button */}
-                            <button
-                                className='border w-[5vw] rounded-br h-[26px] bg-gray-100'
-                                type='button'
-                                onClick={() => {
-                                    appendSearchHistory(searchParams)
-                                    handleSearchFormSubmit()
-                                }}
-                            ><RxMagnifyingGlass /></button>
-                        </div>
+                                <datalist id="searchLocationList">
+                                    <option className="font-['Roboto']" value="Current Location">Current Location</option>
+                                </datalist>
+
+                                {/* Submit Button */}
+                                <button
+                                    className='border w-[5vw] rounded-br h-[26px] bg-gray-100'
+                                    type='submit'
+                                    // onClick={() => {
+                                    //     appendSearchHistory(searchParams)
+                                    //     handleSearchFormSubmit()
+                                    // }}
+                                ><RxMagnifyingGlass /></button>
+                            </div>
+                        </form>
                     </div>
-
-                    <div className="flex md:order-2">
-                        <Dropdown
-                            arrowIcon={false}
-                            inline={true}
-                            label={
-                                <Avatar
-                                    placeholderInitials={localStorage.getItem('jwt') && `${userInfo.firstName[0]}${userInfo.lastName[0]}`}
-                                    rounded={true}
-                                />}
-                        >
-
-
-                            {
-                                localStorage.getItem('jwt') &&
-                                <>
-                                    <Dropdown.Header>
-                                        <span className="block text-sm">
-                                            {`${userInfo.firstName} ${userInfo.lastName}`}
-                                        </span>
-                                        <span className="block truncate text-sm font-medium">
-                                            {userInfo.email}
-                                        </span>
-                                    </Dropdown.Header>
-                                </>
-                            }
+                <div className="flex md:order-2">
+                    <Dropdown
+                        arrowIcon={false}
+                        inline={true}
+                        label={
+                            <Avatar
+                                placeholderInitials={localStorage.getItem('jwt') && `${userInfo.firstName[0]}${userInfo.lastName[0]}`}
+                                rounded={true}
+                            />}
+                    >
 
 
-                            {
-                                !localStorage.getItem('jwt') &&
-                                <>
-                                    <Link
-                                        to="/login"
-                                    >
-                                        <Dropdown.Item>
-                                            Log In
-                                        </Dropdown.Item>
-                                    </Link>
+                        {
+                            localStorage.getItem('jwt') &&
+                            <>
+                                <Dropdown.Header>
+                                    <span className="block text-sm">
+                                        {`${userInfo.firstName} ${userInfo.lastName}`}
+                                    </span>
+                                    <span className="block truncate text-sm font-medium">
+                                        {userInfo.email}
+                                    </span>
+                                </Dropdown.Header>
+                            </>
+                        }
 
 
-                                    <Link
-                                        to="/signup"
-                                    >
-                                        <Dropdown.Item>
-                                            Sign Up
-                                        </Dropdown.Item>
-                                    </Link>
-                                </>
-                            }
-                            {
-                                localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
-                                <>
-                                    <Link
-                                        to="/addnewrestaurant"
-                                    >
-                                        <Dropdown.Item>
-                                            Add New Restaurant
-                                        </Dropdown.Item>
-                                    </Link>
-                                </>
-                            }
-                            {/* <Dropdown.Item>
+                        {
+                            !localStorage.getItem('jwt') &&
+                            <>
+                                <Link
+                                    to="/login"
+                                >
+                                    <Dropdown.Item>
+                                        Log In
+                                    </Dropdown.Item>
+                                </Link>
+
+
+                                <Link
+                                    to="/signup"
+                                >
+                                    <Dropdown.Item>
+                                        Sign Up
+                                    </Dropdown.Item>
+                                </Link>
+                            </>
+                        }
+                        {
+                            localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
+                            <>
+                                <Link
+                                    to="/addnewrestaurant"
+                                >
+                                    <Dropdown.Item>
+                                        Add New Restaurant
+                                    </Dropdown.Item>
+                                </Link>
+                            </>
+                        }
+                        {/* <Dropdown.Item>
                                 Dashboard
                             </Dropdown.Item>
                             <Dropdown.Item>
@@ -206,36 +227,36 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                             </Dropdown.Item>
                             <Dropdown.Divider /> */}
 
-                            {
-                                localStorage.getItem('jwt') &&
-                                // <div
-                                //     className='flex'
-                                // >
-                                //     <p
-                                //         onClick={handleLogOut}
-                                //     >
-                                //         Log Out
-                                //     </p>
-                                <Dropdown.Item
-                                    onClick={handleLogOut}
-                                >
-                                    Sign out
-                                </Dropdown.Item>
-                                // </div>
-                            }
+                        {
+                            localStorage.getItem('jwt') &&
+                            // <div
+                            //     className='flex'
+                            // >
+                            //     <p
+                            //         onClick={handleLogOut}
+                            //     >
+                            //         Log Out
+                            //     </p>
+                            <Dropdown.Item
+                                onClick={handleLogOut}
+                            >
+                                Sign out
+                            </Dropdown.Item>
+                            // </div>
+                        }
 
 
 
-                        </Dropdown>
+                    </Dropdown>
 
-                    </div>
-                </Navbar>
+                </div>
+            </Navbar>
 
-                {alpha2 &&
-                    <Alpha2BannerComp />
-                }
+            {alpha2 &&
+                <Alpha2BannerComp />
+            }
 
-            </div>
+        </div>
         </>
     )
 }

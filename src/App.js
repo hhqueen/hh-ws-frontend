@@ -47,11 +47,17 @@ const Login = lazy(() => import('./components/pages/Login'))
 
 // get recent search address
 const getMostRecentlySearchedAddress = () => {
+  
   if (localStorage.getItem('sh')){
       const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
       const mostRecentVal = getHistoryArr.length - 1
       // setSearchParams((draft) => { draft.address = getHistoryArr[mostRecentVal].address })
-      return getHistoryArr[mostRecentVal].address
+      console.log(navigator.geolocation)
+      if ( !localStorage.getItem('sh') && navigator.geolocation ){
+        return "Current Location"
+      } else {
+        return getHistoryArr[mostRecentVal].address
+      }
   } else {
     return ""
   }
@@ -73,7 +79,7 @@ function App() {
     searchTerm: "",
     currentLatitude: null,
     currentLongitude: null,
-    address: getMostRecentlySearchedAddress(),
+    address: "",
     searchButtonClicked: false
   })
 
@@ -183,24 +189,33 @@ function App() {
     }
   }
 
-
-
-  // initial loading of data
-  useEffect(() => {
-    const loadInitialData = async () => {
-      try {
-        setIsFetchingRestData(true)
-        await getAndShowFilteredRestaurants()
-      } catch (error) {
-        console.warn(error)
-      }
+  const loadInitialData = async () => {
+    try {
+      setIsFetchingRestData(true)
+      await getAndShowFilteredRestaurants()
+    } catch (error) {
+      console.warn(error)
     }
-    loadInitialData()
+  }
+
+  const setGeolocations = () => {
     setCurrentLocation((draft)=>{
       draft.latitude = latLong.latitude
       draft.longitude = latLong.longitude
     })
+    setSearchParams((draft)=>{
+      draft.currentLatitude = latLong.latitude
+      draft.currentLongitude = latLong.longitude
+    })
+  }
+
+  // initial loading of data
+  useEffect(() => {
+    loadInitialData()
+    setGeolocations()
+
   }, [latLong, dow, filterParams])
+
 
     // re-render list on filterParams Change. may want to change this to a server call. 
     // useEffect(() => {
@@ -228,6 +243,7 @@ function App() {
           searchParams={searchParams}
           setSearchParams={setSearchParams}
           handleSearchFormSubmit={handleSearchFormSubmit}
+          geoLocAvail={geoLocAvail}
         />
 
         <Routes>
@@ -238,12 +254,13 @@ function App() {
             element={
               <Suspense fallback={<LoadingComp />}>
                 <Main
-                isFetchingRestData={isFetchingRestData}
+                  isFetchingRestData={isFetchingRestData}
                   allRestaurants={showRestaurants}
                   setFilterParams={setFilterParams}
                   filterParams={filterParams}
                   setDow={setDow}
                   dow={dow}
+                  searchParams={searchParams}
                 />
               </Suspense>
             }

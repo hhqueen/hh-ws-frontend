@@ -35,11 +35,11 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
     return (
         // container div
         <div
-            className='relative z-10 mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+            className='mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+            onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
         >
             <img
                 loading="lazy"
-                onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
                 src={restaurantInfo.image_url}
                 alt={restaurantInfo.name}
                 className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full min-w-[25%] w-3/12 rounded-l-lg md:rounded-none md:rounded-l-lg"
@@ -47,51 +47,54 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
 
             {/* image and Info Container Div */}
             <div
-                className='flex flex-col justify-between p-4 leading-normal'
+                className='relative'
             >
-
-                {/* info div */}
-                <p
-                    className='font-semibold text-sm hover:underline hover:cursor-pointer'
-                    onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
-                >{restaurantInfo.name}</p>
-
-                <p
-                    className='text-[11px]'
-                >{applicableFilters}</p>
-
-                <p
-                    className='text-[11px]'
-                >{cuisineString}</p>
-                <p
-                    className='text-[11px]'
-                >{restaurantInfo.city}</p>
-                {/* hours Div */}
-                {/* Hour Header */}
                 <div
-                    className='grid grid-cols-7 pl-3'
+                    className=' flex flex-col justify-between p-4 leading-normal'
                 >
+
+                    {/* info div */}
                     <p
-                        className={`text-[11px] justify-items-start col-start-1 col-end-1 `}
-                    >Day</p>
+                        className='font-semibold text-sm hover:underline hover:cursor-pointer'
+                        onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
+                    >{restaurantInfo.name}</p>
 
                     <p
-                        className={`text-[11px] justify-items-start flex mx-5 col-start-2 col-span-3`}
-                    >Happy Hour</p>
+                        className='text-[11px]'
+                    >{applicableFilters}</p>
 
                     <p
-                        className={`text-[11px] justify-items-start flex mx-5 col-start-5 col-span-3`}
-                    >Late Night</p>
+                        className='text-[11px]'
+                    >{cuisineString}</p>
+                    <p
+                        className='text-[11px]'
+                    >{restaurantInfo.city}</p>
+                    {/* hours Div */}
+                    {/* Hour Header */}
+                    <div
+                        className='static grid grid-cols-7 pl-3'
+                    >
+                        <p
+                            className={`text-[11px] justify-items-start col-start-1 col-end-1 `}
+                        >Day</p>
+
+                        <p
+                            className={`text-[11px] justify-items-start flex mx-5 col-start-2 col-span-3`}
+                        >Happy Hour</p>
+
+                        <p
+                            className={`text-[11px] justify-items-start flex mx-5 col-start-5 col-span-3`}
+                        >Late Night</p>
+                    </div>
+                    {/* Hour */}
+                    {dowHours}
+
                 </div>
-                {/* Hour */}
-                {dowHours}
 
+                <EditDeleteRestComp
+                    id={restaurantInfo._id}
+                />
             </div>
-           
-           <EditDeleteRestComp
-            id={restaurantInfo._id}
-           />
-
         </div>
     )
 }

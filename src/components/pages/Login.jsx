@@ -31,7 +31,7 @@ export default function Login() {
   
   return (
     <form 
-    className="flex flex-col gap-4 mx-[10vw] mt-[60px]"
+    className="flex flex-col gap-4 mx-[10vw] mt-[200px]"
     onSubmit={loginFormSubmitHandler}
     >
       <div>

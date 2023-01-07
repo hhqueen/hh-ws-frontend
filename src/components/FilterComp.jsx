@@ -38,26 +38,25 @@ export default function FilterComp({ dow, setDow, filterParams, setFilterParams 
     return (
         <>
             <aside
-                className='w-full sm:w-[20rem] grow pb-2 sticky mt-[180px] bg-white dark:bg-gray-800'
+                className='w-full sm:w-[20rem] grow pb-2 sticky mt-[180px] bg-white dark:bg-gray-800 z-40'
                 aria-label='Sidebar'
             >
                     <div
                         className='flex justify-center sm:overflow-y-auto sm:py-4 sm:px-3 '
                     >
                         <label
-                            className='w-[50%]'
+                            className='w-fit'
                             htmlFor='dow'>
                             <Select
                                 id='dow'
                                 name='dow'
-                                className=''
                                 onChange={(e) => setDow(e.target.value)}
                             >
                                 {dowOptionsMap}
                             </Select>
                         </label>
                         <div
-                            className='w-full sm:w-fit'
+                            className='w-fit sm:w-fit'
                         >
                             <Dropdown 
                                 label="Filters"
