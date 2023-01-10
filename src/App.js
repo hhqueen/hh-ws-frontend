@@ -43,6 +43,8 @@ const SignUp = lazy(() => import('./components/pages/SignUp'))
 const Login = lazy(() => import('./components/pages/Login'))
 // import Login from './components/pages/Login';
 
+const LandingPage = lazy(() => import('./components/pages/LandingPage'))
+
 
 
 // get recent search address
@@ -248,9 +250,17 @@ function App() {
 
         <Routes>
           {/* website routes */}
+          <Route
+            path='/'
+            element={
+              <Suspense fallback={<LoadingComp />}>
+                <LandingPage/>
+              </Suspense>
+            }
+          />
 
           <Route
-            path="/"
+            path="/restaurants"
             element={
               <Suspense fallback={<LoadingComp />}>
                 <Main
