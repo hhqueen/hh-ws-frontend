@@ -43,6 +43,7 @@ export default function ListViewComp({ dow, allRestaurants,isFetchingRestData, s
         <RestListDetailCard
           key={`restCard-${restaurant._id}`}
           restaurantInfo={restaurant}
+          searchParams={searchParams}
           dow={dow}
         />
       // </Suspense>

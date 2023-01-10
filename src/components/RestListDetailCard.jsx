@@ -1,18 +1,26 @@
 // libraries
 import React from 'react'
 import { useNavigate } from "react-router-dom"
-import { Dropdown } from 'flowbite-react'
-import jwt_decode from 'jwt-decode'
+
 // components
+import DistancePartialComp from './DistancePartialComp'
 import HHHours from './HHHours'
 // function/data imports
 import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
 import EditDeleteRestComp from './EditDeleteRestComp'
 
-export default function RestListDetailCard({ dow, restaurantInfo }) {
+export default function RestListDetailCard({ dow, restaurantInfo, searchParams }) {
     const navigate = useNavigate()
 
+    const currentLocation = {
+        latitude: searchParams.currentLatitude,
+        longitude: searchParams.currentLongitude
+    }
+    const restaurantLocation = {
+        latitude: restaurantInfo.latitude,
+        longitude: restaurantInfo.longitude
+    }
 
     const cuisineString = restaurantInfo.cuisines.join(", ")
     const applicableFilters = showApplicableFilters(restaurantInfo.filterParams)
@@ -66,9 +74,18 @@ export default function RestListDetailCard({ dow, restaurantInfo }) {
                     <p
                         className='text-[11px]'
                     >{cuisineString}</p>
-                    <p
-                        className='text-[11px]'
-                    >{restaurantInfo.city}</p>
+                    <div
+                    className='flex'
+                    >
+                        <p
+                            className='text-[11px]'
+                        >{`${restaurantInfo.city} `}</p>
+                        <DistancePartialComp
+                            currentLocation={currentLocation}
+                            restaurantLocation={restaurantLocation}
+                            pStyle={'text-[11px] pl-2'}
+                        />
+                    </div>
                     {/* hours Div */}
                     {/* Hour Header */}
                     <div

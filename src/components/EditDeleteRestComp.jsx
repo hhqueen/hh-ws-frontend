@@ -9,7 +9,9 @@ export default function EditDeleteRestComp({id}) {
     return (
     <>
     {
-        localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
+        localStorage.getItem('jwt') 
+        && ( jwt_decode(localStorage.getItem('jwt')).auth === "Admin" || jwt_decode(localStorage.getItem('jwt')).auth === "Mod" )
+        &&
         <div
             className="absolute top-0 right-0"
         >

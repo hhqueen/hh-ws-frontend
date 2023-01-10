@@ -6,6 +6,7 @@ import { useImmer } from 'use-immer'
 import { useState } from 'react'
 import Alpha2BannerComp from './Alpha2BannerComp'
 import { RxMagnifyingGlass } from 'react-icons/rx'
+import { BsInstagram } from 'react-icons/bs'
 
 const emptyUserInfo = {
     "firstName": "",
@@ -157,6 +158,17 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                         </form>
                     </div>
                 <div className="flex md:order-2">
+                    {/* IG Icon */}
+                    <a href='https://www.instagram.com/hhqueen.official/' target="_blank">
+                        <div
+                            className='px-3'
+                            
+                        >
+                            <BsInstagram
+                                size={40}
+                            />
+                        </div>
+                    </a>
                     <Dropdown
                         arrowIcon={false}
                         inline={true}
