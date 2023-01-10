@@ -4,6 +4,7 @@ import { Suspense, lazy } from 'react'
 // import MapViewComp from '../MapViewComp'
 import LoadingComp from '../LoadingComp'
 
+
 const ListViewComp = lazy(() => import('../ListViewComp'))
 const FilterComp = lazy(() => import('../FilterComp'))
 

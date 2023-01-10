@@ -76,6 +76,7 @@ function App() {
   const [currentLocation, setCurrentLocation] = useImmer(latLong)
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [showRestaurants, setShowRestaurants] = useState([])
+  const [navigatedFlag , setNavigatedFlag ] = useState(false)
   const [dow, setDow] = useState(fmtDate)
   const [searchParams, setSearchParams] = useImmer({
     searchTerm: "",
@@ -215,8 +216,9 @@ function App() {
   useEffect(() => {
     loadInitialData()
     setGeolocations()
+    if (navigatedFlag) setNavigatedFlag(false)
 
-  }, [latLong, dow, filterParams])
+  }, [latLong, dow, filterParams, navigatedFlag])
 
 
     // re-render list on filterParams Change. may want to change this to a server call. 
@@ -254,7 +256,10 @@ function App() {
             path='/'
             element={
               <Suspense fallback={<LoadingComp />}>
-                <LandingPage/>
+                <LandingPage
+                  setSearchParams={setSearchParams}
+                  setNavigatedFlag={setNavigatedFlag}
+                />
               </Suspense>
             }
           />

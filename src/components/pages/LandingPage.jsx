@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
+import { useNavigate } from 'react-router-dom'
 
 // {name: "", img_url:""},
 
-export default function LandingPage() {
+export default function LandingPage({setNavigatedFlag, setSearchParams}) {
+    const navigate = useNavigate()
 
     const [cityList, setCityList] = useState([
         {name: "Los Angeles, CA", 
@@ -21,6 +23,15 @@ export default function LandingPage() {
             <>
                 <div
                     className={`relative w-[${divWidth}] h-[${divheight}] my-10`}
+                    onClick={(e)=>{
+                        e.preventDefault()
+                        setSearchParams((draft)=>{
+                            draft.address = city.name
+                        })
+                        setNavigatedFlag(true)
+                        navigate("/restaurants")
+                    }}
+                
                 >
                     <img 
                         className={`w-full h-full object-cover rounded-2xl`}
