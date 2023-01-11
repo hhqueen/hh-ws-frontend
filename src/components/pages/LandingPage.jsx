@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 export default function LandingPage({setNavigatedFlag, setSearchParams}) {
     const navigate = useNavigate()
 
-    const [cityList, setCityList] = useState([
+    const [cityList] = useState([
         {name: "Los Angeles, CA", 
             img_url:"https://upload.wikimedia.org/wikipedia/commons/2/2f/Hollywood_sign_%288485145044%29.jpg"},
         {name: "Orange County, CA", 
