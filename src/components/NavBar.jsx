@@ -117,6 +117,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                             e.preventDefault()
                             appendSearchHistory(searchParams)
                             handleSearchFormSubmit()
+                            navigate('/restaurants/')
                         }}
                         >
                             {/* search Term Input */}
@@ -166,6 +167,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                         >
                             <BsInstagram
                                 size={40}
+                                opacity={.6}
                             />
                         </div>
                     </a>

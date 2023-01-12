@@ -15,14 +15,14 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
             img_url:"https://deih43ym53wif.cloudfront.net/seattle-usa-shutterstock_503999926_3aeb59a163.jpeg" }
     ])
   
-    // const divWidth = 80vw
-    // const divheight = '30px'
+    const divWidth = `80vw`
+    const divheight = `10vh`
   
     const cityCards = cityList.map((city) =>{
         return (
             <>
                 <div
-                    className={`relative w-[80vw] h-[10vh] my-3`}
+                    className={`relative w-[${divWidth}] h-[${divheight}] my-3 hover:cursor-pointer`}
                     onClick={(e)=>{
                         e.preventDefault()
                         setSearchParams((draft)=>{

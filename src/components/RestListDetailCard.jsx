@@ -43,10 +43,11 @@ export default function RestListDetailCard({ dow, restaurantInfo, searchParams }
     return (
         // container div
         <div
-            className='mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
-            onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
+            className=' mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+
         >
             <img
+            onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
                 loading="lazy"
                 src={restaurantInfo.image_url}
                 alt={restaurantInfo.name}
@@ -56,9 +57,11 @@ export default function RestListDetailCard({ dow, restaurantInfo, searchParams }
             {/* image and Info Container Div */}
             <div
                 className='relative'
+                
             >
                 <div
                     className=' flex flex-col justify-between p-4 leading-normal'
+                    onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
                 >
 
                     {/* info div */}
@@ -112,6 +115,7 @@ export default function RestListDetailCard({ dow, restaurantInfo, searchParams }
                     id={restaurantInfo._id}
                 />
             </div>
+
         </div>
     )
 }
