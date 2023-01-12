@@ -15,14 +15,14 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
             img_url:"https://deih43ym53wif.cloudfront.net/seattle-usa-shutterstock_503999926_3aeb59a163.jpeg" }
     ])
   
-    const divWidth = '80vw'
-    const divheight = '20vh'
+    // const divWidth = 80vw
+    // const divheight = '30px'
   
     const cityCards = cityList.map((city) =>{
         return (
             <>
                 <div
-                    className={`relative w-[${divWidth}] h-[${divheight}] my-10`}
+                    className={`relative w-[80vw] h-[10vh] my-3`}
                     onClick={(e)=>{
                         e.preventDefault()
                         setSearchParams((draft)=>{
@@ -34,14 +34,14 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
                 
                 >
                     <img 
-                        className={`w-full h-full object-cover rounded-2xl`}
+                        className={`w-full h-full object-cover rounded-2xl opacity-[.6]`}
                         src={city.img_url}
                     />
                     <div
-                    className='absolute bottom-0 left-[10px]'
+                    className='absolute bottom-[10px] left-[10px]'
                     >
                         <p
-                            className='text-[30px] text-[white]'
+                            className='text-[30px]'
                         >{city.name}</p>
                     </div>
                     
