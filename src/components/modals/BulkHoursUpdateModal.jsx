@@ -18,7 +18,8 @@ const defaultHourData = {
     hasHH2: false,
     start2: 22,
     end2: 0,
-    end2close: false
+    end2close: false,
+    isAllDay: false
 }
 
 export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOpen, setBulkHourModalOpen }) {
@@ -84,6 +85,15 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                                         (draft) => { draft.hasHH1 = e.target.checked }
                                     )}
                                 />Happy Hour</Label>
+
+                            <Label>
+                                <Checkbox
+                                    name='hasHH1'
+                                    checked={hourData.isAllDay}
+                                    onChange={(e) => setHourData(
+                                        (draft) => { draft.isAllDay = e.target.checked }
+                                    )}
+                                />All Day</Label>
                             <div>
                                 <input
                                     className="min-w-[50px] text-xs"

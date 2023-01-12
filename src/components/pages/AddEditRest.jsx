@@ -194,7 +194,7 @@ export default function AddEditRest({ currentLocation }) {
                             draft.handButton2Click = null
                         })
                         setRestaurantData(emptyRestaurantData)
-                        setFormSubmitted(false)
+
                         handleResetSearch()
                     }
                     draft.button2text = "See Created Restaurant"
@@ -210,6 +210,8 @@ export default function AddEditRest({ currentLocation }) {
             })
         } catch (error) {
             console.warn(error)
+        } finally {
+            setFormSubmitted(false)
         }
     }
 
@@ -230,6 +232,7 @@ export default function AddEditRest({ currentLocation }) {
                 foundDay.start2 = hourData.start2
                 foundDay.end2 = hourData.end2
                 foundDay.end2close = hourData.end2close
+                foundDay.isAllDay = hourData.isAllDay
                 console.log(`${foundDay.day} found and updated`)
             })
         })
@@ -285,16 +288,28 @@ export default function AddEditRest({ currentLocation }) {
                 >
                     {day}
                     <div>
+                        {
+                            !restaurantData.hourSet.hours[idx].isAllDay &&
+                            <Label>
+                                <Checkbox
+                                    name='hasHH1'
+                                    checked={restaurantData.hourSet.hours[idx].hasHH1}
+                                    onChange={(e) => setRestaurantData(
+                                        (draft) => { draft.hourSet.hours[idx].hasHH1 = e.target.checked }
+                                    )}
+                                />Happy Hour</Label>
+                        }
+
                         <Label>
                             <Checkbox
                                 name='hasHH1'
-                                checked={restaurantData.hourSet.hours[idx].hasHH1}
+                                checked={restaurantData.hourSet.hours[idx].isAllDay}
                                 onChange={(e) => setRestaurantData(
-                                    (draft) => { draft.hourSet.hours[idx].hasHH1 = e.target.checked }
+                                    (draft) => { draft.hourSet.hours[idx].isAllDay = e.target.checked }
                                 )}
-                            />Happy Hour</Label>
+                            />All Day</Label>
                         {
-                            restaurantData.hourSet.hours[idx].hasHH1 &&
+                            restaurantData.hourSet.hours[idx].hasHH1 && !restaurantData.hourSet.hours[idx].isAllDay &&
                             <div>
                                 <input
                                     id={`${day}Hour1Start`}
@@ -320,16 +335,19 @@ export default function AddEditRest({ currentLocation }) {
                         }
                     </div>
                     <div>
-                        <Label>
-                            <Checkbox
-                                checked={restaurantData.hourSet.hours[idx].hasHH2}
-                                onChange={(e) => setRestaurantData(
-                                    (draft) => { draft.hourSet.hours[idx].hasHH2 = e.target.checked }
-                                )}
-
-                            />Late Night</Label>
                         {
-                            restaurantData.hourSet.hours[idx].hasHH2 &&
+                            !restaurantData.hourSet.hours[idx].isAllDay &&
+                            <Label>
+                                <Checkbox
+                                    checked={restaurantData.hourSet.hours[idx].hasHH2}
+                                    onChange={(e) => setRestaurantData(
+                                        (draft) => { draft.hourSet.hours[idx].hasHH2 = e.target.checked }
+                                    )}
+
+                                />Late Night</Label>
+                        }
+                        {
+                            restaurantData.hourSet.hours[idx].hasHH2 && !restaurantData.hourSet.hours[idx].isAllDay &&
                             <div
                                 className='flex'
                             >
@@ -402,6 +420,7 @@ export default function AddEditRest({ currentLocation }) {
                     button2text={messageModalProps.button2text}
                     handleButton2Click={messageModalProps.handleButton2Click}
                 />
+
 
                 <YelpResponseModal
                     yelpList={yelpRestResponse}

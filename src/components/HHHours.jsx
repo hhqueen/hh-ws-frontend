@@ -25,7 +25,20 @@ export default function HHHours({ hour, timeOutputVal }) {
     } else {
         displayEnd2 = militaryTimeConverter(hour.end2, timeOutputVal)
     }
+    
+    let renderHappyHour;
+    if (hour.isAllDay){
+        renderHappyHour = "All Day"
+    } else {
+        renderHappyHour = hour.hasHH1 ? `${displayStart1}-${displayEnd1}` : `N/A`
+    }
 
+    let renderLateNight;
+    if (hour.isAllDay){
+        renderLateNight = "All Day"
+    } else {
+        renderLateNight = hour.hasHH2 ? `${displayStart2}-${displayEnd2}` : `N/A`
+    }
     
     const timePTagClass = 'text-[11px] justify-items-start'
     // console.log(hour)
@@ -36,15 +49,16 @@ export default function HHHours({ hour, timeOutputVal }) {
             >{dayOweek}</p>
 
             <div className='flex mx-5 col-start-2 col-span-3'>
+                
                 <p
                     className={timePTagClass}
-                >{hour.hasHH1 ? `${displayStart1}-${displayEnd1}` : `N/A`}</p>
+                >{renderHappyHour}</p>
             </div>
             
             <div className='flex mx-5 col-start-5 col-span-3'>
                 <p
                 className={timePTagClass}
-                >{hour.hasHH2 ? `${displayStart2}-${displayEnd2}` : `N/A`}</p>
+                >{renderLateNight}</p>
             </div>
         </div>
     )
