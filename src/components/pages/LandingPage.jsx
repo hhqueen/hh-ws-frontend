@@ -22,7 +22,7 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
         return (
             <>
                 <div
-                    className={`relative w-[${divWidth}] h-[${divheight}] my-3 hover:cursor-pointer`}
+                    className={`relative w-[80vw] h-[10vh] my-3 hover:cursor-pointer`}
                     onClick={(e)=>{
                         e.preventDefault()
                         setSearchParams((draft)=>{
