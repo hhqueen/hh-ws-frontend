@@ -12,7 +12,7 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
         {name: "Orange County, CA", 
             img_url:"https://www.visitcalifornia.com/sites/visitcalifornia.com/files/VC_IrvineSpectrumCenter_Stock_Irvine-Spectrum-Center-at-Dusk-CMF-8483_1280x640.jpg" },
         {name: "Portland, OR", 
-            img_url:"https://deih43ym53wif.cloudfront.net/seattle-usa-shutterstock_503999926_3aeb59a163.jpeg" }
+            img_url:"https://www.radiocab.net/wp-content/uploads/2020/03/blog-is-portland-a-safe-city.jpg" }
     ])
   
     const divWidth = `80vw`
@@ -22,7 +22,7 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
         return (
             <>
                 <div
-                    className={`relative w-[80vw] h-[10vh] my-3 hover:cursor-pointer`}
+                    className={`relative w-[80vw] h-[15vh] my-3 hover:cursor-pointer`}
                     onClick={(e)=>{
                         e.preventDefault()
                         setSearchParams((draft)=>{
@@ -34,7 +34,7 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
                 
                 >
                     <img 
-                        className={`w-full h-full object-cover rounded-2xl opacity-[.6]`}
+                        className={`w-full h-full object-cover rounded-2xl opacity-[.6] hover:opacity-[.8]`}
                         src={city.img_url}
                     />
                     <div
