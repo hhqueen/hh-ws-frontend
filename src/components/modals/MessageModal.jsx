@@ -19,11 +19,16 @@ export default function MessageModal({
       show={modalOpen}
       onClose={onClose}
     >
-      {header !== null &&
-        <Modal.Header>
-          {header}
-        </Modal.Header>
-      }
+      
+
+          <Modal.Header
+            className="flex justify-between"
+          >
+          {header !== null &&
+            <p>{header}</p>
+          }
+          </Modal.Header>
+
 
       {body !== null &&
         <Modal.Body>
