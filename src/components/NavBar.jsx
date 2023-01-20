@@ -1,12 +1,14 @@
 import { useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-import { Navbar, Dropdown, Avatar, TextInput } from 'flowbite-react'
+import { Navbar, Dropdown, Avatar } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
 import { useImmer } from 'use-immer'
 import { useState } from 'react'
 import Alpha2BannerComp from './Alpha2BannerComp'
 import { RxMagnifyingGlass } from 'react-icons/rx'
 import { BsInstagram } from 'react-icons/bs'
+
+import LogoSmall from './Logo/LogoSmall'
 
 const emptyUserInfo = {
     "firstName": "",
@@ -17,7 +19,7 @@ const emptyUserInfo = {
 
 export default function NavBar({ searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
     const navigate = useNavigate()
-    const [alpha2, setAlpha2] = useState(true)
+    const [alpha2, setAlpha2] = useState(false)
     const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
 
     // function to remove token for logging out here
@@ -94,24 +96,23 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
     return (
         <>
             <div
-                className='fixed flex flex-col w-full top-0 bg-white z-50'
+                className='fixed flex flex-col w-full top-0 z-50 bg-[#372A88]'
             >
                 <Navbar
-                    className="flex justify-between"
+                    class="flex justify-between bg-transparent"
+                    menuOpen={true}
                 // fluid={true}
                 // rounded={true}
                 >
                     <Navbar.Brand
                         href="/">
-                        {/* <Link to="/"> */}
-                        <p>
-                            hhqueen
-                        </p>
+                        <LogoSmall/>
                         {/* </Link> */}
                     </Navbar.Brand>
 
                     {/* Search Inputs */}
-                    <div>
+                    <div
+                    >
                         <form
                         onSubmit={(e)=>{
                             e.preventDefault()
@@ -130,7 +131,9 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                 }}
                             />
 
-                            <div>
+                            <div
+                                className='bg-transparent'
+                            >
                                 {/* Location Input */}
                                 <input
                                     className='border w-[45vw] rounded-bl p-0 m-0'
