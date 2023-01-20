@@ -43,23 +43,23 @@ const SignUp = lazy(() => import('./components/pages/SignUp'))
 const Login = lazy(() => import('./components/pages/Login'))
 // import Login from './components/pages/Login';
 
-const LandingPage = lazy(() => import('./components/pages/LandingPage'))
+const LandingPage = lazy(() => import('./components/pages/LandingPage/LandingPage'))
 
 
 
 // get recent search address
 const getMostRecentlySearchedAddress = () => {
-  
-  if (localStorage.getItem('sh')){
-      const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
-      const mostRecentVal = getHistoryArr.length - 1
-      // setSearchParams((draft) => { draft.address = getHistoryArr[mostRecentVal].address })
-      console.log(navigator.geolocation)
-      if ( !localStorage.getItem('sh') && navigator.geolocation ){
-        return "Current Location"
-      } else {
-        return getHistoryArr[mostRecentVal].address
-      }
+
+  if (localStorage.getItem('sh')) {
+    const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
+    const mostRecentVal = getHistoryArr.length - 1
+    // setSearchParams((draft) => { draft.address = getHistoryArr[mostRecentVal].address })
+    console.log(navigator.geolocation)
+    if (!localStorage.getItem('sh') && navigator.geolocation) {
+      return "Current Location"
+    } else {
+      return getHistoryArr[mostRecentVal].address
+    }
   } else {
     return ""
   }
@@ -67,7 +67,7 @@ const getMostRecentlySearchedAddress = () => {
 
 function App() {
   // variables
-  const [isFetchingRestData , setIsFetchingRestData] = useState(false)
+  const [isFetchingRestData, setIsFetchingRestData] = useState(false)
   const [geoLocAvail, setGeoLocAvail] = useState(navigator.geolocation)
   const latLong = useGeolocation(geoLocAvail)
   // console.log("useGeolocation latLong:",latLong)
@@ -76,7 +76,7 @@ function App() {
   const [currentLocation, setCurrentLocation] = useImmer(latLong)
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [showRestaurants, setShowRestaurants] = useState([])
-  const [navigatedFlag , setNavigatedFlag ] = useState(false)
+  const [navigatedFlag, setNavigatedFlag] = useState(false)
   const [dow, setDow] = useState(fmtDate)
   const [searchParams, setSearchParams] = useImmer({
     searchTerm: "",
@@ -90,18 +90,18 @@ function App() {
   // console.log(searchParams)
   // restaurant filter function
   const filterRests = (filterArr, restData) => {
-    console.log("filterArr:",filterArr)
+    console.log("filterArr:", filterArr)
     const trueFilters = filterArr.filter(filterParam => filterParam.value)
-    console.log("trueFilters:",trueFilters)
+    console.log("trueFilters:", trueFilters)
     const filteredRestaurants = restData.filter((rest) => {
-      console.log("rest:",rest)  
+      console.log("rest:", rest)
       for (let i = 0; i < trueFilters.length; i++) {
         // console.log("rest[trueFilters[i].name]:",rest.filterParams.name === [trueFilters[i].name])
         // if (!rest.filterParams.name === [trueFilters[i].name]) {
         //   return false
         // }
-        const foundParam = rest.filterParams.find(({name, value}) => name === trueFilters[i].name && value === true )
-        console.log("foundParam:",foundParam)
+        const foundParam = rest.filterParams.find(({ name, value }) => name === trueFilters[i].name && value === true)
+        console.log("foundParam:", foundParam)
         if (!foundParam) return false
       }
       return true
@@ -113,7 +113,7 @@ function App() {
   // API call to backend for all restaurant data. 
   // need to be filtered on server side based on location distance
   const getRestaurants = async () => {
-    console.log("getRestaurants_latLong:",latLong)
+    console.log("getRestaurants_latLong:", latLong)
     try {
       setAllRestaurants([])
       setShowRestaurants([])
@@ -130,7 +130,7 @@ function App() {
         address: searchParams.address,
         searchButtonClicked: false
       }
-      console.log("revisedSearchParams:",revisedSearchParams)
+      console.log("revisedSearchParams:", revisedSearchParams)
 
       // Build Query String
       Object.entries(revisedSearchParams).map((param) => {
@@ -160,17 +160,17 @@ function App() {
     const numOweek = dateConverter(dayOweek, false)
     // console.log("numOweek:",numOweek)
     // console.log("filteredRests:",filteredRests)
-    const filterRestsByDay = filteredRests.filter((rest,idx) => {
+    const filterRestsByDay = filteredRests.filter((rest, idx) => {
       console.log(`rest${idx}:`, rest)
       const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
       // const filterFlag = rest.hourSet.hours
-      console.log(`filterFlag rest${idx}:`,filterFlag)
+      console.log(`filterFlag rest${idx}:`, filterFlag)
       return filterFlag
     })
     return filterRestsByDay
   }
 
-  const getAndShowFilteredRestaurants = async () =>{
+  const getAndShowFilteredRestaurants = async () => {
     try {
       const allRests = await getRestaurants()
       setAllRestaurants(allRests)
@@ -202,11 +202,11 @@ function App() {
   }
 
   const setGeolocations = () => {
-    setCurrentLocation((draft)=>{
+    setCurrentLocation((draft) => {
       draft.latitude = latLong.latitude
       draft.longitude = latLong.longitude
     })
-    setSearchParams((draft)=>{
+    setSearchParams((draft) => {
       draft.currentLatitude = latLong.latitude
       draft.currentLongitude = latLong.longitude
     })
@@ -221,12 +221,12 @@ function App() {
   }, [latLong, dow, filterParams, navigatedFlag])
 
 
-    // re-render list on filterParams Change. may want to change this to a server call. 
-    // useEffect(() => {
-    //   const filterRestsByDay = filterRestByDay(allRestaurants, dow)
-    //   const filteredRests = filterRests(filterParams, filterRestsByDay)
-    //   setShowRestaurants(filteredRests)
-    // }, [filterParams])
+  // re-render list on filterParams Change. may want to change this to a server call. 
+  // useEffect(() => {
+  //   const filterRestsByDay = filterRestByDay(allRestaurants, dow)
+  //   const filteredRests = filterRests(filterParams, filterRestsByDay)
+  //   setShowRestaurants(filteredRests)
+  // }, [filterParams])
 
 
 
@@ -255,12 +255,12 @@ function App() {
           <Route
             path='/'
             element={
-              <Suspense fallback={<LoadingComp />}>
+
                 <LandingPage
                   setSearchParams={setSearchParams}
                   setNavigatedFlag={setNavigatedFlag}
                 />
-              </Suspense>
+
             }
           />
 

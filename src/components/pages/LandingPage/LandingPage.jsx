@@ -1,18 +1,37 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import CityCardContainer from './local_partials/CityCardContainer'
+import CarouselContainer from './local_partials/CarouselContainer'
 
 // {name: "", img_url:""},
 
 export default function LandingPage({setNavigatedFlag, setSearchParams}) {
     const navigate = useNavigate()
+    const handleCardClick = (e, cityName) => {
+        e.preventDefault()
+        setSearchParams((draft)=>{
+            draft.address = cityName
+        })
+        setNavigatedFlag(true)
+        navigate("/restaurants")
+    }
 
     const [cityList] = useState([
-        {name: "Los Angeles, CA", 
-            img_url:"https://upload.wikimedia.org/wikipedia/commons/2/2f/Hollywood_sign_%288485145044%29.jpg"},
-        {name: "Orange County, CA", 
-            img_url:"https://www.visitcalifornia.com/sites/visitcalifornia.com/files/VC_IrvineSpectrumCenter_Stock_Irvine-Spectrum-Center-at-Dusk-CMF-8483_1280x640.jpg" },
-        {name: "Portland, OR", 
-            img_url:"https://www.radiocab.net/wp-content/uploads/2020/03/blog-is-portland-a-safe-city.jpg" }
+        {
+            name: "Los Angeles, CA", 
+            img_url:"https://upload.wikimedia.org/wikipedia/commons/2/2f/Hollywood_sign_%288485145044%29.jpg",
+            bg_filepath:'\images/la_CA_card.svg'
+        },
+        {
+            name: "Irvine, CA", 
+            img_url:"https://www.visitcalifornia.com/sites/visitcalifornia.com/files/VC_IrvineSpectrumCenter_Stock_Irvine-Spectrum-Center-at-Dusk-CMF-8483_1280x640.jpg",
+            bg_filepath:"\images/irvine_CA_card.svg"
+        },
+        {
+            name: "Portland, OR", 
+            img_url:"https://www.radiocab.net/wp-content/uploads/2020/03/blog-is-portland-a-safe-city.jpg",
+            bg_filepath:"\images/portland_OR_card.svg"
+        }
     ])
   
     const divWidth = `80vw`
@@ -23,7 +42,7 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
             <>
                 <div
                     className={`relative w-[80vw] h-[15vh] my-3 hover:cursor-pointer`}
-                    onClick={(e)=>{
+                    onClick={(e, cityName)=>{
                         e.preventDefault()
                         setSearchParams((draft)=>{
                             draft.address = city.name
@@ -52,13 +71,21 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
 
    return (
     <div
-        className='mt-[200px]'
+        className='mt-[57px]'
     >
-        <div
+        {/* <div
         className='flex flex-col m-auto justify-center items-center'
         >
             {cityCards}
-        </div> 
+        </div>  */}
+        {/* <p>Pikachu</p> */}
+
+        <CarouselContainer/>
+
+        <CityCardContainer
+            handleCardClick={handleCardClick}
+            CityArr={cityList}
+        />
     </div>
   )
 }
