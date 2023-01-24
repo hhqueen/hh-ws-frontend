@@ -22,6 +22,7 @@ import useGeolocation from "../src/components/customHooks/useGeolocation.js"
 
 // require functions
 import dateConverter from "./helperFunctions/dateConverter"
+import Footer from './components/Footer';
 // import geoLocation from "./helperFunctions/geoLocation"
 // const dateConverter = require("./helperFunctions/dateConverter")
 // const getCoord = require("./helperFunctions/getCoord.js")
@@ -337,6 +338,7 @@ function App() {
 
         </Routes>
 
+      <Footer/>
       </Router>
     </QueryClientProvider >
   );

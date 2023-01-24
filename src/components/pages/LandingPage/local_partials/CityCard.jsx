@@ -6,7 +6,7 @@ export default function CityCard({ CityData,handleCardClick }) {
     return (
         <>
             <div
-                className={`flex flex-col h-[384px] w-[242px] mx-[37px] hover:cursor-pointer`}
+                className={`flex flex-col h-[384px] w-[242px] hover:cursor-pointer`}
                 onClick={(e)=>{handleCardClick(e,CityData.name)}}
             >
                 <img
@@ -17,7 +17,7 @@ export default function CityCard({ CityData,handleCardClick }) {
 
                 {/* <p>pi pi pikachu</p> */}
                 <p
-                    className=''
+                    className='font-bold'
                 >{CityData?.name}</p>
             </div>
 
