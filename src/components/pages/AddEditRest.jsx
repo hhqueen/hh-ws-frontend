@@ -165,6 +165,9 @@ export default function AddEditRest({ currentLocation }) {
             draft.latitude = null
             draft.image_url = null
         })
+        setSearchParams((draft)=>{
+            draft.term = ""
+        })
     }
 
     const handleFormSubmit = async (e) => {
@@ -280,6 +283,8 @@ export default function AddEditRest({ currentLocation }) {
         )
     })
 
+
+
     const hhHoursMap = dowList.map((day, idx) => {
         return (
             <>
@@ -310,7 +315,9 @@ export default function AddEditRest({ currentLocation }) {
                             />All Day</Label>
                         {
                             restaurantData.hourSet.hours[idx].hasHH1 && !restaurantData.hourSet.hours[idx].isAllDay &&
-                            <div>
+                            <div
+                                className='flex'
+                            >
                                 <input
                                     id={`${day}Hour1Start`}
                                     className="min-w-[50px] text-xs"
@@ -321,16 +328,37 @@ export default function AddEditRest({ currentLocation }) {
                                     onChange={(e) => handleHourInputChange(e, idx)}
                                     disabled={restaurantData.hourSet.hours[idx].hasHH1 === false}
                                 />
-                                <input
-                                    id={`${day}Hour1end`}
-                                    className="min-w-[50px] text-xs"
-                                    name="end1"
-                                    type="time"
-                                    value={militaryTimeConverter(restaurantData.hourSet.hours[idx].end1)}
-                                    // defaultValue="18:00"
-                                    onChange={(e) => handleHourInputChange(e, idx)}
-                                    disabled={restaurantData.hourSet.hours[idx].hasHH1 === false || restaurantData.hourSet.hours[idx].end1close === true}
-                                />
+
+                                {
+                                    restaurantData.hourSet.hours[idx].end1close ?
+
+                                        <div
+                                            className="min-w-[50px]  w-[110px] text-center "
+                                        >
+                                            to Close
+                                        </div>
+                                        :
+                                        <input
+                                            id={`${day}Hour1end`}
+                                            className="min-w-[50px] text-xs"
+                                            name="end1"
+                                            type="time"
+                                            value={militaryTimeConverter(restaurantData.hourSet.hours[idx].end1)}
+                                            // defaultValue="18:00"
+                                            onChange={(e) => handleHourInputChange(e, idx)}
+                                            disabled={restaurantData.hourSet.hours[idx].hasHH1 === false || restaurantData.hourSet.hours[idx].end1close === true}
+                                        />
+                                }
+                                <div>
+                                    <Label>
+                                        <Checkbox
+                                            checked={restaurantData.hourSet.hours[idx].end1close}
+                                            onChange={(e) => setRestaurantData(
+                                                (draft) => { draft.hourSet.hours[idx].end1close = e.target.checked }
+                                            )}
+
+                                        />Til-Close</Label>
+                                </div>
                             </div>
                         }
                     </div>
