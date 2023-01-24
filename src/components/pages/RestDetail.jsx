@@ -3,12 +3,11 @@ import { useParams } from "react-router-dom"
 import showApplicableFilters from "../../helperFunctions/showApplicableFilters"
 import { siteSettings } from "../../sourceData/siteSettings"
 
-
 import { FaDirections } from "react-icons/fa"
 import { TbPhoneCall } from "react-icons/tb"
 
 import axios from "axios"
-
+import date from 'date-and-time'
 //Components
 import HHHours from '../HHHours'
 import MenuItems from '../MenuItems'
@@ -35,6 +34,14 @@ export default function RestDetail() {
   })
   const [isLoaded, setIsloaded] = useState(false)
   const [address, setAddress] = useState("")
+
+  const dateString = ()=>{
+    const updatedDate = restData.updatedAt
+    const year = updatedDate.substring(0,4)
+    const month = updatedDate.substring(5,7)
+    const day = updatedDate.substring(8,10)
+    return `${month}/${day}/${year}`
+  }
   useEffect(() => {
     console.log(id)
     const getRestData = async () => {
@@ -223,6 +230,7 @@ export default function RestDetail() {
             }
           </div>
 
+          <p>{`Last Updated: ${dateString()}`}</p>
         </div>
       }
     </>

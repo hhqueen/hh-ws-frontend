@@ -2,7 +2,6 @@ import React from 'react'
 import LogoSmall from './Logo/LogoSmall'
 import Copyright from './Copyright'
 
-
 export default function Footer() {
   return (
     <div

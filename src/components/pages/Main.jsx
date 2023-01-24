@@ -13,7 +13,7 @@ export default function Main({ searchParams,isFetchingRestData,dow, setDow, allR
 
   return (
     <div
-      className='flex flex-col 
+      className='flex flex-col my-auto
       sm:flex-row sm:my-10'
     >
       <Suspense fallback={<LoadingComp />}>
