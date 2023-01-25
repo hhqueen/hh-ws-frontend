@@ -114,7 +114,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
 
                     {/* Search Inputs */}
                     {/* logic that conditionally renders the search bar when NOT landing page */}
-                    {pathName !== "/" &&
+                    {pathName !== "/" && false && /* remove false to allow search bar to render */
                         <>
                             <div
                             >
