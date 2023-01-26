@@ -71,7 +71,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
             searchTerm: searchParam.searchTerm,
             address: searchParam.address,
             date_UTC_ISO: now.toUTCString()
-        }
+        }``
         if (localStorage.getItem('sh')) {
             const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
             getHistoryArr.push(newEntry)
@@ -178,6 +178,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                 <BsInstagram
                                     size={40}
                                     opacity={.6}
+                                    color={`white`}
                                 />
                             </div>
                         </a>
