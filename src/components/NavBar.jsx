@@ -18,6 +18,7 @@ const emptyUserInfo = {
 }
 
 export default function NavBar({ searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
+    const renderSearchBar = false
     const pathName = window.location.pathname
     // console.log("pathName:",pathName)
     const navigate = useNavigate()
@@ -114,7 +115,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
 
                     {/* Search Inputs */}
                     {/* logic that conditionally renders the search bar when NOT landing page */}
-                    {pathName !== "/" && false && /* remove false to allow search bar to render */
+                    {pathName !== "/" && renderSearchBar && /* remove false to allow search bar to render */
                         <>
                             <div
                             >
