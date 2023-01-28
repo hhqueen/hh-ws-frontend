@@ -13,6 +13,7 @@ import { useImmer } from "use-immer"
 
 // import components
 import LoadingComp from './components/LoadingComp';
+import Footer from './components/Footer';
 
 // import source data
 import { checkboxFilters } from "./sourceData/emptyDataTemplates"
@@ -22,7 +23,8 @@ import useGeolocation from "../src/components/customHooks/useGeolocation.js"
 
 // require functions
 import dateConverter from "./helperFunctions/dateConverter"
-import Footer from './components/Footer';
+import qStringfromObj from './helperFunctions/qStringfromObj';
+
 // import geoLocation from "./helperFunctions/geoLocation"
 // const dateConverter = require("./helperFunctions/dateConverter")
 // const getCoord = require("./helperFunctions/getCoord.js")
@@ -119,34 +121,24 @@ function App() {
       setAllRestaurants([])
       setShowRestaurants([])
       let queryString = "?"
-      // console.log("filterParams:", filterParams)
-
-      // const latLong = await geoLocation()
-      // console.log("latLong_getrestaraunts:", latLong)
-
       const revisedSearchParams = {
         searchTerm: searchParams.searchTerm,
         currentLatitude: latLong.latitude,
         currentLongitude: latLong.longitude,
         address: searchParams.address,
-        searchButtonClicked: false
+        searchButtonClicked: false,
+        
       }
-      console.log("revisedSearchParams:", revisedSearchParams)
+      // console.log("revisedSearchParams:", revisedSearchParams)
 
       // Build Query String
-      Object.entries(revisedSearchParams).map((param) => {
-        if (queryString !== "?") {
-          queryString += "&"
-        }
-        queryString += `${param[0]}=${param[1]}`
-      })
-
+      queryString = qStringfromObj(revisedSearchParams)
       filterParams.forEach((param) => {
         if (param.value === true) {
           queryString += `&${param.name}=${true}`
         }
       })
-      console.log("queryString:", queryString)
+      // console.log("queryString:", queryString)
       // console.log(filterObj)   
       // Execute API Query based on state filters and search values
       const gotRests = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`)
