@@ -89,6 +89,14 @@ function App() {
     searchButtonClicked: false
   })
 
+  const [UIFilters, setUIFilters] = useImmer({
+    hasOnlyLateNightOnDay: {
+      name: "hasOnlyLateNightOnDay", 
+      displayName: "Late Night",
+      value: false
+    }
+  })
+
 
   // console.log(searchParams)
   // restaurant filter function
@@ -138,9 +146,6 @@ function App() {
           queryString += `&${param.name}=${true}`
         }
       })
-      // console.log("queryString:", queryString)
-      // console.log(filterObj)   
-      // Execute API Query based on state filters and search values
       const gotRests = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`)
       setIsFetchingRestData(false)
       return gotRests.data
@@ -149,15 +154,20 @@ function App() {
     }
   }
 
-  const filterRestByDay = (filteredRests, dayOweek) => {
+  const filterRestByDay = (filteredRests, dayOweek, hasOnlyLateNightOnDay = false) => {
     const numOweek = dateConverter(dayOweek, false)
     // console.log("numOweek:",numOweek)
     // console.log("filteredRests:",filteredRests)
-    const filterRestsByDay = filteredRests.filter((rest, idx) => {
-      console.log(`rest${idx}:`, rest)
-      const filterFlag = rest.hourSet?.hours.some((e) => e.day === numOweek && (e.hasHH1 === true || e.hasHH2 === true))
+    const filterRestsByDay = filteredRests.filter((rest) => {
+
+      // console.log(`rest${idx}:`, rest)
+      const filterFlag = rest.hourSet?.hours.some((e) => {
+        let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay  === true || e.isAllNight === true 
+        if (hasOnlyLateNightOnDay) { hasHHFilter = e.hasHH2 === true || e.isAllNight === true }
+        return e.day === numOweek && hasHHFilter
+      })
       // const filterFlag = rest.hourSet.hours
-      console.log(`filterFlag rest${idx}:`, filterFlag)
+      // console.log(`filterFlag rest${idx}:`, filterFlag)
       return filterFlag
     })
     return filterRestsByDay
@@ -167,7 +177,7 @@ function App() {
     try {
       const allRests = await getRestaurants()
       setAllRestaurants(allRests)
-      const filteredRestsByDay = filterRestByDay(allRests, dow)
+      const filteredRestsByDay = filterRestByDay(allRests, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
       const filteredRestbyFilterParams = filterRests(filterParams, filteredRestsByDay)
       setShowRestaurants(filteredRestbyFilterParams)
     } catch (error) {
@@ -211,25 +221,7 @@ function App() {
     setGeolocations()
     if (navigatedFlag) setNavigatedFlag(false)
 
-  }, [latLong, dow, filterParams, navigatedFlag])
-
-
-  // re-render list on filterParams Change. may want to change this to a server call. 
-  // useEffect(() => {
-  //   const filterRestsByDay = filterRestByDay(allRestaurants, dow)
-  //   const filteredRests = filterRests(filterParams, filterRestsByDay)
-  //   setShowRestaurants(filteredRests)
-  // }, [filterParams])
-
-
-
-
-
-
-
-  // useEffect(() => {
-  //   return console.log("dow", dow)
-  // })
+  }, [latLong, dow, filterParams, navigatedFlag, UIFilters])
 
   const queryClient = new QueryClient()
   return (
@@ -269,6 +261,7 @@ function App() {
                   setDow={setDow}
                   dow={dow}
                   searchParams={searchParams}
+                  UIFiltersProps={{UIFilters, setUIFilters}}  
                 />
               </Suspense>
             }
