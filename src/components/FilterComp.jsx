@@ -5,21 +5,20 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
 
     const filtersMap = filterParams.map((filterVal) => {
         return (
-            <Dropdown.Item
-                onClick={() => {
-                    setFilterParams((draft) => {
-                        const foundItem = draft.find(item => item.name == filterVal.name)
-                        foundItem.value = !foundItem.value
-                    })
-                }}
-            >
+            <Dropdown.Item>
                 <label
                     htmlFor={`${filterVal.name}_checkbox`}
                 >
                     <Checkbox
                         id={`${filterVal.name}_checkbox`}
                         checked={filterVal.value}
-                        readOnly
+                        // readOnly
+                        onClick={() => {
+                            setFilterParams((draft) => {
+                                const foundItem = draft.find(item => item.name == filterVal.name)
+                                foundItem.value = !foundItem.value
+                            })
+                        }}
                     />
                     {filterVal.display}</label>
             </Dropdown.Item>
@@ -63,26 +62,44 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                             className=""
                         >
                             {filtersMap}
-                        </Dropdown>
-                    </div>
 
-                </div>
-                <div>
-                    <label
-                        htmlFor={``}
+                        {/* UIFilter  */}
+                        <Dropdown.Item>
+                        <label
+                        htmlFor={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
                     >
                         <Checkbox
-                            id={``}
+                            id={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
                             name={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
                             checked={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.value}
-                            onClick={(e)=>{
-                                UIFiltersProps.setUIFilters((draft)=>{
+                            onClick={(e) => {
+                                UIFiltersProps.setUIFilters((draft) => {
                                     draft.hasOnlyLateNightOnDay.value = !draft.hasOnlyLateNightOnDay.value
                                 })
                             }}
                         />
                         {UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.displayName}</label>
+                        </Dropdown.Item>
+                        </Dropdown>
+                    </div>
+
                 </div>
+                {/* <div>
+                    <label
+                        htmlFor={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
+                    >
+                        <Checkbox
+                            id={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
+                            name={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
+                            checked={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.value}
+                            onClick={(e) => {
+                                UIFiltersProps.setUIFilters((draft) => {
+                                    draft.hasOnlyLateNightOnDay.value = !draft.hasOnlyLateNightOnDay.value
+                                })
+                            }}
+                        />
+                        {UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.displayName}</label>
+                </div> */}
             </aside>
         </>
     )
