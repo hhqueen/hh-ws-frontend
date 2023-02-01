@@ -159,7 +159,8 @@ function App() {
     // console.log("numOweek:",numOweek)
     // console.log("filteredRests:",filteredRests)
     const filterRestsByDay = filteredRests.filter((rest) => {
-
+ 
+      
       // console.log(`rest${idx}:`, rest)
       const filterFlag = rest.hourSet?.hours.some((e) => {
         let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay  === true || e.isAllNight === true 
