@@ -7,6 +7,7 @@ import { useState } from 'react'
 import Alpha2BannerComp from './Alpha2BannerComp'
 import { RxMagnifyingGlass } from 'react-icons/rx'
 import { BsInstagram } from 'react-icons/bs'
+import apilogger from '../helperFunctions/apiLogger'
 
 import LogoSmall from './Logo/LogoSmall'
 
@@ -18,6 +19,7 @@ const emptyUserInfo = {
 }
 
 export default function NavBar({ searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
+    const componentName = "NavBar"
     const renderSearchBar = true
     const pathName = window.location.pathname
     // console.log("pathName:",pathName)
@@ -36,9 +38,6 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
         }
         setUserInfo(emptyUserInfo)
     }
-
-
-
 
     // set user Info for NavBar use from jwt token
     useEffect(() => {
@@ -171,7 +170,13 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                     }
                     <div className="flex md:order-2">
                         {/* IG Icon */}
-                        <a href='https://www.instagram.com/hhqueen.official/' target="_blank">
+                        <a 
+                            name=""
+                            id='IG_Link'
+                            onClick={(e)=>{
+                                apilogger(e,componentName,userInfo.id)
+                            }}                        
+                            href='https://www.instagram.com/hhqueen.official/' target="_blank">
                             <div
                                 className='px-3'
 

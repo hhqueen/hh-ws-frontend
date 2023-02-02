@@ -24,6 +24,7 @@ import useGeolocation from "../src/components/customHooks/useGeolocation.js"
 // require functions
 import dateConverter from "./helperFunctions/dateConverter"
 import qStringfromObj from './helperFunctions/qStringfromObj';
+import jwtDecode from 'jwt-decode';
 
 // import geoLocation from "./helperFunctions/geoLocation"
 // const dateConverter = require("./helperFunctions/dateConverter")
@@ -70,6 +71,7 @@ const getMostRecentlySearchedAddress = () => {
 
 function App() {
   // variables
+  const componentName = "App.js"
   const [isFetchingRestData, setIsFetchingRestData] = useState(false)
   const [geoLocAvail, setGeoLocAvail] = useState(navigator.geolocation)
   const latLong = useGeolocation(geoLocAvail)
@@ -135,18 +137,23 @@ function App() {
         currentLongitude: latLong.longitude,
         address: searchParams.address,
         searchButtonClicked: false,
-        
+        userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
+        UI_ComponentName: componentName 
       }
       // console.log("revisedSearchParams:", revisedSearchParams)
 
       // Build Query String
       queryString = qStringfromObj(revisedSearchParams)
+      console.log("app.js_queryString:",queryString)
       filterParams.forEach((param) => {
         if (param.value === true) {
           queryString += `&${param.name}=${true}`
         }
       })
-      const gotRests = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`)
+      const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
+      console.log("process.env.REACT_APP_SERVER_URL:",process.env.REACT_APP_SERVER_URL)
+      console.log("getString:",getString)
+      const gotRests = await axios.get(getString)
       setIsFetchingRestData(false)
       return gotRests.data
     } catch (error) {
@@ -156,12 +163,10 @@ function App() {
 
   const filterRestByDay = (filteredRests, dayOweek, hasOnlyLateNightOnDay = false) => {
     const numOweek = dateConverter(dayOweek, false)
-    // console.log("numOweek:",numOweek)
+    // console.log("numOweek:",numOweek) 
     // console.log("filteredRests:",filteredRests)
-    const filterRestsByDay = filteredRests.filter((rest) => {
- 
-      
-      // console.log(`rest${idx}:`, rest)
+    const filterRestsByDay = filteredRests.filter((rest,idx) => {
+       console.log(`rest${idx}:`, rest)
       const filterFlag = rest.hourSet?.hours.some((e) => {
         let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay  === true || e.isAllNight === true 
         if (hasOnlyLateNightOnDay) { hasHHFilter = e.hasHH2 === true || e.isAllNight === true }
