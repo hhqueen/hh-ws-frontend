@@ -13,9 +13,11 @@ import HHHours from '../HHHours'
 import MenuItems from '../MenuItems'
 import LoadingComp from '../LoadingComp'
 import EditDeleteRestComp from '../EditDeleteRestComp'
+import apiLogger from '../../helperFunctions/apiLogger'
 
 export default function RestDetail() {
   let { id } = useParams()
+  const componentName = "RestDetail"
   const [restData, setRestData] = useState({
     hourSet: {
       hours: []
@@ -29,17 +31,16 @@ export default function RestDetail() {
       foodAndDrinkMenuImg: null,
       foodMenuImg: null,
       drinkMenuImg: null
-
     }
   })
   const [isLoaded, setIsloaded] = useState(false)
   const [address, setAddress] = useState("")
 
-  const dateString = ()=>{
+  const dateString = () => {
     const updatedDate = restData.updatedAt
-    const year = updatedDate.substring(0,4)
-    const month = updatedDate.substring(5,7)
-    const day = updatedDate.substring(8,10)
+    const year = updatedDate.substring(0, 4)
+    const month = updatedDate.substring(5, 7)
+    const day = updatedDate.substring(8, 10)
     return `${month}/${day}/${year}`
   }
   useEffect(() => {
@@ -79,7 +80,7 @@ export default function RestDetail() {
           className='md:flex md:flex-col mt-[200px] px-3 md:items-center'
         >
           <div
-          className='md:flex md:px-10'
+            className='md:flex md:px-10'
           >
             <div
               className='relative md:w-[35vw]'
@@ -94,7 +95,7 @@ export default function RestDetail() {
             </div>
 
             <div
-            className='px-10'
+              className='px-10'
             >
               <div
                 className='py-3'
@@ -107,7 +108,11 @@ export default function RestDetail() {
                   href={`https://www.google.com/maps/place/${address.replace(" ", "+")}`}
                   target="_blank"
                   className="flex"
-                  rel="noopener noreferrer">
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    apiLogger(e, componentName, `a_Address_RestaurantId: ${id}`)
+                  }}
+                >
                   <FaDirections />
                   <p
                     className='text-[blue] underline'
@@ -116,6 +121,9 @@ export default function RestDetail() {
                 <a
                   href={`tel:${restData?.telNumber}`}
                   className="flex"
+                  onClick={(e) => {
+                    apiLogger(e, componentName, `a_PhoneNumber_RestaurantId: ${id}`)
+                  }}
                 >
                   <TbPhoneCall />
                   <p

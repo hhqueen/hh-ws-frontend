@@ -153,7 +153,9 @@ function App() {
       const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
       console.log("process.env.REACT_APP_SERVER_URL:",process.env.REACT_APP_SERVER_URL)
       console.log("getString:",getString)
-      const gotRests = await axios.get(getString)
+      // const gotRests = await axios.get(getString)
+      const httpMethod = "get"
+      const gotRests = await axios[httpMethod](getString)
       setIsFetchingRestData(false)
       return gotRests.data
     } catch (error) {

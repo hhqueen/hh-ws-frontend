@@ -1,8 +1,9 @@
 import { dowList } from "../sourceData/dowList"
-import { Select, Button, Dropdown, Checkbox } from "flowbite-react"
+import { Select, Dropdown, Checkbox } from "flowbite-react"
+import apiLogger from "../helperFunctions/apiLogger"
 
 export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, setFilterParams }) {
-
+    const componentName = "FilterComp"
     const filtersMap = filterParams.map((filterVal) => {
         return (
             <Dropdown.Item>
@@ -11,9 +12,11 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                 >
                     <Checkbox
                         id={`${filterVal.name}_checkbox`}
+                        name={`${filterVal.name}_checkbox`}
                         checked={filterVal.value}
                         // readOnly
-                        onClick={() => {
+                        onClick={(e) => {
+                            apiLogger(e, componentName)
                             setFilterParams((draft) => {
                                 const foundItem = draft.find(item => item.name == filterVal.name)
                                 foundItem.value = !foundItem.value
@@ -49,7 +52,10 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                         <Select
                             id='dow'
                             name='dow'
-                            onChange={(e) => setDow(e.target.value)}
+                            onChange={(e) => {
+                                apiLogger(e, componentName)
+                                setDow(e.target.value)}
+                            }
                         >
                             {dowOptionsMap}
                         </Select>
@@ -73,6 +79,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                             name={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
                             checked={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.value}
                             onClick={(e) => {
+                                apiLogger(e, componentName)
                                 UIFiltersProps.setUIFilters((draft) => {
                                     draft.hasOnlyLateNightOnDay.value = !draft.hasOnlyLateNightOnDay.value
                                 })

@@ -11,6 +11,7 @@ import apilogger from '../helperFunctions/apiLogger'
 
 import LogoSmall from './Logo/LogoSmall'
 
+
 const emptyUserInfo = {
     "firstName": "",
     "lastName": "",
@@ -170,12 +171,12 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                     }
                     <div className="flex md:order-2">
                         {/* IG Icon */}
-                        <a 
-                            name=""
+                        <a
+                            name="IG_Link"
                             id='IG_Link'
-                            onClick={(e)=>{
-                                apilogger(e,componentName,userInfo.id)
-                            }}                        
+                            onClick={(e) => {
+                                apilogger(e, componentName, 'IG_Link')
+                            }}
                             href='https://www.instagram.com/hhqueen.official/' target="_blank">
                             <div
                                 className='px-3'
@@ -218,6 +219,10 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                 !localStorage.getItem('jwt') &&
                                 <>
                                     <Link
+                                        id='Login_Link'
+                                        onClick={(e) => {
+                                            apilogger(e, componentName, 'Login_Link')
+                                        }}
                                         to="/login"
                                     >
                                         <Dropdown.Item>
@@ -227,6 +232,10 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
 
 
                                     <Link
+                                        id='SignUp_Link'
+                                        onClick={(e) => {
+                                            apilogger(e, componentName, 'SignUp_Link')
+                                        }}
                                         to="/signup"
                                     >
                                         <Dropdown.Item>
@@ -239,6 +248,10 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                 localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
                                 <>
                                     <Link
+                                        id='AddNewRestaurant_Link'
+                                        onClick={(e) => {
+                                            apilogger(e, componentName, 'AddNewRestaurant_Link')
+                                        }}
                                         to="/addnewrestaurant"
                                     >
                                         <Dropdown.Item>
@@ -269,7 +282,10 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                 //         Log Out
                                 //     </p>
                                 <Dropdown.Item
-                                    onClick={handleLogOut}
+                                    onClick={(e)=>{
+                                        apilogger(e, componentName, 'LogOut_Link')
+                                        handleLogOut()
+                                    }}
                                 >
                                     Sign out
                                 </Dropdown.Item>

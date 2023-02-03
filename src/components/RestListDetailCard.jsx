@@ -9,10 +9,11 @@ import HHHours from './HHHours'
 import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
 import EditDeleteRestComp from './EditDeleteRestComp'
+import apiLogger from '../helperFunctions/apiLogger'
 
 export default function RestListDetailCard({ dow, restaurantInfo, searchParams }) {
     const navigate = useNavigate()
-
+    const componentName = 'RestListDetailCard'
     const currentLocation = {
         latitude: searchParams.currentLatitude,
         longitude: searchParams.currentLongitude
@@ -39,6 +40,10 @@ export default function RestListDetailCard({ dow, restaurantInfo, searchParams }
             />
         )
     })
+    const handleRestaurantClick = async (e) => {
+        await apiLogger(e,componentName)
+        navigate(`/restaurant/${restaurantInfo._id}`)
+    }
 
     return (
         // container div
@@ -47,7 +52,9 @@ export default function RestListDetailCard({ dow, restaurantInfo, searchParams }
 
         >
             <img
-            onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
+            id={`RestListDetailCard_img_${restaurantInfo._id}`}
+            name={`RestListDetailCard_img_${restaurantInfo._id}`}
+            onClick={handleRestaurantClick}
                 loading="lazy"
                 src={restaurantInfo.image_url}
                 alt={restaurantInfo.name}
@@ -61,13 +68,17 @@ export default function RestListDetailCard({ dow, restaurantInfo, searchParams }
             >
                 <div
                     className=' flex flex-col justify-between p-4 leading-normal'
-                    onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
+                    id={`RestListDetailCard_div_${restaurantInfo._id}`}
+                    name={`RestListDetailCard_div_${restaurantInfo._id}`}
+                    onClick={handleRestaurantClick}
                 >
 
                     {/* info div */}
                     <p
                         className='font-semibold text-sm hover:underline hover:cursor-pointer'
-                        onClick={() => navigate(`/restaurant/${restaurantInfo._id}`)}
+                        id={`RestListDetailCard_p_${restaurantInfo._id}`}
+                        name={`RestListDetailCard_p_${restaurantInfo._id}`}
+                        onClick={handleRestaurantClick}
                     >{restaurantInfo.name}</p>
 
                     <p
