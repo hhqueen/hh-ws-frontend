@@ -54,7 +54,8 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                             name='dow'
                             onChange={(e) => {
                                 apiLogger(e, componentName)
-                                setDow(e.target.value)}
+                                setDow(e.target.value)
+                            }
                             }
                         >
                             {dowOptionsMap}
@@ -67,26 +68,53 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                             label="Filters"
                             className=""
                         >
+                            <Dropdown.Item
+                            >
+                                <p
+                                    id="UncheckAll_p"
+                                    name="UncheckAll_p"
+                                    className="text-xs text-sky-500 hover:text-sky-300"
+                                    onClick={(e) => {
+                                        // unchecks all filterParams
+                                        filterParams.forEach((filterVal) => {
+                                            setFilterParams((draft) => {
+                                                const foundItem = draft.find(item => item.name == filterVal.name)
+                                                foundItem.value = false
+                                            })
+                                        })
+
+                                        //unchecks hasOnlyLateNightOnDay 
+                                        UIFiltersProps.setUIFilters((draft) => {
+                                            draft.hasOnlyLateNightOnDay.value = false
+                                        })
+                                        // logs to db
+                                        apiLogger(e, componentName)
+                                    }}
+                                >
+                                    UnCheck All
+                                </p>
+                            </Dropdown.Item>
+
                             {filtersMap}
 
-                        {/* UIFilter  */}
-                        <Dropdown.Item>
-                        <label
-                        htmlFor={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
-                    >
-                        <Checkbox
-                            id={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
-                            name={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
-                            checked={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.value}
-                            onClick={(e) => {
-                                apiLogger(e, componentName)
-                                UIFiltersProps.setUIFilters((draft) => {
-                                    draft.hasOnlyLateNightOnDay.value = !draft.hasOnlyLateNightOnDay.value
-                                })
-                            }}
-                        />
-                        {UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.displayName}</label>
-                        </Dropdown.Item>
+                            {/* UIFilter  */}
+                            <Dropdown.Item>
+                                <label
+                                    htmlFor={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
+                                >
+                                    <Checkbox
+                                        id={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
+                                        name={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
+                                        checked={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.value}
+                                        onClick={(e) => {
+                                            apiLogger(e, componentName)
+                                            UIFiltersProps.setUIFilters((draft) => {
+                                                draft.hasOnlyLateNightOnDay.value = !draft.hasOnlyLateNightOnDay.value
+                                            })
+                                        }}
+                                    />
+                                    {UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.displayName}</label>
+                            </Dropdown.Item>
                         </Dropdown>
                     </div>
 
