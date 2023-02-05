@@ -3,10 +3,10 @@ import React from 'react'
 export default function LogoLarge() {
     return (
         <div
-            className='flex flex-col  mx-[30px]'
+            className='flex flex-col mr-[60px]'
         >
             <img
-                className='min-h-[283px] min-w-[283px] mb-[5px] object-cover'
+                className='h-[300px] w-[300px] mb-[5px] object-cover'
                 src='https://res.cloudinary.com/hhqueen/image/upload/v1675632375/website_assets/hhq-icon_tgc27d.png'
                 alt='hh queen'
             />

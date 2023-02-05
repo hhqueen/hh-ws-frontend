@@ -22,7 +22,7 @@ const emptyUserInfo = {
 
 export default function NavBar({ searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
     const componentName = "NavBar"
-    const renderSearchBar = true
+    const renderSearchBar = false
     const pathName = window.location.pathname
     // console.log("pathName:",pathName)
     const navigate = useNavigate()
