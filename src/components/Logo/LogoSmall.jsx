@@ -6,8 +6,8 @@ export default function LogoSmall() {
             className='flex'
         >
             <img
-                className='h-[57px] w-[49px] mr-[5px]'
-                src='images/hhqueen_logo_CROWN.svg'
+                className='h-[57px] w-[57px] mr-[5px]'
+                src='https://res.cloudinary.com/hhqueen/image/upload/v1675632375/website_assets/hhq-icon_tgc27d.png'
                 alt='hh queen'
             />
             <div
