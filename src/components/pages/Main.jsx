@@ -1,17 +1,26 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy , useTransition } from 'react'
 // import FilterComp from '../FilterComp'
 // import ListViewComp from '../ListViewComp'
-// import MapViewComp from '../MapViewComp'
+import MapViewComp from '../MapViewComp'
 import LoadingComp from '../LoadingComp'
-
+// import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
 const ListViewComp = lazy(() => import('../ListViewComp'))
 const FilterComp = lazy(() => import('../FilterComp'))
 
-export default function Main({ UIFiltersProps, searchParams,isFetchingRestData,dow, setDow, allRestaurants, filterParams, setFilterParams, filterFormSubmitHandler }) {
-
-
-  return (
+export default function Main({ 
+  UIFiltersProps, 
+  searchParams,
+  isFetchingRestData,
+  dow, 
+  setDow, 
+  allRestaurants, 
+  filterParams, 
+  setFilterParams, 
+  filterFormSubmitHandler,
+  currentLocation
+}) {
+    return (
     <div
       className='flex flex-col my-auto
       sm:flex-row sm:my-10'
@@ -35,7 +44,11 @@ export default function Main({ UIFiltersProps, searchParams,isFetchingRestData,d
           searchParams={searchParams}
         />
       </Suspense>
+      
 
+      <MapViewComp
+      currentLocation={currentLocation}
+      />
 
     </div>
   )

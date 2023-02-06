@@ -3,7 +3,7 @@ import React from 'react'
 export default function LoadingComp() {
   return (
     <div
-      className='flex py-[40vh] items-center justify-center m-auto'
+      className='flex py-[40vh] items-center justify-center m-auto -translate-x-1/2'
       role="status">
       <div
       className='flex'

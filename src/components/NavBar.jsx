@@ -116,7 +116,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
 
                     {/* Search Inputs */}
                     {/* logic that conditionally renders the search bar when NOT landing page */}
-                    {(pathName !== "/" && renderSearchBar) && /* remove false to allow search bar to render */
+                    { ( pathName !== "/" && renderSearchBar ) && 
                         <>
                             <div
                             >
@@ -171,13 +171,13 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                         </>
                     }
 
-                        <div className="flex justify-between w-[30vw] md:order-2">
+                        <div className="flex justify-between w-[30vw] md:order-2 items-center">
                             {/* newsletter */}
                             <a
                                 name="IG_Link"
                                 id='IG_Link'
                                 onClick={(e) => {
-                                    apilogger(e, componentName, 'newletter_p')
+                                    apilogger(e, componentName, 'newsletter_p')
                                 }}
                                 href='' target="_blank">
                                 <div
@@ -239,8 +239,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                         placeholderInitials={localStorage.getItem('jwt') && `${userInfo.firstName[0]}${userInfo.lastName[0]}`}
                                         rounded={true}
                                     />}
-                            >
-
+                                >
 
                                 {
                                     localStorage.getItem('jwt') &&
@@ -255,7 +254,6 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                         </Dropdown.Header>
                                     </>
                                 }
-
 
                                 {
                                     !localStorage.getItem('jwt') &&
@@ -286,6 +284,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                         </Link>
                                     </>
                                 }
+
                                 {
                                     localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
                                     <>
@@ -302,27 +301,9 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                         </Link>
                                     </>
                                 }
-                                {/* <Dropdown.Item>
-                                Dashboard
-                            </Dropdown.Item>
-                            <Dropdown.Item>
-                                Settings
-                            </Dropdown.Item>
-                            <Dropdown.Item>
-                                Earnings
-                            </Dropdown.Item>
-                            <Dropdown.Divider /> */}
 
                                 {
                                     localStorage.getItem('jwt') &&
-                                    // <div
-                                    //     className='flex'
-                                    // >
-                                    //     <p
-                                    //         onClick={handleLogOut}
-                                    //     >
-                                    //         Log Out
-                                    //     </p>
                                     <Dropdown.Item
                                         onClick={(e) => {
                                             apilogger(e, componentName, 'LogOut_Link')

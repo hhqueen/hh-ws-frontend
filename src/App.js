@@ -58,7 +58,7 @@ const getMostRecentlySearchedAddress = () => {
     const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
     const mostRecentVal = getHistoryArr.length - 1
     // setSearchParams((draft) => { draft.address = getHistoryArr[mostRecentVal].address })
-    console.log(navigator.geolocation)
+    // console.log(navigator.geolocation)
     if (!localStorage.getItem('sh') && navigator.geolocation) {
       return "Current Location"
     } else {
@@ -103,30 +103,30 @@ function App() {
   // console.log(searchParams)
   // restaurant filter function
   const filterRests = (filterArr, restData) => {
-    console.log("filterArr:", filterArr)
+    // console.log("filterArr:", filterArr)
     const trueFilters = filterArr.filter(filterParam => filterParam.value)
-    console.log("trueFilters:", trueFilters)
+    // console.log("trueFilters:", trueFilters)
     const filteredRestaurants = restData.filter((rest) => {
-      console.log("rest:", rest)
+      // console.log("rest:", rest)
       for (let i = 0; i < trueFilters.length; i++) {
         // console.log("rest[trueFilters[i].name]:",rest.filterParams.name === [trueFilters[i].name])
         // if (!rest.filterParams.name === [trueFilters[i].name]) {
         //   return false
         // }
         const foundParam = rest.filterParams.find(({ name, value }) => name === trueFilters[i].name && value === true)
-        console.log("foundParam:", foundParam)
+        // console.log("foundParam:", foundParam)
         if (!foundParam) return false
       }
       return true
     })
-    console.log("filteredRestaurants", filteredRestaurants)
+    // console.log("filteredRestaurants", filteredRestaurants)
     return filteredRestaurants
   }
 
   // API call to backend for all restaurant data. 
   // need to be filtered on server side based on location distance
   const getRestaurants = async () => {
-    console.log("getRestaurants_latLong:", latLong)
+    // console.log("getRestaurants_latLong:", latLong)
     try {
       setAllRestaurants([])
       setShowRestaurants([])
@@ -144,15 +144,15 @@ function App() {
 
       // Build Query String
       queryString = qStringfromObj(revisedSearchParams)
-      console.log("app.js_queryString:",queryString)
+      // console.log("app.js_queryString:",queryString)
       filterParams.forEach((param) => {
         if (param.value === true) {
           queryString += `&${param.name}=${true}`
         }
       })
       const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
-      console.log("process.env.REACT_APP_SERVER_URL:",process.env.REACT_APP_SERVER_URL)
-      console.log("getString:",getString)
+      // console.log("process.env.REACT_APP_SERVER_URL:",process.env.REACT_APP_SERVER_URL)
+      // console.log("getString:",getString)
       // const gotRests = await axios.get(getString)
       const httpMethod = "get"
       const gotRests = await axios[httpMethod](getString)
@@ -168,7 +168,7 @@ function App() {
     // console.log("numOweek:",numOweek) 
     // console.log("filteredRests:",filteredRests)
     const filterRestsByDay = filteredRests.filter((rest,idx) => {
-       console.log(`rest${idx}:`, rest)
+      //  console.log(`rest${idx}:`, rest)
       const filterFlag = rest.hourSet?.hours.some((e) => {
         let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay  === true || e.isAllNight === true 
         if (hasOnlyLateNightOnDay) { hasHHFilter = e.hasHH2 === true || e.isAllNight === true }
@@ -269,7 +269,8 @@ function App() {
                   setDow={setDow}
                   dow={dow}
                   searchParams={searchParams}
-                  UIFiltersProps={{UIFilters, setUIFilters}}  
+                  UIFiltersProps={{UIFilters, setUIFilters}}
+                  currentLocation={currentLocation}
                 />
               </Suspense>
             }
