@@ -25,17 +25,15 @@ export default function CarouselContainer() {
                 className='flex flex-col md:flex-row justify-center items-center w-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'
             >
                 <div
-                    className='flex flex-col text-white text-[48.61px] font-bold justify-center'
+                    className='flex flex-col text-white text-center text-[48.61px] font-bold justify-center md:w-[300px]'
                 >
-                    <p>Find your</p>
-                    <p>nearest</p>
-                    <p>Happy Hours</p>
+                    <p>Find your nearest Happy Hours</p>
                 </div>
 
                 <LogoLarge />
 
                 <div
-                    className='flex flex-col justify-center text-white'
+                    className='flex flex-col justify-center items-center text-white'
                 >
                     <p>Have any feed back or inquries?</p>
                     <a

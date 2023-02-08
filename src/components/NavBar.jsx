@@ -11,6 +11,7 @@ import { FiMail } from 'react-icons/fi'
 import apilogger from '../helperFunctions/apiLogger'
 
 import LogoSmall from './Logo/LogoSmall'
+import IG_Logo from './Logo/IG_Logo'
 
 
 const emptyUserInfo = {
@@ -218,13 +219,16 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                                 }}
                                 href='https://www.instagram.com/hhqueen.official/' target="_blank">
                                 <div
-                                    className='px-3'
+                                    className=''
 
                                 >
-                                    <BsInstagram
+                                    {/* <BsInstagram
                                         size={35}
                                         opacity={.6}
                                         color={`white`}
+                                    /> */}
+                                    <IG_Logo
+                                        height={45}
                                     />
                                 </div>
                             </a>

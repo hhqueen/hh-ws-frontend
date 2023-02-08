@@ -165,7 +165,7 @@ export default function AddEditRest({ currentLocation }) {
             draft.latitude = null
             draft.image_url = null
         })
-        setSearchParams((draft)=>{
+        setSearchParams((draft) => {
             draft.term = ""
         })
     }
@@ -433,119 +433,128 @@ export default function AddEditRest({ currentLocation }) {
         <div
             className='px-2 mt-[200px]'
         >
+
+
+
+            <MessageModal
+                modalOpen={messageModalProps.modalOpen}
+                header={messageModalProps.header}
+                body={messageModalProps.body}
+                onClose={() => { setMessageModalProps((draft) => { draft.modalOpen = false }) }}
+                button1text={messageModalProps.button1text}
+                handleButton1Click={messageModalProps.handleButton1Click}
+                button2text={messageModalProps.button2text}
+                handleButton2Click={messageModalProps.handleButton2Click}
+            />
+
+
+            <YelpResponseModal
+                yelpList={yelpRestResponse}
+                modalOpen={yelpModalOpen}
+                onClose={onClose}
+                onModalClick={onModalClick}
+                handlePickOneYelpRestaurant={handlePickOneYelpRestaurant}
+            />
+            {/* div that holds yelp search input */}
             <form
-            // onSubmit={(e) => handleFormSubmit(e)}
+                className='py-3'
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    console.log("yelpformsubmited")
+                    if (searchRestBool) {
+                        handleSearchButton()
+                    } else {
+                        handleResetSearch()
+                    }
+                }}
             >
-
-
-                <MessageModal
-                    modalOpen={messageModalProps.modalOpen}
-                    header={messageModalProps.header}
-                    body={messageModalProps.body}
-                    onClose={() => { setMessageModalProps((draft) => { draft.modalOpen = false }) }}
-                    button1text={messageModalProps.button1text}
-                    handleButton1Click={messageModalProps.handleButton1Click}
-                    button2text={messageModalProps.button2text}
-                    handleButton2Click={messageModalProps.handleButton2Click}
-                />
-
-
-                <YelpResponseModal
-                    yelpList={yelpRestResponse}
-                    modalOpen={yelpModalOpen}
-                    onClose={onClose}
-                    onModalClick={onModalClick}
-                    handlePickOneYelpRestaurant={handlePickOneYelpRestaurant}
-                />
-                {/* div that holds yelp search input */}
-                <div
-                    className='py-3'
-                >
-                    {
-                        searchRestBool ?
-                            // {/* search container */}
+                {
+                    searchRestBool ?
+                        // {/* search container */}
+                        <div>
                             <div>
-                                <div>
-                                    <label
-                                        htmlFor='yelpSearchTerm'
-                                    >Search Term:</label>
-                                    <input
-                                        id='yelpSearchTerm'
-                                        className='border'
-                                        type="text"
-                                        value={searchParams.term}
-                                        onChange={(e) => {
-                                            setSearchParams((draft) => {
-                                                draft.term = e.target.value
-                                            })
-                                        }}
-                                    />
-                                </div>
-                                <div>
-                                    <label
-                                        htmlFor='yelpSearchLoc'
-                                    >Location:</label>
-                                    <input
-                                        id='yelpSearchLoc'
-                                        className='border'
-                                        list="yelpSearchLocList"
-                                        type="text"
-                                        value={searchParams.location.address}
-                                        onChange={(e) => {
-                                            setSearchParams((draft) => {
-                                                draft.location.address = e.target.value
-                                                if (e.target.value === "Current Location") {
-                                                    draft.location.long = currentLocation.longitude
-                                                    draft.location.lat = currentLocation.latitude
-                                                }
-                                            })
-                                        }}
-                                    />
+                                <label
+                                    htmlFor='yelpSearchTerm'
+                                >Search Term:</label>
+                                <input
+                                    id='yelpSearchTerm'
+                                    className='border'
+                                    type="text"
+                                    value={searchParams.term}
+                                    onChange={(e) => {
+                                        setSearchParams((draft) => {
+                                            draft.term = e.target.value
+                                        })
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    htmlFor='yelpSearchLoc'
+                                >Location:</label>
+                                <input
+                                    id='yelpSearchLoc'
+                                    className='border'
+                                    list="yelpSearchLocList"
+                                    type="text"
+                                    value={searchParams.location.address}
+                                    onChange={(e) => {
+                                        setSearchParams((draft) => {
+                                            draft.location.address = e.target.value
+                                            if (e.target.value === "Current Location") {
+                                                draft.location.long = currentLocation.longitude
+                                                draft.location.lat = currentLocation.latitude
+                                            }
+                                        })
+                                    }}
+                                />
 
-                                    <datalist id="yelpSearchLocList">
-                                        <option className="font-['Roboto']" value="Current Location">Current Location</option>
-                                    </datalist>
-                                </div>
+                                <datalist id="yelpSearchLocList">
+                                    <option className="font-['Roboto']" value="Current Location">Current Location</option>
+                                </datalist>
+                            </div>
+                            <div
+                                className='flex flex-wrap gap-2 md:w-3/12'
+                            >
+                                <Button
+                                    // onClick={() => {
+                                    //     handleSearchButton()
+                                    // }}
+                                    type='submit'
+                                    className="border"
+                                >Search</Button>
+                            </div>
+                        </div>
+                        :
+                        // {/* results Container */}
+                        <div>
+                            <img
+                                alt={restaurantData.name}
+                                src={restaurantData.image_url}
+                            />
+                            <p>{restaurantData.name}</p>
+                            <p>{restaurantData.address1}</p>
+                            <p>{restaurantData.city}</p>
+
+                            {
+                                id === undefined &&
+
                                 <div
                                     className='flex flex-wrap gap-2 md:w-3/12'
                                 >
                                     <Button
-                                        onClick={() => {
-                                            handleSearchButton()
-                                        }}
-                                        type='button'
-                                        className="border"
-                                    >Search</Button>
+                                        type='submit'
+                                        className='border'
+                                    // onClick={handleResetSearch}
+                                    >Reset Search</Button>
                                 </div>
-                            </div>
-                            :
-                            // {/* results Container */}
-                            <div>
-                                <img
-                                    alt={restaurantData.name}
-                                    src={restaurantData.image_url}
-                                />
-                                <p>{restaurantData.name}</p>
-                                <p>{restaurantData.address1}</p>
-                                <p>{restaurantData.city}</p>
-
-                                {
-                                    id === undefined &&
-
-                                    <div
-                                        className='flex flex-wrap gap-2 md:w-3/12'
-                                    >
-                                        <Button
-                                            type='button'
-                                            className='border'
-                                            onClick={handleResetSearch}
-                                        >Reset Search</Button>
-                                    </div>
-                                }
-                            </div>
-                    }
-                </div>
-
+                            }
+                        </div>
+                }
+            </form>
+            <form
+            // onSubmit={(e) => handleFormSubmit(e)}
+            >
                 {
                     !searchRestBool &&
                     <>

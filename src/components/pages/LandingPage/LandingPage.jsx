@@ -23,7 +23,7 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
             bg_filepath:'\images/la_CA_card.svg'
         },
         {
-            name: "Irvine, CA", 
+            name: "Orange County, CA", 
             // img_url:"https://www.visitcalifornia.com/sites/visitcalifornia.com/files/VC_IrvineSpectrumCenter_Stock_Irvine-Spectrum-Center-at-Dusk-CMF-8483_1280x640.jpg",
             bg_filepath:"\images/irvine_CA_card.svg"
         },
