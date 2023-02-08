@@ -13,7 +13,7 @@ export default function CarouselContainer() {
     return (
         <div
             // style={{backgroundImage: 'url(/images/carousel_lounge_img.jpg)'}}
-            className={`relative h-[500px] w-auto`}
+            className={`relative h-[700px] md:h-[500px] w-[100vw]`}
         >
             {/* <p>CarouselContainer</p> */}
             <img
@@ -22,7 +22,7 @@ export default function CarouselContainer() {
                 alt='image'
             />
             <div
-                className='flex justify-center absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'
+                className='flex flex-col md:flex-row justify-center items-center w-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'
             >
                 <div
                     className='flex flex-col text-white text-[48.61px] font-bold justify-center'

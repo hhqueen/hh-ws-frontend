@@ -3,7 +3,7 @@ import React from 'react'
 export default function LogoLarge() {
     return (
         <div
-            className='flex flex-col mr-[60px]'
+            className='flex flex-col md:mr-[60px]'
         >
             <img
                 className='h-[300px] w-[300px] mb-[5px] object-cover'

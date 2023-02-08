@@ -100,10 +100,10 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
     return (
         <>
             <div
-                className='fixed flex flex-col w-full top-0 z-50 bg-[#372A88]'
+                className='fixed flex md:flex-col w-[100vw] top-0 z-50 bg-[#372A88]'
             >
                 <Navbar
-                    class="flex justify-between bg-transparent"
+                    class="w-full"
                     menuOpen={true}
                 // fluid={true}
                 // rounded={true}
@@ -171,7 +171,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                         </>
                     }
 
-                        <div className="flex justify-between w-[30vw] md:order-2 items-center">
+                        <div className="flex justify-around w-[30vw] md:order-2 items-center">
                             {/* newsletter */}
                             <a
                                 name="IG_Link"

@@ -23,7 +23,7 @@ export default function CityCardContainer({ CityArr, handleCardClick }) {
                     className='py-3 font-bold text-[25px]'
                 >Featured Locations</p>
                 <div
-                    className='flex justify-between items-center w-[50vw]'
+                    className='flex flex-col md:flex-row justify-between items-center w-full'
                 >
                     {mapCityArry}
                     {/* <p>pi pikachu</p> */}
