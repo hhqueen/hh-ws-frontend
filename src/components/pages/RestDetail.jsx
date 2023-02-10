@@ -15,9 +15,16 @@ import LoadingComp from '../LoadingComp'
 import EditDeleteRestComp from '../EditDeleteRestComp'
 import apiLogger from '../../helperFunctions/apiLogger'
 
-export default function RestDetail({mainDivStyle}) {
+export default function RestDetail({ mainDivStyle }) {
   let { id } = useParams()
   const componentName = "RestDetail"
+
+  const emailProps = {
+    email: "hhqueen.official@gmail.com",
+    subject: `Restaurant Information is Wrong! id: ${id}`,
+    body: "Please tell us what is wrong:"
+  }
+
   const [restData, setRestData] = useState({
     hourSet: {
       hours: []
@@ -238,6 +245,18 @@ export default function RestDetail({mainDivStyle}) {
               </>
             }
           </div>
+
+          <a
+            href={`mailto:${emailProps.email}?subject=${emailProps.subject}&body=${emailProps.body}`}
+          >
+            <button
+              className=' border w-[137px] h-[43px] rounded-[10px] opacity-75 mt-[5px]'
+            >
+              <p
+                className='leading-[18px] font-bold text-[15px]'
+              >Info on this page is wrong!</p>
+            </button>
+          </a>
 
           <p>{`Last Updated: ${dateString()}`}</p>
         </div>
