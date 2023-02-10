@@ -15,7 +15,7 @@ import LoadingComp from '../LoadingComp'
 import EditDeleteRestComp from '../EditDeleteRestComp'
 import apiLogger from '../../helperFunctions/apiLogger'
 
-export default function RestDetail() {
+export default function RestDetail({mainDivStyle}) {
   let { id } = useParams()
   const componentName = "RestDetail"
   const [restData, setRestData] = useState({
@@ -77,6 +77,7 @@ export default function RestDetail() {
         isLoaded &&
 
         <div
+          style={mainDivStyle}
           className='md:flex md:flex-col mt-[200px] px-3 md:items-center'
         >
           <div

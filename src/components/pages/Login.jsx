@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Label,TextInput,Button, Checkbox } from 'flowbite-react'
 import {useNavigate} from "react-router-dom"
 
-export default function Login() {
+export default function Login({mainDivStyle}) {
 
   const navigate = useNavigate()
   const [msg, setMsg] = useState('')
@@ -31,7 +31,8 @@ export default function Login() {
   
   return (
     <form 
-    className="flex flex-col gap-4 mx-[10vw] mt-[200px]"
+    style={mainDivStyle}
+    className="flex flex-col gap-4 mx-[10vw] justify-center"
     onSubmit={loginFormSubmitHandler}
     >
       <div>

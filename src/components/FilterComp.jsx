@@ -40,7 +40,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
     return (
         <>
             <aside
-                className='w-full sm:w-[20rem] grow pb-2 sticky mt-[180px] bg-white dark:bg-gray-800 z-40'
+                className='w-full sm:w-[20rem] grow pb-2 sticky bg-white dark:bg-gray-800 z-40'
                 aria-label='Sidebar'
             >
                 <div

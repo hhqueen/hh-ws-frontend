@@ -6,12 +6,12 @@ export default function LogoLarge() {
             className='flex flex-col md:mr-[60px]'
         >
             <img
-                className='h-[300px] w-[300px] mb-[5px] object-cover'
+                className='h-[200px] w-[200px] md:h-[280px] md:w-[280px] object-cover'
                 src='https://res.cloudinary.com/hhqueen/image/upload/v1675632375/website_assets/hhq-icon_tgc27d.png'
                 alt='hh queen'
             />
             <div
-                className='flex items-center justify-center'
+            className='flex justify-center'
             >
                 <p
                     className='text-white font-bold text-[41px]'

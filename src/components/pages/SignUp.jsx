@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button, Checkbox } from 'flowbite-react'
 
-export default function SignUp() {
+export default function SignUp({mainDivStyle}) {
   // state for the controlled form
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -60,7 +60,8 @@ export default function SignUp() {
 
   return (
       <form
-      className='flex flex-col gap-4 mx-[10vw] md:mx-[30vw] mt-2000px]'
+      style={mainDivStyle}
+      className='flex flex-col gap-4 mx-[10vw] md:mx-[30vw] justify-center'
       onSubmit={handleSubmit}>
       
       <p

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { Navbar, Dropdown, Avatar } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
@@ -21,8 +21,9 @@ const emptyUserInfo = {
     "id": "",
 }
 
-export default function NavBar({ searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
+export default function NavBar({ setNavBarHeight,searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
     const componentName = "NavBar"
+    const navBarDiv = useRef(null)
     const renderSearchBar = false
     const pathName = window.location.pathname
     // console.log("pathName:",pathName)
@@ -56,8 +57,9 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
                 draft.id = decoded.id
             })
             // renderAddRest = checkAdmin(decoded)
-
         }
+        // console.log("navBarDiv.current.clientHeight:",navBarDiv.current.clientHeight)
+        setNavBarHeight(navBarDiv.current.clientHeight)
     })
 
     useEffect(() => {
@@ -102,6 +104,7 @@ export default function NavBar({ searchParams, setSearchParams, handleSearchForm
         <>
             <div
                 className='fixed flex md:flex-col w-[100vw] top-0 z-50 bg-[#372A88]'
+                ref={navBarDiv}
             >
                 <Navbar
                     class="w-full"

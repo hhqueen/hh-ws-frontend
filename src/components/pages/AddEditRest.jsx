@@ -34,7 +34,7 @@ const getOneRestaurantInfo = async (id) => {
 }
 
 
-export default function AddEditRest({ currentLocation }) {
+export default function AddEditRest({ currentLocation ,mainDivStyle }) {
 
     // variables
     const { id } = useParams()
@@ -52,6 +52,14 @@ export default function AddEditRest({ currentLocation }) {
     const [searchRestBool, setSearchRestBool] = useState(true)
     const [yelpRestResponse, setYelpRestResponse] = useImmer([])
     const [searchParams, setSearchParams] = useImmer(emptySearchParams)
+
+    
+    useEffect(()=>{
+        setSearchParams((draft)=>{
+            draft.location.address="Current Location"
+        })
+    },[])
+
 
     useEffect(() => {
         const execute = async () => {
@@ -71,7 +79,18 @@ export default function AddEditRest({ currentLocation }) {
 
 
 
+
     // Handler Functions
+    async function checkDBforYelpId(yelpId) {
+        try {
+            const foundRest = await axios.get(`${process.env.REACT_APP_SERVER_URL}/dbYelpIdCheck/${yelpId}`)
+            if (Object.keys(foundRest) === 0) return false
+            return true
+        } catch (error) {
+            console.log(error)
+        }
+    } 
+
     const handleHourInputChange = (e, idx) => {
         setRestaurantData((draft) => {
             const hour = Number(date.transform(e.target.value, "HH:mm", "HH"))
@@ -173,9 +192,9 @@ export default function AddEditRest({ currentLocation }) {
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         const reqbody = { restaurantData }
-        console.log("reqbody clientside:", reqbody)
+        // console.log("reqbody clientside:", reqbody)
         try {
-            console.log("Form Submitted")
+            // console.log("Form Submitted")
             setMessageModalProps((draft) => {
                 draft.modalOpen = true
                 draft.body = <LoadingComp />
@@ -431,7 +450,8 @@ export default function AddEditRest({ currentLocation }) {
 
     return (
         <div
-            className='px-2 mt-[200px]'
+            style={mainDivStyle}
+            className='px-2'
         >
 
 

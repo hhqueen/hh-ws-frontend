@@ -1,12 +1,14 @@
 import { Suspense, lazy , useTransition } from 'react'
 // import FilterComp from '../FilterComp'
 // import ListViewComp from '../ListViewComp'
-import MapViewComp from '../MapViewComp'
-import LoadingComp from '../LoadingComp'
+import MapViewComp from '../../MapViewComp'
+import LoadingComp from '../../LoadingComp'
 // import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
-const ListViewComp = lazy(() => import('../ListViewComp'))
-const FilterComp = lazy(() => import('../FilterComp'))
+import './Main.css'
+
+const ListViewComp = lazy(() => import('../../ListViewComp'))
+const FilterComp = lazy(() => import('../../FilterComp'))
 
 export default function Main({ 
   UIFiltersProps, 
@@ -18,12 +20,14 @@ export default function Main({
   filterParams, 
   setFilterParams, 
   filterFormSubmitHandler,
-  currentLocation
+  currentLocation,
+  mainDivStyle,
 }) {
     return (
     <div
-      className='flex flex-col my-auto
-      sm:flex-row sm:my-10'
+      style={mainDivStyle}
+      className='flex flex-col
+      sm:flex-row'
     >
       <Suspense fallback={<LoadingComp />}>
         <FilterComp

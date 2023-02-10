@@ -10,22 +10,22 @@ export default function CarouselContainer() {
         body:""
     }
 
-    return (
+    return (    
         <div
             // style={{backgroundImage: 'url(/images/carousel_lounge_img.jpg)'}}
-            className={`relative h-[700px] md:h-[500px] w-[100vw]`}
+            className="relative h-[100vh] md:h-[320px] w-[100vw]"
         >
             {/* <p>CarouselContainer</p> */}
             <img
-                className='w-full h-full object-cover object-bottom'
+                className='w-full h-full object-fill md:object-cover object-bottom'
                 src={`${carousel_img_path}`}
                 alt='image'
             />
             <div
-                className='flex flex-col md:flex-row justify-center items-center w-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'
+                className='flex flex-col md:flex-row justify-center items-center h-fit w-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'
             >
                 <div
-                    className='flex flex-col text-white text-center text-[48.61px] font-bold justify-center md:w-[300px]'
+                    className='flex flex-col text-white text-center text-[48.61px] font-bold justify-center px-5 md:w-[300px]'
                 >
                     <p>Find your nearest Happy Hours</p>
                 </div>
@@ -35,7 +35,7 @@ export default function CarouselContainer() {
                 <div
                     className='flex flex-col justify-center items-center text-white'
                 >
-                    <p>Have any feed back or inquries?</p>
+                    <p>Have any feedback or inquries?</p>
                     <a
                         href={`mailto:${emailProps.email}?subject=${emailProps.subject}&body=${emailProps.body}`}
                     >

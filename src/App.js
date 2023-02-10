@@ -34,7 +34,7 @@ import jwtDecode from 'jwt-decode';
 // const RestDetail = lazy(() => import('./components/pages/RestDetail'))
 
 const fmtDate = date.format(new Date(), 'dddd')
-const Main = lazy(() => import('./components/pages/Main'))
+const Main = lazy(() => import('./components/pages/Main/Main'))
 // import Main from './components/pages/Main';
 const AddEditRest = lazy(() => import('./components/pages/AddEditRest'))
 // import AddEditRest from "./components/pages/AddEditRest"
@@ -72,6 +72,10 @@ const getMostRecentlySearchedAddress = () => {
 function App() {
   // variables
   const componentName = "App.js"
+  const [navBarHeight, setNavBarHeight] = useState(0)
+  const [footerHeight, setFooterHeight] = useState(0)
+  const [contentHeight, setContentHeight] = useState(0)
+  const [mainDivStyle, setMainDivStyle] = useState({})
   const [isFetchingRestData, setIsFetchingRestData] = useState(false)
   const [geoLocAvail, setGeoLocAvail] = useState(navigator.geolocation)
   const latLong = useGeolocation(geoLocAvail)
@@ -223,6 +227,20 @@ function App() {
     })
   }
 
+  // tracks and updates the height of the main component responsively
+  useEffect(()=>{
+    // console.log("navbarheight",navBarHeight)
+    // console.log("footerHeight",footerHeight)
+    // console.log("window.innerHeight:",window.innerHeight)
+    // console.log("window.innerWidth:",window.innerWidth)
+    const windowHeight = window.innerHeight
+    setMainDivStyle( {
+      height: windowHeight - footerHeight - navBarHeight,
+      marginTop: navBarHeight
+    })
+    setContentHeight(windowHeight - footerHeight - navBarHeight)
+  },[footerHeight,navBarHeight])
+
   // initial loading of data
   useEffect(() => {
     loadInitialData()
@@ -233,6 +251,7 @@ function App() {
 
   const queryClient = new QueryClient()
   return (
+
     <QueryClientProvider client={queryClient}>
       <Router>
 
@@ -241,6 +260,7 @@ function App() {
           setSearchParams={setSearchParams}
           handleSearchFormSubmit={handleSearchFormSubmit}
           geoLocAvail={geoLocAvail}
+          setNavBarHeight={setNavBarHeight}
         />
 
         <Routes>
@@ -252,6 +272,7 @@ function App() {
                 <LandingPage
                   setSearchParams={setSearchParams}
                   setNavigatedFlag={setNavigatedFlag}
+                  mainDivStyle={mainDivStyle}
                 />
 
             }
@@ -271,6 +292,8 @@ function App() {
                   searchParams={searchParams}
                   UIFiltersProps={{UIFilters, setUIFilters}}
                   currentLocation={currentLocation}
+                  mainDivStyle={mainDivStyle}
+                  navBarHeight={navBarHeight}
                 />
               </Suspense>
             }
@@ -280,7 +303,9 @@ function App() {
             path="/restaurant/:id"
             element={
               <Suspense fallback={<LoadingComp />}>
-                <RestDetail />
+                <RestDetail 
+                mainDivStyle={mainDivStyle}
+                />
               </Suspense>
             }
           />
@@ -291,6 +316,7 @@ function App() {
               <Suspense fallback={<LoadingComp />}>
                 <AddEditRest
                   currentLocation={currentLocation}
+                  mainDivStyle={mainDivStyle}
                 />
               </Suspense>
             }
@@ -308,6 +334,7 @@ function App() {
               <Suspense fallback={<LoadingComp />}>
                 <AddEditRest
                   currentLocation={currentLocation}
+                  mainDivStyle={mainDivStyle}
                 />
               </Suspense>
             }
@@ -316,7 +343,9 @@ function App() {
             path="/signup"
             element={
               <Suspense fallback={<LoadingComp />}>
-                <SignUp />
+                <SignUp 
+                  mainDivStyle={mainDivStyle}
+                />
               </Suspense>
             }
           />
@@ -325,14 +354,19 @@ function App() {
             path="/login"
             element={
               <Suspense fallback={<LoadingComp />}>
-                <Login />
+                <Login 
+                  mainDivStyle={mainDivStyle}
+                />
               </Suspense>
             }
           />
 
         </Routes>
 
-      <Footer/>
+      <Footer
+        contentHeight={contentHeight}
+        setFooterHeight={setFooterHeight}
+      />
       </Router>
     </QueryClientProvider >
   );

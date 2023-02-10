@@ -1,10 +1,9 @@
 import React from 'react'
 import { GoogleMap,useLoadScript, LoadScript  } from '@react-google-maps/api'
-import LoadingComp from './LoadingComp'
 
 const containerStyle = {
-  width: `2000px`,
-  height: `1000px`
+  width: `700px`,
+  height: `100%`
 }
 
 

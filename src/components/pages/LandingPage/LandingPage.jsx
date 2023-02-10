@@ -2,11 +2,18 @@ import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import CityCardContainer from './local_partials/CityCardContainer'
 import CarouselContainer from './local_partials/CarouselContainer'
+import { useMediaQuery } from 'react-responsive'
+
 
 // {name: "", img_url:""},
 
-export default function LandingPage({setNavigatedFlag, setSearchParams}) {
+export default function LandingPage({setNavigatedFlag, setSearchParams, mainDivStyle}) {
     const navigate = useNavigate()
+    
+    
+    const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
+    
+    
     const handleCardClick = (e, cityName) => {
         e.preventDefault()
         setSearchParams((draft)=>{
@@ -15,6 +22,9 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
         setNavigatedFlag(true)
         navigate("/restaurants")
     }
+
+    
+    
 
     const [cityList, setCityList] = useState([
         {
@@ -33,11 +43,13 @@ export default function LandingPage({setNavigatedFlag, setSearchParams}) {
             bg_filepath:"\images/portland_OR_card.svg"
         }
     ])
+    
 
    return (
     <div
-        className='mt-[57px]'
-    >
+        style={isTWmd ? mainDivStyle : {}}
+        className=''
+    >   
         <CarouselContainer/>
 
         <CityCardContainer
