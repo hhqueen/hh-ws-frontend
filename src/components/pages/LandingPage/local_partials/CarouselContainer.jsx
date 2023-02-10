@@ -2,7 +2,7 @@ import React from 'react'
 import LogoLarge from '../../../Logo/LogoLarge'
 
 export default function CarouselContainer() {
-    const carousel_img_path = '/images/carousel_lounge_img.jpg'
+    const carousel_img_path = 'https://res.cloudinary.com/hhqueen/image/upload/v1676041888/website_assets/header_background_ib4e5t.png'
 
     const emailProps = {
         email: "hhqueen.official@gmail.com",

@@ -11,7 +11,7 @@ export default function CityCard({ CityData,handleCardClick }) {
             >
                 <img
                     className='w-full h-full object-cover border-2 rounded-[15px]'
-                    src={CityData.bg_filepath}
+                    src={CityData.img_url}
                     alt='image'
                 />
 

@@ -29,17 +29,17 @@ export default function LandingPage({setNavigatedFlag, setSearchParams, mainDivS
     const [cityList, setCityList] = useState([
         {
             name: "Los Angeles, CA", 
-            // img_url:"https://upload.wikimedia.org/wikipedia/commons/2/2f/Hollywood_sign_%288485145044%29.jpg",
+            img_url:"https://res.cloudinary.com/hhqueen/image/upload/v1676041916/website_assets/los_angeles_sgxwgj.png",
             bg_filepath:'\images/la_CA_card.svg'
         },
         {
             name: "Orange County, CA", 
-            // img_url:"https://www.visitcalifornia.com/sites/visitcalifornia.com/files/VC_IrvineSpectrumCenter_Stock_Irvine-Spectrum-Center-at-Dusk-CMF-8483_1280x640.jpg",
+            img_url:"https://res.cloudinary.com/hhqueen/image/upload/v1676041900/website_assets/Irvine-Spectrum-Outdoor-Shopping_mxicq9.png",
             bg_filepath:"\images/irvine_CA_card.svg"
         },
         {
             name: "Portland, OR", 
-            // img_url:"https://www.radiocab.net/wp-content/uploads/2020/03/blog-is-portland-a-safe-city.jpg",
+            img_url:"https://res.cloudinary.com/hhqueen/image/upload/v1676041915/website_assets/photo-old-town-oregon-portland_xipagl.png",
             bg_filepath:"\images/portland_OR_card.svg"
         }
     ])
