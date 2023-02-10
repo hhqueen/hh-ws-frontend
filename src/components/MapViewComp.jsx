@@ -1,5 +1,5 @@
 import React from 'react'
-import { GoogleMap,useLoadScript, LoadScript  } from '@react-google-maps/api'
+import { GoogleMap,useLoadScript, LoadScript, Marker  } from '@react-google-maps/api'
 
 const containerStyle = {
   width: `700px`,
@@ -8,7 +8,7 @@ const containerStyle = {
 
 
 
-export default function MapViewComp({currentLocation}) {
+export default function MapViewComp({currentLocation, showRestaurants}) {
   const { isLoaded, loadError, url } =  useLoadScript({ 
     googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY,
   })
@@ -18,6 +18,19 @@ export default function MapViewComp({currentLocation}) {
     lng: currentLocation.longitude
   };
 
+  const mapMarkers = showRestaurants.map((rest, idx)=>{
+    const labelNum = idx + 1
+    return (
+      <>
+        <Marker
+          // animation={"DROP"}
+          label={`${labelNum}`}
+          position={{lat:rest.latitude , lng:rest.longitude }}
+        />
+      </>
+    )
+  })
+
   return (
     <LoadScript
         googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}
@@ -25,10 +38,12 @@ export default function MapViewComp({currentLocation}) {
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
-          zoom={14}
+          zoom={12}
         >
           { /* Child components, such as markers, info windows, etc. */ }
-          <></>
+          <>
+            {mapMarkers}
+          </>
         </GoogleMap>
       </LoadScript>
   )

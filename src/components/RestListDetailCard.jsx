@@ -11,7 +11,7 @@ import showApplicableFilters from "../helperFunctions/showApplicableFilters"
 import EditDeleteRestComp from './EditDeleteRestComp'
 import apiLogger from '../helperFunctions/apiLogger'
 
-export default function RestListDetailCard({ dow, restaurantInfo, searchParams }) {
+export default function RestListDetailCard({ idx, dow, restaurantInfo, searchParams }) {
     const navigate = useNavigate()
     const componentName = 'RestListDetailCard'
     const currentLocation = {
@@ -41,7 +41,7 @@ export default function RestListDetailCard({ dow, restaurantInfo, searchParams }
         )
     })
     const handleRestaurantClick = async (e) => {
-        await apiLogger(e,componentName)
+        await apiLogger(e, componentName)
         navigate(`/restaurant/${restaurantInfo._id}`)
     }
 
@@ -51,20 +51,23 @@ export default function RestListDetailCard({ dow, restaurantInfo, searchParams }
             className=' mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
 
         >
+            <p
+                className='w-10 px-2 f-fill'
+            >{idx + 1}</p>
             <img
-            id={`RestListDetailCard_img_${restaurantInfo._id}`}
-            name={`RestListDetailCard_img_${restaurantInfo._id}`}
-            onClick={handleRestaurantClick}
+                id={`RestListDetailCard_img_${restaurantInfo._id}`}
+                name={`RestListDetailCard_img_${restaurantInfo._id}`}
+                onClick={handleRestaurantClick}
                 loading="lazy"
                 src={restaurantInfo.image_url}
                 alt={restaurantInfo.name}
-                className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full min-w-[25%] w-3/12 rounded-l-lg md:rounded-none md:rounded-l-lg"
+                className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full min-w-[25%] w-3/12 md:rounded-none"
             />
 
             {/* image and Info Container Div */}
             <div
                 className='relative'
-                
+
             >
                 <div
                     className=' flex flex-col justify-between p-4 leading-normal'
@@ -89,7 +92,7 @@ export default function RestListDetailCard({ dow, restaurantInfo, searchParams }
                         className='text-[11px]'
                     >{cuisineString}</p>
                     <div
-                    className='flex'
+                        className='flex'
                     >
                         <p
                             className='text-[11px]'

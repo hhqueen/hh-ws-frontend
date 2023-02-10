@@ -284,7 +284,7 @@ function App() {
               <Suspense fallback={<LoadingComp />}>
                 <Main
                   isFetchingRestData={isFetchingRestData}
-                  allRestaurants={showRestaurants}
+                  showRestaurants={showRestaurants}
                   setFilterParams={setFilterParams}
                   filterParams={filterParams}
                   setDow={setDow}

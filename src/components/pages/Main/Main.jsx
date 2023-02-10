@@ -16,7 +16,7 @@ export default function Main({
   isFetchingRestData,
   dow, 
   setDow, 
-  allRestaurants, 
+  showRestaurants, 
   filterParams, 
   setFilterParams, 
   filterFormSubmitHandler,
@@ -43,7 +43,7 @@ export default function Main({
       <Suspense fallback={<LoadingComp />}>
         <ListViewComp
           isFetchingRestData={isFetchingRestData}
-          allRestaurants={allRestaurants}
+          showRestaurants={showRestaurants}
           dow={dow}
           searchParams={searchParams}
         />
@@ -51,7 +51,8 @@ export default function Main({
       
 
       <MapViewComp
-      currentLocation={currentLocation}
+        currentLocation={currentLocation}
+        showRestaurants={showRestaurants}
       />
 
     </div>

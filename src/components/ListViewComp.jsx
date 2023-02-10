@@ -4,26 +4,26 @@ import LoadingComp from './LoadingComp'
 import RestListDetailCard from './RestListDetailCard'
 // const RestListDetailCard = lazy(() => import('./RestListDetailCard'))
 
-export default function ListViewComp({ dow, allRestaurants,isFetchingRestData, searchParams }) {
+export default function ListViewComp({ dow, showRestaurants,isFetchingRestData, searchParams }) {
 
-  // console.log(allRestaurants)
+  // console.log(showRestaurants)
   const [errorMessage, setErrorMessage] = useState("")
 
   const messageHandler = () =>{
     setErrorMessage("")
     if (!isFetchingRestData) {
-      if (allRestaurants.length === 0 && searchParams.address.length > 0 && searchParams.searchTerm.length > 0 ) {
+      if (showRestaurants.length === 0 && searchParams.address.length > 0 && searchParams.searchTerm.length > 0 ) {
         setErrorMessage(`There are no restaurants that match your search! =(`)
         return
       }
 
       
-      if( allRestaurants.length === 0 && searchParams.address.length === 0  ) {
+      if( showRestaurants.length === 0 && searchParams.address.length === 0  ) {
         setErrorMessage(`Please enter a city or address!`)
         return
       }
 
-      // if( allRestaurants.length === 0 && searchParams.address.length === 0 AND GEOLOCATION FALSE ) {
+      // if( showRestaurants.length === 0 && searchParams.address.length === 0 AND GEOLOCATION FALSE ) {
       //   setErrorMessage(`CURRENT LOCATION ERROR MESSAGE!`)
       //   return
       // }
@@ -37,7 +37,7 @@ export default function ListViewComp({ dow, allRestaurants,isFetchingRestData, s
     messageHandler()
   })
 
-  const listRestaurants = allRestaurants.map((restaurant) => {
+  const listRestaurants = showRestaurants.map((restaurant, idx) => {
     return (
       // <Suspense fallback={<LoadingComp />}>
         <RestListDetailCard
@@ -45,6 +45,7 @@ export default function ListViewComp({ dow, allRestaurants,isFetchingRestData, s
           restaurantInfo={restaurant}
           searchParams={searchParams}
           dow={dow}
+          idx={idx}
         />
       // </Suspense>
     )
@@ -60,13 +61,13 @@ export default function ListViewComp({ dow, allRestaurants,isFetchingRestData, s
           }
           {/* renders No restaurants message */}
           {errorMessage.length > 0 && !isFetchingRestData &&
-          <>
-            <p>{errorMessage}</p>
-          </>
+            <>
+              <p>{errorMessage}</p>
+            </>
           }
 
             {/* renders restaurants if the array length is greater than 0 */}
-          {allRestaurants.length > 0 && !isFetchingRestData &&
+          {showRestaurants.length > 0 && !isFetchingRestData &&
             <ul>
               {listRestaurants}
             </ul>
