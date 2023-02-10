@@ -57,8 +57,10 @@ export default function AddEditRest({ currentLocation ,mainDivStyle }) {
     useEffect(()=>{
         setSearchParams((draft)=>{
             draft.location.address="Current Location"
+            draft.location.lat = currentLocation.latitude
+            draft.location.long = currentLocation.longitude
         })
-    },[])
+    },[currentLocation])
 
 
     useEffect(() => {
@@ -112,6 +114,20 @@ export default function AddEditRest({ currentLocation ,mainDivStyle }) {
 
 
     const handlePickOneYelpRestaurant = (business) => {
+        // check if yelp restaurant is in the db
+        const restAlreadyExists = checkDBforYelpId(business.id)
+        // modal if it is
+        if (restAlreadyExists) {
+            console.log("restaurant already exists!")
+            setMessageModalProps((draft) => {
+                draft.modalOpen = true
+                draft.body = `${business.name} - ${business.location.city} already exists!`
+                draft.button1text = "Okay!"
+                draft.handleButton1Click = () => { setMessageModalProps((draft) => { draft.modalOpen = false }) }
+            })
+            return
+        }
+
         setRestaurantData((draft) => {
             draft.yelpRestaurantId = business.id
             draft.name = business.name
