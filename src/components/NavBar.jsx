@@ -12,6 +12,7 @@ import apilogger from '../helperFunctions/apiLogger'
 
 import LogoSmall from './Logo/LogoSmall'
 import IG_Logo from './Logo/IG_Logo'
+import { useMediaQuery } from 'react-responsive'
 
 
 const emptyUserInfo = {
@@ -21,8 +22,13 @@ const emptyUserInfo = {
     "id": "",
 }
 
-export default function NavBar({ setNavBarHeight,searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
+export default function NavBar({ setNavBarHeight, searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
     const componentName = "NavBar"
+
+    // media Queries
+    const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
+
+
     const navBarDiv = useRef(null)
     const renderSearchBar = false
     const pathName = window.location.pathname
@@ -120,7 +126,7 @@ export default function NavBar({ setNavBarHeight,searchParams, setSearchParams, 
 
                     {/* Search Inputs */}
                     {/* logic that conditionally renders the search bar when NOT landing page */}
-                    { ( pathName !== "/" && renderSearchBar ) && 
+                    {(pathName !== "/" && renderSearchBar) &&
                         <>
                             <div
                             >
@@ -175,11 +181,20 @@ export default function NavBar({ setNavBarHeight,searchParams, setSearchParams, 
                         </>
                     }
 
-                        <div className="flex justify-around w-[30vw] md:order-2 items-center">
-                            {/* newsletter */}
+                    <div className="flex justify-around w-[30vw] md:order-2 items-center">
+                        {/* small width media query here (HAMBURGER) WIP */}
+                        <div>
+
+                        </div>
+
+                        {/* medium Media Query Items */}
+                        { isTWmd &&
+                        <>
+                        <div>
+                        {/* newsletter */}
                             <a
-                                name="IG_Link"
-                                id='IG_Link'
+                                name="newsletter_p"
+                                id='newsletter_p'
                                 onClick={(e) => {
                                     apilogger(e, componentName, 'newsletter_p')
                                 }}
@@ -196,8 +211,8 @@ export default function NavBar({ setNavBarHeight,searchParams, setSearchParams, 
 
                             {/* mail icon */}
                             <a
-                                name="IG_Link"
-                                id='IG_Link'
+                                name="mail_icon"
+                                id='mail_icon'
                                 onClick={(e) => {
                                     apilogger(e, componentName, 'mail_icon')
                                 }}
@@ -225,107 +240,103 @@ export default function NavBar({ setNavBarHeight,searchParams, setSearchParams, 
                                     className=''
 
                                 >
-                                    {/* <BsInstagram
-                                        size={35}
-                                        opacity={.6}
-                                        color={`white`}
-                                    /> */}
                                     <IG_Logo
                                         height={45}
                                     />
                                 </div>
                             </a>
-
-
-
-                            <Dropdown
-                                arrowIcon={false}
-                                inline={true}
-                                label={
-                                    <Avatar
-                                        placeholderInitials={localStorage.getItem('jwt') && `${userInfo.firstName[0]}${userInfo.lastName[0]}`}
-                                        rounded={true}
-                                    />}
-                                >
-
-                                {
-                                    localStorage.getItem('jwt') &&
-                                    <>
-                                        <Dropdown.Header>
-                                            <span className="block text-sm">
-                                                {`${userInfo.firstName} ${userInfo.lastName}`}
-                                            </span>
-                                            <span className="block truncate text-sm font-medium">
-                                                {userInfo.email}
-                                            </span>
-                                        </Dropdown.Header>
-                                    </>
-                                }
-
-                                {
-                                    !localStorage.getItem('jwt') &&
-                                    <>
-                                        <Link
-                                            id='Login_Link'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'Login_Link')
-                                            }}
-                                            to="/login"
-                                        >
-                                            <Dropdown.Item>
-                                                Log In
-                                            </Dropdown.Item>
-                                        </Link>
-
-
-                                        <Link
-                                            id='SignUp_Link'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'SignUp_Link')
-                                            }}
-                                            to="/signup"
-                                        >
-                                            <Dropdown.Item>
-                                                Sign Up
-                                            </Dropdown.Item>
-                                        </Link>
-                                    </>
-                                }
-
-                                {
-                                    localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
-                                    <>
-                                        <Link
-                                            id='AddNewRestaurant_Link'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'AddNewRestaurant_Link')
-                                            }}
-                                            to="/addnewrestaurant"
-                                        >
-                                            <Dropdown.Item>
-                                                Add New Restaurant
-                                            </Dropdown.Item>
-                                        </Link>
-                                    </>
-                                }
-
-                                {
-                                    localStorage.getItem('jwt') &&
-                                    <Dropdown.Item
-                                        onClick={(e) => {
-                                            apilogger(e, componentName, 'LogOut_Link')
-                                            handleLogOut()
-                                        }}
-                                    >
-                                        Sign out
-                                    </Dropdown.Item>
-                                    // </div>
-                                }
-
-
-
-                            </Dropdown>
                         </div>
+                        </>
+                        }
+
+                        <Dropdown
+                            arrowIcon={false}
+                            inline={true}
+                            label={
+                                <Avatar
+                                    placeholderInitials={localStorage.getItem('jwt') && `${userInfo.firstName[0]}${userInfo.lastName[0]}`}
+                                    rounded={true}
+                                />}
+                        >
+
+                            {
+                                localStorage.getItem('jwt') &&
+                                <>
+                                    <Dropdown.Header>
+                                        <span className="block text-sm">
+                                            {`${userInfo.firstName} ${userInfo.lastName}`}
+                                        </span>
+                                        <span className="block truncate text-sm font-medium">
+                                            {userInfo.email}
+                                        </span>
+                                    </Dropdown.Header>
+                                </>
+                            }
+
+                            {
+                                !localStorage.getItem('jwt') &&
+                                <>
+                                    <Link
+                                        id='Login_Link'
+                                        onClick={(e) => {
+                                            apilogger(e, componentName, 'Login_Link')
+                                        }}
+                                        to="/login"
+                                    >
+                                        <Dropdown.Item>
+                                            Log In
+                                        </Dropdown.Item>
+                                    </Link>
+
+
+                                    <Link
+                                        id='SignUp_Link'
+                                        onClick={(e) => {
+                                            apilogger(e, componentName, 'SignUp_Link')
+                                        }}
+                                        to="/signup"
+                                    >
+                                        <Dropdown.Item>
+                                            Sign Up
+                                        </Dropdown.Item>
+                                    </Link>
+                                </>
+                            }
+
+                            {
+                                localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
+                                <>
+                                    <Link
+                                        id='AddNewRestaurant_Link'
+                                        onClick={(e) => {
+                                            apilogger(e, componentName, 'AddNewRestaurant_Link')
+                                        }}
+                                        to="/addnewrestaurant"
+                                    >
+                                        <Dropdown.Item>
+                                            Add New Restaurant
+                                        </Dropdown.Item>
+                                    </Link>
+                                </>
+                            }
+
+                            {
+                                localStorage.getItem('jwt') &&
+                                <Dropdown.Item
+                                    onClick={(e) => {
+                                        apilogger(e, componentName, 'LogOut_Link')
+                                        handleLogOut()
+                                    }}
+                                >
+                                    Sign out
+                                </Dropdown.Item>
+                                // </div>
+                            }
+
+
+
+                        </Dropdown>
+                    </div>
                 </Navbar>
 
                 {alpha2 &&

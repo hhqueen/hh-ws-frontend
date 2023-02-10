@@ -54,7 +54,7 @@ export default function ListViewComp({ dow, showRestaurants,isFetchingRestData, 
     <>
       
         <div
-          className='w-[45vw] mt-[20px] overflow-auto'
+          className='w-full md:w-[45vw] mt-[20px] overflow-auto'
         >
           {
             isFetchingRestData && <LoadingComp />
