@@ -181,72 +181,141 @@ export default function NavBar({ setNavBarHeight, searchParams, setSearchParams,
                         </>
                     }
 
-                    <div className="flex justify-around w-[30vw] md:order-2 items-center">
+                    <div className="flex justify-around w-[35vw] md:w-[30vw] md:order-2 items-center">
                         {/* small width media query here (HAMBURGER) WIP */}
-                        <div>
+                        {
+                            !isTWmd &&
 
-                        </div>
+                            <Dropdown
+                                label={""}
+                                arrowIcon={true}
+                                inline={true}
+                                dismissOnClick={true}
+                            >
+                                <Dropdown.Item>
+                                    <a
+                                        name="newsletter_p"
+                                        id='newsletter_p'
+                                        onClick={(e) => {
+                                            apilogger(e, componentName, 'newsletter_p')
+                                        }}
+                                        href='' target="_blank">
+                                        <div
+                                            className=''
+
+                                        >
+                                            <p
+                                                className=''
+                                            >Newsletter</p>
+                                        </div>
+                                    </a>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <a
+                                        name="mail_icon"
+                                        id='mail_icon'
+                                        onClick={(e) => {
+                                            apilogger(e, componentName, 'mail_icon')
+                                        }}
+                                        href='' target="_blank">
+                                        <div
+                                            className='flex items-center'
+
+                                        >
+                                            <FiMail
+                                                size={40}
+                                                opacity={.6}
+                                            />
+                                            <p
+                                            className='pl-3'
+                                            >Mail Us</p>
+                                        </div>
+                                    </a>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <a
+                                        name="IG_Link"
+                                        id='IG_Link'
+                                        onClick={(e) => {
+                                            apilogger(e, componentName, 'IG_Link')
+                                        }}
+                                        href='https://www.instagram.com/hhqueen.official/' target="_blank">
+                                        <div
+                                            className='flex items-center'
+
+                                        >
+                                            <IG_Logo
+                                                height={45}
+                                            />
+                                                                                        <p
+                                            className='pl-3 break-normal w-[70%]'
+                                            >Follow us on Instagram</p>
+                                        </div>
+                                    </a>
+                                </Dropdown.Item>
+                            </Dropdown>
+                        }
+
 
                         {/* medium Media Query Items */}
-                        { isTWmd &&
-                        <>
-                        <div>
-                        {/* newsletter */}
-                            <a
-                                name="newsletter_p"
-                                id='newsletter_p'
-                                onClick={(e) => {
-                                    apilogger(e, componentName, 'newsletter_p')
-                                }}
-                                href='' target="_blank">
-                                <div
-                                    className='px-3'
+                        {isTWmd &&
+                            <>
 
-                                >
-                                    <p
-                                        className='text-white'
-                                    >Newsletter</p>
-                                </div>
-                            </a>
+                                {/* newsletter */}
+                                <a
+                                    name="newsletter_p"
+                                    id='newsletter_p'
+                                    onClick={(e) => {
+                                        apilogger(e, componentName, 'newsletter_p')
+                                    }}
+                                    href='' target="_blank">
+                                    <div
+                                        className='px-3'
 
-                            {/* mail icon */}
-                            <a
-                                name="mail_icon"
-                                id='mail_icon'
-                                onClick={(e) => {
-                                    apilogger(e, componentName, 'mail_icon')
-                                }}
-                                href='' target="_blank">
-                                <div
-                                    className='px-3'
+                                    >
+                                        <p
+                                            className='text-white'
+                                        >Newsletter</p>
+                                    </div>
+                                </a>
 
-                                >
-                                    <FiMail
-                                        size={40}
-                                        opacity={.6}
-                                        color={`white`}
-                                    />
-                                </div>
-                            </a>
-                            {/* IG Icon */}
-                            <a
-                                name="IG_Link"
-                                id='IG_Link'
-                                onClick={(e) => {
-                                    apilogger(e, componentName, 'IG_Link')
-                                }}
-                                href='https://www.instagram.com/hhqueen.official/' target="_blank">
-                                <div
-                                    className=''
+                                {/* mail icon */}
+                                <a
+                                    name="mail_icon"
+                                    id='mail_icon'
+                                    onClick={(e) => {
+                                        apilogger(e, componentName, 'mail_icon')
+                                    }}
+                                    href='' target="_blank">
+                                    <div
+                                        className='px-3'
 
-                                >
-                                    <IG_Logo
-                                        height={45}
-                                    />
-                                </div>
-                            </a>
-                        </div>
-                        </>
+                                    >
+                                        <FiMail
+                                            size={40}
+                                            opacity={.6}
+                                            color={`white`}
+                                        />
+                                    </div>
+                                </a>
+                                {/* IG Icon */}
+                                <a
+                                    name="IG_Link"
+                                    id='IG_Link'
+                                    onClick={(e) => {
+                                        apilogger(e, componentName, 'IG_Link')
+                                    }}
+                                    href='https://www.instagram.com/hhqueen.official/' target="_blank">
+                                    <div
+                                        className=''
+
+                                    >
+                                        <IG_Logo
+                                            height={45}
+                                        />
+                                    </div>
+                                </a>
+                            </>
                         }
 
                         <Dropdown
