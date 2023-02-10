@@ -8,14 +8,14 @@ const containerStyle = {
 
 
 
-export default function MapViewComp({currentLocation, showRestaurants}) {
+export default function MapViewComp({searchParams, showRestaurants}) {
   const { isLoaded, loadError, url } =  useLoadScript({ 
     googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY,
   })
 
   const center = {
-    lat: currentLocation.latitude,
-    lng: currentLocation.longitude
+    lat: searchParams.currentLatitude,
+    lng: searchParams.currentLongitude
   };
 
   const mapMarkers = showRestaurants.map((rest, idx)=>{

@@ -51,7 +51,7 @@ export default function Main({
       
 
       <MapViewComp
-        currentLocation={currentLocation}
+        searchParams={searchParams}
         showRestaurants={showRestaurants}
       />
 

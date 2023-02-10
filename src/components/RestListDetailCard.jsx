@@ -48,7 +48,7 @@ export default function RestListDetailCard({ idx, dow, restaurantInfo, searchPar
     return (
         // container div
         <div
-            className=' mb-3 h-[130px] w-auto flex flex-row items-center bg-white rounded-lg md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+            className=' py-1 h-fit w-auto flex flex-row items-center bg-white md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
 
         >
             <p
