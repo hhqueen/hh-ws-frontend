@@ -85,8 +85,9 @@ export default function AddEditRest({ currentLocation ,mainDivStyle }) {
     // Handler Functions
     async function checkDBforYelpId(yelpId) {
         try {
-            const foundRest = await axios.get(`${process.env.REACT_APP_SERVER_URL}/dbYelpIdCheck/${yelpId}`)
-            if (Object.keys(foundRest) === 0) return false
+            const foundRest = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/dbYelpIdCheck/${yelpId}`)
+            console.log("foundRest.data:",foundRest.data)
+            if (foundRest.data === null) return false
             return true
         } catch (error) {
             console.log(error)
@@ -113,10 +114,11 @@ export default function AddEditRest({ currentLocation ,mainDivStyle }) {
     }
 
 
-    const handlePickOneYelpRestaurant = (business) => {
+    const handlePickOneYelpRestaurant = async (business) => {
         // check if yelp restaurant is in the db
-        const restAlreadyExists = checkDBforYelpId(business.id)
+        const restAlreadyExists = await checkDBforYelpId(business.id)
         // modal if it is
+        console.log("restAlreadyExists:",restAlreadyExists)
         if (restAlreadyExists) {
             console.log("restaurant already exists!")
             setMessageModalProps((draft) => {

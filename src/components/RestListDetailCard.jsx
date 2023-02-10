@@ -48,11 +48,15 @@ export default function RestListDetailCard({ idx, dow, restaurantInfo, searchPar
     return (
         // container div
         <div
-            className=' py-1 h-fit w-auto flex flex-row items-center bg-white md:rounded-r-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+            className='
+            my-1 min-h-full w-auto flex flex-row items-center bg-white md:rounded-r-lg border shadow-md 
+            md:flex-row md:max-w-xl 
+            hover:bg-gray-100 
+            dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
 
         >
             <p
-                className='w-10 px-2 f-fill'
+                className='w-10 px-2 h-full'
             >{idx + 1}</p>
             <img
                 id={`RestListDetailCard_img_${restaurantInfo._id}`}
@@ -61,7 +65,7 @@ export default function RestListDetailCard({ idx, dow, restaurantInfo, searchPar
                 loading="lazy"
                 src={restaurantInfo.image_url}
                 alt={restaurantInfo.name}
-                className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full min-w-[25%] w-3/12 md:rounded-none"
+                className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full w-3/12 md:rounded-none"
             />
 
             {/* image and Info Container Div */}
@@ -70,7 +74,7 @@ export default function RestListDetailCard({ idx, dow, restaurantInfo, searchPar
 
             >
                 <div
-                    className=' flex flex-col justify-between p-4 leading-normal'
+                    className=' flex flex-col justify-between px-4 leading-normal'
                     id={`RestListDetailCard_div_${restaurantInfo._id}`}
                     name={`RestListDetailCard_div_${restaurantInfo._id}`}
                     onClick={handleRestaurantClick}

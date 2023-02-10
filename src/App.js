@@ -130,7 +130,6 @@ function App() {
   // API call to backend for all restaurant data. 
   // need to be filtered on server side based on location distance
   const getRestaurants = async () => {
-    // console.log("getRestaurants_latLong:", latLong)
     try {
       setAllRestaurants([])
       setShowRestaurants([])
