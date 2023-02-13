@@ -4,8 +4,9 @@ import { Suspense, lazy, useTransition } from 'react'
 import MapViewComp from '../../MapViewComp'
 import LoadingComp from '../../LoadingComp'
 // import { Wrapper, Status } from "@googlemaps/react-wrapper";
-
+import { Accordion } from 'flowbite-react'
 import './Main.css'
+import { useMediaQuery } from 'react-responsive'
 
 const ListViewComp = lazy(() => import('../../ListViewComp'))
 const FilterComp = lazy(() => import('../../FilterComp'))
@@ -24,9 +25,13 @@ export default function Main({
   mainDivStyle,
   coordinatesState
 }) {
+  const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   return (
     <div
-      style={mainDivStyle}
+      style={{
+        height: mainDivStyle.minHeight,
+        marginTop: mainDivStyle.marginTop
+      }}
       className='flex flex-col
       sm:flex-row'
     >
@@ -51,17 +56,45 @@ export default function Main({
         />
       </Suspense>
 
-      {/* <div
-        style={{
-          width: `700px`,
-          height: `100%`
-        }}
+
+      {!isTWmd && 
+      <Accordion
+        flush={true}
+        alwaysOpen={true}
+        className="max-h-[10px]"
       >
+        <Accordion.Panel
+        // alwaysOpen={false}
+        >
+          <Accordion.Title
+            className='max-h-[10px]'
+          >
+            Map
+          </Accordion.Title>
+          <Accordion.Content>
+            <MapViewComp
+              coordinatesState={coordinatesState}
+              showRestaurants={showRestaurants}
+            />
+          </Accordion.Content>
+        </Accordion.Panel>
+      </Accordion>
+      }
+      {isTWmd &&
         <MapViewComp
-        coordinatesState={coordinatesState}
-        showRestaurants={showRestaurants}
-      />
-      </div> */}
+          coordinatesState={coordinatesState}
+          showRestaurants={showRestaurants}
+        />
+      }
+      <div
+      // style={{
+      //   width: `700px`,
+      //   height: `100%`
+      // }}
+      // className='w-full h-full'
+      >
+
+      </div>
 
 
     </div>

@@ -1,9 +1,15 @@
 import React from 'react'
-import { GoogleMap, LoadScript, Marker  } from '@react-google-maps/api'
+import { GoogleMap, useLoadScript, LoadScript, Marker  } from '@react-google-maps/api'
+import { useMediaQuery } from 'react-responsive';
 
-const containerStyle = {
+const containerStyleTWmd = {
   width: `700px`,
   height: `100%`
+}
+
+const containerStyleTWsm = {
+  width: `100%`,
+  height: `300px`
 }
 
 
@@ -12,7 +18,7 @@ export default function MapViewComp({showRestaurants, coordinatesState}) {
   // const { isLoaded, loadError, url } =  useLoadScript({ 
   //   googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY,
   // })
-
+  const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   const center = {
     lat: coordinatesState.latitude,
     lng: coordinatesState.longitude
@@ -36,7 +42,7 @@ export default function MapViewComp({showRestaurants, coordinatesState}) {
         googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}
       >
         <GoogleMap
-          mapContainerStyle={containerStyle}
+          mapContainerStyle={isTWmd ? containerStyleTWmd : containerStyleTWsm}
           center={center}
           zoom={12}
         >
