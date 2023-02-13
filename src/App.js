@@ -211,6 +211,7 @@ function App() {
     const executePhaseOne = async () => {
       try {
         setAllRestaurantsState([])
+        setIsFetchingRestData(true)
         // setShowRestaurantsState([])
         console.log("executing phase 1")
         // console.log("coordinatesState:", coordinatesState)
@@ -262,6 +263,7 @@ function App() {
     let sortedRestaurants = filteredRestaurantsState
     // sorting code goes here (WIP)
     setShowRestaurantsState(sortedRestaurants)
+    setIsFetchingRestData(false)
   }, [filteredRestaurantsState])
 
 
