@@ -22,21 +22,21 @@ export default function SearchBar({ searchParams, setSearchParams, setAddressSta
                 }}
             >
                 {/* search Term Input */}
-                <input
+                {/* <input
                     className='border w-[50vw] rounded-t p-0 m-0'
                     value={searchParams.searchTerm}
                     onChange={(e) => {
                         setSearchParams((draft) => { draft.searchTerm = e.target.value })
                         // console.log(`SearchVal set to ${e.target.value}`)
                     }}
-                />
+                /> */}
 
                 <div
                     className='bg-transparent'
                 >
                     {/* Location Input */}
                     <input
-                        className='border w-[45vw] rounded-bl p-0 m-0'
+                        className='border w-[30vw] rounded-bl p-0 m-0'
                         value={searchParams.address}
                         list="searchLocationList"
                         onChange={(e) => {

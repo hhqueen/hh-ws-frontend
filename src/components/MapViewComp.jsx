@@ -1,5 +1,5 @@
 import React from 'react'
-import { GoogleMap,useLoadScript, LoadScript, Marker  } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, Marker  } from '@react-google-maps/api'
 
 const containerStyle = {
   width: `700px`,
@@ -8,14 +8,14 @@ const containerStyle = {
 
 
 
-export default function MapViewComp({searchParams, showRestaurants}) {
-  const { isLoaded, loadError, url } =  useLoadScript({ 
-    googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY,
-  })
+export default function MapViewComp({showRestaurants, coordinatesState}) {
+  // const { isLoaded, loadError, url } =  useLoadScript({ 
+  //   googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY,
+  // })
 
   const center = {
-    lat: searchParams.currentLatitude,
-    lng: searchParams.currentLongitude
+    lat: coordinatesState.latitude,
+    lng: coordinatesState.longitude
   };
 
   const mapMarkers = showRestaurants.map((rest, idx)=>{

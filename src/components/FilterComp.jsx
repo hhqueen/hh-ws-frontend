@@ -15,7 +15,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                         name={`${filterVal.name}_checkbox`}
                         checked={filterVal.value}
                         // readOnly
-                        onClick={(e) => {
+                        onChange={(e) => {
                             apiLogger(e, componentName)
                             setFilterParams((draft) => {
                                 const foundItem = draft.find(item => item.name == filterVal.name)
@@ -106,7 +106,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                                         id={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
                                         name={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.name}
                                         checked={UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.value}
-                                        onClick={(e) => {
+                                        onChange={(e) => {
                                             apiLogger(e, componentName)
                                             UIFiltersProps.setUIFilters((draft) => {
                                                 draft.hasOnlyLateNightOnDay.value = !draft.hasOnlyLateNightOnDay.value

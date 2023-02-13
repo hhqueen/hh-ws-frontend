@@ -35,7 +35,7 @@ const getOneRestaurantInfo = async (id) => {
 }
 
 
-export default function AddEditRest({ currentLocation ,mainDivStyle }) {
+export default function AddEditRest({ mainDivStyle }) {
 
     // variables
     const { id } = useParams()

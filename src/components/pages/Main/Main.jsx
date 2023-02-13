@@ -57,10 +57,10 @@ export default function Main({
           height: `100%`
         }}
       >
-        {/* <MapViewComp
-        searchParams={searchParams}
+        <MapViewComp
+        coordinatesState={coordinatesState}
         showRestaurants={showRestaurants}
-      /> */}
+      />
       </div>
 
 

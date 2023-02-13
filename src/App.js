@@ -152,16 +152,24 @@ function App() {
     return filterRestsByDay
   }
 
+  // init 
+  useEffect(()=>{
+    if(searchParams.address === "") {
+      const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
+      setAddressState(gotRecentOrCurrentLoc)
+      setSearchParams((draft)=>{draft.address = gotRecentOrCurrentLoc})
+    }
+  },[])
+
   // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
   useEffect(() => {
     const executePhaseZero = async () => {
       try {
         console.log("executing phase 0")
+        console.log("addressState:",addressState)
         // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
         if (addressState === "Current Location") {
           // if geolocation permission is given, get/set coordinates
-
-
           if ("geolocation" in navigator) {
             const geoCoords = await geoLocation()
             console.log("geoCoords:",geoCoords)
@@ -169,7 +177,6 @@ function App() {
               draft.latitude = geoCoords.latitude
               draft.longitude = geoCoords.longitude
             })
-
           } else {
             // if not, error and prompt for a valid location
             console.log("geolocation permission was not given.")
@@ -200,6 +207,8 @@ function App() {
   // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState]
   useEffect(() => {
     const executePhaseOne = async () => {
+      setAllRestaurantsState([])
+      setShowRestaurantsState([])
       try {
         console.log("executing phase 1")
         // console.log("coordinatesState:", coordinatesState)
@@ -230,6 +239,7 @@ function App() {
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
   useEffect(() => {
     console.log("executing phase 2")
+    setFilteredRestaurantsState([])
     if (allRestaurantsState.length > 0) {
       let filteredRest = []
       // console.log("allRestaurantsState:", allRestaurantsState)
@@ -244,6 +254,7 @@ function App() {
   // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]
   useEffect(() => {
     // currently there is no sorting.
+    setShowRestaurantsState([])
     console.log("executing phase 3")
     // console.log("filteredRestaurantsState_v2:", filteredRestaurantsState)
     let sortedRestaurants = filteredRestaurantsState
@@ -255,10 +266,6 @@ function App() {
 
   // tracks and updates the height of the main component responsively
   useEffect(() => {
-    // console.log("navbarheight",navBarHeight)
-    // console.log("footerHeight",footerHeight)
-    // console.log("window.innerHeight:",window.innerHeight)
-    // console.log("window.innerWidth:",window.innerWidth)
     const windowHeight = window.innerHeight
     setMainDivStyle({
       minHeight: windowHeight - footerHeight - navBarHeight,

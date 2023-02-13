@@ -22,9 +22,9 @@ const emptyUserInfo = {
     "id": "",
 }
 
-export default function NavBar({ 
+export default function NavBar({
     setNavBarHeight, searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail,
-    setAddressState,setSearchTermState
+    setAddressState, setSearchTermState
 }) {
     const componentName = "NavBar"
 
@@ -33,7 +33,7 @@ export default function NavBar({
 
 
     const navBarDiv = useRef(null)
-    const renderSearchBar = false
+    const renderSearchBar = true
     const pathName = window.location.pathname
     // console.log("pathName:",pathName)
     const navigate = useNavigate()
@@ -131,63 +131,16 @@ export default function NavBar({
                     {/* logic that conditionally renders the search bar when NOT landing page */}
                     {(pathName !== "/" && renderSearchBar) &&
                         <>
-                            <div
-                            >
-                                <form
-                                    onSubmit={(e) => {
-                                        e.preventDefault()
-                                        appendSearchHistory(searchParams)
-                                        handleSearchFormSubmit()
-                                        navigate('/restaurants/')
-                                    }}
-                                >
-                                    {/* search Term Input */}
-                                    <input
-                                        className='border w-[50vw] rounded-t p-0 m-0'
-                                        value={searchParams.searchTerm}
-                                        onChange={(e) => {
-                                            setSearchParams((draft) => { draft.searchTerm = e.target.value })
-                                        }}
-                                    />
-
-                                    <div
-                                        className='bg-transparent'
-                                    >
-                                        {/* Location Input */}
-                                        <input
-                                            className='border w-[45vw] rounded-bl p-0 m-0'
-                                            value={searchParams.address}
-                                            list="searchLocationList"
-                                            onChange={(e) => {
-                                                setSearchParams((draft) => { draft.address = e.target.value })
-                                            }}
-                                        />
-
-                                        <datalist id="searchLocationList">
-                                            <option className="font-['Roboto']" value="Current Location">Current Location</option>
-                                        </datalist>
-
-                                        {/* Submit Button */}
-                                        <button
-                                            className='border w-[5vw] rounded-br h-[26px] bg-gray-100'
-                                            type='submit'
-                                        // onClick={() => {
-                                        //     appendSearchHistory(searchParams)
-                                        //     handleSearchFormSubmit()
-                                        // }}
-                                        ><RxMagnifyingGlass /></button>
-                                    </div>
-                                </form>
-                            </div>
+                            <SearchBar
+                                setAddressState={setAddressState}
+                                setSearchTermState={setSearchTermState}
+                                searchParams={searchParams}
+                                setSearchParams={setSearchParams}
+                            />
                         </>
                     }
 
-                    <SearchBar
-                        setAddressState={setAddressState}
-                        setSearchTermState={setSearchTermState}
-                        searchParams={searchParams}
-                        setSearchParams={setSearchParams}
-                    />
+
 
                     <div className="flex justify-around w-[35vw] md:w-[30vw] md:order-2 items-center">
                         {/* small width media query here (HAMBURGER) WIP */}
@@ -235,7 +188,7 @@ export default function NavBar({
                                                 opacity={.6}
                                             />
                                             <p
-                                            className='pl-3'
+                                                className='pl-3'
                                             >Mail Us</p>
                                         </div>
                                     </a>
@@ -255,8 +208,8 @@ export default function NavBar({
                                             <IG_Logo
                                                 height={45}
                                             />
-                                                                                        <p
-                                            className='pl-3 break-normal w-[70%]'
+                                            <p
+                                                className='pl-3 break-normal w-[70%]'
                                             >Follow us on Instagram</p>
                                         </div>
                                     </a>
