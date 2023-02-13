@@ -103,7 +103,9 @@ export default function NavBar({
                 >
                     <Navbar.Brand
                         href="/">
-                        <LogoSmall />
+                        <LogoSmall 
+                            showText={isTWmd ? true : false}
+                        />
                         {/* </Link> */}
                     </Navbar.Brand>
 

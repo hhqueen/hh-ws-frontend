@@ -21,9 +21,10 @@ export default function Main({
   filterParams,
   setFilterParams,
   filterFormSubmitHandler,
-  currentLocation,
   mainDivStyle,
-  coordinatesState
+  coordinatesState,
+  restIdxHover,
+  setRestIdxHover
 }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   return (
@@ -53,6 +54,7 @@ export default function Main({
           dow={dow}
           searchParams={searchParams}
           coordinatesState={coordinatesState}
+          setRestIdxHover={setRestIdxHover}
         />
       </Suspense>
 
@@ -75,6 +77,7 @@ export default function Main({
             <MapViewComp
               coordinatesState={coordinatesState}
               showRestaurants={showRestaurants}
+              restIdxHover={restIdxHover}
             />
           </Accordion.Content>
         </Accordion.Panel>
@@ -84,6 +87,7 @@ export default function Main({
         <MapViewComp
           coordinatesState={coordinatesState}
           showRestaurants={showRestaurants}
+          restIdxHover={restIdxHover}
         />
       }
       <div

@@ -79,6 +79,7 @@ function App() {
   const [addressState, setAddressState] = useImmer(getMostRecentlySearchedAddress())
   const [searchTermState, setSearchTermState] = useImmer("")
   const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
+  const [restIdxHover, setRestIdxHover] = useState(-1)
 
   // variables
   const componentName = "App.js"
@@ -87,13 +88,7 @@ function App() {
   const [contentHeight, setContentHeight] = useState(0)
   const [mainDivStyle, setMainDivStyle] = useState({})
   const [isFetchingRestData, setIsFetchingRestData] = useState(false)
-  // const [geoLocAvail, setGeoLocAvail] = useState(navigator.geolocation)
-  // const latLong = useGeolocation(geoLocAvail)
   const [filterParams, setFilterParams] = useImmer(checkboxFilters)
-  // const [currentLocation, setCurrentLocation] = useImmer(latLong)
-  // const [filteredRestaurants, setFilteredRestaurants] = useState([])
-  // const [coordinatesState, setCoordinatesState] = useImmer({latitude: 0, longitude: 0})
-  // const [navigatedFlag, setNavigatedFlag] = useState(false)
   const [dow, setDow] = useState(fmtDate)
   const [searchParams, setSearchParams] = useImmer({
     searchTerm: "",
@@ -328,6 +323,8 @@ function App() {
                   // currentLocation={currentLocation}
                   mainDivStyle={mainDivStyle}
                   navBarHeight={navBarHeight}
+                  restIdxHover={restIdxHover}
+                  setRestIdxHover={setRestIdxHover}
                 />
               </Suspense>
             }

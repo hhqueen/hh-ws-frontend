@@ -11,7 +11,7 @@ import showApplicableFilters from "../helperFunctions/showApplicableFilters"
 import EditDeleteRestComp from './EditDeleteRestComp'
 import apiLogger from '../helperFunctions/apiLogger'
 
-export default function RestListDetailCard({ coordinatesState, idx, dow, restaurantInfo, searchParams }) {
+export default function RestListDetailCard({ setRestIdxHover, coordinatesState, idx, dow, restaurantInfo, searchParams }) {
     const navigate = useNavigate()
     const componentName = 'RestListDetailCard'
     const cuisineString = restaurantInfo.cuisines.join(", ")
@@ -44,6 +44,14 @@ export default function RestListDetailCard({ coordinatesState, idx, dow, restaur
             md:flex-row md:max-w-xl md:rounded-r-lg
             hover:bg-gray-100 
             dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+            // onMouseEnter={()=>{
+            //     console.log(`mouse-enter: restIdx ${idx}`)
+            //     setRestIdxHover(idx)
+            // }}
+            // onMouseLeave={()=>{
+            //     console.log(`mouse-leave: restIdx -1`)
+            //     setRestIdxHover(-1)
+            // }}
 
         >
             <p
