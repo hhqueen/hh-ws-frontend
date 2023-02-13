@@ -164,17 +164,18 @@ export default function RestDetail({ mainDivStyle }) {
           </div>
 
           <div
+            className='w-full'
           >
             {
               restData.menu.isFoodAndDrinkMenu &&
               <>
                 <div
-                  className='flex flex-col items-center justify-center py-3 w-[800px]'>
+                  className='flex flex-col items-center justify-center py-3 w-full'>
                   <p
                     className='border-b'
                   >Food And Drink Menu</p>
                   <img
-                    src={`${restData.menu.foodAndDrinkMenuImg?.imgUrl}`}
+                    src={`${restData.menu.foodAndDrinkMenuImg.imgUrl}`}
                     alt="image"
                   />
                 </div>
@@ -187,7 +188,7 @@ export default function RestDetail({ mainDivStyle }) {
                   restData.menu.foodMenuImg !== null &&
 
                   <div
-                    className='flex flex-col items-center justify-center py-3'>
+                    className='flex flex-col items-center justify-center py-3  w-full'>
                     <p
                       className='border-b'
                     >Food Menu</p>
@@ -216,7 +217,7 @@ export default function RestDetail({ mainDivStyle }) {
                 {
                   restData.menu.drinkMenuImg !== null &&
                   <div
-                    className='flex flex-col items-center justify-center py-3'
+                    className='flex flex-col items-center justify-center py-3  w-full'
                   >
                     <p
                       className='border-b'
