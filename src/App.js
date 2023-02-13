@@ -76,7 +76,7 @@ function App() {
   const [filteredRestaurantsState, setFilteredRestaurantsState] = useImmer([])
   const [coordinatesState, setCoordinatesState] = useImmer({ latitude: 0, longitude: 0 })
   const [distanceState, setDistanceState] = useImmer(5) // in miles?
-  const [addressState, setAddressState] = useImmer("")
+  const [addressState, setAddressState] = useImmer(getMostRecentlySearchedAddress())
   const [searchTermState, setSearchTermState] = useImmer("")
   const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
 
@@ -99,7 +99,7 @@ function App() {
     searchTerm: "",
     currentLatitude: null,
     currentLongitude: null,
-    address: "",
+    address: getMostRecentlySearchedAddress(),
     searchButtonClicked: false
   })
 
@@ -142,7 +142,7 @@ function App() {
       //  console.log(`rest${idx}:`, rest)
       const filterFlag = rest.hourSet?.hours.some((e) => {
         let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay === true || e.isAllNight === true
-        if (hasOnlyLateNightOnDay) { hasHHFilter = e.hasHH2 === true || e.isAllNight === true }
+        if (hasOnlyLateNightOnDay) { hasHHFilter = e.hasHH2 === true || e.isAllNight === true || e.isAllDay === true }
         return e.day === numOweek && hasHHFilter
       })
       // const filterFlag = rest.hourSet.hours
@@ -166,7 +166,7 @@ function App() {
   useEffect(() => {
     const executePhaseZero = async () => {
       try {
-        console.log("executing phase 0")
+        // console.log("executing phase 0")
         setShowRestaurantsState([])
         console.log("addressState:",addressState)
         // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
@@ -210,10 +210,10 @@ function App() {
   useEffect(() => {
     const executePhaseOne = async () => {
       try {
-        setAllRestaurantsState([])
+        // setAllRestaurantsState([])
         setIsFetchingRestData(true)
         // setShowRestaurantsState([])
-        console.log("executing phase 1")
+        // console.log("executing phase 1")
         // console.log("coordinatesState:", coordinatesState)
         // console.log("distanceState:", distanceState)
         let queryString = ""
@@ -230,7 +230,7 @@ function App() {
         const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
         const httpMethod = "get"
         const gotRests = await axios[httpMethod](getString)
-        console.log("gotRests_V2:", gotRests.data)
+        // console.log("gotRests_V2:", gotRests.data)
         setAllRestaurantsState(gotRests.data)
       } catch (error) {
         console.warn(error)
@@ -241,8 +241,8 @@ function App() {
 
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
   useEffect(() => {
-    console.log("executing phase 2")
-    setFilteredRestaurantsState([])
+    // console.log("executing phase 2")
+    // setFilteredRestaurantsState([])
     // setShowRestaurantsState([])
     if (allRestaurantsState.length > 0) {
       let filteredRest = []
@@ -258,7 +258,7 @@ function App() {
   // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]
   useEffect(() => {
     // currently there is no sorting.
-    console.log("executing phase 3")
+    // console.log("executing phase 3")
     // console.log("filteredRestaurantsState_v2:", filteredRestaurantsState)
     let sortedRestaurants = filteredRestaurantsState
     // sorting code goes here (WIP)

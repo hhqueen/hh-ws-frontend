@@ -2,7 +2,7 @@ const axios = require('axios');
 
 async function geoForward (address) {
     try {
-      console.log("execute geoForward")
+      // console.log("execute geoForward")
     
     var config = {
       method: 'get',

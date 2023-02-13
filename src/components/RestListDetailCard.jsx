@@ -40,8 +40,8 @@ export default function RestListDetailCard({ coordinatesState, idx, dow, restaur
         // container div
         <div
             className='
-            my-1 min-h-full w-auto flex flex-row items-center bg-white md:rounded-r-lg border shadow-md 
-            md:flex-row md:max-w-xl 
+            my-1 h-fit py-3 flex flex-row items-center bg-white border shadow-md 
+            md:flex-row md:max-w-xl md:rounded-r-lg
             hover:bg-gray-100 
             dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
 
