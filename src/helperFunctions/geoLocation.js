@@ -1,24 +1,24 @@
 const geoLocation = async () => {
-    let geoLocCoords = {
-        geoLocAvail: null,
-        latitude:null,
-        longitude:null
-    }
-    if ("geolocation" in navigator) {
-        geoLocCoords.geoLocAvail = true
-      } else {
-        geoLocCoords.geoLocAvail = false
-      }
-      // console.log("geolocation permission",geoLocCoords.geoLocAvail)
+    return new Promise((res,rej)=>{
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(success, error);
+        } else {
+          console.log("Sorry, your browser does not support HTML5 geolocation.");
+        }
+        
+        function success(position) {
+          const returnCoords = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          }
+          res(returnCoords)
+        }
+
+        function error(error) {
+          console.log("Sorry, we can\'t retrieve your local weather without location permission.");
+        }
     
-      await navigator.geolocation.getCurrentPosition(function(position) {
-        // console.log("geoLocation_Latitude is :", position.coords.latitude);
-        geoLocCoords.latitude = position.coords.latitude
-        // console.log("geoLocation_Longitude is :", position.coords.longitude);
-        geoLocCoords.longitude = position.coords.longitude
-      });
-    // console.log("geoLocCoords:", geoLocCoords)
-    return geoLocCoords
+      })   
 }
 
 // module.exports = geoLocation;

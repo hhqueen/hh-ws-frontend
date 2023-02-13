@@ -4,7 +4,7 @@ import LoadingComp from './LoadingComp'
 import RestListDetailCard from './RestListDetailCard'
 // const RestListDetailCard = lazy(() => import('./RestListDetailCard'))
 
-export default function ListViewComp({ dow, showRestaurants,isFetchingRestData, searchParams }) {
+export default function ListViewComp({ coordinatesState, dow, showRestaurants,isFetchingRestData, searchParams }) {
 
   // console.log(showRestaurants)
   const [errorMessage, setErrorMessage] = useState("")
@@ -23,11 +23,6 @@ export default function ListViewComp({ dow, showRestaurants,isFetchingRestData, 
         return
       }
 
-      // if( showRestaurants.length === 0 && searchParams.address.length === 0 AND GEOLOCATION FALSE ) {
-      //   setErrorMessage(`CURRENT LOCATION ERROR MESSAGE!`)
-      //   return
-      // }
-
 
       return ""
     }    
@@ -44,6 +39,7 @@ export default function ListViewComp({ dow, showRestaurants,isFetchingRestData, 
           key={`restCard-${restaurant._id}`}
           restaurantInfo={restaurant}
           searchParams={searchParams}
+          coordinatesState={coordinatesState}
           dow={dow}
           idx={idx}
         />

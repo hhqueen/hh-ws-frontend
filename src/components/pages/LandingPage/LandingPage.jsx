@@ -7,19 +7,18 @@ import { useMediaQuery } from 'react-responsive'
 
 // {name: "", img_url:""},
 
-export default function LandingPage({setNavigatedFlag, setSearchParams, mainDivStyle}) {
+export default function LandingPage({setAddressState, setSearchParams, mainDivStyle}) {
     const navigate = useNavigate()
     
-    
     const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
-    
-    
+
     const handleCardClick = (e, cityName) => {
         e.preventDefault()
         setSearchParams((draft)=>{
             draft.address = cityName
         })
-        setNavigatedFlag(true)
+        // setNavigatedFlag(true)
+        setAddressState(cityName)
         navigate("/restaurants")
     }
 

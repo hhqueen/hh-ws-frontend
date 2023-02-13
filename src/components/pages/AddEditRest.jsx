@@ -8,6 +8,7 @@ import EditMenuItems from "../EditMenuItems"
 import militaryTimeConverter from '../../helperFunctions/militaryTimeConverter'
 import axios from "axios"
 import date from "date-and-time"
+import geoLocation from '../../helperFunctions/geoLocation'
 
 import YelpResponseModal from '../modals/YelpResponseModal'
 import BulkHoursUpdateModal from '../modals/BulkHoursUpdateModal'
@@ -53,14 +54,41 @@ export default function AddEditRest({ currentLocation ,mainDivStyle }) {
     const [yelpRestResponse, setYelpRestResponse] = useImmer([])
     const [searchParams, setSearchParams] = useImmer(emptySearchParams)
 
-    
+    // init useEffect
     useEffect(()=>{
+        // set search location to "Current Location"
         setSearchParams((draft)=>{
-            draft.location.address="Current Location"
-            draft.location.lat = currentLocation.latitude
-            draft.location.long = currentLocation.longitude
+            draft.location.address = "Current Location"
         })
-    },[currentLocation])
+    },[])
+    
+    // set searchParam lat and long to current geolocation when address = "Current Location"
+    useEffect(()=>{
+        const execute = async () => {
+            console.log("execute UseEffect")
+            try {
+                if(searchParams.location.address === "Current Location") {
+                    const clCoordinates = await geoLocation()
+                    console.log("clCoordinates:",clCoordinates)
+                    setSearchParams((draft)=>{
+                        draft.location.lat = clCoordinates.latitude
+                        draft.location.long = clCoordinates.longitude
+                    })
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        execute()
+    },[searchParams.location.address])
+
+    // useEffect(()=>{
+    //     setSearchParams((draft)=>{
+    //         draft.location.address="Current Location"
+    //         draft.location.lat = currentLocation.latitude
+    //         draft.location.long = currentLocation.longitude
+    //     })
+    // },[currentLocation])
 
 
     useEffect(() => {
@@ -539,10 +567,10 @@ export default function AddEditRest({ currentLocation ,mainDivStyle }) {
                                     onChange={(e) => {
                                         setSearchParams((draft) => {
                                             draft.location.address = e.target.value
-                                            if (e.target.value === "Current Location") {
-                                                draft.location.long = currentLocation.longitude
-                                                draft.location.lat = currentLocation.latitude
-                                            }
+                                            // if (e.target.value === "Current Location") {
+                                            //     draft.location.long = currentLocation.longitude
+                                            //     draft.location.lat = currentLocation.latitude
+                                            // }
                                         })
                                     }}
                                 />

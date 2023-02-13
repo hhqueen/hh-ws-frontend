@@ -9,7 +9,7 @@ import { RxMagnifyingGlass } from 'react-icons/rx'
 import { BsInstagram } from 'react-icons/bs'
 import { FiMail } from 'react-icons/fi'
 import apilogger from '../helperFunctions/apiLogger'
-
+import SearchBar from './SearchBar'
 import LogoSmall from './Logo/LogoSmall'
 import IG_Logo from './Logo/IG_Logo'
 import { useMediaQuery } from 'react-responsive'
@@ -22,7 +22,10 @@ const emptyUserInfo = {
     "id": "",
 }
 
-export default function NavBar({ setNavBarHeight, searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail }) {
+export default function NavBar({ 
+    setNavBarHeight, searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail,
+    setAddressState,setSearchTermState
+}) {
     const componentName = "NavBar"
 
     // media Queries
@@ -143,8 +146,7 @@ export default function NavBar({ setNavBarHeight, searchParams, setSearchParams,
                                         className='border w-[50vw] rounded-t p-0 m-0'
                                         value={searchParams.searchTerm}
                                         onChange={(e) => {
-                                            setSearchParams((draft) => { draft.searchTerm = e.target.value }
-                                            )
+                                            setSearchParams((draft) => { draft.searchTerm = e.target.value })
                                         }}
                                     />
 
@@ -157,8 +159,7 @@ export default function NavBar({ setNavBarHeight, searchParams, setSearchParams,
                                             value={searchParams.address}
                                             list="searchLocationList"
                                             onChange={(e) => {
-                                                setSearchParams((draft) => { draft.address = e.target.value }
-                                                )
+                                                setSearchParams((draft) => { draft.address = e.target.value })
                                             }}
                                         />
 
@@ -180,6 +181,13 @@ export default function NavBar({ setNavBarHeight, searchParams, setSearchParams,
                             </div>
                         </>
                     }
+
+                    <SearchBar
+                        setAddressState={setAddressState}
+                        setSearchTermState={setSearchTermState}
+                        searchParams={searchParams}
+                        setSearchParams={setSearchParams}
+                    />
 
                     <div className="flex justify-around w-[35vw] md:w-[30vw] md:order-2 items-center">
                         {/* small width media query here (HAMBURGER) WIP */}

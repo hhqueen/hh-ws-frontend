@@ -11,18 +11,9 @@ import showApplicableFilters from "../helperFunctions/showApplicableFilters"
 import EditDeleteRestComp from './EditDeleteRestComp'
 import apiLogger from '../helperFunctions/apiLogger'
 
-export default function RestListDetailCard({ idx, dow, restaurantInfo, searchParams }) {
+export default function RestListDetailCard({ coordinatesState, idx, dow, restaurantInfo, searchParams }) {
     const navigate = useNavigate()
     const componentName = 'RestListDetailCard'
-    const currentLocation = {
-        latitude: searchParams.currentLatitude,
-        longitude: searchParams.currentLongitude
-    }
-    const restaurantLocation = {
-        latitude: restaurantInfo.latitude,
-        longitude: restaurantInfo.longitude
-    }
-
     const cuisineString = restaurantInfo.cuisines.join(", ")
     const applicableFilters = showApplicableFilters(restaurantInfo.filterParams)
 
@@ -102,8 +93,11 @@ export default function RestListDetailCard({ idx, dow, restaurantInfo, searchPar
                             className='text-[11px]'
                         >{`${restaurantInfo.city} `}</p>
                         <DistancePartialComp
-                            currentLocation={currentLocation}
-                            restaurantLocation={restaurantLocation}
+                            currentLocation={coordinatesState}
+                            restaurantLocation={{
+                                latitude: restaurantInfo.latitude,
+                                longitude: restaurantInfo.longitude
+                            }}
                             pStyle={'text-[11px] pl-2'}
                         />
                     </div>

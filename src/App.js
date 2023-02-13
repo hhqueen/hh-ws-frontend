@@ -19,14 +19,15 @@ import Footer from './components/Footer';
 import { checkboxFilters } from "./sourceData/emptyDataTemplates"
 
 // import Custom Hoosk
-import useGeolocation from "../src/components/customHooks/useGeolocation.js"
+// import useGeolocation from "../src/components/customHooks/useGeolocation.js"
 
 // require functions
 import dateConverter from "./helperFunctions/dateConverter"
 import qStringfromObj from './helperFunctions/qStringfromObj';
 import jwtDecode from 'jwt-decode';
+import geoForward from './helperFunctions/radarAPI/geofoward';
 
-// import geoLocation from "./helperFunctions/geoLocation"
+import geoLocation from "./helperFunctions/geoLocation"
 // const dateConverter = require("./helperFunctions/dateConverter")
 // const getCoord = require("./helperFunctions/getCoord.js")
 // const geoLocation = require("./helperFunctions/geoLocation.js")
@@ -70,6 +71,15 @@ const getMostRecentlySearchedAddress = () => {
 }
 
 function App() {
+  // refactored Variables
+  const [allRestaurantsState, setAllRestaurantsState] = useImmer([])
+  const [filteredRestaurantsState, setFilteredRestaurantsState] = useImmer([])
+  const [coordinatesState, setCoordinatesState] = useImmer({ latitude: 0, longitude: 0 })
+  const [distanceState, setDistanceState] = useImmer(5) // in miles?
+  const [addressState, setAddressState] = useImmer("")
+  const [searchTermState, setSearchTermState] = useImmer("")
+  const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
+
   // variables
   const componentName = "App.js"
   const [navBarHeight, setNavBarHeight] = useState(0)
@@ -77,15 +87,13 @@ function App() {
   const [contentHeight, setContentHeight] = useState(0)
   const [mainDivStyle, setMainDivStyle] = useState({})
   const [isFetchingRestData, setIsFetchingRestData] = useState(false)
-  const [geoLocAvail, setGeoLocAvail] = useState(navigator.geolocation)
-  const latLong = useGeolocation(geoLocAvail)
-  // console.log("useGeolocation latLong:",latLong)
-  const [allRestaurants, setAllRestaurants] = useState([])
+  // const [geoLocAvail, setGeoLocAvail] = useState(navigator.geolocation)
+  // const latLong = useGeolocation(geoLocAvail)
   const [filterParams, setFilterParams] = useImmer(checkboxFilters)
-  const [currentLocation, setCurrentLocation] = useImmer(latLong)
+  // const [currentLocation, setCurrentLocation] = useImmer(latLong)
   // const [filteredRestaurants, setFilteredRestaurants] = useState([])
-  const [showRestaurants, setShowRestaurants] = useState([])
-  const [navigatedFlag, setNavigatedFlag] = useState(false)
+  // const [coordinatesState, setCoordinatesState] = useImmer({latitude: 0, longitude: 0})
+  // const [navigatedFlag, setNavigatedFlag] = useState(false)
   const [dow, setDow] = useState(fmtDate)
   const [searchParams, setSearchParams] = useImmer({
     searchTerm: "",
@@ -97,14 +105,12 @@ function App() {
 
   const [UIFilters, setUIFilters] = useImmer({
     hasOnlyLateNightOnDay: {
-      name: "hasOnlyLateNightOnDay", 
+      name: "hasOnlyLateNightOnDay",
       displayName: "Late Night",
       value: false
     }
   })
 
-
-  // console.log(searchParams)
   // restaurant filter function
   const filterRests = (filterArr, restData) => {
     // console.log("filterArr:", filterArr)
@@ -127,53 +133,15 @@ function App() {
     return filteredRestaurants
   }
 
-  // API call to backend for all restaurant data. 
-  // need to be filtered on server side based on location distance
-  const getRestaurants = async () => {
-    try {
-      setAllRestaurants([])
-      setShowRestaurants([])
-      let queryString = "?"
-      const revisedSearchParams = {
-        searchTerm: searchParams.searchTerm,
-        currentLatitude: latLong.latitude,
-        currentLongitude: latLong.longitude,
-        address: searchParams.address,
-        searchButtonClicked: false,
-        userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
-        UI_ComponentName: componentName 
-      }
-      // console.log("revisedSearchParams:", revisedSearchParams)
-
-      // Build Query String
-      queryString = qStringfromObj(revisedSearchParams)
-      // console.log("app.js_queryString:",queryString)
-      filterParams.forEach((param) => {
-        if (param.value === true) {
-          queryString += `&${param.name}=${true}`
-        }
-      })
-      const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
-      // console.log("process.env.REACT_APP_SERVER_URL:",process.env.REACT_APP_SERVER_URL)
-      // console.log("getString:",getString)
-      // const gotRests = await axios.get(getString)
-      const httpMethod = "get"
-      const gotRests = await axios[httpMethod](getString)
-      setIsFetchingRestData(false)
-      return gotRests.data
-    } catch (error) {
-      console.warn(error)
-    }
-  }
 
   const filterRestByDay = (filteredRests, dayOweek, hasOnlyLateNightOnDay = false) => {
     const numOweek = dateConverter(dayOweek, false)
     // console.log("numOweek:",numOweek) 
     // console.log("filteredRests:",filteredRests)
-    const filterRestsByDay = filteredRests.filter((rest,idx) => {
+    const filterRestsByDay = filteredRests.filter((rest, idx) => {
       //  console.log(`rest${idx}:`, rest)
       const filterFlag = rest.hourSet?.hours.some((e) => {
-        let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay  === true || e.isAllNight === true 
+        let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay === true || e.isAllNight === true
         if (hasOnlyLateNightOnDay) { hasHHFilter = e.hasHH2 === true || e.isAllNight === true }
         return e.day === numOweek && hasHHFilter
       })
@@ -184,69 +152,120 @@ function App() {
     return filterRestsByDay
   }
 
-  const getAndShowFilteredRestaurants = async () => {
-    try {
-      const allRests = await getRestaurants()
-      setAllRestaurants(allRests)
-      const filteredRestsByDay = filterRestByDay(allRests, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
-      const filteredRestbyFilterParams = filterRests(filterParams, filteredRestsByDay)
-      setShowRestaurants(filteredRestbyFilterParams)
-    } catch (error) {
-      console.warn(error)
+  // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
+  useEffect(() => {
+    const executePhaseZero = async () => {
+      try {
+        console.log("executing phase 0")
+        // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
+        if (addressState === "Current Location") {
+          // if geolocation permission is given, get/set coordinates
+
+
+          if ("geolocation" in navigator) {
+            const geoCoords = await geoLocation()
+            console.log("geoCoords:",geoCoords)
+            setCoordinatesState((draft) => {
+              draft.latitude = geoCoords.latitude
+              draft.longitude = geoCoords.longitude
+            })
+
+          } else {
+            // if not, error and prompt for a valid location
+            console.log("geolocation permission was not given.")
+          }
+        }
+        if (addressState !== "Current Location" && addressState !== "") {
+          // send address to radar geoforward for coordinates
+          const foundAddress = await geoForward(addressState)
+          // console.log("foundAddress:", foundAddress)
+          if (foundAddress.length > 0) {
+            // check if the coordinates are valid, if valid, set coordinates
+            setCoordinatesState((draft) => {
+              draft.latitude = foundAddress[0].latitude
+              draft.longitude = foundAddress[0].longitude
+            })
+          } else {
+            // if not
+            console.log("there was no coordinates found for the supplied address")
+          }
+        }
+      } catch (error) {
+
+      }
     }
+    executePhaseZero()
+  }, [addressState, searchTermState])
 
-  }
-
-  const handleSearchFormSubmit = async (e) => {
-    // e.preventDefault()
-    try {
-      await getAndShowFilteredRestaurants()
-    } catch (error) {
-      console.log(error)
+  // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState]
+  useEffect(() => {
+    const executePhaseOne = async () => {
+      try {
+        console.log("executing phase 1")
+        // console.log("coordinatesState:", coordinatesState)
+        // console.log("distanceState:", distanceState)
+        let queryString = ""
+        const queryParams = {
+          searchTerm: searchTermState,
+          currentLatitude: coordinatesState.latitude,
+          currentLongitude: coordinatesState.longitude,
+          address: addressState,
+          searchButtonClicked: false,
+          userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
+          UI_ComponentName: componentName
+        }
+        queryString = qStringfromObj(queryParams)
+        const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
+        const httpMethod = "get"
+        const gotRests = await axios[httpMethod](getString)
+        console.log("gotRests_V2:", gotRests.data)
+        setAllRestaurantsState(gotRests.data)
+      } catch (error) {
+        console.warn(error)
+      }
     }
-  }
+    executePhaseOne()
+  }, [coordinatesState, distanceState])
 
-  const loadInitialData = async () => {
-    try {
-      setIsFetchingRestData(true)
-      await getAndShowFilteredRestaurants()
-    } catch (error) {
-      console.warn(error)
+  // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
+  useEffect(() => {
+    console.log("executing phase 2")
+    if (allRestaurantsState.length > 0) {
+      let filteredRest = []
+      // console.log("allRestaurantsState:", allRestaurantsState)
+      filteredRest = allRestaurantsState
+      filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
+      filteredRest = filterRests(filterParams, filteredRest)
+      // console.log("filteredRest_V2:",filteredRest)
+      setFilteredRestaurantsState(filteredRest)
     }
-  }
+  }, [allRestaurantsState, dow, filterParams, UIFilters])
 
-  const setGeolocations = () => {
-    setCurrentLocation((draft) => {
-      draft.latitude = latLong.latitude
-      draft.longitude = latLong.longitude
-    })
-    setSearchParams((draft) => {
-      draft.currentLatitude = latLong.latitude
-      draft.currentLongitude = latLong.longitude
-    })
-  }
+  // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]
+  useEffect(() => {
+    // currently there is no sorting.
+    console.log("executing phase 3")
+    // console.log("filteredRestaurantsState_v2:", filteredRestaurantsState)
+    let sortedRestaurants = filteredRestaurantsState
+    // sorting code goes here (WIP)
+    setShowRestaurantsState(sortedRestaurants)
+  }, [filteredRestaurantsState])
+
+
 
   // tracks and updates the height of the main component responsively
-  useEffect(()=>{
+  useEffect(() => {
     // console.log("navbarheight",navBarHeight)
     // console.log("footerHeight",footerHeight)
     // console.log("window.innerHeight:",window.innerHeight)
     // console.log("window.innerWidth:",window.innerWidth)
     const windowHeight = window.innerHeight
-    setMainDivStyle( {
-      height: windowHeight - footerHeight - navBarHeight,
+    setMainDivStyle({
+      minHeight: windowHeight - footerHeight - navBarHeight,
       marginTop: navBarHeight
     })
     setContentHeight(windowHeight - footerHeight - navBarHeight)
-  },[footerHeight,navBarHeight])
-
-  // initial loading of data
-  useEffect(() => {
-    loadInitialData()
-    setGeolocations()
-    if (navigatedFlag) setNavigatedFlag(false)
-
-  }, [latLong, dow, filterParams, navigatedFlag, UIFilters])
+  }, [footerHeight, navBarHeight])
 
   const queryClient = new QueryClient()
   return (
@@ -257,9 +276,11 @@ function App() {
         <NavBar
           searchParams={searchParams}
           setSearchParams={setSearchParams}
-          handleSearchFormSubmit={handleSearchFormSubmit}
-          geoLocAvail={geoLocAvail}
+          // handleSearchFormSubmit={handleSearchFormSubmit}
+          // geoLocAvail={geoLocAvail}
           setNavBarHeight={setNavBarHeight}
+          setAddressState={setAddressState}
+          setSearchTermState={setSearchTermState}
         />
 
         <Routes>
@@ -268,11 +289,12 @@ function App() {
             path='/'
             element={
 
-                <LandingPage
-                  setSearchParams={setSearchParams}
-                  setNavigatedFlag={setNavigatedFlag}
-                  mainDivStyle={mainDivStyle}
-                />
+              <LandingPage
+                setSearchParams={setSearchParams}
+                // setNavigatedFlag={setNavigatedFlag}
+                mainDivStyle={mainDivStyle}
+                setAddressState={setAddressState}
+              />
 
             }
           />
@@ -283,14 +305,16 @@ function App() {
               <Suspense fallback={<LoadingComp />}>
                 <Main
                   isFetchingRestData={isFetchingRestData}
-                  showRestaurants={showRestaurants}
+                  showRestaurants={showRestaurantsState}
+                  // showRestaurants={showRestaurants}
                   setFilterParams={setFilterParams}
                   filterParams={filterParams}
                   setDow={setDow}
                   dow={dow}
                   searchParams={searchParams}
-                  UIFiltersProps={{UIFilters, setUIFilters}}
-                  currentLocation={currentLocation}
+                  coordinatesState={coordinatesState}
+                  UIFiltersProps={{ UIFilters, setUIFilters }}
+                  // currentLocation={currentLocation}
                   mainDivStyle={mainDivStyle}
                   navBarHeight={navBarHeight}
                 />
@@ -302,8 +326,8 @@ function App() {
             path="/restaurant/:id"
             element={
               <Suspense fallback={<LoadingComp />}>
-                <RestDetail 
-                mainDivStyle={mainDivStyle}
+                <RestDetail
+                  mainDivStyle={mainDivStyle}
                 />
               </Suspense>
             }
@@ -314,7 +338,7 @@ function App() {
             element={
               <Suspense fallback={<LoadingComp />}>
                 <AddEditRest
-                  currentLocation={currentLocation}
+                  // currentLocation={currentLocation}
                   mainDivStyle={mainDivStyle}
                 />
               </Suspense>
@@ -332,7 +356,7 @@ function App() {
             element={
               <Suspense fallback={<LoadingComp />}>
                 <AddEditRest
-                  currentLocation={currentLocation}
+                  // currentLocation={currentLocation}
                   mainDivStyle={mainDivStyle}
                 />
               </Suspense>
@@ -342,7 +366,7 @@ function App() {
             path="/signup"
             element={
               <Suspense fallback={<LoadingComp />}>
-                <SignUp 
+                <SignUp
                   mainDivStyle={mainDivStyle}
                 />
               </Suspense>
@@ -353,7 +377,7 @@ function App() {
             path="/login"
             element={
               <Suspense fallback={<LoadingComp />}>
-                <Login 
+                <Login
                   mainDivStyle={mainDivStyle}
                 />
               </Suspense>
@@ -362,10 +386,10 @@ function App() {
 
         </Routes>
 
-      <Footer
-        contentHeight={contentHeight}
-        setFooterHeight={setFooterHeight}
-      />
+        <Footer
+          contentHeight={contentHeight}
+          setFooterHeight={setFooterHeight}
+        />
       </Router>
     </QueryClientProvider >
   );

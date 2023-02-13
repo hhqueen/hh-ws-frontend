@@ -1,4 +1,4 @@
-import { Suspense, lazy , useTransition } from 'react'
+import { Suspense, lazy, useTransition } from 'react'
 // import FilterComp from '../FilterComp'
 // import ListViewComp from '../ListViewComp'
 import MapViewComp from '../../MapViewComp'
@@ -10,20 +10,21 @@ import './Main.css'
 const ListViewComp = lazy(() => import('../../ListViewComp'))
 const FilterComp = lazy(() => import('../../FilterComp'))
 
-export default function Main({ 
-  UIFiltersProps, 
+export default function Main({
+  UIFiltersProps,
   searchParams,
   isFetchingRestData,
-  dow, 
-  setDow, 
-  showRestaurants, 
-  filterParams, 
-  setFilterParams, 
+  dow,
+  setDow,
+  showRestaurants,
+  filterParams,
+  setFilterParams,
   filterFormSubmitHandler,
   currentLocation,
   mainDivStyle,
+  coordinatesState
 }) {
-    return (
+  return (
     <div
       style={mainDivStyle}
       className='flex flex-col
@@ -46,14 +47,22 @@ export default function Main({
           showRestaurants={showRestaurants}
           dow={dow}
           searchParams={searchParams}
+          coordinatesState={coordinatesState}
         />
       </Suspense>
-      
 
-      <MapViewComp
+      <div
+        style={{
+          width: `700px`,
+          height: `100%`
+        }}
+      >
+        {/* <MapViewComp
         searchParams={searchParams}
         showRestaurants={showRestaurants}
-      />
+      /> */}
+      </div>
+
 
     </div>
   )
