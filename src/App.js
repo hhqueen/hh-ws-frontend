@@ -167,7 +167,7 @@ function App() {
     const executePhaseZero = async () => {
       try {
         console.log("executing phase 0")
-        showRestaurantsState([])
+        setShowRestaurantsState([])
         console.log("addressState:",addressState)
         // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
         if (addressState === "Current Location") {
@@ -209,8 +209,9 @@ function App() {
   // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState]
   useEffect(() => {
     const executePhaseOne = async () => {
-      setAllRestaurantsState([])
       try {
+        setAllRestaurantsState([])
+        // setShowRestaurantsState([])
         console.log("executing phase 1")
         // console.log("coordinatesState:", coordinatesState)
         // console.log("distanceState:", distanceState)
