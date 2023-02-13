@@ -14,13 +14,13 @@ export default function Footer({setFooterHeight, contentHeight}) {
     marginTop: footerMarginTop
   }
   return (
-    <div
+    <footer
         // style={footerDivStyle}
         className='flex justify-between bg-[#372A88] px-5'
         ref={footerDiv}
     >
         <LogoSmall/>
         <Copyright/>
-    </div>
+    </footer>
   )
 }

@@ -156,6 +156,7 @@ function App() {
   useEffect(()=>{
     if(searchParams.address === "") {
       const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
+      console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
       setAddressState(gotRecentOrCurrentLoc)
       setSearchParams((draft)=>{draft.address = gotRecentOrCurrentLoc})
     }
@@ -166,6 +167,7 @@ function App() {
     const executePhaseZero = async () => {
       try {
         console.log("executing phase 0")
+        showRestaurantsState([])
         console.log("addressState:",addressState)
         // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
         if (addressState === "Current Location") {
@@ -208,7 +210,6 @@ function App() {
   useEffect(() => {
     const executePhaseOne = async () => {
       setAllRestaurantsState([])
-      setShowRestaurantsState([])
       try {
         console.log("executing phase 1")
         // console.log("coordinatesState:", coordinatesState)
@@ -240,6 +241,7 @@ function App() {
   useEffect(() => {
     console.log("executing phase 2")
     setFilteredRestaurantsState([])
+    // setShowRestaurantsState([])
     if (allRestaurantsState.length > 0) {
       let filteredRest = []
       // console.log("allRestaurantsState:", allRestaurantsState)
@@ -254,7 +256,6 @@ function App() {
   // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]
   useEffect(() => {
     // currently there is no sorting.
-    setShowRestaurantsState([])
     console.log("executing phase 3")
     // console.log("filteredRestaurantsState_v2:", filteredRestaurantsState)
     let sortedRestaurants = filteredRestaurantsState

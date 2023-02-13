@@ -79,27 +79,7 @@ export default function NavBar({
     }, [])
 
     // create / update search history
-    const appendSearchHistory = (searchParam) => {
-        const now = new Date()
-        const newEntry = {
-            searchTerm: searchParam.searchTerm,
-            address: searchParam.address,
-            date_UTC_ISO: now.toUTCString()
-        }
-        if (localStorage.getItem('sh')) {
-            const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
-            getHistoryArr.push(newEntry)
-            if (getHistoryArr.length > 3) {
-                getHistoryArr.shift()
-            }
-            localStorage.setItem('sh', JSON.stringify(getHistoryArr))
-            console.log("getHistoryArr:", localStorage.getItem('sh'))
-        } else {
-            const newHistoryArr = [newEntry]
-            localStorage.setItem('sh', JSON.stringify(newHistoryArr))
-            // console.log("newHistoryArr:",localStorage.getItem('sh'))
-        }
-    }
+
 
     const getMostRecentSearchHistory = () => {
         if (localStorage.getItem('sh')) {
@@ -142,7 +122,7 @@ export default function NavBar({
 
 
 
-                    <div className="flex justify-around w-[35vw] md:w-[30vw] md:order-2 items-center">
+                    <div className="flex justify-around md:w-[30vw] md:order-2 items-center">
                         {/* small width media query here (HAMBURGER) WIP */}
                         {
                             !isTWmd &&

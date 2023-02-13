@@ -51,7 +51,7 @@ export default function Main({
         />
       </Suspense>
 
-      <div
+      {/* <div
         style={{
           width: `700px`,
           height: `100%`
@@ -61,7 +61,7 @@ export default function Main({
         coordinatesState={coordinatesState}
         showRestaurants={showRestaurants}
       />
-      </div>
+      </div> */}
 
 
     </div>

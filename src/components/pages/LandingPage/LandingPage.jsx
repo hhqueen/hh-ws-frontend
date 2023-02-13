@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import CityCardContainer from './local_partials/CityCardContainer'
 import CarouselContainer from './local_partials/CarouselContainer'
 import { useMediaQuery } from 'react-responsive'
-
+import appendSearchHistory from '../../../helperFunctions/appendSearchHistory'
 
 // {name: "", img_url:""},
 
@@ -19,6 +19,7 @@ export default function LandingPage({setAddressState, setSearchParams, mainDivSt
         })
         // setNavigatedFlag(true)
         setAddressState(cityName)
+        appendSearchHistory("", cityName)
         navigate("/restaurants")
     }
 
