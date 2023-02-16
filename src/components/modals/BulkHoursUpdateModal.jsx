@@ -98,6 +98,7 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                                     className="min-w-[50px] text-xs"
                                     name="start1"
                                     type="time"
+                                    step={1800}
                                     defaultValue="15:00"
                                     onChange={(e) => handleHourInputChange(e)}
                                     disabled={hourData.hasHH1 === false}
@@ -107,6 +108,7 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                                     className="min-w-[50px] text-xs"
                                     name="end1"
                                     type="time"
+                                    step={1800}
                                     defaultValue="18:00"
                                     onChange={(e) => handleHourInputChange(e)}
                                     disabled={hourData.hasHH1 === false || hourData.end1close === true}
@@ -132,6 +134,7 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                                     className="min-w-[50px] text-xs"
                                     name="start2"
                                     type="time"
+                                    step={1800}
                                     defaultValue="21:00"
                                     onChange={(e) => handleHourInputChange(e)}
                                     disabled={hourData.hasHH2 === false}
@@ -149,6 +152,7 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                                             className="min-w-[50px] text-xs"
                                             name="end2"
                                             type="time"
+                                            step={1800}
                                             defaultValue="00:00"
                                             onChange={(e) => handleHourInputChange(e)}
                                             disabled={hourData.hasHH2 === false || hourData.end2close === true}
