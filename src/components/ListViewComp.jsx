@@ -4,7 +4,7 @@ import LoadingComp from './LoadingComp'
 import RestListDetailCard from './RestListDetailCard'
 // const RestListDetailCard = lazy(() => import('./RestListDetailCard'))
 
-export default function ListViewComp({ setRestIdxHover, coordinatesState, dow, showRestaurants,isFetchingRestData, searchParams }) {
+export default function ListViewComp({ restListErrorMsg,setRestIdxHover, coordinatesState, dow, showRestaurants,isFetchingRestData, searchParams }) {
 
   // console.log(showRestaurants)
   const [errorMessage, setErrorMessage] = useState("")
@@ -57,14 +57,14 @@ export default function ListViewComp({ setRestIdxHover, coordinatesState, dow, s
             isFetchingRestData && <LoadingComp />
           }
           {/* renders No restaurants message */}
-          {errorMessage.length > 0 && !isFetchingRestData &&
+          {!isFetchingRestData && restListErrorMsg.length > 0 && 
             <>
-              <p>{errorMessage}</p>
+              <p>{restListErrorMsg}</p>
             </>
           }
 
             {/* renders restaurants if the array length is greater than 0 */}
-          {showRestaurants.length > 0 && !isFetchingRestData &&
+          {!isFetchingRestData && restListErrorMsg.length === 0 && 
             <ul>
               {listRestaurants}
             </ul>

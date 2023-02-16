@@ -285,23 +285,24 @@ export default function AddEditRest({ mainDivStyle }) {
 
     const handleBulkHourSubmit = (e, daysArr, hourData) => {
         e.preventDefault()
-        // console.log("Click")
-        console.log("click")
         const filteredDaysArr = daysArr.filter(day => day.updateBool === true)
         setRestaurantData((draft) => {
-            filteredDaysArr.forEach((filteredDay) => {
-                console.log("hourData.end2", hourData.end2)
-                let foundDay = draft.hourSet.hours.find(hour => hour.day === filteredDay.dayIdx)
-                console.log(foundDay.hasHH1)
-                foundDay.hasHH1 = hourData.hasHH1
-                foundDay.start1 = hourData.start1
-                foundDay.end1 = hourData.end1
-                foundDay.hasHH2 = hourData.hasHH2
-                foundDay.start2 = hourData.start2
-                foundDay.end2 = hourData.end2
-                foundDay.end2close = hourData.end2close
-                foundDay.isAllDay = hourData.isAllDay
-                console.log(`${foundDay.day} found and updated`)
+            daysArr.forEach((bulkItemDay) => {
+                let foundDay = draft.hourSet.hours.find(hour => hour.day === bulkItemDay.dayIdx)
+                if(bulkItemDay.updateBool) {
+                    foundDay.hasHH1 = hourData.hasHH1
+                    foundDay.start1 = hourData.start1
+                    foundDay.end1 = hourData.end1
+                    foundDay.hasHH2 = hourData.hasHH2
+                    foundDay.start2 = hourData.start2
+                    foundDay.end2 = hourData.end2
+                    foundDay.end2close = hourData.end2close
+                    foundDay.isAllDay = hourData.isAllDay
+                } else {
+                    foundDay.hasHH1 = false
+                    foundDay.hasHH2 = false
+                }
+
             })
         })
         setBulkHourModalOpen(false)
@@ -388,6 +389,7 @@ export default function AddEditRest({ mainDivStyle }) {
                                     className="min-w-[50px] text-xs"
                                     name="start1"
                                     type="time"
+                                    step={1800}
                                     value={militaryTimeConverter(restaurantData.hourSet.hours[idx].start1)}
                                     // defaultValue="15:00"
                                     onChange={(e) => handleHourInputChange(e, idx)}
@@ -408,6 +410,7 @@ export default function AddEditRest({ mainDivStyle }) {
                                             className="min-w-[50px] text-xs"
                                             name="end1"
                                             type="time"
+                                            step={1800}
                                             value={militaryTimeConverter(restaurantData.hourSet.hours[idx].end1)}
                                             // defaultValue="18:00"
                                             onChange={(e) => handleHourInputChange(e, idx)}
@@ -449,6 +452,7 @@ export default function AddEditRest({ mainDivStyle }) {
                                     className="min-w-[50px] text-xs"
                                     name="start2"
                                     type="time"
+                                    step={1800}
                                     value={militaryTimeConverter(restaurantData.hourSet.hours[idx].start2)}
                                     // defaultValue="15:00"
                                     onChange={(e) => handleHourInputChange(e, idx)}
@@ -468,6 +472,7 @@ export default function AddEditRest({ mainDivStyle }) {
                                             className="min-w-[50px] text-xs"
                                             name="end2"
                                             type="time"
+                                            step={1800}
                                             value={militaryTimeConverter(restaurantData.hourSet.hours[idx].end2)}
                                             // defaultValue="18:00"
                                             onChange={(e) => handleHourInputChange(e, idx)}

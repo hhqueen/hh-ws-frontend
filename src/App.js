@@ -105,6 +105,7 @@ function App() {
       value: false
     }
   })
+  const [restListErrorMsg, setRestListErrorMsg] = useState("")
 
   // restaurant filter function
   const filterRests = (filterArr, restData) => {
@@ -161,7 +162,7 @@ function App() {
   useEffect(() => {
     const executePhaseZero = async () => {
       try {
-        // console.log("executing phase 0")
+        console.log("executing phase 0")
         setShowRestaurantsState([])
         console.log("addressState:",addressState)
         // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
@@ -208,7 +209,7 @@ function App() {
         // setAllRestaurantsState([])
         setIsFetchingRestData(true)
         // setShowRestaurantsState([])
-        // console.log("executing phase 1")
+        console.log("executing phase 1")
         // console.log("coordinatesState:", coordinatesState)
         // console.log("distanceState:", distanceState)
         let queryString = ""
@@ -236,29 +237,36 @@ function App() {
 
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
   useEffect(() => {
-    // console.log("executing phase 2")
-    // setFilteredRestaurantsState([])
-    // setShowRestaurantsState([])
-    if (allRestaurantsState.length > 0) {
+    console.log("executing phase 2")
       let filteredRest = []
-      // console.log("allRestaurantsState:", allRestaurantsState)
-      filteredRest = allRestaurantsState
-      filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
-      filteredRest = filterRests(filterParams, filteredRest)
-      // console.log("filteredRest_V2:",filteredRest)
-      setFilteredRestaurantsState(filteredRest)
-    }
+      if(allRestaurantsState.length > 0) {
+        filteredRest = allRestaurantsState
+        filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
+        filteredRest = filterRests(filterParams, filteredRest)
+      }
+      setFilteredRestaurantsState(filteredRest)   
   }, [allRestaurantsState, dow, filterParams, UIFilters])
 
   // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]
+  // also handles restaurant list error message rendering
   useEffect(() => {
     // currently there is no sorting.
-    // console.log("executing phase 3")
+    console.log("executing phase 3")
     // console.log("filteredRestaurantsState_v2:", filteredRestaurantsState)
     let sortedRestaurants = filteredRestaurantsState
     // sorting code goes here (WIP)
     setShowRestaurantsState(sortedRestaurants)
     setIsFetchingRestData(false)
+
+    // handle 0 restaurant returns
+    setRestListErrorMsg("")
+    if(filteredRestaurantsState.length === 0) {
+      setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
+    }
+    if(allRestaurantsState.length == 0) {
+      setRestListErrorMsg("Whoa, the search did not return any restaurants, please try again with different paramaters")
+    }
+
   }, [filteredRestaurantsState])
 
 
@@ -282,8 +290,6 @@ function App() {
         <NavBar
           searchParams={searchParams}
           setSearchParams={setSearchParams}
-          // handleSearchFormSubmit={handleSearchFormSubmit}
-          // geoLocAvail={geoLocAvail}
           setNavBarHeight={setNavBarHeight}
           setAddressState={setAddressState}
           setSearchTermState={setSearchTermState}
@@ -297,7 +303,6 @@ function App() {
 
               <LandingPage
                 setSearchParams={setSearchParams}
-                // setNavigatedFlag={setNavigatedFlag}
                 mainDivStyle={mainDivStyle}
                 setAddressState={setAddressState}
               />
@@ -312,7 +317,6 @@ function App() {
                 <Main
                   isFetchingRestData={isFetchingRestData}
                   showRestaurants={showRestaurantsState}
-                  // showRestaurants={showRestaurants}
                   setFilterParams={setFilterParams}
                   filterParams={filterParams}
                   setDow={setDow}
@@ -320,11 +324,11 @@ function App() {
                   searchParams={searchParams}
                   coordinatesState={coordinatesState}
                   UIFiltersProps={{ UIFilters, setUIFilters }}
-                  // currentLocation={currentLocation}
                   mainDivStyle={mainDivStyle}
                   navBarHeight={navBarHeight}
                   restIdxHover={restIdxHover}
                   setRestIdxHover={setRestIdxHover}
+                  restListErrorMsg={restListErrorMsg}
                 />
               </Suspense>
             }

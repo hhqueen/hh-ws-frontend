@@ -24,7 +24,6 @@ const defaultHourData = {
 
 export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOpen, setBulkHourModalOpen }) {
     const [daysArr, setDaysArr] = useImmer(initDaysArr)
-
     const [hourData, setHourData] = useImmer(defaultHourData)
 
     const handleHourInputChange = (e) => {

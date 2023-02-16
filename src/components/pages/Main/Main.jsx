@@ -24,7 +24,8 @@ export default function Main({
   mainDivStyle,
   coordinatesState,
   restIdxHover,
-  setRestIdxHover
+  setRestIdxHover,
+  restListErrorMsg
 }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   return (
@@ -55,6 +56,7 @@ export default function Main({
           searchParams={searchParams}
           coordinatesState={coordinatesState}
           setRestIdxHover={setRestIdxHover}
+          restListErrorMsg={restListErrorMsg}
         />
       </Suspense>
 

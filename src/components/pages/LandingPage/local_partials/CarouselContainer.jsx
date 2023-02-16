@@ -17,7 +17,7 @@ export default function CarouselContainer() {
         >
             {/* <p>CarouselContainer</p> */}
             <img
-                className='w-full h-full object-fill md:object-cover object-bottom'
+                className='w-[100vw] h-full object-cover md:object-cover'
                 src={`${carousel_img_path}`}
                 alt='image'
             />
