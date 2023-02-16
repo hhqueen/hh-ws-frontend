@@ -175,7 +175,7 @@ export default function RestDetail({ mainDivStyle }) {
                     className='border-b'
                   >Food And Drink Menu</p>
                   <img
-                    src={`${restData.menu.foodAndDrinkMenuImg.imgUrl}`}
+                    src={`${restData.menu.foodAndDrinkMenuImg?.imgUrl}`}
                     alt="image"
                   />
                 </div>
@@ -196,7 +196,7 @@ export default function RestDetail({ mainDivStyle }) {
                       siteSettings.showImgMenu ?
                         <>
                           <img
-                            src={`${restData.menu.foodMenuImg.imgUrl}`}
+                            src={`${restData.menu.foodMenuImg?.imgUrl}`}
                             alt="image"
                           />
                         </>
@@ -226,7 +226,7 @@ export default function RestDetail({ mainDivStyle }) {
                       siteSettings.showImgMenu ?
                         <>
                           <img
-                            src={`${restData.menu.drinkMenuImg.imgUrl}`}
+                            src={`${restData.menu.drinkMenuImg?.imgUrl}`}
                             alt="image"
                           />
                         </>
