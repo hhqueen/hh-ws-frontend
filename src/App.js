@@ -149,21 +149,21 @@ function App() {
   }
 
   // init 
-  useEffect(()=>{
-    if(searchParams.address === "") {
-      const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
-      console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
-      setAddressState(gotRecentOrCurrentLoc)
-      setSearchParams((draft)=>{draft.address = gotRecentOrCurrentLoc})
-    }
-  },[])
+  // useEffect(()=>{
+  //   if(searchParams.address === "") {
+  //     const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
+  //     console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
+  //     setAddressState(gotRecentOrCurrentLoc)
+  //     setSearchParams((draft)=>{draft.address = gotRecentOrCurrentLoc})
+  //   }
+  // },[])
 
   // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
   useEffect(() => {
     const executePhaseZero = async () => {
       try {
         console.log("executing phase 0")
-        setShowRestaurantsState([])
+        // setShowRestaurantsState([])
         console.log("addressState:",addressState)
         // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
         if (addressState === "Current Location") {
@@ -206,12 +206,8 @@ function App() {
   useEffect(() => {
     const executePhaseOne = async () => {
       try {
-        // setAllRestaurantsState([])
         setIsFetchingRestData(true)
-        // setShowRestaurantsState([])
         console.log("executing phase 1")
-        // console.log("coordinatesState:", coordinatesState)
-        // console.log("distanceState:", distanceState)
         let queryString = ""
         const queryParams = {
           searchTerm: searchTermState,
@@ -239,6 +235,7 @@ function App() {
   useEffect(() => {
     console.log("executing phase 2")
       let filteredRest = []
+      
       if(allRestaurantsState.length > 0) {
         filteredRest = allRestaurantsState
         filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
@@ -256,7 +253,7 @@ function App() {
     let sortedRestaurants = filteredRestaurantsState
     // sorting code goes here (WIP)
     setShowRestaurantsState(sortedRestaurants)
-    setIsFetchingRestData(false)
+
 
     // handle 0 restaurant returns
     setRestListErrorMsg("")
@@ -266,6 +263,8 @@ function App() {
     if(allRestaurantsState.length == 0) {
       setRestListErrorMsg("Whoa, the search did not return any restaurants, please try again with different paramaters")
     }
+
+    setIsFetchingRestData(false)
 
   }, [filteredRestaurantsState])
 
