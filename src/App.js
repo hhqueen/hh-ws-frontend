@@ -50,6 +50,8 @@ const Login = lazy(() => import('./components/pages/Login'))
 
 const LandingPage = lazy(() => import('./components/pages/LandingPage/LandingPage'))
 
+const { deepCopyObj } = require("./helperFunctions/deepCopy")
+
 
 
 // get recent search address
@@ -78,8 +80,8 @@ function App() {
   const [distanceState, setDistanceState] = useImmer(5) // in miles?
   const [addressState, setAddressState] = useImmer(getMostRecentlySearchedAddress())
   const [searchTermState, setSearchTermState] = useImmer("")
-  const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
   const [restIdxHover, setRestIdxHover] = useState(-1)
+  const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
 
   // variables
   const componentName = "App.js"
@@ -149,19 +151,21 @@ function App() {
   }
 
   // init 
-  // useEffect(()=>{
-  //   if(searchParams.address === "") {
-  //     const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
-  //     console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
-  //     setAddressState(gotRecentOrCurrentLoc)
-  //     setSearchParams((draft)=>{draft.address = gotRecentOrCurrentLoc})
-  //   }
-  // },[])
+  useEffect(()=>{
+    if(searchParams.address === "" || addressState === "") {
+      const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
+      console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
+      setAddressState(gotRecentOrCurrentLoc)
+      setSearchParams((draft)=>{draft.address = gotRecentOrCurrentLoc})
+    }
+  },[])
 
+  
   // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
   useEffect(() => {
     const executePhaseZero = async () => {
       try {
+        setIsFetchingRestData(true)
         console.log("executing phase 0")
         // setShowRestaurantsState([])
         console.log("addressState:",addressState)
@@ -202,12 +206,15 @@ function App() {
     executePhaseZero()
   }, [addressState, searchTermState])
 
+
   // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState]
   useEffect(() => {
     const executePhaseOne = async () => {
       try {
+        // showRestaurantsState([])
         setIsFetchingRestData(true)
         console.log("executing phase 1")
+        // setRestListErrorMsg("")
         let queryString = ""
         const queryParams = {
           searchTerm: searchTermState,
@@ -222,7 +229,7 @@ function App() {
         const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
         const httpMethod = "get"
         const gotRests = await axios[httpMethod](getString)
-        // console.log("gotRests_V2:", gotRests.data)
+        console.log("gotRests_V2:", gotRests.data)
         setAllRestaurantsState(gotRests.data)
       } catch (error) {
         console.warn(error)
@@ -231,18 +238,38 @@ function App() {
     executePhaseOne()
   }, [coordinatesState, distanceState])
 
+  const handleRestListErrorMsg = () => {
+    setRestListErrorMsg("")
+    console.log("executing error messaging")
+    // if(isFetchingRestData) {
+      // setRestListErrorMsg("")
+      if(filteredRestaurantsState.length === 0) {
+        console.log("error_msg1")
+        setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
+      }
+      if(allRestaurantsState.length === 0) {
+        console.log("error_msg2")
+        setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
+      }
+    // }
+  }
+
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
   useEffect(() => {
     console.log("executing phase 2")
       let filteredRest = []
-      
       if(allRestaurantsState.length > 0) {
-        filteredRest = allRestaurantsState
+        // console.log("filteredRest:", filteredRest)
+        
+        filteredRest = deepCopyObj(allRestaurantsState)
+        console.log("deepcopied:",filteredRest)
+        // console.log("allRestaurantsState_inFilterRest:", allRestaurantsState)
         filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
         filteredRest = filterRests(filterParams, filteredRest)
       }
       setFilteredRestaurantsState(filteredRest)   
   }, [allRestaurantsState, dow, filterParams, UIFilters])
+
 
   // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]
   // also handles restaurant list error message rendering
@@ -253,21 +280,14 @@ function App() {
     let sortedRestaurants = filteredRestaurantsState
     // sorting code goes here (WIP)
     setShowRestaurantsState(sortedRestaurants)
-
-
-    // handle 0 restaurant returns
-    setRestListErrorMsg("")
-    if(filteredRestaurantsState.length === 0) {
-      setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
-    }
-    if(allRestaurantsState.length == 0) {
-      setRestListErrorMsg("Whoa, the search did not return any restaurants, please try again with different paramaters")
-    }
-
+    handleRestListErrorMsg()
     setIsFetchingRestData(false)
-
   }, [filteredRestaurantsState])
 
+  // handles no restaurants
+  // useEffect(()=>{
+
+  // },[isFetchingRestData])
 
 
   // tracks and updates the height of the main component responsively

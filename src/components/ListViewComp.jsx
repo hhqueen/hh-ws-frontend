@@ -7,30 +7,30 @@ import RestListDetailCard from './RestListDetailCard'
 export default function ListViewComp({ restListErrorMsg,setRestIdxHover, coordinatesState, dow, showRestaurants,isFetchingRestData, searchParams }) {
 
   // console.log(showRestaurants)
-  const [errorMessage, setErrorMessage] = useState("")
+  // const [errorMessage, setErrorMessage] = useState("")
 
-  const messageHandler = () =>{
-    setErrorMessage("")
-    if (!isFetchingRestData) {
-      if (showRestaurants.length === 0 && searchParams.address.length > 0 && searchParams.searchTerm.length > 0 ) {
-        setErrorMessage(`There are no restaurants that match your search! =(`)
-        return
-      }
+  // const messageHandler = () =>{
+  //   setErrorMessage("")
+  //   if (!isFetchingRestData) {
+  //     if (showRestaurants.length === 0 && searchParams.address.length > 0 && searchParams.searchTerm.length > 0 ) {
+  //       setErrorMessage(`There are no restaurants that match your search! =(`)
+  //       return
+  //     }
 
       
-      if( showRestaurants.length === 0 && searchParams.address.length === 0  ) {
-        setErrorMessage(`Please enter a city or address!`)
-        return
-      }
+  //     if( showRestaurants.length === 0 && searchParams.address.length === 0  ) {
+  //       setErrorMessage(`Please enter a city or address!`)
+  //       return
+  //     }
 
 
-      return ""
-    }    
-  }
+  //     return ""
+  //   }    
+  // }
 
-  useEffect(()=>{
-    messageHandler()
-  })
+  // useEffect(()=>{
+  //   messageHandler()
+  // })
 
   const listRestaurants = showRestaurants.map((restaurant, idx) => {
     return (
@@ -64,7 +64,7 @@ export default function ListViewComp({ restListErrorMsg,setRestIdxHover, coordin
           }
 
             {/* renders restaurants if the array length is greater than 0 */}
-          {!isFetchingRestData && restListErrorMsg.length === 0 && 
+          {!isFetchingRestData && restListErrorMsg.length == 0 && 
             <ul>
               {listRestaurants}
             </ul>
