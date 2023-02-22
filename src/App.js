@@ -82,7 +82,7 @@ function App() {
   const [filteredRestaurantsState, setFilteredRestaurantsState] = useImmer([])
   const [coordinatesState, setCoordinatesState] = useImmer({ latitude: 0, longitude: 0 })
   const [distanceState, setDistanceState] = useImmer(5) // in miles?
-  const [addressState, setAddressState] = useImmer(getMostRecentlySearchedAddress())
+  const [addressState, setAddressState] = useImmer("")
   const [searchTermState, setSearchTermState] = useImmer("")
   const [restIdxHover, setRestIdxHover] = useState(-1)
   const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
@@ -100,7 +100,7 @@ function App() {
     searchTerm: "",
     currentLatitude: null,
     currentLongitude: null,
-    address: getMostRecentlySearchedAddress(),
+    address: "",
     searchButtonClicked: false
   })
 
