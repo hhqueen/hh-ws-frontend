@@ -85,7 +85,7 @@ export default function RestDetail({ mainDivStyle }) {
 
         <div
           style={mainDivStyle}
-          className='md:flex md:flex-col mt-[200px] px-3 md:items-center'
+          className='md:flex md:flex-col mt-[200px] md:items-center'
         >
           <div
             className='md:flex md:px-10'
@@ -247,19 +247,30 @@ export default function RestDetail({ mainDivStyle }) {
             }
           </div>
 
-          <a
-            href={`mailto:${emailProps.email}?subject=${emailProps.subject}&body=${emailProps.body}`}
+          <div
+            className='flex items-center justify-around'
           >
-            <button
-              className=' border w-[137px] h-[43px] rounded-[10px] opacity-75 mt-[5px]'
+            <div
+              className='flex items-center justify-center text-center'
             >
-              <p
-                className='leading-[18px] font-bold text-[15px]'
-              >Info on this page is wrong!</p>
-            </button>
-          </a>
+              <p>{`Last Updated: ${dateString()}`}</p>
+            </div>
 
-          <p>{`Last Updated: ${dateString()}`}</p>
+            <div
+              className='flex items-center justify-center text-center'
+            >
+              <a
+                href={`mailto:${emailProps.email}?subject=${emailProps.subject}&body=${emailProps.body}`}
+                className="ml-10"
+              >
+                <p
+                  className='leading-[18px] text-[15px] text-sky-600 underline'
+                >Info on this page is wrong!</p>
+              </a>
+            </div>
+
+          </div>
+
         </div>
       }
     </>

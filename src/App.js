@@ -50,6 +50,10 @@ const Login = lazy(() => import('./components/pages/Login'))
 
 const LandingPage = lazy(() => import('./components/pages/LandingPage/LandingPage'))
 
+const DashBoard = lazy(() => import('./components/pages/Login'))
+// import Login from './components/pages/Login';
+
+
 const { deepCopyObj } = require("./helperFunctions/deepCopy")
 
 
