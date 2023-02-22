@@ -50,7 +50,7 @@ const Login = lazy(() => import('./components/pages/Login'))
 
 const LandingPage = lazy(() => import('./components/pages/LandingPage/LandingPage'))
 
-const DashBoard = lazy(() => import('./components/pages/Login'))
+const DashBoard = lazy(() => import('./components/pages/dashboard/DashBoard'))
 // import Login from './components/pages/Login';
 
 
@@ -380,7 +380,14 @@ function App() {
             }
           />
 
-
+            <Route
+              path='/dashboard'
+              element={
+                <DashBoard
+                  mainDivStyle={mainDivStyle}
+                />
+              }
+            />
           {/* <Route
           path="/account"
           element={<RestDetail/>}
