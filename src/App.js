@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { useState, useEffect, Suspense, lazy } from 'react';
+import { useState, useEffect, Suspense, lazy, useMemo } from 'react';
 import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -153,6 +153,9 @@ function App() {
     })
     return filterRestsByDay
   }
+
+  // useMemos?
+  const focusedRestIdx = useMemo(()=> (restIdxHover),[restIdxHover])
 
   // init 
   useEffect(()=>{
@@ -352,6 +355,7 @@ function App() {
                   restIdxHover={restIdxHover}
                   setRestIdxHover={setRestIdxHover}
                   restListErrorMsg={restListErrorMsg}
+                  focusedRestIdx={focusedRestIdx}
                 />
               </Suspense>
             }

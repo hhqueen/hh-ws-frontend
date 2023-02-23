@@ -8,7 +8,9 @@ export default function MarkerInfoBoxComp({
     idx,
     restaurantData,
     markerOpacity,
-    markerZidx
+    markerZidx,
+    // infoBoxOpenArr,
+    // setInfoBoxOpenArr
 }) {
     const [showInfoBox, setShowInfoBox] = useState(false)
     const [markerState, setMarkerState] = useImmer({
@@ -22,7 +24,10 @@ export default function MarkerInfoBoxComp({
     }
 
     // infobox loadouts
-    const infoBoxOptions = { closeBoxURL: '', enableEventPropagation: true };
+    const infoBoxOptions = { 
+        closeBoxURL: '', 
+        enableEventPropagation: true 
+    };
     const infoBoxOnLoad = infoBox => {
         console.log('infoBox: ', infoBox)
         infoBox.pixelOffset = {
@@ -42,11 +47,14 @@ export default function MarkerInfoBoxComp({
                     // console.log(`${restaurantData.name} clicked`)
                     // console.log("marker restaurantData:", restaurantData)
                     setShowInfoBox(!showInfoBox)
+                    // setInfoBoxOpenArr((draft)=>{
+                    //     draft[idx].isOpen = true
+                    // })
                 }}
                 label={`${labelNum}`}
                 position={{ lat: restaurantData.latitude, lng: restaurantData.longitude }}
-                opacity={markerState.opacity}
-                zIndex={markerState.zIdx}
+                opacity={markerState?.opacity}
+                zIndex={markerState?.zIdx}
             />
             {
                 showInfoBox &&

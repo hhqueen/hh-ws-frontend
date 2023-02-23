@@ -26,7 +26,8 @@ export default function Main({
   coordinatesState,
   restIdxHover,
   setRestIdxHover,
-  restListErrorMsg
+  restListErrorMsg,
+  focusedRestIdx
 }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -53,7 +54,7 @@ export default function Main({
           <MapViewComp
             coordinatesState={coordinatesState}
             showRestaurants={showRestaurants}
-            restIdxHover={restIdxHover}
+            // restIdxHover={setRestIdxHover}
           />
         </div>
       }
@@ -85,7 +86,7 @@ export default function Main({
           dow={dow}
           searchParams={searchParams}
           coordinatesState={coordinatesState}
-          setRestIdxHover={setRestIdxHover}
+          // setRestIdxHover={setRestIdxHover}
           restListErrorMsg={restListErrorMsg}
         />
       </Suspense>

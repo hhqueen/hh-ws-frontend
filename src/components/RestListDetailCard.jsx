@@ -1,5 +1,5 @@
 // libraries
-import React from 'react'
+import React, {useMemo} from 'react'
 import { useNavigate } from "react-router-dom"
 
 // components
@@ -44,14 +44,14 @@ export default function RestListDetailCard({ setRestIdxHover, coordinatesState, 
             md:flex-row md:min-h-fit md:max-w-xl md:rounded-r-lg
             hover:bg-gray-100 
             dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
-            onMouseEnter={()=>{
-                console.log(`mouse-enter: restIdx ${idx}`)
-                setRestIdxHover(idx)
-            }}
-            onMouseLeave={()=>{
-                console.log(`mouse-leave: restIdx -1`)
-                setRestIdxHover(-1)
-            }}
+            // onMouseEnter={()=>{
+            //     console.log(`mouse-enter: restIdx ${idx}`)
+            //     setRestIdxHover(idx)
+            // }}
+            // onMouseLeave={()=>{
+            //     console.log(`mouse-leave: restIdx -1`)
+            //     setRestIdxHover(-1)
+            // }}
 
         >
             <p

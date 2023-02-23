@@ -135,7 +135,7 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                                     name="start2"
                                     type="time"
                                     step={1800}
-                                    value="21:00"
+                                    defaultValue="21:00"
                                     onChange={(e) => handleHourInputChange(e)}
                                     disabled={hourData.hasHH2 === false}
                                 />

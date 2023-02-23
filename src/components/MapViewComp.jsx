@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 // import { GoogleMap, LoadScript, useLoadScript, MarkerF, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api'
-import { GoogleMap, useLoadScript, Marker, MarkerF, InfoBox } from '@react-google-maps/api'
+import { GoogleMap, useLoadScript, MarkerF, OverlayView } from '@react-google-maps/api'
 import { useMediaQuery } from 'react-responsive';
-import LogoSmall from './Logo/LogoSmall';
 import LoadingComp from './LoadingComp';
-import { useImmer } from 'use-immer';
 import MarkerInfoBoxComp from './MarkerInfoBoxComp';
+import { useImmer } from 'use-immer';
 
 const containerStyleTWmd = {
   width: `700px`,
@@ -20,18 +19,34 @@ const containerStyleTWsm = {
 export default function MapViewComp({ showRestaurants, coordinatesState, restIdxHover }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }))
-  const [centerState, setCenterState] = useImmer({
-    lat: coordinatesState.latitude,
-    lng: coordinatesState.longitude
-  })
+  // const [infoBoxOpenArr, setInfoBoxOpenArr] = useImmer([])
+  // const [ibLoaded, setIbLoaded] = useState(false)
+  
+  // useEffect(() => {
+  //   setIbLoaded(false)
+  //   let ib_arr = []
+  //   showRestaurants.forEach((rest, index) => {
+  //     ib_arr.push({ isOpen: false })
+  //   });
+  //   setInfoBoxOpenArr(ib_arr)
+
+  // }, [])
+  // console.log("restIdxHover:", restIdxHover)
+  // const map = new google.maps.Map(document.getElementById("map"),
+  //   {
+  //     zoom: 4,
+  //     center: center,
+  //   })
+  // const [centerState, setCenterState] = useImmer({
+  //   lat: coordinatesState.latitude,
+  //   lng: coordinatesState.longitude
+  // })
   // useEffect(()=>{
   //   setCenterState((draft)=>{
   //     draft.lat = showRestaurants[restIdxHover].latitude
   //     draft.lng = showRestaurants[restIdxHover].longitude
   //   })
   // },[restIdxHover])
-
-  const [markerIdxHover, setMarkerIdxHover] = useState(-1)
 
   const mapMarkers = showRestaurants.map((rest, idx) => {
     const labelNum = idx + 1
@@ -43,22 +58,14 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
     }
     return (
       <>
-        {/* <Marker
-          key={`gMarker${rest._id}`}
-          animation={"bounce"}
-          clickable={true}
-          onClick={() => { console.log(`${rest.name} clicked`) }}
-          label={`${labelNum}`}
-          position={{ lat: rest.latitude, lng: rest.longitude }}
-          opacity={showOpacity}
-          zIndex={zIdx}
-        /> */}
         <MarkerInfoBoxComp
           labelNum={labelNum}
           idx={idx}
           restaurantData={rest}
           markerOpacity={showOpacity}
           markerZidx={zIdx}
+          // infoBoxOpenArr={infoBoxOpenArr}
+          // setInfoBoxOpenArr={setInfoBoxOpenArr}
         />
       </>
     )
@@ -74,10 +81,31 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
       <GoogleMap
         zoom={13}
         mapContainerStyle={isTWmd ? containerStyleTWmd : containerStyleTWsm}
-        center={restIdxHover < 0 ? center : { lat: showRestaurants[restIdxHover].latitude, lng: showRestaurants[restIdxHover].longitude }}
-      // center={center}
+        // center={restIdxHover < 0 ? center : { lat: showRestaurants[restIdxHover].latitude, lng: showRestaurants[restIdxHover].longitude }}
+        center={center}
+
+        // onClick={() => {
+        //   console.log("click")
+        //   console.log("infoBoxOpenArr:", infoBoxOpenArr)
+        //   const filteredArr = infoBoxOpenArr.filter((ib) => {
+        //     return ib.isOpen === true
+        //   })
+        //   console.log("filteredArr:", filteredArr)
+        //   filteredArr.forEach((ib) => {
+        //     setInfoBoxOpenArr((draft) => {
+        //       draft[ib.idx].isOpen = false
+        //     })
+        //   })
+        // }}
       // center={centerState}
       >
+        {/* <OverlayView
+          position={center}
+          mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+        >
+          <div> */}
+
+
         {/* Center Marker */}
         <MarkerF
           animation={"bounce"}
@@ -87,9 +115,11 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
           position={center}
 
         />
-        
+
         {/* render Markers */}
         {mapMarkers}
+        {/* </div>
+        </OverlayView> */}
       </GoogleMap>
     </>
   )
