@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Marker, InfoBox } from '@react-google-maps/api'
+import { MarkerF, InfoBox } from '@react-google-maps/api'
 import { useNavigate } from "react-router-dom"
+import { useImmer } from 'use-immer'
 
 export default function MarkerInfoBoxComp({
     labelNum,
@@ -10,8 +11,16 @@ export default function MarkerInfoBoxComp({
     markerZidx
 }) {
     const [showInfoBox, setShowInfoBox] = useState(false)
+    const [markerState, setMarkerState] = useImmer({
+        opacity: markerOpacity,
+        zIdx: markerZidx
+    })
     const navigate = useNavigate()
     
+    const markerOnLoad = marker => {
+        console.log("marker:", marker)
+    }
+
     // infobox loadouts
     const infoBoxOptions = { closeBoxURL: '', enableEventPropagation: true };
     const infoBoxOnLoad = infoBox => {
@@ -24,9 +33,10 @@ export default function MarkerInfoBoxComp({
 
     return (
         <>
-            <Marker
+            <MarkerF
                 key={`gMarker${restaurantData._id}`}
                 // animation={"bounce"}
+                onLoad={markerOnLoad}
                 clickable={true}
                 onClick={() => {
                     // console.log(`${restaurantData.name} clicked`)
@@ -35,8 +45,8 @@ export default function MarkerInfoBoxComp({
                 }}
                 label={`${labelNum}`}
                 position={{ lat: restaurantData.latitude, lng: restaurantData.longitude }}
-                opacity={markerOpacity}
-                zIndex={markerZidx}
+                opacity={markerState.opacity}
+                zIndex={markerState.zIdx}
             />
             {
                 showInfoBox &&

@@ -35,7 +35,7 @@ export default function CarouselContainer() {
                 <div
                     className='flex flex-col justify-center items-center text-white'
                 >
-                    <p>Have any feedback or inquries?</p>
+                    <p>Have any feedback or inquiries?</p>
                     <a
                         href={`mailto:${emailProps.email}?subject=${emailProps.subject}&body=${emailProps.body}`}
                     >
