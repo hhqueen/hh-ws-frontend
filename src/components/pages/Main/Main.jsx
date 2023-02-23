@@ -1,4 +1,4 @@
-import { Suspense, lazy, useTransition } from 'react'
+import { Suspense, lazy, useTransition, useState } from 'react'
 // import FilterComp from '../FilterComp'
 // import ListViewComp from '../ListViewComp'
 import MapViewComp from '../../MapViewComp'
@@ -7,6 +7,7 @@ import LoadingComp from '../../LoadingComp'
 import { Accordion } from 'flowbite-react'
 import './Main.css'
 import { useMediaQuery } from 'react-responsive'
+import { useImmer } from 'use-immer'
 
 const ListViewComp = lazy(() => import('../../ListViewComp'))
 const FilterComp = lazy(() => import('../../FilterComp'))
@@ -28,6 +29,13 @@ export default function Main({
   restListErrorMsg
 }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
+
+  const [mapCompRender, setMapCompRender] = useImmer({
+    open: false,
+    closedHeight: 0,
+    openHeight: 100
+  })
+
   return (
     <div
       style={{
@@ -35,8 +43,30 @@ export default function Main({
         marginTop: mainDivStyle.marginTop
       }}
       className='flex flex-col
-      sm:flex-row'
+      sm:flex-row
+      '
     >
+      {isTWmd &&
+        <div
+          className='md:order-last'
+        >
+          <MapViewComp
+            coordinatesState={coordinatesState}
+            showRestaurants={showRestaurants}
+            restIdxHover={restIdxHover}
+          />
+        </div>
+      }
+      {/* <section
+        className='w-full min-h-[50px] flex justify-around items-center'
+      >
+        <div>
+          map 
+        </div>
+        <div>
+          carrot
+        </div>
+      </section> */}
       <Suspense fallback={<LoadingComp />}>
         <FilterComp
           setFilterParams={setFilterParams}
@@ -61,46 +91,8 @@ export default function Main({
       </Suspense>
 
 
-      {!isTWmd && 
-      <Accordion
-        flush={true}
-        alwaysOpen={true}
-        className="max-h-[10px]"
-      >
-        <Accordion.Panel
-        // alwaysOpen={false}
-        >
-          <Accordion.Title
-            className='max-h-[10px]'
-          >
-            Map
-          </Accordion.Title>
-          <Accordion.Content>
-            <MapViewComp
-              coordinatesState={coordinatesState}
-              showRestaurants={showRestaurants}
-              restIdxHover={restIdxHover}
-            />
-          </Accordion.Content>
-        </Accordion.Panel>
-      </Accordion>
-      }
-      {isTWmd &&
-        <MapViewComp
-          coordinatesState={coordinatesState}
-          showRestaurants={showRestaurants}
-          restIdxHover={restIdxHover}
-        />
-      }
-      <div
-      // style={{
-      //   width: `700px`,
-      //   height: `100%`
-      // }}
-      // className='w-full h-full'
-      >
 
-      </div>
+
 
 
     </div>

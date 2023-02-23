@@ -1,8 +1,11 @@
+import React, { useEffect, useState } from 'react'
+
 import { dowList } from "../sourceData/dowList"
 import { Select, Dropdown, Checkbox } from "flowbite-react"
 import apiLogger from "../helperFunctions/apiLogger"
 
 export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, setFilterParams }) {
+    const [anyChecked, setAnyChecked] = useState(false)
     const componentName = "FilterComp"
     const filtersMap = filterParams.map((filterVal) => {
         return (
@@ -28,6 +31,15 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
         )
     })
 
+    useEffect(()=>{
+        let isAnyChecked = false
+        filterParams.forEach((param)=>{
+            if(param.value) { isAnyChecked = true }
+        })
+        if (UIFiltersProps.UIFilters.hasOnlyLateNightOnDay.value) { isAnyChecked = true }
+        setAnyChecked(isAnyChecked)
+    },[filterParams,UIFiltersProps])
+
     // const dowList = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
     const dowOptionsMap = dowList.map((day, idx) => {
         if (dow == day) {
@@ -36,6 +48,65 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
             return <option key={`day-option${idx}`} value={day}>{day}</option>
         }
     })
+
+    let renderCheckOrUnCheckAll = <></>
+    if (anyChecked) {
+        renderCheckOrUnCheckAll = (
+            <>
+                <p
+                    id="UncheckAll_p"
+                    name="UncheckAll_p"
+                    className="text-xs text-sky-500 hover:text-sky-300"
+                    onClick={(e) => {
+                        // unchecks all filterParams
+                        filterParams.forEach((filterVal) => {
+                            setFilterParams((draft) => {
+                                const foundItem = draft.find(item => item.name == filterVal.name)
+                                foundItem.value = false
+                            })
+                        })
+
+                        //unchecks hasOnlyLateNightOnDay 
+                        UIFiltersProps.setUIFilters((draft) => {
+                            draft.hasOnlyLateNightOnDay.value = false
+                        })
+                        // logs to db
+                        apiLogger(e, componentName)
+                    }}
+                >
+                    UnCheck All
+                </p>
+            </>
+        )
+    } else {
+        renderCheckOrUnCheckAll = (
+            <>
+                <p
+                    id="CheckAll_p"
+                    name="CheckAll_p"
+                    className="text-xs text-sky-500 hover:text-sky-300"
+                    onClick={(e) => {
+                        // unchecks all filterParams
+                        filterParams.forEach((filterVal) => {
+                            setFilterParams((draft) => {
+                                const foundItem = draft.find(item => item.name == filterVal.name)
+                                foundItem.value = true
+                            })
+                        })
+
+                        //unchecks hasOnlyLateNightOnDay 
+                        UIFiltersProps.setUIFilters((draft) => {
+                            draft.hasOnlyLateNightOnDay.value = true
+                        })
+                        // logs to db
+                        apiLogger(e, componentName)
+                    }}
+                >
+                    Check All
+                </p>
+            </>
+        )
+    }
 
     return (
         <>
@@ -70,29 +141,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                         >
                             <Dropdown.Item
                             >
-                                <p
-                                    id="UncheckAll_p"
-                                    name="UncheckAll_p"
-                                    className="text-xs text-sky-500 hover:text-sky-300"
-                                    onClick={(e) => {
-                                        // unchecks all filterParams
-                                        filterParams.forEach((filterVal) => {
-                                            setFilterParams((draft) => {
-                                                const foundItem = draft.find(item => item.name == filterVal.name)
-                                                foundItem.value = false
-                                            })
-                                        })
-
-                                        //unchecks hasOnlyLateNightOnDay 
-                                        UIFiltersProps.setUIFilters((draft) => {
-                                            draft.hasOnlyLateNightOnDay.value = false
-                                        })
-                                        // logs to db
-                                        apiLogger(e, componentName)
-                                    }}
-                                >
-                                    UnCheck All
-                                </p>
+                                {renderCheckOrUnCheckAll}
                             </Dropdown.Item>
 
                             {filtersMap}
