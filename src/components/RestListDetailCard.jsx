@@ -41,17 +41,17 @@ export default function RestListDetailCard({ setRestIdxHover, coordinatesState, 
         <div
             className='
             my-1 h-fit py-3 flex flex-row items-center bg-white border shadow-md 
-            md:flex-row md:max-w-xl md:rounded-r-lg
+            md:flex-row md:min-h-fit md:max-w-xl md:rounded-r-lg
             hover:bg-gray-100 
             dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
-            // onMouseEnter={()=>{
-            //     console.log(`mouse-enter: restIdx ${idx}`)
-            //     setRestIdxHover(idx)
-            // }}
-            // onMouseLeave={()=>{
-            //     console.log(`mouse-leave: restIdx -1`)
-            //     setRestIdxHover(-1)
-            // }}
+            onMouseEnter={()=>{
+                console.log(`mouse-enter: restIdx ${idx}`)
+                setRestIdxHover(idx)
+            }}
+            onMouseLeave={()=>{
+                console.log(`mouse-leave: restIdx -1`)
+                setRestIdxHover(-1)
+            }}
 
         >
             <p

@@ -51,7 +51,7 @@ export default function ListViewComp({ restListErrorMsg,setRestIdxHover, coordin
     <>
       
         <div
-          className='w-full md:w-[45vw] mt-[20px] overflow-auto'
+          className='w-full md:w-[45vw] overflow-auto'
         >
           {
             isFetchingRestData && <LoadingComp />
