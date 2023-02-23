@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react'
 // import { GoogleMap, LoadScript, useLoadScript, MarkerF, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api'
-import { GoogleMap, useLoadScript, Marker, MarkerF } from '@react-google-maps/api'
+import { GoogleMap, useLoadScript, Marker, MarkerF, InfoBox } from '@react-google-maps/api'
 import { useMediaQuery } from 'react-responsive';
 import LogoSmall from './Logo/LogoSmall';
 import LoadingComp from './LoadingComp';
+import { useImmer } from 'use-immer';
+import MarkerInfoBoxComp from './MarkerInfoBoxComp';
 
 const containerStyleTWmd = {
   width: `700px`,
@@ -18,10 +20,22 @@ const containerStyleTWsm = {
 export default function MapViewComp({ showRestaurants, coordinatesState, restIdxHover }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }))
+  const [centerState, setCenterState] = useImmer({
+    lat: coordinatesState.latitude,
+    lng: coordinatesState.longitude
+  })
+  // useEffect(()=>{
+  //   setCenterState((draft)=>{
+  //     draft.lat = showRestaurants[restIdxHover].latitude
+  //     draft.lng = showRestaurants[restIdxHover].longitude
+  //   })
+  // },[restIdxHover])
+
+  const [markerIdxHover, setMarkerIdxHover] = useState(-1)
 
   const mapMarkers = showRestaurants.map((rest, idx) => {
     const labelNum = idx + 1
-    let showOpacity = 0.3
+    let showOpacity = 0.7
     let zIdx = idx
     if (idx === restIdxHover) {
       showOpacity = 1.0
@@ -29,7 +43,7 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
     }
     return (
       <>
-        <Marker
+        {/* <Marker
           key={`gMarker${rest._id}`}
           animation={"bounce"}
           clickable={true}
@@ -38,6 +52,13 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
           position={{ lat: rest.latitude, lng: rest.longitude }}
           opacity={showOpacity}
           zIndex={zIdx}
+        /> */}
+        <MarkerInfoBoxComp
+          labelNum={labelNum}
+          idx={idx}
+          restaurantData={rest}
+          markerOpacity={showOpacity}
+          markerZidx={zIdx}
         />
       </>
     )
@@ -46,6 +67,7 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
   // video example below:
   const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY })
 
+
   if (!isLoaded) return <LoadingComp />
   return (
     <>
@@ -53,6 +75,8 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
         zoom={13}
         mapContainerStyle={isTWmd ? containerStyleTWmd : containerStyleTWsm}
         center={restIdxHover < 0 ? center : { lat: showRestaurants[restIdxHover].latitude, lng: showRestaurants[restIdxHover].longitude }}
+      // center={center}
+      // center={centerState}
       >
         {/* Center Marker */}
         <MarkerF
@@ -63,6 +87,7 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
           position={center}
 
         />
+        
         {/* render Markers */}
         {mapMarkers}
       </GoogleMap>
