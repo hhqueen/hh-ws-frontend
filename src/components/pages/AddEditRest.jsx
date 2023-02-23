@@ -285,7 +285,7 @@ export default function AddEditRest({ mainDivStyle }) {
 
     const handleBulkHourSubmit = (e, daysArr, hourData) => {
         e.preventDefault()
-        const filteredDaysArr = daysArr.filter(day => day.updateBool === true)
+        // const filteredDaysArr = daysArr.filter(day => day.updateBool === true)
         setRestaurantData((draft) => {
             daysArr.forEach((bulkItemDay) => {
                 let foundDay = draft.hourSet.hours.find(hour => hour.day === bulkItemDay.dayIdx)

@@ -16,7 +16,7 @@ const defaultHourData = {
     end1: 18,
     end1close: false,
     hasHH2: false,
-    start2: 22,
+    start2: 21,
     end2: 0,
     end2close: false,
     isAllDay: false
@@ -135,7 +135,7 @@ export default function BulkHoursUpdateModal({ handleFormSubmit, bulkHourModalOp
                                     name="start2"
                                     type="time"
                                     step={1800}
-                                    defaultValue="21:00"
+                                    value="21:00"
                                     onChange={(e) => handleHourInputChange(e)}
                                     disabled={hourData.hasHH2 === false}
                                 />
