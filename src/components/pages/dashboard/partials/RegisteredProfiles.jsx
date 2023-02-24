@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import date from 'date-and-time'
+import LoadingComp from '../../../LoadingComp'
 
 export default function RegisteredProfiles() {
-  const [percentInc, setPercentInc] = useState(5)
-  const [profileCount, setProfileCount] = useState(100)
+  const [percentInc, setPercentInc] = useState(0)
+  const [profileCount, setProfileCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(()=>{
     const fetchData = async () => {
       try {
+        setIsLoading(true)
         const fetchedData = await axios.get(`${process.env.REACT_APP_SERVER_URL}/analytics/registeredProfiles`)
         const fetchedDataData = fetchedData.data
         setProfileCount(fetchedDataData.length)
@@ -37,6 +40,7 @@ export default function RegisteredProfiles() {
           precentIncreaseVal = (lastSevenDaysArrLength/sevenToFourteenDaysArrLength - 1) * 100
         }
         setPercentInc(Math.round(precentIncreaseVal))
+        setIsLoading(false)
       } catch (error) {
         console.log(error)
       }
@@ -47,6 +51,7 @@ export default function RegisteredProfiles() {
   const redColor = "text-rose-900 font-bold"
   let percentNumFontColor = percentInc > 0 ? greenColor : redColor
 
+  if(isLoading) return <LoadingComp/>
   return (
     <section
       className='flex justify-center items-center'
