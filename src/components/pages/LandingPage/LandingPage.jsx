@@ -1,14 +1,16 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import CityCardContainer from './local_partials/CityCardContainer'
 import CarouselContainer from './local_partials/CarouselContainer'
 import { useMediaQuery } from 'react-responsive'
 import appendSearchHistory from '../../../helperFunctions/appendSearchHistory'
+import apiLogger from '../../../helperFunctions/apiLogger'
 
 // {name: "", img_url:""},
 
 export default function LandingPage({setAddressState, setSearchParams, mainDivStyle}) {
     const navigate = useNavigate()
+    const componentName = "Landing Page"
     
     const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -23,7 +25,13 @@ export default function LandingPage({setAddressState, setSearchParams, mainDivSt
         navigate("/restaurants")
     }
 
-    
+    useEffect(()=>{
+        const logUserHit = async (e) => {
+            const apiLogReponse = await apiLogger(e, componentName)
+            console.log("apiLogReponse:",apiLogReponse)
+        }
+        logUserHit()
+    },[])
     
 
     const [cityList, setCityList] = useState([

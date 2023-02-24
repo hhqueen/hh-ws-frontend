@@ -14,6 +14,8 @@ import MenuItems from '../MenuItems'
 import LoadingComp from '../LoadingComp'
 import EditDeleteRestComp from '../EditDeleteRestComp'
 import apiLogger from '../../helperFunctions/apiLogger'
+import qStringfromObj from '../../helperFunctions/qStringfromObj'
+import jwtDecode from 'jwt-decode'
 
 export default function RestDetail({ mainDivStyle }) {
   let { id } = useParams()
@@ -54,7 +56,13 @@ export default function RestDetail({ mainDivStyle }) {
     console.log(id)
     const getRestData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
+        const qString = qStringfromObj({
+          UI_ComponentName: componentName,
+          userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
+          screenWidth: window.innerWidth,
+          screenHeight: window.screenHeight
+        })
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}${qString}`)
         console.log("async data", response.data)
         setRestData(response.data)
         setAddress(`${response.data.address1} ${response.data.city} ${response.data.state} ${response.data.zip_code}`)

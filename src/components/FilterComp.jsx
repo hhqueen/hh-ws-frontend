@@ -74,7 +74,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                         apiLogger(e, componentName)
                     }}
                 >
-                    UnCheck All
+                    Uncheck All
                 </p>
             </>
         )

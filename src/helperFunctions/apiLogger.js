@@ -4,10 +4,10 @@ import jwtdecode from "jwt-decode"
 // const { qStringfromObj } = require('./qStringfromObj.js')
 // const axios = require('axios')
 
-const apiLogger = async ( 
-        e, 
+const apiLogger = async ({ 
+        e = null, 
         componentName = null, 
-        elementId = null,
+        elementId = null,}
     ) => {
     try {
         // console.log("apiLogger_e", e)
@@ -15,10 +15,12 @@ const apiLogger = async (
         // console.log("apiLogger_userId", userId)
         const queryObj = {
             UI_ElementName: e.target.name || e.target.parentElement.name || null ,
-            UI_ElementId: e.target.id || e.target.parentElement.id || elementId,
-            UI_ElementValue: e.target.value,
-            UI_ElementChecked: e.target.checked,
+            UI_ElementId: e?.target.id || e.target.parentElement.id || elementId,
+            UI_ElementValue: e?.target.value,
+            UI_ElementChecked: e?.target.checked,
             UI_ComponentName: componentName,
+            screenWidth: window.innerWidth,
+            screenHeight: window.screenHeight,
             userId: localStorage.getItem("jwt") ? jwtdecode(localStorage.getItem("jwt")).id : null
         }
         // console.log("apiLogger_queryObj:", queryObj)

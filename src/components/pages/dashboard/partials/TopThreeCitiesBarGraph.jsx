@@ -61,66 +61,62 @@ export default function TopThreeCitiesBarGraph() {
     setShowData(data)
     setIsLoading(false)
   }, [rawData, topNumCities, settings])
-
+  if (isLoading) return <LoadingComp />
   return (
     <>
-      {
-        isLoading ?
-          <LoadingComp />
-          :
-          <>
-            <div
-              className='flex flex-col mt-[100px]'
-            >
-              <div
-                className='flex flex-col'
-              >
-                <label>
-                  useTopNumCities
-                  <input
-                    name='useTopNumCities'
-                    type="checkbox"
-                    checked={settings.useTopNumCities}
-                    onChange={(e) => {
-                      console.log("click")
-                      setSettings((draft) => { draft.useTopNumCities = !settings.useTopNumCities })
-                    }}
-                  />
-                </label>
+      <div
+        className='flex flex-col mt-10'
+      >
+        <div
+          className='flex text-center justify-center'
+        >
+          <div
+            className='flex items-center justify-center'
+          >
+            <input
+              name='useTopNumCities'
+              type="checkbox"
+              checked={settings.useTopNumCities}
+              onChange={(e) => {
+                console.log("click")
+                setSettings((draft) => { draft.useTopNumCities = !settings.useTopNumCities })
+              }}
+            />
+          </div>
 
-                <label>
-                  Show top 
-                  <input
-                    className='h-[20px] w-[70px] text-center'
-                    type="number"
-                    value={topNumCities}
-                    onChange={(e) => {
-                      let numtoSet = 0
-                      if (e.target.value > rawData.length) {
-                        numtoSet = rawData.length
-                      } else {
-                        numtoSet = e.target.value
-                      }
-                      setTopNumCities(numtoSet)
-                    }}
-                  /> cities. Max: {rawData.length}
-                </label>
-              </div>
 
-              <BarChart
-                width={500}
-                height={300}
-                data={showData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey={xyAxis.xAxisTitle} />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey={xyAxis.dataKey} fill="#8884d8" />
-              </BarChart>
-            </div>
-          </>
-      }
+          <label>
+            Show top
+            <input
+              className='h-[25px] w-[70px] text-center ml-3 rounded-md object-center'
+              type="number"
+              value={topNumCities}
+              onChange={(e) => {
+                let numtoSet = 0
+                if (e.target.value > rawData.length) {
+                  numtoSet = rawData.length
+                } else {
+                  numtoSet = e.target.value
+                }
+                setTopNumCities(numtoSet)
+              }}
+            /> {`cities. Max: ${rawData.length}`}
+          </label>
+        </div>
+
+        <BarChart
+          width={700}
+          height={300}
+          data={showData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey={xyAxis.xAxisTitle} />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey={xyAxis.dataKey} fill="#8884d8" />
+        </BarChart>
+      </div>
     </>
+
   )
 }

@@ -3,6 +3,7 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button, Checkbox } from 'flowbite-react'
+import qStringfromObj from '../../helperFunctions/qStringfromObj'
 
 export default function SignUp({mainDivStyle}) {
   // state for the controlled form
@@ -34,7 +35,12 @@ export default function SignUp({mainDivStyle}) {
         email,
         password
       }
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/signup`, reqBody)
+      const qObj = {
+        screenWidth: 0,
+        screenHeight: 0,
+      }
+      const qString = qStringfromObj(qObj)
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/signup${qString}`, reqBody)
 
       // save the token in localstorage
       const { token } = response.data

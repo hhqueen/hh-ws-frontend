@@ -1,7 +1,23 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 export default function RegisteredProfiles() {
+  const [percentInc, setPercentInc] = useState(5)
+  const [profileCount, setProfileCount] = useState(100)
   return (
-    <div>RegisteredProfiles</div>
+    <section>
+      <h1
+        className='underline'
+      >Registered Profiles - test</h1>
+      <div>
+        <p><span
+          className='text-sky-600'
+        >{percentInc}</span> % increase in last 7 days</p>
+      </div>
+      <div>
+        <p>Current count of registered profiles = <span
+        className='text-sky-600'
+        >{profileCount}</span></p>
+      </div>  
+    </section>
   )
 }

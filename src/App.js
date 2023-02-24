@@ -155,19 +155,19 @@ function App() {
   }
 
   // useMemos?
-  const focusedRestIdx = useMemo(()=> (restIdxHover),[restIdxHover])
+  const focusedRestIdx = useMemo(() => (restIdxHover), [restIdxHover])
 
   // init 
-  useEffect(()=>{
-    if(searchParams.address === "" || addressState === "") {
+  useEffect(() => {
+    if (searchParams.address === "" || addressState === "") {
       const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
       console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
       setAddressState(gotRecentOrCurrentLoc)
-      setSearchParams((draft)=>{draft.address = gotRecentOrCurrentLoc})
+      setSearchParams((draft) => { draft.address = gotRecentOrCurrentLoc })
     }
-  },[])
+  }, [])
 
-  
+
   // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
   useEffect(() => {
     const executePhaseZero = async () => {
@@ -175,13 +175,13 @@ function App() {
         setIsFetchingRestData(true)
         console.log("executing phase 0")
         // setShowRestaurantsState([])
-        console.log("addressState:",addressState)
+        console.log("addressState:", addressState)
         // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
         if (addressState === "Current Location") {
           // if geolocation permission is given, get/set coordinates
           if ("geolocation" in navigator) {
             const geoCoords = await geoLocation()
-            console.log("geoCoords:",geoCoords)
+            console.log("geoCoords:", geoCoords)
             setCoordinatesState((draft) => {
               draft.latitude = geoCoords.latitude
               draft.longitude = geoCoords.longitude
@@ -230,7 +230,9 @@ function App() {
           address: addressState,
           searchButtonClicked: false,
           userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
-          UI_ComponentName: componentName
+          UI_ComponentName: componentName,
+          screenWidth: window.innerWidth,
+          screenHeight: window.screenHeight
         }
         queryString = qStringfromObj(queryParams)
         const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
@@ -249,32 +251,32 @@ function App() {
     setRestListErrorMsg("")
     console.log("executing error messaging")
     // if(isFetchingRestData) {
-      // setRestListErrorMsg("")
-      if(filteredRestaurantsState.length === 0) {
-        console.log("error_msg1")
-        setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
-      }
-      if(allRestaurantsState.length === 0) {
-        console.log("error_msg2")
-        setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
-      }
+    // setRestListErrorMsg("")
+    if (filteredRestaurantsState.length === 0) {
+      console.log("error_msg1")
+      setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
+    }
+    if (allRestaurantsState.length === 0) {
+      console.log("error_msg2")
+      setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
+    }
     // }
   }
 
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
   useEffect(() => {
     console.log("executing phase 2")
-      let filteredRest = []
-      if(allRestaurantsState.length > 0) {
-        // console.log("filteredRest:", filteredRest)
-        
-        filteredRest = deepCopyObj(allRestaurantsState)
-        console.log("deepcopied:",filteredRest)
-        // console.log("allRestaurantsState_inFilterRest:", allRestaurantsState)
-        filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
-        filteredRest = filterRests(filterParams, filteredRest)
-      }
-      setFilteredRestaurantsState(filteredRest)   
+    let filteredRest = []
+    if (allRestaurantsState.length > 0) {
+      // console.log("filteredRest:", filteredRest)
+
+      filteredRest = deepCopyObj(allRestaurantsState)
+      console.log("deepcopied:", filteredRest)
+      // console.log("allRestaurantsState_inFilterRest:", allRestaurantsState)
+      filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
+      filteredRest = filterRests(filterParams, filteredRest)
+    }
+    setFilteredRestaurantsState(filteredRest)
   }, [allRestaurantsState, dow, filterParams, UIFilters])
 
 
@@ -384,14 +386,16 @@ function App() {
             }
           />
 
-            <Route
-              path='/dashboard'
-              element={
+          <Route
+            path='/dashboard'
+            element={
+              <Suspense fallback={<LoadingComp />}>
                 <DashBoard
                   mainDivStyle={mainDivStyle}
                 />
-              }
-            />
+              </Suspense>
+            }
+          />
           {/* <Route
           path="/account"
           element={<RestDetail/>}
