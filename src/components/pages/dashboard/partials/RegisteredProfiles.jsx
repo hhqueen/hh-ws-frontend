@@ -15,9 +15,9 @@ export default function RegisteredProfiles() {
         const nowDate = new Date()
         const sevenDaysAgo = date.addDays(nowDate, -7)
         const sevenToFourteenDaysAgo = date.addDays(sevenDaysAgo, -7)
-        console.log("nowDate",nowDate)
-        console.log("sevenDaysAgo",sevenDaysAgo)
-        console.log("date compare",nowDate > sevenDaysAgo)
+        // console.log("nowDate",nowDate)
+        // console.log("sevenDaysAgo",sevenDaysAgo)
+        // console.log("date compare",nowDate > sevenDaysAgo)
         let lastSevenDaysArr = []
         let sevenToFourteenDaysArr = []
         fetchedDataData.forEach((profile)=>{
@@ -58,7 +58,7 @@ export default function RegisteredProfiles() {
         <div>
           <p><span
             className={percentNumFontColor}
-          >{`${percentInc > 0 ? "+" : ""}${percentInc} %`}</span> from last 7 days</p>
+          >{`${percentInc > 0 ? "+" : ""}${percentInc}%`}</span> from last 7 days</p>
         </div>
         <div>
           <p>Current count of registered profiles = <span
