@@ -26,8 +26,8 @@ export default function LandingPage({setAddressState, setSearchParams, mainDivSt
     }
 
     useEffect(()=>{
-        const logUserHit = async (e) => {
-            const apiLogReponse = await apiLogger(e, componentName)
+        const logUserHit = async () => {
+            const apiLogReponse = await apiLogger(componentName).data
             console.log("apiLogReponse:",apiLogReponse)
         }
         logUserHit()

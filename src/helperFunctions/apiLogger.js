@@ -14,10 +14,10 @@ const apiLogger = async ({
         // console.log("apiLogger_componentName", componentName)
         // console.log("apiLogger_userId", userId)
         const queryObj = {
-            UI_ElementName: e.target.name || e.target.parentElement.name || null ,
-            UI_ElementId: e?.target.id || e.target.parentElement.id || elementId,
-            UI_ElementValue: e?.target.value,
-            UI_ElementChecked: e?.target.checked,
+            UI_ElementName: e ? e.target.name || e.target.parentElement.name : null ,
+            UI_ElementId: e ? e.target.id || e.target.parentElement.id : elementId,
+            UI_ElementValue: e ? e.target.value : null,
+            UI_ElementChecked: e ? e.target.checked : null,
             UI_ComponentName: componentName,
             screenWidth: window.innerWidth,
             screenHeight: window.screenHeight,

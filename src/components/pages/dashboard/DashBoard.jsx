@@ -8,25 +8,25 @@ export default function DashBoard({ mainDivStyle }) {
   return (
     <div
       style={mainDivStyle}
-      className="grid grid-cols-2 grid-rows-2"
+      className="grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2"
     >
       <section
-        className='flex items-center justify-center w-[50vw] h-[40vh]'
+        className='flex items-center justify-center'
       >
         <TopThreeCitiesBarGraph />
       </section>
       <section
-        className='flex items-center justify-center w-[50vw] h-[40vh]'
+        className='flex items-center justify-center'
       >
         <DailyVisitors />
       </section>
       <section
-        className='flex items-center justify-center w-[50vw] h-[40vh]'
+        className='flex items-center justify-center'
       >
         <RegisteredProfiles />
       </section>
       <section
-        className='flex items-center justify-center w-[50vw] h-[40vh]'
+        className='flex items-center justify-center'
       >
         <WeeklyEmailSubs />
       </section>
