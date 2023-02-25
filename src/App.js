@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { useState, useEffect, Suspense, lazy, useMemo } from 'react';
+import { useState, useEffect,useLayoutEffect, Suspense, lazy, useMemo } from 'react'
 import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -158,7 +158,7 @@ function App() {
   const focusedRestIdx = useMemo(() => (restIdxHover), [restIdxHover])
 
   // init 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (searchParams.address === "" || addressState === "") {
       const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
       console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
@@ -169,7 +169,7 @@ function App() {
 
 
   // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
-  useEffect(() => {
+  useLayoutEffect(() => {
     const executePhaseZero = async () => {
       try {
         setIsFetchingRestData(true)
@@ -210,12 +210,14 @@ function App() {
 
       }
     }
-    executePhaseZero()
+    // if(coordinatesState.latitude != 0 || coordinatesState.longitude != 0) {
+      executePhaseZero()
+    // }
   }, [addressState, searchTermState])
 
 
   // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState]
-  useEffect(() => {
+  useLayoutEffect(() => {
     const executePhaseOne = async () => {
       try {
         // showRestaurantsState([])
@@ -244,7 +246,9 @@ function App() {
         console.warn(error)
       }
     }
+    if(coordinatesState.latitude != 0 || coordinatesState.longitude != 0) {
     executePhaseOne()
+    }
   }, [coordinatesState, distanceState])
 
   const handleRestListErrorMsg = () => {
@@ -264,7 +268,7 @@ function App() {
   }
 
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
-  useEffect(() => {
+  useLayoutEffect(() => {
     console.log("executing phase 2")
     let filteredRest = []
     if (allRestaurantsState.length > 0) {
@@ -282,7 +286,7 @@ function App() {
 
   // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]
   // also handles restaurant list error message rendering
-  useEffect(() => {
+  useLayoutEffect(() => {
     // currently there is no sorting.
     console.log("executing phase 3")
     // console.log("filteredRestaurantsState_v2:", filteredRestaurantsState)
@@ -300,7 +304,7 @@ function App() {
 
 
   // tracks and updates the height of the main component responsively
-  useEffect(() => {
+  useLayoutEffect(() => {
     const windowHeight = window.innerHeight
     setMainDivStyle({
       minHeight: windowHeight - footerHeight - navBarHeight,
