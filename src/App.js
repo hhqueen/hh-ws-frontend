@@ -234,7 +234,7 @@ function App() {
           userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
           UI_ComponentName: componentName,
           screenWidth: window.innerWidth,
-          screenHeight: window.screenHeight
+          screenHeight: window.innerHeight
         }
         queryString = qStringfromObj(queryParams)
         const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
@@ -251,6 +251,26 @@ function App() {
     }
   }, [coordinatesState, distanceState])
 
+  // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
+  useLayoutEffect(() => {
+    console.log("executing phase 2")
+    let filteredRest = []
+    if (allRestaurantsState.length > 0) {
+      console.log("allRestaurantsState.length > 0, executing code")
+      // console.log("filteredRest:", filteredRest)
+
+      filteredRest = deepCopyObj(allRestaurantsState)
+      // console.log("deepcopied:", filteredRest)
+      // console.log("allRestaurantsState_inFilterRest:", allRestaurantsState)
+      filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
+      filteredRest = filterRests(filterParams, filteredRest)
+    } else {
+      console.log("allRestaurantsState.length = 0, skipping code")
+    }
+    setFilteredRestaurantsState(filteredRest)
+  }, [allRestaurantsState, dow, filterParams, UIFilters])
+
+  
   const handleRestListErrorMsg = () => {
     setRestListErrorMsg("")
     console.log("executing error messaging")
@@ -259,29 +279,15 @@ function App() {
     if (filteredRestaurantsState.length === 0) {
       console.log("error_msg1")
       setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
+      return
     }
     if (allRestaurantsState.length === 0) {
       console.log("error_msg2")
       setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
+      return
     }
     // }
   }
-
-  // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
-  useLayoutEffect(() => {
-    console.log("executing phase 2")
-    let filteredRest = []
-    if (allRestaurantsState.length > 0) {
-      // console.log("filteredRest:", filteredRest)
-
-      filteredRest = deepCopyObj(allRestaurantsState)
-      console.log("deepcopied:", filteredRest)
-      // console.log("allRestaurantsState_inFilterRest:", allRestaurantsState)
-      filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
-      filteredRest = filterRests(filterParams, filteredRest)
-    }
-    setFilteredRestaurantsState(filteredRest)
-  }, [allRestaurantsState, dow, filterParams, UIFilters])
 
 
   // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]

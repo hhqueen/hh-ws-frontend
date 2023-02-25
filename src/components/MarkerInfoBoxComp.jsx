@@ -20,7 +20,7 @@ export default function MarkerInfoBoxComp({
     const navigate = useNavigate()
     
     const markerOnLoad = marker => {
-        console.log("marker:", marker)
+        // console.log("marker:", marker)
     }
 
     // infobox loadouts
