@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { useState, useEffect,useLayoutEffect, Suspense, lazy, useMemo  } from 'react'
+import { useState, useEffect,useLayoutEffect, Suspense, lazy, useMemo, useTransition  } from 'react'
 import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -121,6 +121,9 @@ function App() {
   })
   const [restListErrorMsg, setRestListErrorMsg] = useState("")
 
+  // hook Variables
+  const [isPendingTransition, startTransition] = useTransition()
+
   // restaurant filter function
   const filterRests = (filterArr, restData) => {
     // console.log("filterArr:", filterArr)
@@ -178,7 +181,7 @@ function App() {
 
   // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
   useLayoutEffect(() => {
-    const executePhaseZero = async () => {
+    const executePhaseZero = async () => {     
       try {
         setIsFetchingRestData(true)
         console.log("executing phase 0")
@@ -189,11 +192,7 @@ function App() {
           // if geolocation permission is given, get/set coordinates
           if ("geolocation" in navigator) {
             const geoCoords = await geoLocation()
-            console.log("geoCoords:", geoCoords)
-            setCoordinatesState((draft) => {
-              draft.latitude = geoCoords.latitude
-              draft.longitude = geoCoords.longitude
-            })
+            setCoordinateStateTransition(geoCoords)
           } else {
             // if not, error and prompt for a valid location
             console.log("geolocation permission was not given.")
@@ -204,19 +203,26 @@ function App() {
           const foundAddress = await geoForward(addressState)
           // console.log("foundAddress:", foundAddress)
           if (foundAddress.length > 0) {
-            // check if the coordinates are valid, if valid, set coordinates
-            setCoordinatesState((draft) => {
-              draft.latitude = foundAddress[0].latitude
-              draft.longitude = foundAddress[0].longitude
-            })
+            setCoordinateStateTransition(foundAddress[0])
           } else {
             // if not
             console.log("there was no coordinates found for the supplied address")
           }
         }
       } catch (error) {
-
+        console.log(error)
       }
+
+      // functions
+      function setCoordinateStateTransition(source) {
+        startTransition(()=>{
+          setCoordinatesState((draft) => {
+            draft.latitude = source.latitude
+            draft.longitude = source.longitude
+          })
+        })
+      }
+
     }
     // if(coordinatesState.latitude != 0 || coordinatesState.longitude != 0) {
       executePhaseZero()
@@ -249,13 +255,15 @@ function App() {
         const httpMethod = "get"
         const gotRests = await axios[httpMethod](getString)
         console.log("gotRests_V2:", gotRests.data)
-        setAllRestaurantsState(gotRests.data)
+        startTransition(()=>{
+          setAllRestaurantsState(gotRests.data)
+        })
       } catch (error) {
         console.warn(error)
       }
     }
     if(coordinatesState.latitude != 0 || coordinatesState.longitude != 0) {
-    executePhaseOne()
+      executePhaseOne()
     }
   }, [coordinatesState, distanceState])
 
@@ -284,6 +292,7 @@ function App() {
     console.log("executing error messaging")
     // if(isFetchingRestData) {
     // setRestListErrorMsg("")
+    if (coordinatesState.latitude === 0 || coordinatesState.longitude === 0) return
     if (filteredRestaurantsState.length === 0) {
       console.log("error_msg1")
       setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
@@ -368,7 +377,6 @@ function App() {
                     setFilterParams={setFilterParams}
                     filterParams={filterParams}
                     setDow={setDow}
-                    dow={dow}
                     searchParams={searchParams}
                     coordinatesState={coordinatesState}
                     UIFiltersProps={{ UIFilters, setUIFilters }}

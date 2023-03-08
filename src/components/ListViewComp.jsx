@@ -4,33 +4,7 @@ import LoadingComp from './LoadingComp'
 import RestListDetailCard from './RestListDetailCard'
 // const RestListDetailCard = lazy(() => import('./RestListDetailCard'))
 
-export default function ListViewComp({ restListErrorMsg,setRestIdxHover, coordinatesState, dow, showRestaurants,isFetchingRestData, searchParams }) {
-
-  // console.log(showRestaurants)
-  // const [errorMessage, setErrorMessage] = useState("")
-
-  // const messageHandler = () =>{
-  //   setErrorMessage("")
-  //   if (!isFetchingRestData) {
-  //     if (showRestaurants.length === 0 && searchParams.address.length > 0 && searchParams.searchTerm.length > 0 ) {
-  //       setErrorMessage(`There are no restaurants that match your search! =(`)
-  //       return
-  //     }
-
-      
-  //     if( showRestaurants.length === 0 && searchParams.address.length === 0  ) {
-  //       setErrorMessage(`Please enter a city or address!`)
-  //       return
-  //     }
-
-
-  //     return ""
-  //   }    
-  // }
-
-  // useEffect(()=>{
-  //   messageHandler()
-  // })
+export default function ListViewComp({ restListErrorMsg,setRestIdxHover, showRestaurants,isFetchingRestData, searchParams }) {
 
   const listRestaurants = showRestaurants.map((restaurant, idx) => {
     return (

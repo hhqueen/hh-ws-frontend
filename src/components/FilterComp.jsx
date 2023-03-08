@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 
 import { dowList } from "../sourceData/dowList"
 import { Select, Dropdown, Checkbox } from "flowbite-react"
@@ -7,6 +7,7 @@ import apiLogger from "../helperFunctions/apiLogger"
 export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, setFilterParams }) {
     const [anyChecked, setAnyChecked] = useState(false)
     const componentName = "FilterComp"
+    const [isPendingTransition, startTransition] = useTransition()
     const filtersMap = filterParams.map((filterVal) => {
         return (
             <Dropdown.Item>
@@ -20,9 +21,11 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                         // readOnly
                         onChange={(e) => {
                             apiLogger(e, componentName)
-                            setFilterParams((draft) => {
-                                const foundItem = draft.find(item => item.name == filterVal.name)
-                                foundItem.value = !foundItem.value
+                            startTransition(()=>{
+                                setFilterParams((draft) => {
+                                    const foundItem = draft.find(item => item.name == filterVal.name)
+                                    foundItem.value = !foundItem.value
+                                })
                             })
                         }}
                     />
@@ -125,7 +128,9 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                             name='dow'
                             onChange={(e) => {
                                 apiLogger(e, componentName)
-                                setDow(e.target.value)
+                                startTransition(()=>{
+                                    setDow(e.target.value)  
+                                })
                             }
                             }
                         >
