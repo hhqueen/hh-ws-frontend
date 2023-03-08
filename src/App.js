@@ -120,6 +120,7 @@ function App() {
     }
   })
   const [restListErrorMsg, setRestListErrorMsg] = useState("")
+  const koadedProperly = coordinatesState.latitude != (0 || null) || coordinatesState.longitude != (0 || null)
 
   // hook Variables
   const [isPendingTransition, startTransition] = useTransition()
@@ -262,7 +263,7 @@ function App() {
         console.warn(error)
       }
     }
-    if(coordinatesState.latitude != 0 || coordinatesState.longitude != 0) {
+    if(koadedProperly) {
       executePhaseOne()
     }
   }, [coordinatesState, distanceState])
@@ -292,7 +293,7 @@ function App() {
     console.log("executing error messaging")
     // if(isFetchingRestData) {
     // setRestListErrorMsg("")
-    if (coordinatesState.latitude === 0 || coordinatesState.longitude === 0) return
+    if (koadedProperly) return
     if (filteredRestaurantsState.length === 0) {
       console.log("error_msg1")
       setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
