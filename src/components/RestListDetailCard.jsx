@@ -61,7 +61,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
         >
             <p
                 className='w-10 px-2 h-full'
-            >{idx && idx + 1}</p>
+            >{idx + 1}</p>
             <img
                 id={`RestListDetailCard_img_${restaurantInfo._id}`}
                 name={`RestListDetailCard_img_${restaurantInfo._id}`}
