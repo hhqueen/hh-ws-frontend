@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { MarkerF, InfoBox } from '@react-google-maps/api'
 import { useNavigate } from "react-router-dom"
 import { useImmer } from 'use-immer'
+import RestListDetailCard from './RestListDetailCard'
 
 export default function MarkerInfoBoxComp({
     labelNum,
@@ -19,19 +20,20 @@ export default function MarkerInfoBoxComp({
     })
     const navigate = useNavigate()
     
+
     const markerOnLoad = marker => {
         // console.log("marker:", marker)
     }
 
     // infobox loadouts
-    const infoBoxOptions = { 
-        closeBoxURL: '', 
-        enableEventPropagation: true 
+    const infoBoxOptions = {
+        closeBoxURL: '',
+        enableEventPropagation: true
     };
     const infoBoxOnLoad = infoBox => {
         console.log('infoBox: ', infoBox)
         infoBox.pixelOffset = {
-            height: -200,
+            height: -270,
             width: -100
         }
     };
@@ -63,7 +65,7 @@ export default function MarkerInfoBoxComp({
                     options={infoBoxOptions}
                     position={{ lat: restaurantData.latitude, lng: restaurantData.longitude }}
                 >
-                    <div
+                    {/* <div
                         className="h-[160px] w-[200px] bg-white rounded-xl"
                         onClick={()=>{
                             navigate(`/restaurant/${restaurantData._id}`)
@@ -80,7 +82,14 @@ export default function MarkerInfoBoxComp({
 
                             <p>{restaurantData?.name}</p>   
                         </div>
-                    </div>
+                    </div> */}
+                    <RestListDetailCard
+                        key={`mapInfoCard-${restaurantData._id}`}
+                        restaurantInfo={restaurantData}
+                        // dow={dow}
+                        idx={idx}
+                    />
+
 
                 </InfoBox>
             }

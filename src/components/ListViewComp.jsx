@@ -38,9 +38,6 @@ export default function ListViewComp({ restListErrorMsg,setRestIdxHover, coordin
         <RestListDetailCard
           key={`restCard-${restaurant._id}`}
           restaurantInfo={restaurant}
-          searchParams={searchParams}
-          coordinatesState={coordinatesState}
-          dow={dow}
           idx={idx}
           setRestIdxHover={setRestIdxHover}
         />

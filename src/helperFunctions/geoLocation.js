@@ -1,7 +1,8 @@
 const geoLocation = async () => {
     return new Promise((res,rej)=>{
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(success, error);
+          const options = {enableHighAccuracy: true}
+          navigator.geolocation.getCurrentPosition(success, error, options);
         } else {
           console.log("Sorry, your browser does not support HTML5 geolocation.");
         }
@@ -15,7 +16,7 @@ const geoLocation = async () => {
         }
 
         function error(error) {
-          console.log("Sorry, we can\'t retrieve your local weather without location permission.");
+          console.log("Sorry, we can't retrieve your local weather without location permission.");
         }
     
       })   

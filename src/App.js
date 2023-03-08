@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { useState, useEffect,useLayoutEffect, Suspense, lazy, useMemo } from 'react'
+import { useState, useEffect,useLayoutEffect, Suspense, lazy, useMemo  } from 'react'
 import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -28,11 +28,19 @@ import jwtDecode from 'jwt-decode';
 import geoForward from './helperFunctions/radarAPI/geofoward';
 
 import geoLocation from "./helperFunctions/geoLocation"
+
+
+
+
 // const dateConverter = require("./helperFunctions/dateConverter")
 // const getCoord = require("./helperFunctions/getCoord.js")
 // const geoLocation = require("./helperFunctions/geoLocation.js")
 
 // const RestDetail = lazy(() => import('./components/pages/RestDetail'))
+
+// Context
+import { CoordinateStateContext } from './components/context/CoordinatesStateContext';
+import { DowContext } from './components/context/DowContext';
 
 const fmtDate = date.format(new Date(), 'dddd')
 const Main = lazy(() => import('./components/pages/Main/Main'))
@@ -352,23 +360,27 @@ function App() {
             path="/restaurants"
             element={
               <Suspense fallback={<LoadingComp />}>
-                <Main
-                  isFetchingRestData={isFetchingRestData}
-                  showRestaurants={showRestaurantsState}
-                  setFilterParams={setFilterParams}
-                  filterParams={filterParams}
-                  setDow={setDow}
-                  dow={dow}
-                  searchParams={searchParams}
-                  coordinatesState={coordinatesState}
-                  UIFiltersProps={{ UIFilters, setUIFilters }}
-                  mainDivStyle={mainDivStyle}
-                  navBarHeight={navBarHeight}
-                  restIdxHover={restIdxHover}
-                  setRestIdxHover={setRestIdxHover}
-                  restListErrorMsg={restListErrorMsg}
-                  focusedRestIdx={focusedRestIdx}
-                />
+                <CoordinateStateContext.Provider value = {coordinatesState}>
+                <DowContext.Provider value = {dow}>
+                  <Main
+                    isFetchingRestData={isFetchingRestData}
+                    showRestaurants={showRestaurantsState}
+                    setFilterParams={setFilterParams}
+                    filterParams={filterParams}
+                    setDow={setDow}
+                    dow={dow}
+                    searchParams={searchParams}
+                    coordinatesState={coordinatesState}
+                    UIFiltersProps={{ UIFilters, setUIFilters }}
+                    mainDivStyle={mainDivStyle}
+                    navBarHeight={navBarHeight}
+                    restIdxHover={restIdxHover}
+                    setRestIdxHover={setRestIdxHover}
+                    restListErrorMsg={restListErrorMsg}
+                    focusedRestIdx={focusedRestIdx}
+                  />
+                </DowContext.Provider>
+                </CoordinateStateContext.Provider>
               </Suspense>
             }
           />

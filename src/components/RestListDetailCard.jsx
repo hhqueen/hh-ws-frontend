@@ -1,5 +1,5 @@
 // libraries
-import React, {useMemo} from 'react'
+import React, { useMemo, useContext } from 'react'
 import { useNavigate } from "react-router-dom"
 
 // components
@@ -10,15 +10,20 @@ import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
 import EditDeleteRestComp from './EditDeleteRestComp'
 import apiLogger from '../helperFunctions/apiLogger'
+// context
+import { CoordinateStateContext } from './context/CoordinatesStateContext'
+import { DowContext } from './context/DowContext'
 
-export default function RestListDetailCard({ setRestIdxHover, coordinatesState, idx, dow, restaurantInfo, searchParams }) {
+export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInfo }) {
     const navigate = useNavigate()
     const componentName = 'RestListDetailCard'
     const cuisineString = restaurantInfo.cuisines.join(", ")
     const applicableFilters = showApplicableFilters(restaurantInfo.filterParams)
+    const coordinatesStateContextVal = useContext(CoordinateStateContext)
+    const dowContextVal = useContext(DowContext)
 
     const dowHours = restaurantInfo.hourSet.hours.filter((day) => {
-        const numOfDay = dateConverter(dow, false)
+        const numOfDay = dateConverter(dowContextVal, false)
         // console.log("numOfDay", numOfDay)
         const dayFilterFlag = numOfDay === day.day
         return dayFilterFlag
@@ -44,19 +49,19 @@ export default function RestListDetailCard({ setRestIdxHover, coordinatesState, 
             md:flex-row md:min-h-fit md:max-w-xl md:rounded-r-lg
             hover:bg-gray-100 
             dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
-            // onMouseEnter={()=>{
-            //     console.log(`mouse-enter: restIdx ${idx}`)
-            //     setRestIdxHover(idx)
-            // }}
-            // onMouseLeave={()=>{
-            //     console.log(`mouse-leave: restIdx -1`)
-            //     setRestIdxHover(-1)
-            // }}
+        // onMouseEnter={()=>{
+        //     console.log(`mouse-enter: restIdx ${idx}`)
+        //     setRestIdxHover(idx)
+        // }}
+        // onMouseLeave={()=>{
+        //     console.log(`mouse-leave: restIdx -1`)
+        //     setRestIdxHover(-1)
+        // }}
 
         >
             <p
                 className='w-10 px-2 h-full'
-            >{idx + 1}</p>
+            >{idx && idx + 1}</p>
             <img
                 id={`RestListDetailCard_img_${restaurantInfo._id}`}
                 name={`RestListDetailCard_img_${restaurantInfo._id}`}
@@ -101,7 +106,7 @@ export default function RestListDetailCard({ setRestIdxHover, coordinatesState, 
                             className='text-[11px]'
                         >{`${restaurantInfo.city} `}</p>
                         <DistancePartialComp
-                            currentLocation={coordinatesState}
+                            currentLocation={coordinatesStateContextVal}
                             restaurantLocation={{
                                 latitude: restaurantInfo.latitude,
                                 longitude: restaurantInfo.longitude
@@ -111,23 +116,29 @@ export default function RestListDetailCard({ setRestIdxHover, coordinatesState, 
                     </div>
                     {/* hours Div */}
                     {/* Hour Header */}
-                    <div
-                        className='static grid grid-cols-7 pl-3'
-                    >
-                        <p
-                            className={`text-[11px] justify-items-start col-start-1 col-end-1 `}
-                        >Day</p>
+                    {
+                        dowContextVal &&
+                        <>
+                            <div
+                                className='static grid grid-cols-7 pl-3'
+                            >
+                                <p
+                                    className={`text-[11px] justify-items-start col-start-1 col-end-1 `}
+                                >Day</p>
 
-                        <p
-                            className={`text-[11px] justify-items-start flex mx-5 col-start-2 col-span-3`}
-                        >Happy Hour</p>
+                                <p
+                                    className={`text-[11px] justify-items-start flex mx-5 col-start-2 col-span-3`}
+                                >Happy Hour</p>
 
-                        <p
-                            className={`text-[11px] justify-items-start flex mx-5 col-start-5 col-span-3`}
-                        >Late Night</p>
-                    </div>
-                    {/* Hour */}
-                    {dowHours}
+                                <p
+                                    className={`text-[11px] justify-items-start flex mx-5 col-start-5 col-span-3`}
+                                >Late Night</p>
+                            </div>
+                            {/* Hour */}
+                            {dowHours}
+                        </>
+                    }
+
 
                 </div>
 
