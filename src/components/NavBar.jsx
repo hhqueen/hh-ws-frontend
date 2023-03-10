@@ -111,7 +111,9 @@ export default function NavBar({
 
                     {/* Search Inputs */}
                     {/* logic that conditionally renders the search bar when NOT landing page */}
-                    {(pathName !== "/" && renderSearchBar) &&
+                    {(
+                        // pathName !== "/" && 
+                    renderSearchBar) &&
                         <>
                             <SearchBar
                                 setAddressState={setAddressState}
