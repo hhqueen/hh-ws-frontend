@@ -20,6 +20,7 @@ import jwtDecode from 'jwt-decode'
 export default function RestDetail({ mainDivStyle }) {
   let { id } = useParams()
   const componentName = "RestDetail"
+  const menuImgClassName = 'w-[800px] max-w-full'
 
   const emailProps = {
     email: "hhqueen.official@gmail.com",
@@ -183,6 +184,7 @@ export default function RestDetail({ mainDivStyle }) {
                     className='border-b'
                   >Food And Drink Menu</p>
                   <img
+                    className={menuImgClassName}
                     src={`${restData.menu.foodAndDrinkMenuImg?.imgUrl}`}
                     alt="image"
                   />
@@ -204,6 +206,7 @@ export default function RestDetail({ mainDivStyle }) {
                       siteSettings.showImgMenu ?
                         <>
                           <img
+                            className={menuImgClassName}
                             src={`${restData.menu.foodMenuImg?.imgUrl}`}
                             alt="image"
                           />
@@ -234,6 +237,7 @@ export default function RestDetail({ mainDivStyle }) {
                       siteSettings.showImgMenu ?
                         <>
                           <img
+                            className={menuImgClassName}
                             src={`${restData.menu.drinkMenuImg?.imgUrl}`}
                             alt="image"
                           />
