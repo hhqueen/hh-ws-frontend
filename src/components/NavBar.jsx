@@ -79,13 +79,13 @@ export default function NavBar({
     // create / update search history
 
 
-    const getMostRecentSearchHistory = () => {
-        if (localStorage.getItem('sh')) {
-            const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
-            const mostRecent = getHistoryArr[getHistoryArr.length - 1]
-            return mostRecent
-        }
-    }
+    // const getMostRecentSearchHistory = () => {
+    //     if (localStorage.getItem('sh')) {
+    //         const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
+    //         const mostRecent = getHistoryArr[getHistoryArr.length - 1]
+    //         return mostRecent
+    //     }
+    // }
 
     return (
         <>
@@ -137,19 +137,19 @@ export default function NavBar({
                             >
                                 <Dropdown.Item>
                                     <a
-                                        name="newsletter_p"
-                                        id='newsletter_p'
+                                        name="survey_p"
+                                        id='survey_p'
                                         onClick={(e) => {
-                                            apilogger(e, componentName, 'newsletter_p')
+                                            apilogger(e, componentName, 'survey_p')
                                         }}
-                                        href='' target="_blank">
+                                        href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank">
                                         <div
                                             className=''
 
                                         >
                                             <p
                                                 className=''
-                                            >Newsletter</p>
+                                            >Survey</p>
                                         </div>
                                     </a>
                                 </Dropdown.Item>
@@ -206,19 +206,19 @@ export default function NavBar({
 
                                 {/* newsletter */}
                                 <a
-                                    name="newsletter_p"
-                                    id='newsletter_p'
+                                    name="survey_p"
+                                    id='survey_p'
                                     onClick={(e) => {
-                                        apilogger(e, componentName, 'newsletter_p')
+                                        apilogger(e, componentName, 'survey_p')
                                     }}
-                                    href='' target="_blank">
+                                    href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank">
                                     <div
                                         className='px-3'
 
                                     >
                                         <p
                                             className='text-white'
-                                        >Newsletter</p>
+                                        >Survey</p>
                                     </div>
                                 </a>
 

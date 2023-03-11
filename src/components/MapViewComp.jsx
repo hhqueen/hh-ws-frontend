@@ -16,7 +16,7 @@ const containerStyleTWsm = {
   height: `300px`
 }
 
-export default function MapViewComp({ showRestaurants, coordinatesState, restIdxHover }) {
+export default function MapViewComp({ setShowRestaurantsState,showRestaurants, coordinatesState, restIdxHover }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }))
   // const [infoBoxOpenArr, setInfoBoxOpenArr] = useImmer([])
@@ -64,6 +64,8 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
           restaurantData={rest}
           markerOpacity={showOpacity}
           markerZidx={zIdx}
+          showRestaurants={showRestaurants}
+          setShowRestaurantsState={setShowRestaurantsState}
           // infoBoxOpenArr={infoBoxOpenArr}
           // setInfoBoxOpenArr={setInfoBoxOpenArr}
         />
@@ -83,6 +85,18 @@ export default function MapViewComp({ showRestaurants, coordinatesState, restIdx
         mapContainerStyle={isTWmd ? containerStyleTWmd : containerStyleTWsm}
         // center={restIdxHover < 0 ? center : { lat: showRestaurants[restIdxHover].latitude, lng: showRestaurants[restIdxHover].longitude }}
         center={center}
+        onClick={()=>{
+          console.log("map click")
+          showRestaurants.forEach((rest, idx)=>{
+            if(rest.showInfoBox) {
+              console.log("idx:",idx)
+              setShowRestaurantsState(draft=>{
+                draft[idx].showInfoBox = false
+              })
+            }
+          })
+          
+        }}
 
         // onClick={() => {
         //   console.log("click")

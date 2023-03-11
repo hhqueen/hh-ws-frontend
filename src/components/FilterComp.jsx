@@ -1,13 +1,15 @@
-import React, { useEffect, useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition, useContext } from 'react'
 
 import { dowList } from "../sourceData/dowList"
 import { Select, Dropdown, Checkbox } from "flowbite-react"
 import apiLogger from "../helperFunctions/apiLogger"
+import {DowContext} from "../components/context/DowContext"
 
 export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, setFilterParams }) {
     const [anyChecked, setAnyChecked] = useState(false)
     const componentName = "FilterComp"
     const [isPendingTransition, startTransition] = useTransition()
+    const DowContextVal = useContext(DowContext)
     const filtersMap = filterParams.map((filterVal) => {
         return (
             <Dropdown.Item>
@@ -45,7 +47,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
 
     // const dowList = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
     const dowOptionsMap = dowList.map((day, idx) => {
-        if (dow == day) {
+        if (DowContextVal == day) {
             return <option key={`day-option${idx}`} value={day} selected>{day}</option>
         } else {
             return <option key={`day-option${idx}`} value={day}>{day}</option>

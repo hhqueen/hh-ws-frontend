@@ -255,9 +255,19 @@ function App() {
         const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
         const httpMethod = "get"
         const gotRests = await axios[httpMethod](getString)
-        console.log("gotRests_V2:", gotRests.data)
+        // console.log("gotRests_V2:", gotRests.data)
+        
+        // add infobox open/close state in the data
+        let allRestData = []
+        gotRests.data.forEach(data => {
+          data.showInfoBox = false
+          allRestData.push(data)
+        });
+        console.log("allRestData post mod:", allRestData)
+        
+        
         startTransition(()=>{
-          setAllRestaurantsState(gotRests.data)
+          setAllRestaurantsState(allRestData)
         })
       } catch (error) {
         console.warn(error)
@@ -387,6 +397,7 @@ function App() {
                     setRestIdxHover={setRestIdxHover}
                     restListErrorMsg={restListErrorMsg}
                     focusedRestIdx={focusedRestIdx}
+                    setShowRestaurantsState={setShowRestaurantsState}
                   />
                 </DowContext.Provider>
                 </CoordinateStateContext.Provider>

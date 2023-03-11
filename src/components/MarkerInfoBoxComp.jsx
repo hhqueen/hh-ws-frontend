@@ -10,6 +10,8 @@ export default function MarkerInfoBoxComp({
     restaurantData,
     markerOpacity,
     markerZidx,
+    setShowRestaurantsState,
+    showRestaurants
     // infoBoxOpenArr,
     // setInfoBoxOpenArr
 }) {
@@ -36,6 +38,8 @@ export default function MarkerInfoBoxComp({
             height: -270,
             width: -100
         }
+        infoBox.enableEventPropagation = false
+        // infoBox.alignBottom = true
     };
 
     return (
@@ -48,7 +52,20 @@ export default function MarkerInfoBoxComp({
                 onClick={() => {
                     // console.log(`${restaurantData.name} clicked`)
                     // console.log("marker restaurantData:", restaurantData)
-                    setShowInfoBox(!showInfoBox)
+                    // setShowInfoBox(!showInfoBox)
+
+                    // open/closes info box
+                    setShowRestaurantsState((draft)=>{
+                        let showInfoBoxVal = draft[idx].showInfoBox
+                        draft[idx].showInfoBox = !showInfoBoxVal
+                    })
+
+                    // code to close other infoboxes (WIP)
+                    for(let i; i < showRestaurants.length; i++){
+                        if(i !== idx && showRestaurants[i].showInfoBox){
+                            setShowRestaurantsState(draft=>{draft[i].showInfoBox = false})
+                        }
+                    }
                     // setInfoBoxOpenArr((draft)=>{
                     //     draft[idx].isOpen = true
                     // })
@@ -59,30 +76,14 @@ export default function MarkerInfoBoxComp({
                 zIndex={markerState?.zIdx}
             />
             {
-                showInfoBox &&
+                showRestaurants[idx].showInfoBox &&
                 <InfoBox
                     onLoad={infoBoxOnLoad}
                     options={infoBoxOptions}
                     position={{ lat: restaurantData.latitude, lng: restaurantData.longitude }}
+                    // anchor={}
                 >
-                    {/* <div
-                        className="h-[160px] w-[200px] bg-white rounded-xl"
-                        onClick={()=>{
-                            navigate(`/restaurant/${restaurantData._id}`)
-                        }}
-                    >
-                        <img
-                            className='w-[200px] h-[130px] object-fit rounded-t-xl'
-                            alt={`${restaurantData.name}`}
-                            src={restaurantData.image_url}
-                        />
-                        <div
-                            className='flex items-center justify-center text-center'
-                        >
-
-                            <p>{restaurantData?.name}</p>   
-                        </div>
-                    </div> */}
+                    
                     <RestListDetailCard
                         key={`mapInfoCard-${restaurantData._id}`}
                         restaurantInfo={restaurantData}

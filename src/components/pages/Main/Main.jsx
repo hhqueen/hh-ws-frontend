@@ -4,7 +4,6 @@ import { Suspense, lazy, useTransition, useState } from 'react'
 import MapViewComp from '../../MapViewComp'
 import LoadingComp from '../../LoadingComp'
 // import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import { Accordion } from 'flowbite-react'
 import './Main.css'
 import { useMediaQuery } from 'react-responsive'
 import { useImmer } from 'use-immer'
@@ -27,7 +26,8 @@ export default function Main({
   restIdxHover,
   setRestIdxHover,
   restListErrorMsg,
-  focusedRestIdx
+  focusedRestIdx,
+  setShowRestaurantsState
 }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -54,6 +54,7 @@ export default function Main({
           <MapViewComp
             coordinatesState={coordinatesState}
             showRestaurants={showRestaurants}
+            setShowRestaurantsState={setShowRestaurantsState}
             // restIdxHover={setRestIdxHover}
           />
         </div>
