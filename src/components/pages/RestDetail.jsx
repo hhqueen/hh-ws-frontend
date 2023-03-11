@@ -173,7 +173,7 @@ export default function RestDetail({ mainDivStyle }) {
           </div>
 
           <div
-            className='w-full'
+            className='w-full flex flex-col md:flex-row'
           >
             {
               restData.menu.isFoodAndDrinkMenu &&
