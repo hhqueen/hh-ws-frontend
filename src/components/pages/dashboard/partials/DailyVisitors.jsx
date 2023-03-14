@@ -62,16 +62,17 @@ export default function DailyVisitors() {
       })
       
       // console.log("calc", lastSevenDaysArr.filter((item)=>item.modifiedBy !== null || item.modifiedBy !== "null"))
-
+      const mobileScreenWidth = 500
       // calculate average for last 7 days for "Web", "Mobile", "Registered", "Unregistered"
-      rowOneArr[1] = 0
-      rowOneArr[2] = 0
+      // rowOneArr[1] = Math.round(lastSevenDaysArr.filter((item)=>item.reqQuery?.screenWidth ? Number(item.reqQuery.screenWidth) <= mobileScreenWidth : false ) / 7)
+      rowOneArr[1] = Math.round(lastSevenDaysArr.filter((item)=>item.reqQuery?.screenWidth ? Number(item.reqQuery.screenWidth) > mobileScreenWidth : false ).length / 7)
+      rowOneArr[2] = Math.round(lastSevenDaysArr.filter((item)=>item.reqQuery?.screenWidth ? Number(item.reqQuery.screenWidth) <= mobileScreenWidth : false ).length / 7)
       rowOneArr[3] = Math.round(lastSevenDaysArr.filter((item)=>item.modifiedBy !== null || item.modifiedBy !== "null").length / 7)
       rowOneArr[4] = Math.round(lastSevenDaysArr.filter((item)=>item.modifiedBy === null || item.modifiedBy === "null").length  / 7)
 
       // calculate average for last 30 days for "Web", "Mobile", "Registered", "Unregistered"
-      rowTwoArr[1] = 0
-      rowTwoArr[2] = 0
+      rowTwoArr[1] = Math.round(lastThirtyDaysArr.filter((item)=>item.reqQuery?.screenWidth ? Number(item.reqQuery.screenWidth) > mobileScreenWidth : false ).length  / 30)
+      rowTwoArr[2] = Math.round(lastThirtyDaysArr.filter((item)=>item.reqQuery?.screenWidth ? Number(item.reqQuery.screenWidth) <= mobileScreenWidth : false ).length  / 30)
       rowTwoArr[3] = Math.round(lastThirtyDaysArr.filter((item)=>item.modifiedBy !== null || item.modifiedBy !== "null").length  / 30)
       rowTwoArr[4] = Math.round(lastThirtyDaysArr.filter((item)=>item.modifiedBy === null || item.modifiedBy === "null").length  / 30)
   

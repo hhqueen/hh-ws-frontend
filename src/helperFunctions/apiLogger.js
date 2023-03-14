@@ -10,12 +10,9 @@ const apiLogger = async ({
         elementId = null,}
     ) => {
     try {
-        // console.log("apiLogger_e", e)
-        // console.log("apiLogger_componentName", componentName)
-        // console.log("apiLogger_userId", userId)
         const queryObj = {
-            UI_ElementName: e ? e.target.name || e.target.parentElement.name : null ,
-            UI_ElementId: e ? e.target.id || e.target.parentElement.id : elementId,
+            UI_ElementName: e ? (e.target.name || e.target.parentElement.name) : null ,
+            UI_ElementId: e ? (e.target.id || e.target.parentElement.id) : elementId,
             UI_ElementValue: e ? e.target.value : null,
             UI_ElementChecked: e ? e.target.checked : null,
             UI_ComponentName: componentName,

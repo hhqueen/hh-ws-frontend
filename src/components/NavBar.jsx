@@ -347,7 +347,7 @@ export default function NavBar({
                                 localStorage.getItem('jwt') &&
                                 <Dropdown.Item
                                     onClick={(e) => {
-                                        apilogger(e, componentName, 'LogOut_Link')
+                                        apilogger({componentName, elementId: 'LogOut_Link'})
                                         handleLogOut()
                                     }}
                                 >

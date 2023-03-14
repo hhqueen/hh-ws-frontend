@@ -16,15 +16,16 @@ export default function RegisteredProfiles() {
         const fetchedDataData = fetchedData.data
         setProfileCount(fetchedDataData.length)
         const nowDate = new Date()
-        const sevenDaysAgo = date.addDays(nowDate, -7)
-        const sevenToFourteenDaysAgo = date.addDays(sevenDaysAgo, -7)
+        const sevenDaysAgo = Date.parse(date.addDays(nowDate, -7))
+        const sevenToFourteenDaysAgo = Date.parse(date.addDays(nowDate, -14))
+
         // console.log("nowDate",nowDate)
         // console.log("sevenDaysAgo",sevenDaysAgo)
         // console.log("date compare",nowDate > sevenDaysAgo)
         let lastSevenDaysArr = []
         let sevenToFourteenDaysArr = []
         fetchedDataData.forEach((profile)=>{
-          const parsedCreatedAt = date.parse(profile.createdAt, 'HH:mm:ss [GMT]Z')
+          const parsedCreatedAt = Date.parse(profile.createdAt)
           if(parsedCreatedAt >= sevenDaysAgo) {
             lastSevenDaysArr.push(profile)
           } else if (parsedCreatedAt < sevenDaysAgo && parsedCreatedAt >= sevenToFourteenDaysAgo ) {
