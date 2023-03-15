@@ -4,24 +4,23 @@ import { RxMagnifyingGlass } from 'react-icons/rx'
 import appendSearchHistory from '../helperFunctions/appendSearchHistory'
 
 export default function SearchBar({ searchParams, setSearchParams, setAddressState, setSearchTermState }) {
-    
+
     const navigate = useNavigate()
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        // new code
+        setSearchTermState(searchParams.searchTerm)
+        setAddressState(searchParams.address)
+        appendSearchHistory(searchParams.searchTerm, searchParams.address)
+        // keep this regardless
+        navigate('/restaurants/')
+    }
     return (
         <div
         >
             <form
                 className='flex justify-center items-center text-center'
-                onSubmit={(e) => {
-                    e.preventDefault()
-
-                    // new code
-                    setSearchTermState(searchParams.searchTerm)
-                    setAddressState(searchParams.address)
-                    appendSearchHistory(searchParams.searchTerm, searchParams.address)
-                    // keep this regardless
-                    navigate('/restaurants/')
-
-                }}
+                onSubmit={handleSubmit}
             >
                 {/* search Term Input */}
                 {/* <input
@@ -34,17 +33,21 @@ export default function SearchBar({ searchParams, setSearchParams, setAddressSta
                 /> */}
 
                 <div
-                    className='bg-transparent'
+                    className=''
                 >
                     {/* Location Input */}
                     <input
-                        className='text-center border w-[30vw] rounded-l p-0 m-0'
+                        className='text-center border w-[40vw] md:w-[30vw] rounded-l p-0 m-0'
+                        // type="text"
                         value={searchParams.address}
+                        placeholder="Location"
                         list="searchLocationList"
                         onChange={(e) => {
                             setSearchParams((draft) => { draft.address = e.target.value })
-                            // console.log(`Address set to ${e.target.value}`)
                         }}
+                        onClick={
+                            (e) => { e.target.select() }
+                        }
                     />
                     <datalist id="searchLocationList">
                         <option className="font-['Roboto']" value="Current Location">Current Location</option>
@@ -53,7 +56,7 @@ export default function SearchBar({ searchParams, setSearchParams, setAddressSta
                 <div>
                     {/* Submit Button */}
                     <button
-                        className='flex justify-center items-center border w-[5vw] rounded-r h-[26px] bg-gray-100'
+                        className='flex justify-center items-center border w-[10vw] md:w-[5vw] rounded-r h-[26px] bg-gray-100'
                         type='submit'
                     >
                         <RxMagnifyingGlass />
