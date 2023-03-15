@@ -90,22 +90,31 @@ export default function NavBar({
     return (
         <>
             <div
-                className='fixed flex md:flex-col w-[100vw] top-0 z-50 bg-[#372A88]'
+                className='fixed flex justify-center md:flex-col w-full top-0 z-50 bg-[#372A88]'
                 ref={navBarDiv}
             >
                 <Navbar
-                    class="w-full"
+                    class="w-f"
                     menuOpen={true}
                 // fluid={true}
                 // rounded={true}
                 >
-                    <Navbar.Brand
-                        href="/">
-                        <LogoSmall 
-                            showText={isTWmd ? true : false}
-                        />
-                        {/* </Link> */}
-                    </Navbar.Brand>
+                    {/* navBar Items Container */}
+                    <div
+                        className='w-full flex justify-between'
+                    >
+                    
+                    {/* Logo Container */}
+                    <div>
+                        <Navbar.Brand
+                            href="/">
+                            <LogoSmall 
+                                showText={isTWmd ? true : false}
+                            />
+                            {/* </Link> */}
+                        </Navbar.Brand>
+                    </div>
+
 
                     {/* Search Inputs */}
                     {/* logic that conditionally renders the search bar when NOT landing page */}
@@ -113,18 +122,22 @@ export default function NavBar({
                         // pathName !== "/" && 
                     renderSearchBar) &&
                         <>
+                        <div
+                            className='flex items-center'
+                        >
                             <SearchBar
                                 setAddressState={setAddressState}
                                 setSearchTermState={setSearchTermState}
                                 searchParams={searchParams}
                                 setSearchParams={setSearchParams}
                             />
+                            </div>
                         </>
                     }
 
 
 
-                    <div className="flex justify-around md:w-[30vw] md:order-2 items-center">
+                    <div className="flex justify-around md:w-fit md:gap-10 md:order-2 items-center">
                         {/* small width media query here (HAMBURGER) WIP */}
                         {
                             !isTWmd &&
@@ -213,7 +226,7 @@ export default function NavBar({
                                     }}
                                     href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank">
                                     <div
-                                        className='px-3'
+                                        className=''
 
                                     >
                                         <p
@@ -231,7 +244,7 @@ export default function NavBar({
                                     }}
                                     href='' target="_blank">
                                     <div
-                                        className='px-3'
+                                        className=''
 
                                     >
                                         <FiMail
@@ -359,6 +372,7 @@ export default function NavBar({
 
 
                         </Dropdown>
+                    </div>
                     </div>
                 </Navbar>
 
