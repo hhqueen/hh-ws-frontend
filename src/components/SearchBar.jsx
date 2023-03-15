@@ -10,6 +10,7 @@ export default function SearchBar({ searchParams, setSearchParams, setAddressSta
         <div
         >
             <form
+                className='flex justify-center items-center text-center'
                 onSubmit={(e) => {
                     e.preventDefault()
 
@@ -37,7 +38,7 @@ export default function SearchBar({ searchParams, setSearchParams, setAddressSta
                 >
                     {/* Location Input */}
                     <input
-                        className='border w-[30vw] rounded-bl p-0 m-0'
+                        className='text-center border w-[30vw] rounded-l p-0 m-0'
                         value={searchParams.address}
                         list="searchLocationList"
                         onChange={(e) => {
@@ -45,16 +46,18 @@ export default function SearchBar({ searchParams, setSearchParams, setAddressSta
                             // console.log(`Address set to ${e.target.value}`)
                         }}
                     />
-
                     <datalist id="searchLocationList">
                         <option className="font-['Roboto']" value="Current Location">Current Location</option>
                     </datalist>
-
+                </div>
+                <div>
                     {/* Submit Button */}
                     <button
-                        className='border w-[5vw] rounded-br h-[26px] bg-gray-100'
+                        className='flex justify-center items-center border w-[5vw] rounded-r h-[26px] bg-gray-100'
                         type='submit'
-                    ><RxMagnifyingGlass /></button>
+                    >
+                        <RxMagnifyingGlass />
+                    </button>
                 </div>
             </form>
         </div>
