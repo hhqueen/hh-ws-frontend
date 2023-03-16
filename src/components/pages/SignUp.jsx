@@ -5,15 +5,16 @@ import { useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button, Checkbox } from 'flowbite-react'
 import qStringfromObj from '../../helperFunctions/qStringfromObj'
 
-export default function SignUp({mainDivStyle}) {
+export default function SignUp({ mainDivStyle }) {
   // state for the controlled form
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [password2,setPassword2]= useState('')
+  const [password2, setPassword2] = useState('')
   const [msg, setMsg] = useState('')
+  const [emailSub, setEmailSub] = useState(false)
 
   const navigate = useNavigate();
 
@@ -33,7 +34,8 @@ export default function SignUp({mainDivStyle}) {
         lastName,
         userName,
         email,
-        password
+        password,
+        emailSub
       }
       const qObj = {
         screenWidth: 0,
@@ -65,52 +67,55 @@ export default function SignUp({mainDivStyle}) {
   }
 
   return (
-      <form
+    <form
       style={mainDivStyle}
       className='flex flex-col gap-4 mx-[10vw] md:mx-[30vw] justify-center'
       onSubmit={handleSubmit}>
-      
+
       <p
-      className='text-center'
+        className='text-center'
       >{msg}</p>
 
       {/* <label htmlFor='firstName'>First Name: </label> */}
-      <div>
+      <section
+        className='grid grid-cols-2 w-full gap-5'
+      >
         <div>
-          <Label
-            htmlFor='firstName'
-            value='First Name'
+          <div>
+            <Label
+              htmlFor='firstName'
+              value='First Name'
+            />
+          </div>
+          <TextInput
+            className="mb-2 block"
+            type="text"
+            id="firstName"
+            placeholder='First Name'
+            onChange={e => setFirstName(e.target.value)}
+            value={firstName}
+            required
           />
         </div>
-        <TextInput
-          className="mb-2 block"
-          type="text"
-          id="firstName"
-          placeholder='First Name'
-          onChange={e => setFirstName(e.target.value)}
-          value={firstName}
-          required
-        />
-      </div>
 
-      <div>
         <div>
-          <Label
-            htmlFor='lastName'
-            value='Last Name'
+          <div>
+            <Label
+              htmlFor='lastName'
+              value='Last Name'
+            />
+          </div>
+          <TextInput
+            className="mb-2 block"
+            type="text"
+            id="lastName"
+            placeholder='Last Name'
+            onChange={e => setLastName(e.target.value)}
+            value={lastName}
+            required
           />
         </div>
-        <TextInput
-          className="mb-2 block"
-          type="text"
-          id="lastName"
-          placeholder='Last Name'
-          onChange={e => setLastName(e.target.value)}
-          value={lastName}
-          required
-        />
-      </div>
-
+      </section>
 
       {/* <div
         className="">
@@ -121,8 +126,8 @@ export default function SignUp({mainDivStyle}) {
           />
         </div> */}
 
-        {/* <label htmlFor='userName'>User Name:</label> */}
-        {/* <TextInput
+      {/* <label htmlFor='userName'>User Name:</label> */}
+      {/* <TextInput
           className="border border-sm w-80"
           type="text"
           id="userName"
@@ -189,7 +194,20 @@ export default function SignUp({mainDivStyle}) {
         />
       </div>
 
-
+      <div>
+        <label
+          className='flex text-center items-center'
+        >
+          <input 
+            type="checkbox"
+            checked={emailSub}
+            onClick={()=>{setEmailSub(!emailSub)}}
+          />
+          <p
+            className='pl-2'
+          >Yes, I would like to recieve e-mails on the latest happy hours!</p>
+        </label>
+      </div>
 
       <Button
         className="border border-sm w-24 self-center"
