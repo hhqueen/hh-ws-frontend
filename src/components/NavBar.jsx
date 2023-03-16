@@ -9,7 +9,7 @@ import { FiMail } from 'react-icons/fi'
 import apilogger from '../helperFunctions/apiLogger'
 import SearchBar from './SearchBar'
 import LogoSmall from './Logo/LogoSmall'
-import IG_Logo from './Logo/IG_Logo'
+import IG_LOGO from './Logo/IG_LOGO'
 import { useMediaQuery } from 'react-responsive'
 
 
@@ -21,7 +21,7 @@ const emptyUserInfo = {
 }
 
 export default function NavBar({
-    setNavBarHeight, searchParams, setSearchParams, handleSearchFormSubmit, geoLocAvail,
+    setNavBarHeight, searchParams, setSearchParams,
     setAddressState, setSearchTermState
 }) {
     const componentName = "NavBar"
@@ -32,10 +32,10 @@ export default function NavBar({
 
     const navBarDiv = useRef(null)
     const renderSearchBar = true
-    const pathName = window.location.pathname
+    // const pathName = window.location.pathname
     // console.log("pathName:",pathName)
     const navigate = useNavigate()
-    const [alpha2, setAlpha2] = useState(false)
+    const [alpha2] = useState(false)
     const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
 
     // function to remove token for logging out here
@@ -155,7 +155,7 @@ export default function NavBar({
                                         onClick={(e) => {
                                             apilogger(e, componentName, 'survey_p')
                                         }}
-                                        href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank">
+                                        href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank" rel="noreferrer">
                                         <div
                                             className=''
 
@@ -173,7 +173,7 @@ export default function NavBar({
                                         onClick={(e) => {
                                             apilogger(e, componentName, 'mail_icon')
                                         }}
-                                        href='' target="_blank">
+                                        href='/' target="_blank">
                                         <div
                                             className='flex items-center'
 
@@ -195,12 +195,12 @@ export default function NavBar({
                                         onClick={(e) => {
                                             apilogger(e, componentName, 'IG_Link')
                                         }}
-                                        href='https://www.instagram.com/hhqueen.official/' target="_blank">
+                                        href='https://www.instagram.com/hhqueen.official/' target="_blank" rel="noreferrer">
                                         <div
                                             className='flex items-center'
 
                                         >
-                                            <IG_Logo
+                                            <IG_LOGO
                                                 height={45}
                                             />
                                             <p
@@ -224,7 +224,7 @@ export default function NavBar({
                                     onClick={(e) => {
                                         apilogger(e, componentName, 'survey_p')
                                     }}
-                                    href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank">
+                                    href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank" rel="noreferrer">
                                     <div
                                         className=''
 
@@ -242,7 +242,7 @@ export default function NavBar({
                                     onClick={(e) => {
                                         apilogger(e, componentName, 'mail_icon')
                                     }}
-                                    href='' target="_blank">
+                                    href='/' target="_blank">
                                     <div
                                         className=''
 
@@ -261,12 +261,12 @@ export default function NavBar({
                                     onClick={(e) => {
                                         apilogger(e, componentName, 'IG_Link')
                                     }}
-                                    href='https://www.instagram.com/hhqueen.official/' target="_blank">
+                                    href='https://www.instagram.com/hhqueen.official/' target="_blank" rel="noreferrer">
                                     <div
                                         className=''
 
                                     >
-                                        <IG_Logo
+                                        <IG_LOGO
                                             height={45}
                                         />
                                     </div>
