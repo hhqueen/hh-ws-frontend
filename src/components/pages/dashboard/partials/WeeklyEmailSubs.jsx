@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
 import date from 'date-and-time'
 import LoadingComp from '../../../LoadingComp'
@@ -58,9 +59,11 @@ export default function WeeklyEmailSubs() {
       className='flex justify-center items-center'
     >
       <div>
+        {/* <a href='https://us21.admin.mailchimp.com/lists/members?id=1571#p:1-s:25-sa:last_update_time-so:false'> */}
         <h1
           className='underline'
         >Weekly Email Subs</h1>
+        {/* </a> */}
         <div>
           <p><span
             className={percentNumFontColor}

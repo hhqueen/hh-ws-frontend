@@ -14,7 +14,7 @@ export default function SignUp({ mainDivStyle }) {
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
   const [msg, setMsg] = useState('')
-  const [emailSub, setEmailSub] = useState(false)
+  const [emailSub, setEmailSub] = useState(true)
 
   const navigate = useNavigate();
 

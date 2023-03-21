@@ -3,6 +3,7 @@ import TopThreeCitiesBarGraph from './partials/TopThreeCitiesBarGraph'
 import WeeklyEmailSubs from './partials/WeeklyEmailSubs'
 import DailyVisitors from './partials/DailyVisitors'
 import RegisteredProfiles from './partials/RegisteredProfiles'
+import TopThreeRestPerCity from './partials/TopThreeRestPerCity'
 
 export default function DashBoard({ mainDivStyle }) {
   return (
@@ -13,7 +14,7 @@ export default function DashBoard({ mainDivStyle }) {
       <section
         className='flex items-center justify-center'
       >
-        <TopThreeCitiesBarGraph />
+        <TopThreeRestPerCity />
       </section>
       <section
         className='flex items-center justify-center'

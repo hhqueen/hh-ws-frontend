@@ -712,7 +712,7 @@ export default function AddEditRest({ mainDivStyle }) {
                                 }
                                 {/* food/drink checkbox */}
                                 {
-                                    !restaurantData.menu.isFoodAndDrinkMenu &&
+                                    !restaurantData?.menu.isFoodAndDrinkMenu &&
                                     <>
                                         <div>
                                             <input
@@ -734,7 +734,7 @@ export default function AddEditRest({ mainDivStyle }) {
 
 
                                         {/* Food Menu Items */}
-                                        {restaurantData.menu.hasFoodSpecials &&
+                                        {restaurantData?.menu.hasFoodSpecials &&
                                             <div
                                                 className='border mb-3'
                                             >
@@ -804,7 +804,7 @@ export default function AddEditRest({ mainDivStyle }) {
                             </div>
                             {/* DRINKS AREA */}
                             <div>
-                                {!restaurantData.menu.isFoodAndDrinkMenu &&
+                                {!restaurantData?.menu.isFoodAndDrinkMenu &&
                                     <>
                                         <div>
                                             <input
@@ -825,7 +825,7 @@ export default function AddEditRest({ mainDivStyle }) {
                                         </div>
 
                                         {/* Drink Menu Items */}
-                                        {restaurantData.menu.hasDrinkSpecials &&
+                                        {restaurantData?.menu.hasDrinkSpecials &&
                                             <>
                                                 {
                                                     siteSettings.showImgMenu ?

@@ -58,9 +58,10 @@ export default function RegisteredProfiles() {
       className='flex justify-center items-center'
     >
       <div>
+      <a href='https://us21.admin.mailchimp.com/lists/members?id=1571#p:1-s:25-sa:last_update_time-so:false' target="_blank">
         <h1
           className='underline'
-        >Registered Profiles</h1>
+        >Registered Profiles</h1></a>
         <div>
           <p><span
             className={percentNumFontColor}

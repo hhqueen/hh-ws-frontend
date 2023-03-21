@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { useState, useEffect,useLayoutEffect, Suspense, lazy, useMemo, useTransition  } from 'react'
+import { useState, useEffect, useLayoutEffect, Suspense, lazy, useMemo, useTransition } from 'react'
 import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -55,7 +55,7 @@ const SignUp = lazy(() => import('./components/pages/SignUp'))
 // import SignUp from './components/pages/SignUp';
 const Login = lazy(() => import('./components/pages/Login'))
 // import Login from './components/pages/Login';
-
+const Profile = lazy(() => import('./components/pages/ProfileSettings/ProfileContainer'))
 const LandingPage = lazy(() => import('./components/pages/LandingPage/LandingPage'))
 
 const DashBoard = lazy(() => import('./components/pages/dashboard/DashBoard'))
@@ -66,23 +66,7 @@ const { deepCopyObj } = require("./helperFunctions/deepCopy")
 
 
 
-// get recent search address
-const getMostRecentlySearchedAddress = () => {
 
-  if (localStorage.getItem('sh')) {
-    const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
-    const mostRecentVal = getHistoryArr.length - 1
-    // setSearchParams((draft) => { draft.address = getHistoryArr[mostRecentVal].address })
-    // console.log(navigator.geolocation)
-    if (!localStorage.getItem('sh') && navigator.geolocation) {
-      return "Current Location"
-    } else {
-      return getHistoryArr[mostRecentVal].address
-    }
-  } else {
-    return ""
-  }
-}
 
 function App() {
   // refactored Variables
@@ -171,6 +155,24 @@ function App() {
 
   // init 
   useLayoutEffect(() => {
+    // get recent search address
+    const getMostRecentlySearchedAddress = () => {
+
+      if (localStorage.getItem('sh')) {
+        const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
+        const mostRecentVal = getHistoryArr.length - 1
+        // setSearchParams((draft) => { draft.address = getHistoryArr[mostRecentVal].address })
+        // console.log(navigator.geolocation)
+        if (!localStorage.getItem('sh') && navigator.geolocation) {
+          return "Current Location"
+        } else {
+          return getHistoryArr[mostRecentVal].address
+        }
+      } else {
+        return ""
+      }
+    }
+    
     if (searchParams.address === "" || addressState === "") {
       const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
       console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
@@ -182,7 +184,7 @@ function App() {
 
   // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
   useLayoutEffect(() => {
-    const executePhaseZero = async () => {     
+    const executePhaseZero = async () => {
       try {
         setIsFetchingRestData(true)
         console.log("executing phase 0")
@@ -216,7 +218,7 @@ function App() {
 
       // functions
       function setCoordinateStateTransition(source) {
-        startTransition(()=>{
+        startTransition(() => {
           setCoordinatesState((draft) => {
             draft.latitude = source.latitude
             draft.longitude = source.longitude
@@ -226,7 +228,7 @@ function App() {
 
     }
     // if(coordinatesState.latitude != 0 || coordinatesState.longitude != 0) {
-      executePhaseZero()
+    executePhaseZero()
     // }
   }, [addressState, searchTermState])
 
@@ -256,7 +258,7 @@ function App() {
         const httpMethod = "get"
         const gotRests = await axios[httpMethod](getString)
         // console.log("gotRests_V2:", gotRests.data)
-        
+
         // add infobox open/close state in the data
         let allRestData = []
         gotRests.data.forEach(data => {
@@ -264,16 +266,16 @@ function App() {
           allRestData.push(data)
         });
         console.log("allRestData post mod:", allRestData)
-        
-        
-        startTransition(()=>{
+
+
+        startTransition(() => {
           setAllRestaurantsState(allRestData)
         })
       } catch (error) {
         console.warn(error)
       }
     }
-    if(koadedProperly) {
+    if (koadedProperly) {
       executePhaseOne()
     }
   }, [coordinatesState, distanceState])
@@ -297,7 +299,7 @@ function App() {
     setFilteredRestaurantsState(filteredRest)
   }, [allRestaurantsState, dow, filterParams, UIFilters])
 
-  
+
   const handleRestListErrorMsg = () => {
     setRestListErrorMsg("")
     console.log("executing error messaging")
@@ -366,7 +368,6 @@ function App() {
           <Route
             path='/'
             element={
-
               <LandingPage
                 setSearchParams={setSearchParams}
                 mainDivStyle={mainDivStyle}
@@ -377,29 +378,40 @@ function App() {
           />
 
           <Route
+            path='/profile'
+            element={
+              <Suspense fallback={<LoadingComp />}>
+                <Profile
+                  mainDivStyle={mainDivStyle}
+                />
+              </Suspense>
+            }
+          />
+
+          <Route
             path="/restaurants"
             element={
               <Suspense fallback={<LoadingComp />}>
-                <CoordinateStateContext.Provider value = {coordinatesState}>
-                <DowContext.Provider value = {dow}>
-                  <Main
-                    isFetchingRestData={isFetchingRestData}
-                    showRestaurants={showRestaurantsState}
-                    setFilterParams={setFilterParams}
-                    filterParams={filterParams}
-                    setDow={setDow}
-                    searchParams={searchParams}
-                    coordinatesState={coordinatesState}
-                    UIFiltersProps={{ UIFilters, setUIFilters }}
-                    mainDivStyle={mainDivStyle}
-                    navBarHeight={navBarHeight}
-                    restIdxHover={restIdxHover}
-                    setRestIdxHover={setRestIdxHover}
-                    restListErrorMsg={restListErrorMsg}
-                    focusedRestIdx={focusedRestIdx}
-                    setShowRestaurantsState={setShowRestaurantsState}
-                  />
-                </DowContext.Provider>
+                <CoordinateStateContext.Provider value={coordinatesState}>
+                  <DowContext.Provider value={dow}>
+                    <Main
+                      isFetchingRestData={isFetchingRestData}
+                      showRestaurants={showRestaurantsState}
+                      setFilterParams={setFilterParams}
+                      filterParams={filterParams}
+                      setDow={setDow}
+                      searchParams={searchParams}
+                      coordinatesState={coordinatesState}
+                      UIFiltersProps={{ UIFilters, setUIFilters }}
+                      mainDivStyle={mainDivStyle}
+                      navBarHeight={navBarHeight}
+                      restIdxHover={restIdxHover}
+                      setRestIdxHover={setRestIdxHover}
+                      restListErrorMsg={restListErrorMsg}
+                      focusedRestIdx={focusedRestIdx}
+                      setShowRestaurantsState={setShowRestaurantsState}
+                    />
+                  </DowContext.Provider>
                 </CoordinateStateContext.Provider>
               </Suspense>
             }

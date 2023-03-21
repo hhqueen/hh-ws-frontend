@@ -45,7 +45,7 @@ export default function Login({mainDivStyle}) {
         <TextInput
           id="email1"
           type="email"
-          placeholder="name@flowbite.com"
+          placeholder="email address"
           required={true}
           onChange={(e)=>setLoginData({...loginData, email:e.target.value})}
         />

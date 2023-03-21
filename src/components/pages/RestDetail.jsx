@@ -176,7 +176,7 @@ export default function RestDetail({ mainDivStyle }) {
             className='w-full flex flex-col md:flex-row'
           >
             {
-              restData.menu.isFoodAndDrinkMenu &&
+              restData?.menu?.isFoodAndDrinkMenu &&
               <>
                 <div
                   className='flex flex-col items-center justify-center py-3 w-full'>
@@ -185,17 +185,17 @@ export default function RestDetail({ mainDivStyle }) {
                   >Food And Drink Menu</p>
                   <img
                     className={menuImgClassName}
-                    src={`${restData.menu.foodAndDrinkMenuImg?.imgUrl}`}
+                    src={`${restData?.menu?.foodAndDrinkMenuImg?.imgUrl}`}
                     alt="image"
                   />
                 </div>
               </>
             }
 
-            {!restData.menu.isFoodAndDrinkMenu &&
+            {!restData?.menu?.isFoodAndDrinkMenu &&
               <>
                 {
-                  restData.menu.foodMenuImg !== null &&
+                  restData?.menu?.foodMenuImg !== null &&
 
                   <div
                     className='flex flex-col items-center justify-center py-3  w-full'>
@@ -207,7 +207,7 @@ export default function RestDetail({ mainDivStyle }) {
                         <>
                           <img
                             className={menuImgClassName}
-                            src={`${restData.menu.foodMenuImg?.imgUrl}`}
+                            src={`${restData?.menu?.foodMenuImg?.imgUrl}`}
                             alt="image"
                           />
                         </>
@@ -226,7 +226,7 @@ export default function RestDetail({ mainDivStyle }) {
                 }
 
                 {
-                  restData.menu.drinkMenuImg !== null &&
+                  restData?.menu?.drinkMenuImg !== null &&
                   <div
                     className='flex flex-col items-center justify-center py-3  w-full'
                   >
@@ -238,7 +238,7 @@ export default function RestDetail({ mainDivStyle }) {
                         <>
                           <img
                             className={menuImgClassName}
-                            src={`${restData.menu.drinkMenuImg?.imgUrl}`}
+                            src={`${restData?.menu?.drinkMenuImg?.imgUrl}`}
                             alt="image"
                           />
                         </>
