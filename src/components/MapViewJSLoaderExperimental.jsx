@@ -69,7 +69,8 @@ export default function MapViewJSLoaderExperimental({ coordinatesState, showRest
                     newMarker.addListener("mouseout", ()=>{
                         newMarker.setOpacity(defaultOpacity)
                         newMarker.setZIndex(defaultZidx)
-                })
+                    })
+
 
                     // console.log("marker position:",newMarker.getPosition())
                 })

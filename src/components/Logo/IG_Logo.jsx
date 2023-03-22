@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function IG_LOGO({width = null, height= null}) {
+export default function Ig_Logo({width = null, height= null}) {
     
     if(!width && height) width = height
     if(width && !height) height = width
