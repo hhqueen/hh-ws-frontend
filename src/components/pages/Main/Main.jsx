@@ -2,6 +2,8 @@ import { Suspense, lazy, useTransition, useState } from 'react'
 // import FilterComp from '../FilterComp'
 // import ListViewComp from '../ListViewComp'
 import MapViewComp from '../../MapViewComp'
+import MapViewJSLoaderExperimental from '../../MapViewJSLoaderExperimental'
+
 import LoadingComp from '../../LoadingComp'
 // import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import './Main.css'
@@ -51,11 +53,16 @@ export default function Main({
         <div
           className='md:order-last'
         >
-          <MapViewComp
+          {/* <MapViewComp
             coordinatesState={coordinatesState}
             showRestaurants={showRestaurants}
             setShowRestaurantsState={setShowRestaurantsState}
-            // restIdxHover={setRestIdxHover}
+          // restIdxHover={setRestIdxHover}
+          /> */}
+          <MapViewJSLoaderExperimental
+            isFetchingRestData={isFetchingRestData}
+            coordinatesState={coordinatesState}
+            showRestaurants={showRestaurants}
           />
         </div>
       }

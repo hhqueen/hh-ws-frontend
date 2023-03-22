@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 // import { GoogleMap, LoadScript, useLoadScript, MarkerF, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api'
-import { GoogleMap, useLoadScript, MarkerF, OverlayView } from '@react-google-maps/api'
+import { GoogleMap, useLoadScript, MarkerF, OverlayView, GoogleMapProps } from '@react-google-maps/api'
 import { useMediaQuery } from 'react-responsive';
 import LoadingComp from './LoadingComp';
 import MarkerInfoBoxComp from './MarkerInfoBoxComp';
@@ -19,6 +19,7 @@ const containerStyleTWsm = {
 export default function MapViewComp({ setShowRestaurantsState,showRestaurants, coordinatesState, restIdxHover }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }))
+  const [mapState, setMapState] = useState(null)
   // const [infoBoxOpenArr, setInfoBoxOpenArr] = useImmer([])
   // const [ibLoaded, setIbLoaded] = useState(false)
   
@@ -73,9 +74,16 @@ export default function MapViewComp({ setShowRestaurantsState,showRestaurants, c
     )
   })
 
+  useEffect(()=>{
+    if (mapState !== null) {
+      console.log("mapState:", mapState)
+      mapState.panTo({lat: coordinatesState.latitude, lng: coordinatesState.longitude + 1})
+      console.log("GoogleMapProps:")
+    }
+  
+  },[mapState])
   // video example below:
   const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY })
-
 
   if (!isLoaded) return <LoadingComp />
   return (
