@@ -9,7 +9,7 @@ import { FiMail } from 'react-icons/fi'
 import apilogger from '../helperFunctions/apiLogger'
 import SearchBar from './SearchBar'
 import LogoSmall from './Logo/LogoSmall'
-import Ig_Logo from './Logo/Ig_Logo'
+import IG_Logo from './Logo/IG_Logo'
 import { useMediaQuery } from 'react-responsive'
 
 
@@ -200,7 +200,7 @@ export default function NavBar({
                                                 className='flex items-center'
 
                                             >
-                                                <Ig_Logo
+                                                <IG_Logo
                                                     height={45}
                                                 />
                                                 <p
@@ -266,7 +266,7 @@ export default function NavBar({
                                             className=''
 
                                         >
-                                            <Ig_Logo
+                                            <IG_Logo
                                                 height={45}
                                             />
                                         </div>
