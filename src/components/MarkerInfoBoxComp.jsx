@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { MarkerF, InfoBox } from '@react-google-maps/api'
+import React, { useState } from 'react'
+import { MarkerF, InfoBox, MarkerProps } from '@react-google-maps/api'
 import { useNavigate } from "react-router-dom"
 import { useImmer } from 'use-immer'
 import RestListDetailCard from './RestListDetailCard'
@@ -11,7 +11,8 @@ export default function MarkerInfoBoxComp({
     markerOpacity,
     markerZidx,
     setShowRestaurantsState,
-    showRestaurants
+    showRestaurants,
+    markersRef
     // infoBoxOpenArr,
     // setInfoBoxOpenArr
 }) {
@@ -20,11 +21,29 @@ export default function MarkerInfoBoxComp({
         opacity: markerOpacity,
         zIdx: markerZidx
     })
-    const navigate = useNavigate()
     
 
     const markerOnLoad = marker => {
+        const defaultOpacity = 0.7
+        const hoverOpacity = 1.0
+        const defaultZidx = 0
+        const hoverZidx = 1
         // console.log("marker:", marker)
+        // markersRef.current.add(marker)
+        // console.log("markersRef:",markersRef.current)
+        marker.setOpacity(defaultOpacity)
+        marker.setZIndex(defaultZidx)
+        marker.addListener("mouseover", ()=>{
+            console.log("mouseOver")
+            marker.setOpacity(hoverOpacity)
+            marker.setZIndex(hoverZidx)
+        })
+
+        marker.addListener("mouseout", ()=>{
+            console.log("mouseout")
+            marker.setOpacity(defaultOpacity)
+            marker.setZIndex(defaultZidx)
+        })
     }
 
     // infobox loadouts
@@ -33,7 +52,7 @@ export default function MarkerInfoBoxComp({
         enableEventPropagation: true
     };
     const infoBoxOnLoad = infoBox => {
-        console.log('infoBox: ', infoBox)
+        // console.log('infoBox: ', infoBox)
         infoBox.pixelOffset = {
             height: -270,
             width: -100
@@ -45,10 +64,12 @@ export default function MarkerInfoBoxComp({
     return (
         <>
             <MarkerF
+                // ref={markerRef}
                 key={`gMarker${restaurantData._id}`}
                 // animation={"bounce"}
                 onLoad={markerOnLoad}
                 clickable={true}
+                animation={window.google.maps.Animation.DROP}
                 onClick={() => {
                     // console.log(`${restaurantData.name} clicked`)
                     // console.log("marker restaurantData:", restaurantData)

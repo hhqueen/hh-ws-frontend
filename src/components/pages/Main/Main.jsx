@@ -3,7 +3,7 @@ import { Suspense, lazy, useTransition, useState } from 'react'
 // import ListViewComp from '../ListViewComp'
 import MapViewComp from '../../MapViewComp'
 import MapViewJSLoaderExperimental from '../../MapViewJSLoaderExperimental'
-import MapGMapWrapper from '../../MapGMapWrapper'
+// import MapGMapWrapper from '../../MapGMapWrapper'
 
 import LoadingComp from '../../LoadingComp'
 // import { Wrapper, Status } from "@googlemaps/react-wrapper";
@@ -58,6 +58,7 @@ export default function Main({
             coordinatesState={coordinatesState}
             showRestaurants={showRestaurants}
             setShowRestaurantsState={setShowRestaurantsState}
+            isFetchingRestData={isFetchingRestData}
           // restIdxHover={setRestIdxHover}
           />
           {/* <MapViewJSLoaderExperimental

@@ -16,40 +16,19 @@ const containerStyleTWsm = {
   height: `300px`
 }
 
-export default function MapViewComp({ setShowRestaurantsState,showRestaurants, coordinatesState, restIdxHover }) {
+export default function MapViewComp({ setShowRestaurantsState, showRestaurants, coordinatesState, restIdxHover,isFetchingRestData }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
-  const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }))
-  const [mapState, setMapState] = useState(null)
-
-
-  // const [infoBoxOpenArr, setInfoBoxOpenArr] = useImmer([])
-  // const [ibLoaded, setIbLoaded] = useState(false)
-  
-  // useEffect(() => {
-  //   setIbLoaded(false)
-  //   let ib_arr = []
-  //   showRestaurants.forEach((rest, index) => {
-  //     ib_arr.push({ isOpen: false })
-  //   });
-  //   setInfoBoxOpenArr(ib_arr)
-
-  // }, [])
-  // console.log("restIdxHover:", restIdxHover)
-  // const map = new google.maps.Map(document.getElementById("map"),
-  //   {
-  //     zoom: 4,
-  //     center: center,
-  //   })
-  // const [centerState, setCenterState] = useImmer({
-  //   lat: coordinatesState.latitude,
-  //   lng: coordinatesState.longitude
+  const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }), [coordinatesState])
+  const markersRef = useRef(new Set())
+  // const mapRef = useRef(null)
+  // const [mapOptions, setMapOptions] = useImmer({
+  //   center: {
+  //     lat: coordinatesState.latitude,
+  //     lng: coordinatesState.longitude
+  //   },
+  //   zoom: 13
   // })
-  // useEffect(()=>{
-  //   setCenterState((draft)=>{
-  //     draft.lat = showRestaurants[restIdxHover].latitude
-  //     draft.lng = showRestaurants[restIdxHover].longitude
-  //   })
-  // },[restIdxHover])
+  // const [mapState, setMapState] = useState(new window.google.maps.Map(mapRef.current, mapOptions))
 
   const mapMarkers = showRestaurants.map((rest, idx) => {
     const labelNum = idx + 1
@@ -69,58 +48,54 @@ export default function MapViewComp({ setShowRestaurantsState,showRestaurants, c
           markerZidx={zIdx}
           showRestaurants={showRestaurants}
           setShowRestaurantsState={setShowRestaurantsState}
-          // infoBoxOpenArr={infoBoxOpenArr}
-          // setInfoBoxOpenArr={setInfoBoxOpenArr}
+          markersRef={markersRef}
+        // infoBoxOpenArr={infoBoxOpenArr}
+        // setInfoBoxOpenArr={setInfoBoxOpenArr}
         />
       </>
     )
   })
 
-  useEffect(()=>{
-    if (mapState !== null) {
-      console.log("mapState:", mapState)
-      mapState.panTo({lat: coordinatesState.latitude, lng: coordinatesState.longitude + 1})
-      console.log("GoogleMapProps:")
-    }
-  
-  },[mapState])
-  // video example below:
-  const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY })
 
-  if (!isLoaded) return <LoadingComp />
+  const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY, version: "beta", libraries: ["marker"] })
+
+  if (!isLoaded 
+    // && (coordinatesState.latitude == 0 && coordinatesState.longitude == 0) && isFetchingRestData
+  ) return <LoadingComp />
   return (
     <>
       <GoogleMap
+        // ref={mapRef}
         zoom={13}
         mapContainerStyle={isTWmd ? containerStyleTWmd : containerStyleTWsm}
         // center={restIdxHover < 0 ? center : { lat: showRestaurants[restIdxHover].latitude, lng: showRestaurants[restIdxHover].longitude }}
         center={center}
-        onClick={()=>{
+        onClick={() => {
           console.log("map click")
-          showRestaurants.forEach((rest, idx)=>{
-            if(rest.showInfoBox) {
-              console.log("idx:",idx)
-              setShowRestaurantsState(draft=>{
+          showRestaurants.forEach((rest, idx) => {
+            if (rest.showInfoBox) {
+              console.log("idx:", idx)
+              setShowRestaurantsState(draft => {
                 draft[idx].showInfoBox = false
               })
             }
           })
-          
+
         }}
 
-        // onClick={() => {
-        //   console.log("click")
-        //   console.log("infoBoxOpenArr:", infoBoxOpenArr)
-        //   const filteredArr = infoBoxOpenArr.filter((ib) => {
-        //     return ib.isOpen === true
-        //   })
-        //   console.log("filteredArr:", filteredArr)
-        //   filteredArr.forEach((ib) => {
-        //     setInfoBoxOpenArr((draft) => {
-        //       draft[ib.idx].isOpen = false
-        //     })
-        //   })
-        // }}
+      // onClick={() => {
+      //   console.log("click")
+      //   console.log("infoBoxOpenArr:", infoBoxOpenArr)
+      //   const filteredArr = infoBoxOpenArr.filter((ib) => {
+      //     return ib.isOpen === true
+      //   })
+      //   console.log("filteredArr:", filteredArr)
+      //   filteredArr.forEach((ib) => {
+      //     setInfoBoxOpenArr((draft) => {
+      //       draft[ib.idx].isOpen = false
+      //     })
+      //   })
+      // }}
       // center={centerState}
       >
         {/* <OverlayView

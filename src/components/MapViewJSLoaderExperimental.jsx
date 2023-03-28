@@ -9,8 +9,9 @@ import RestListDetailCard from './RestListDetailCard'
 
 
 export default function MapViewJSLoaderExperimental({ coordinatesState, showRestaurants, isFetchingRestData }) {
-    const [mapState, setMapState] = useState()
-    const mapRef = useRef()
+    const mapRef = useRef(null)
+    const markersRef = useRef([])
+    const infoBoxRef = useRef([])
     const navigate = useNavigate()
     if (coordinatesState.latitude !== 0 || coordinatesState.longitude !== 0) {
         // let mapState
@@ -18,16 +19,8 @@ export default function MapViewJSLoaderExperimental({ coordinatesState, showRest
         const loader = new Loader({
             apiKey: process.env.REACT_APP_GMAPS_API_KEY,
             version: "beta",
-            libraries: ["marker"]
+            libraries: ["marker","places"]
         });
-
-        const mapOptions = {
-            center: {
-                lat: coordinatesState.latitude,
-                lng: coordinatesState.longitude
-            },
-            zoom: 13
-        };
 
         loader
             .load()
@@ -37,119 +30,42 @@ export default function MapViewJSLoaderExperimental({ coordinatesState, showRest
                 const hoverOpacity = 1.0
                 const defaultZidx = 0
                 const hoverZidx = 1
+                
 
-                let pinArr = []
-                // creates the google map at div with id "map"
-                // const mapState = new google.maps.Map(document.getElementById("map"), mapOptions);
-                // console.log("gmaps version:",google.maps.version) 
-                setMapState(new google.maps.Map(mapRef.current, mapOptions))
-                // generates markers based on showRestaurant Array
-                // showRestaurants.forEach(async (rest, idx) => {
-                //     const restPos = { lat: rest.latitude, lng: rest.longitude }
+                const mapOptions = {
+                    center: {
+                        lat: coordinatesState.latitude,
+                        lng: coordinatesState.longitude
+                    },
+                    zoom: 13
+                };
 
+                const mapState = new google.maps.Map(mapRef.current, mapOptions);
+                console.log("google maps version:",google.maps.version) 
 
-                //     const newMarker = new google.maps.marker.AdvancedMarkerView({
-                //         map: mapState,
-                //         position: restPos
-                //     })
-                //     // let newMarker = new google.maps.Marker({
-                //     //     position: restPos,
-                //     //     map: mapState,
-                //     //     label: String(idx + 1),
-                //     //     zIndex: defaultZidx,
-                //     //     opacity: defaultOpacity,
-                //     //     animation: google.maps.Animation.DROP
-                //     // })
-
-
-                //     // pinArr.push(newMarker)
-                //     // let newInfoWindow = new google.maps.InfoWindow({
-                //     //     content: ""
-                //     // })
-                //     // google.maps.event.addListener(newInfoWindow, "domready", ()=>{
-                //     //     const content = (
-                //     //         <RestListDetailCard
-                //     //             key={`mapInfoCard-${rest._id}`}
-                //     //             restaurantInfo={rest}
-                //     //             idx={idx}
-                //     //         />
-                //     //     )
-
-                //     //     newInfoWindow.addListener("click", () => {
-                //     //         console.log("infowindow clicked")
-                //     //         // navigate(`/restaurant/${rest._id}`)
-                //     //     })
+                showRestaurants.forEach(async (rest, idx) => {
+                    const restCoord = { lat: rest.latitude, lng: rest.longitude }
+                    const pinView = google.maps.marker.PinView({
                         
-                //     //     newInfoWindow.setContent(content)
-
-                //     // })
-
-                //     // newMarker.addListener("click", () => {
-                //     //     const getData = newInfoWindow.get()
-                //     //     console.log(getData)
-                //     //     console.log(`${rest.name} marker clicked`)
-                //     //     newInfoWindow.open({
-                //     //         anchor: newMarker,
-                //     //         map: mapState
-                //     //     })
-                //     //     // const div = document.createElement("div")
-                //     //     // const card = createRoot(div)
-                //     //     // flushSync(()=>{
-                //     //     //     card.render(                            
-                //     //     //     <RestListDetailCard
-                //     //     //         key={`mapInfoCard-${rest._id}`}
-                //     //     //         restaurantInfo={rest}
-                //     //     //         idx={idx}
-                //     //     //     />)
-                //     //     // })
-
-                //     //     // const content = renderToString(
-                //     //     //     <RestListDetailCard
-                //     //     //         key={`mapInfoCard-${rest._id}`}
-                //     //     //         restaurantInfo={rest}
-                //     //     //         idx={idx}
-                //     //     //     />
-                //     //     // )
-                //     //     // const content = (
-                //     //     //     <RestListDetailCard
-                //     //     //         key={`mapInfoCard-${rest._id}`}
-                //     //     //         restaurantInfo={rest}
-                //     //     //         idx={idx}
-                //     //     //     />
-                //     //     // )
-
-                //     //     // newInfoWindow.addListener("click", () => {
-                //     //     //     console.log("infowindow clicked")
-                //     //     //     // navigate(`/restaurant/${rest._id}`)
-                //     //     // })
-                        
-                //     //     // newInfoWindow.setContent(content)
-                //     //     // newInfoWindow.open({
-                //     //     //     anchor: newMarker,
-                //     //     //     map: mapState
-                //     //     // })
-                //     // })
-
-                //     // newMarker.addListener("mouseover", () => {
-                //     //     newMarker.setOpacity(hoverOpacity)
-                //     //     newMarker.setZIndex(hoverZidx)
-                //     //     // newMarker.setAnimation(google.maps.Animation.BOUNCE)
-                //     // })
-                //     // newMarker.addListener("mouseout", () => {
-                //     //     newMarker.setOpacity(defaultOpacity)
-                //     //     newMarker.setZIndex(defaultZidx)
-                //     //     // newMarker.setAnimation(null)
-                //     // })
-
-
-                //     // console.log("marker position:",newMarker.getPosition())
-                // })
+                    })
+                    const marker = google.maps.marker.AdvancedMarkerView({
+                        map: mapState,
+                        position: restCoord,
+                        content: pinView.element
+                    })
+                    markersRef.current[idx] = marker
+                })
+                console.log("markersRef:",markersRef)
             })
             .catch(e => {
                 // do something
                 console.log("gmap Loader Error:", e)
             });
     }
+
+    useEffect(()=>{
+
+    })
 
 
     // set markers for useEffect?
