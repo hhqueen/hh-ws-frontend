@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useMemo, useState } from 'react'
 // import { GoogleMap, LoadScript, useLoadScript, MarkerF, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api'
 import { GoogleMap, useLoadScript, MarkerF, OverlayView, GoogleMapProps } from '@react-google-maps/api'
 import { useMediaQuery } from 'react-responsive';
@@ -20,6 +20,8 @@ export default function MapViewComp({ setShowRestaurantsState,showRestaurants, c
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }))
   const [mapState, setMapState] = useState(null)
+
+
   // const [infoBoxOpenArr, setInfoBoxOpenArr] = useImmer([])
   // const [ibLoaded, setIbLoaded] = useState(false)
   

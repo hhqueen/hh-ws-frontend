@@ -41,6 +41,7 @@ import geoLocation from "./helperFunctions/geoLocation"
 // Context
 import { CoordinateStateContext } from './components/context/CoordinatesStateContext';
 import { DowContext } from './components/context/DowContext';
+import {globalState, setGlobalState} from "./components/context/CoordinatesStateContext"
 
 const fmtDate = date.format(new Date(), 'dddd')
 const Main = lazy(() => import('./components/pages/Main/Main'))
@@ -72,7 +73,7 @@ function App() {
   // refactored Variables
   const [allRestaurantsState, setAllRestaurantsState] = useImmer([])
   const [filteredRestaurantsState, setFilteredRestaurantsState] = useImmer([])
-  const [coordinatesState, setCoordinatesState] = useImmer({ latitude: 0, longitude: 0 })
+  // const [coordinatesState, setCoordinatesState] = useImmer({ latitude: 0, longitude: 0 })
   const [distanceState, setDistanceState] = useImmer(5) // in miles?
   const [addressState, setAddressState] = useImmer("")
   const [searchTermState, setSearchTermState] = useImmer("")
@@ -87,7 +88,7 @@ function App() {
   const [mainDivStyle, setMainDivStyle] = useState({})
   const [isFetchingRestData, setIsFetchingRestData] = useState(false)
   const [filterParams, setFilterParams] = useImmer(checkboxFilters)
-  const [dow, setDow] = useState(fmtDate)
+  // const [dow, setDow] = useState(fmtDate)
   const [searchParams, setSearchParams] = useImmer({
     searchTerm: "",
     currentLatitude: null,
@@ -219,7 +220,7 @@ function App() {
       // functions
       function setCoordinateStateTransition(source) {
         startTransition(() => {
-          setCoordinatesState((draft) => {
+          setGlobalState((draft) => {
             draft.latitude = source.latitude
             draft.longitude = source.longitude
           })
