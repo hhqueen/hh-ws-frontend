@@ -17,7 +17,7 @@ const containerStyle = {
 
 }
 
-
+const loadScriptObj = { googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY, version: "beta", libraries: ["marker"] }
 
 export default function MapViewComp({ setShowRestaurantsState, showRestaurants, coordinatesState, restIdxHover }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
@@ -47,7 +47,7 @@ export default function MapViewComp({ setShowRestaurantsState, showRestaurants, 
     )
   })
 
-  const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY, version: "beta", libraries: ["marker"] })
+  const { isLoaded } = useLoadScript(loadScriptObj)
 
   if (!isLoaded
     // && (coordinatesState.latitude == 0 && coordinatesState.longitude == 0) 

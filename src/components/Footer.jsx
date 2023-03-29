@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import LogoSmall from './Logo/LogoSmall'
+import LogoSmall from './Shared/Logo/LogoSmall'
 import Copyright from './Copyright'
 
 export default function Footer({setFooterHeight, contentHeight}) {

@@ -1,6 +1,6 @@
 import React from 'react'
-import militaryTimeConverter from "../../helperFunctions/militaryTimeConverter"
-import dateConverter from "../../helperFunctions/dateConverter"
+import militaryTimeConverter from "../../../helperFunctions/militaryTimeConverter"
+import dateConverter from "../../../helperFunctions/dateConverter"
 
 import HHHoursHeader from './HHHoursHeader'
 import HHHour from './HHHour'

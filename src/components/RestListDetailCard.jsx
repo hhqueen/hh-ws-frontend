@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 // components
 import DistancePartialComp from './DistancePartialComp'
 // import HHHours from './HHHours/HHHours'
-import HHHoursContainer from './HHHours/HHHoursContainer'
+import HHHoursContainer from './Shared/HHHours/HHHoursContainer'
 // function/data imports
 import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"

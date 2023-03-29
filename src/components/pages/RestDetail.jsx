@@ -9,7 +9,7 @@ import { TbPhoneCall } from "react-icons/tb"
 import axios from "axios"
 //Components
 // import HHHours from '../HHHours/HHHours'
-import HHHoursContainer from '../HHHours/HHHoursContainer'
+import HHHoursContainer from '../Shared/HHHours/HHHoursContainer'
 import MenuItems from '../MenuItems'
 import LoadingComp from '../LoadingComp'
 import EditDeleteRestComp from '../EditDeleteRestComp'

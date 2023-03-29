@@ -8,8 +8,8 @@ import Alpha2BannerComp from './Alpha2BannerComp'
 import { FiMail } from 'react-icons/fi'
 import apilogger from '../helperFunctions/apiLogger'
 import SearchBar from './SearchBar'
-import LogoSmall from './Logo/LogoSmall'
-import IG_Logo from './Logo/IG_Logo'
+import LogoSmall from './Shared/Logo/LogoSmall'
+import IG_Logo from './Shared/Logo/IG_Logo'
 import { useMediaQuery } from 'react-responsive'
 
 
