@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useImmer } from 'use-immer'
 import axios from 'axios'
 import date from 'date-and-time'
-import LoadingComp from '../../../LoadingComp'
+import LoadingComp from '../../../Shared/LoadingComp'
 
 const headers = [
   "Daily Vistors", "Web", "Mobile", "Registered", "Unregistered"

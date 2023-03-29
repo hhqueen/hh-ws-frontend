@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useState } from 'react'
 import { useEffect } from 'react'
-import LoadingComp from './LoadingComp'
+import LoadingComp from './Shared/LoadingComp'
 import RestListDetailCard from './RestListDetailCard'
 // const RestListDetailCard = lazy(() => import('./RestListDetailCard'))
 

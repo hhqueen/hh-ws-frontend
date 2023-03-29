@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useNavigate} from "react-router-dom"
 import { useImmer } from 'use-immer'
 import Profile from './Profile'
-import LoadingComp from '../../LoadingComp'
+import LoadingComp from '../../Shared/LoadingComp'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 

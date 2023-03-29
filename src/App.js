@@ -12,7 +12,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { useImmer } from "use-immer"
 
 // import components
-import LoadingComp from './components/LoadingComp';
+import LoadingComp from './components/Shared/LoadingComp';
 import Footer from './components/Footer';
 
 // import source data

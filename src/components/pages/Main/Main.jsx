@@ -5,7 +5,7 @@ import MapViewComp from '../../MapViewComp'
 import MapViewJSLoaderExperimental from '../../MapViewJSLoaderExperimental'
 // import MapGMapWrapper from '../../MapGMapWrapper'
 
-import LoadingComp from '../../LoadingComp'
+import LoadingComp from '../../Shared/LoadingComp'
 // import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import './Main.css'
 import { useMediaQuery } from 'react-responsive'

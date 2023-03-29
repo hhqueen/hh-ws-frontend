@@ -2,7 +2,7 @@ import React, {  useMemo} from 'react'
 // import { GoogleMap, LoadScript, useLoadScript, MarkerF, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api'
 import { GoogleMap, useLoadScript, MarkerF} from '@react-google-maps/api'
 import { useMediaQuery } from 'react-responsive';
-import LoadingComp from './LoadingComp';
+import LoadingComp from './Shared/LoadingComp';
 import MarkerInfoBoxComp from './MarkerInfoBoxComp';
 
 const containerStyle = {
@@ -20,6 +20,7 @@ const containerStyle = {
 const loadScriptObj = { googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY, version: "beta", libraries: ["marker"] }
 
 export default function MapViewComp({ setShowRestaurantsState, showRestaurants, coordinatesState, restIdxHover }) {
+  const { isLoaded } = useLoadScript(loadScriptObj)
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }), [coordinatesState])
 
@@ -47,7 +48,7 @@ export default function MapViewComp({ setShowRestaurantsState, showRestaurants, 
     )
   })
 
-  const { isLoaded } = useLoadScript(loadScriptObj)
+  
 
   if (!isLoaded
     // && (coordinatesState.latitude == 0 && coordinatesState.longitude == 0) 

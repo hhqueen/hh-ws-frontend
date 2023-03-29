@@ -6,7 +6,7 @@ import axios from "axios"
 
 import MessageModal from "./modals/MessageModal"
 import { useImmer } from 'use-immer'
-import LoadingComp from './LoadingComp'
+import LoadingComp from './Shared/LoadingComp'
 
 export default function EditDeleteRestComp({ id }) {
 

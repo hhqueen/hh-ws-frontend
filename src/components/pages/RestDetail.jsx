@@ -11,7 +11,7 @@ import axios from "axios"
 // import HHHours from '../HHHours/HHHours'
 import HHHoursContainer from '../Shared/HHHours/HHHoursContainer'
 import MenuItems from '../MenuItems'
-import LoadingComp from '../LoadingComp'
+import LoadingComp from '../Shared/LoadingComp'
 import EditDeleteRestComp from '../EditDeleteRestComp'
 import apiLogger from '../../helperFunctions/apiLogger'
 import qStringfromObj from '../../helperFunctions/qStringfromObj'

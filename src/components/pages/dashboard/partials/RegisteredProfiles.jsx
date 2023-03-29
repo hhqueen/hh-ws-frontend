@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import date from 'date-and-time'
-import LoadingComp from '../../../LoadingComp'
+import LoadingComp from '../../../Shared/LoadingComp'
 
 export default function RegisteredProfiles() {
   const [percentInc, setPercentInc] = useState(0)

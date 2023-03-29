@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, Bar, CartesianGrid } from 'recharts'
 import axios from 'axios'
 import { useImmer } from 'use-immer'
-import LoadingComp from '../../../LoadingComp'
+import LoadingComp from '../../../Shared/LoadingComp'
 
 export default function TopThreeCitiesBarGraph() {
   const [isLoading, setIsLoading] = useState(false)

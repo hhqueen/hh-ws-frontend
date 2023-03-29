@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import date from 'date-and-time'
-import LoadingComp from '../../../LoadingComp'
+import LoadingComp from '../../../Shared/LoadingComp'
 
 export default function WeeklyEmailSubs() {
   const [percentInc, setPercentInc] = useState(0)

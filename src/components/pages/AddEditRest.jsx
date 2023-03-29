@@ -13,7 +13,7 @@ import geoLocation from '../../helperFunctions/geoLocation'
 import YelpResponseModal from '../modals/YelpResponseModal'
 import BulkHoursUpdateModal from '../modals/BulkHoursUpdateModal'
 import MessageModal from '../modals/MessageModal'
-import LoadingComp from '../LoadingComp'
+import LoadingComp from '../Shared/LoadingComp'
 import ImageUploadModal from '../modals/ImageUploadModal'
 import { siteSettings } from "../../sourceData/siteSettings"
 import {
