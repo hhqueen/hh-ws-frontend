@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"
 
 // components
 import DistancePartialComp from './DistancePartialComp'
-import HHHours from './HHHours/HHHours'
+// import HHHours from './HHHours/HHHours'
+import HHHoursContainer from './HHHours/HHHoursContainer'
 // function/data imports
 import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
@@ -29,7 +30,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
         return dayFilterFlag
     }).map((hour, idx) => {
         return (
-            <HHHours
+            <HHHoursContainer
                 key={`restDetailCard-${restaurantInfo._id}-${idx}`}
                 hour={hour}
                 timeOutputVal={1}

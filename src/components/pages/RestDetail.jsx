@@ -8,7 +8,8 @@ import { TbPhoneCall } from "react-icons/tb"
 
 import axios from "axios"
 //Components
-import HHHours from '../HHHours/HHHours'
+// import HHHours from '../HHHours/HHHours'
+import HHHoursContainer from '../HHHours/HHHoursContainer'
 import MenuItems from '../MenuItems'
 import LoadingComp from '../LoadingComp'
 import EditDeleteRestComp from '../EditDeleteRestComp'
@@ -76,7 +77,7 @@ export default function RestDetail({ mainDivStyle }) {
 
   const mapHours = restData.hourSet.hours.map((hour, idx) => {
     return (
-      <HHHours
+      <HHHoursContainer
         key={`${id}-${hour}-${idx}`}
         hour={hour}
         timeOutputVal={1}

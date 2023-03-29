@@ -45,7 +45,7 @@ export default function HHHours({ hour, timeOutputVal }) {
     return (
         <div className='grid grid-cols-7 pl-3'>   
             <p
-                className={`${timePTagClass} col-start-1 col-end-1 `}
+                className={`${timePTagClass} col-start-0 col-end-0 `}
             >{dayOweek}</p>
 
             <div className='flex mx-5 col-start-2 col-span-3'>
