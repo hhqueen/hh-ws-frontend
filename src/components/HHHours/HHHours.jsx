@@ -3,8 +3,8 @@ import React from 'react'
 // const dateConverter = require("../helperFunctions/dateConverter")
 // const militaryTimeConverter = require("../helperFunctions/militaryTimeConverter")
 
-import militaryTimeConverter from "../helperFunctions/militaryTimeConverter"
-import dateConverter from "../helperFunctions/dateConverter"
+import militaryTimeConverter from "../../helperFunctions/militaryTimeConverter"
+import dateConverter from "../../helperFunctions/dateConverter"
 
 export default function HHHours({ hour, timeOutputVal }) {
     // console.log(timeOutputVal)

@@ -1,27 +1,29 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react'
+import React, {  useMemo} from 'react'
 // import { GoogleMap, LoadScript, useLoadScript, MarkerF, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api'
-import { GoogleMap, useLoadScript, MarkerF, OverlayView, GoogleMapProps, TransitLayer } from '@react-google-maps/api'
+import { GoogleMap, useLoadScript, MarkerF} from '@react-google-maps/api'
 import { useMediaQuery } from 'react-responsive';
 import LoadingComp from './LoadingComp';
 import MarkerInfoBoxComp from './MarkerInfoBoxComp';
-import { useImmer } from 'use-immer';
 
-const containerStyleTWmd = {
-  width: `700px`,
-  height: `100%`
+const containerStyle = {
+  sm:{
+    width: `100%`,
+    height: `1000px`
+  },
+  md: {
+    width: `1000px`,
+    height: `100%`
+  },
+
 }
 
-const containerStyleTWsm = {
-  width: `100%`,
-  height: `300px`
-}
 
-export default function MapViewComp({ setShowRestaurantsState, showRestaurants, coordinatesState, restIdxHover,isFetchingRestData }) {
+
+export default function MapViewComp({ setShowRestaurantsState, showRestaurants, coordinatesState, restIdxHover }) {
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }), [coordinatesState])
-  const [markerStateArr, setMarkerStateArr] = useImmer(new Array())
-  const [infoBoxStateArr, setInfoBoxStateArr] = useImmer([])
-  
+
+
   const mapMarkers = showRestaurants.map((rest, idx) => {
     const labelNum = idx + 1
     let showOpacity = 0.7
@@ -40,8 +42,6 @@ export default function MapViewComp({ setShowRestaurantsState, showRestaurants, 
           markerZidx={zIdx}
           showRestaurants={showRestaurants}
           setShowRestaurantsState={setShowRestaurantsState}
-          setMarkerStateArr={setMarkerStateArr}
-          markerStateArr={markerStateArr}
         />
       </>
     )
@@ -49,7 +49,7 @@ export default function MapViewComp({ setShowRestaurantsState, showRestaurants, 
 
   const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY, version: "beta", libraries: ["marker"] })
 
-  if (!isLoaded 
+  if (!isLoaded
     // && (coordinatesState.latitude == 0 && coordinatesState.longitude == 0) 
     // && isFetchingRestData
   ) return <LoadingComp />
@@ -58,14 +58,13 @@ export default function MapViewComp({ setShowRestaurantsState, showRestaurants, 
       <GoogleMap
         // ref={mapRef}
         zoom={13}
-        mapContainerStyle={isTWmd ? containerStyleTWmd : containerStyleTWsm}
-        // center={restIdxHover < 0 ? center : { lat: showRestaurants[restIdxHover].latitude, lng: showRestaurants[restIdxHover].longitude }}
+        mapContainerStyle={isTWmd ? containerStyle.md : containerStyle.sm}
         center={center}
         onClick={() => {
-          console.log("map click")
+          // closes all info box upon clicking on map
           showRestaurants.forEach((rest, idx) => {
             if (rest.showInfoBox) {
-              console.log("idx:", idx)
+              // console.log("idx:", idx)
               setShowRestaurantsState(draft => {
                 draft[idx].showInfoBox = false
               })
@@ -83,9 +82,7 @@ export default function MapViewComp({ setShowRestaurantsState, showRestaurants, 
           animation={"bounce"}
           icon={'https://res.cloudinary.com/hhqueen/image/upload/w_50,c_scale/v1675632375/website_assets/hhq-icon_tgc27d.png'}
           clickable={true}
-          onClick={() => { console.log("center clicked") }}
           position={center}
-
         />
 
         {/* render Markers */}

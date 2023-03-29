@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { MarkerF, InfoBox, MarkerProps } from '@react-google-maps/api'
-import { useNavigate } from "react-router-dom"
+import { MarkerF, InfoBox,  } from '@react-google-maps/api'
 import { useImmer } from 'use-immer'
 import RestListDetailCard from './RestListDetailCard'
 
@@ -8,15 +7,9 @@ export default function MarkerInfoBoxComp({
     labelNum,
     idx,
     restaurantData,
-    markerOpacity,
-    markerZidx,
     setShowRestaurantsState,
     showRestaurants,
-    markersRef
 }) {
-    const [infoBoxState, setInfoBoxState] = useState({
-        isOpen: false
-    })
     const [markerState, setMarkerState] = useImmer({
         clicked: false,
         markerObj: null
@@ -108,7 +101,6 @@ export default function MarkerInfoBoxComp({
                     onLoad={infoBoxOnLoad}
                     options={infoBoxOptions}
                     position={{ lat: restaurantData.latitude, lng: restaurantData.longitude }}
-                    // anchor={}
                 >
                     
                     <RestListDetailCard

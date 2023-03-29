@@ -1,10 +1,10 @@
 // libraries
-import React, { useMemo, useContext } from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from "react-router-dom"
 
 // components
 import DistancePartialComp from './DistancePartialComp'
-import HHHours from './HHHours'
+import HHHours from './HHHours/HHHours'
 // function/data imports
 import dateConverter from "../helperFunctions/dateConverter"
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
@@ -45,8 +45,8 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
         // container div
         <div
             className='
-            my-1 h-[170px] w-[550px] py-3 flex flex-row items-center bg-white border shadow-md overflow-hidden
-            md:flex-row md:max-w-xl md:rounded-r-lg
+            my-1 h-[170px] min-h-[170px] py-3 flex flex-row items-center bg-white border shadow-md overflow-hidden
+            md:flex-row md:w-[550px] md:max-w-xl md:rounded-r-lg
             hover:bg-gray-100 
             dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
         // onMouseEnter={()=>{

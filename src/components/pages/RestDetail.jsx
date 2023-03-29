@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
 import showApplicableFilters from "../../helperFunctions/showApplicableFilters"
 import { siteSettings } from "../../sourceData/siteSettings"
@@ -7,9 +7,8 @@ import { FaDirections } from "react-icons/fa"
 import { TbPhoneCall } from "react-icons/tb"
 
 import axios from "axios"
-import date from 'date-and-time'
 //Components
-import HHHours from '../HHHours'
+import HHHours from '../HHHours/HHHours'
 import MenuItems from '../MenuItems'
 import LoadingComp from '../LoadingComp'
 import EditDeleteRestComp from '../EditDeleteRestComp'
