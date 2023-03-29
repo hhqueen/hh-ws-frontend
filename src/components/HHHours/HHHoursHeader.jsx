@@ -1,18 +1,18 @@
 import React from 'react'
 
-export default function HHHoursHeader() {
+export default function HHHoursHeader({colStyle}) {
   return (
     <>
         <p
-          className={`text-[11px] justify-items-start col-start-1 col-end-1 `}
+          className={colStyle.col1}
         >Day</p>
 
         <p
-          className={`text-[11px] justify-items-start flex mx-5 col-start-2 col-span-3`}
+          className={colStyle.col2}
         >Happy Hour</p>
 
         <p
-          className={`text-[11px] justify-items-start flex mx-5 col-start-5 col-span-3`}
+          className={colStyle.col3}
         >Late Night</p>
     </>
   )
