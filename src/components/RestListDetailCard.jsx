@@ -45,8 +45,8 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
         // container div
         <div
             className='
-            my-1 h-fit py-3 flex flex-row items-center bg-white border shadow-md 
-            md:flex-row md:min-h-fit md:max-w-xl md:rounded-r-lg
+            my-1 h-[170px] w-[550px] py-3 flex flex-row items-center bg-white border shadow-md overflow-hidden
+            md:flex-row md:max-w-xl md:rounded-r-lg
             hover:bg-gray-100 
             dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
         // onMouseEnter={()=>{
@@ -59,9 +59,11 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
         // }}
 
         >
-            <p
-                className='w-10 px-2 h-full'
-            >{idx + 1}</p>
+            <div>
+                <p
+                    className='w-10 px-2 h-full text-center'
+                >{idx + 1}</p>
+            </div>
             <img
                 id={`RestListDetailCard_img_${restaurantInfo._id}`}
                 name={`RestListDetailCard_img_${restaurantInfo._id}`}

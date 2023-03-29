@@ -13,14 +13,16 @@ export default function MarkerInfoBoxComp({
     setShowRestaurantsState,
     showRestaurants,
     markersRef
-    // infoBoxOpenArr,
-    // setInfoBoxOpenArr
 }) {
-    const [showInfoBox, setShowInfoBox] = useState(false)
-    const [markerState, setMarkerState] = useImmer({
-        opacity: markerOpacity,
-        zIdx: markerZidx
+    const [infoBoxState, setInfoBoxState] = useState({
+        isOpen: false
     })
+    const [markerState, setMarkerState] = useImmer({
+        clicked: false,
+        markerObj: null
+    })
+
+    
     
 
     const markerOnLoad = marker => {
@@ -31,18 +33,27 @@ export default function MarkerInfoBoxComp({
         // console.log("marker:", marker)
         // markersRef.current.add(marker)
         // console.log("markersRef:",markersRef.current)
+        setMarkerState(draft=>{draft.markerObj = marker})
         marker.setOpacity(defaultOpacity)
         marker.setZIndex(defaultZidx)
         marker.addListener("mouseover", ()=>{
-            console.log("mouseOver")
+            // console.log("mouseOver")
             marker.setOpacity(hoverOpacity)
             marker.setZIndex(hoverZidx)
         })
 
+        marker.addListener("click", ()=>{
+            // console.log("click")
+            setMarkerState((draft)=>{draft.clicked = true})
+        })
+
         marker.addListener("mouseout", ()=>{
-            console.log("mouseout")
-            marker.setOpacity(defaultOpacity)
-            marker.setZIndex(defaultZidx)
+
+            if(!markerState.clicked) {
+                // console.log("mouseout")
+                marker.setOpacity(defaultOpacity)
+                marker.setZIndex(defaultZidx)
+            }
         })
     }
 
@@ -54,9 +65,10 @@ export default function MarkerInfoBoxComp({
     const infoBoxOnLoad = infoBox => {
         // console.log('infoBox: ', infoBox)
         infoBox.pixelOffset = {
-            height: -270,
-            width: -100
+            height: -170-39,
+            width: -550/2
         }
+        infoBox.anchor = markerState.markerObj
         infoBox.enableEventPropagation = false
         // infoBox.alignBottom = true
     };
@@ -71,25 +83,18 @@ export default function MarkerInfoBoxComp({
                 clickable={true}
                 animation={window.google.maps.Animation.DROP}
                 onClick={() => {
-                    // console.log(`${restaurantData.name} clicked`)
-                    // console.log("marker restaurantData:", restaurantData)
-                    // setShowInfoBox(!showInfoBox)
-
                     // open/closes info box
-                    setShowRestaurantsState((draft)=>{
-                        let showInfoBoxVal = draft[idx].showInfoBox
-                        draft[idx].showInfoBox = !showInfoBoxVal
-                    })
-
-                    // code to close other infoboxes (WIP)
-                    for(let i; i < showRestaurants.length; i++){
-                        if(i !== idx && showRestaurants[i].showInfoBox){
-                            setShowRestaurantsState(draft=>{draft[i].showInfoBox = false})
-                        }
-                    }
-                    // setInfoBoxOpenArr((draft)=>{
-                    //     draft[idx].isOpen = true
-                    // })
+                        setShowRestaurantsState((draft)=>{
+                            // iterates through all rests and close all other infoboxes not opened
+                            draft.forEach((rest, lIdx)=>{
+                                if(idx !== lIdx) {
+                                    draft[lIdx].showInfoBox = false
+                                } else {
+                                    let showInfoBoxVal = draft[idx].showInfoBox
+                                    draft[idx].showInfoBox = !showInfoBoxVal
+                                }
+                            })
+                        })
                 }}
                 label={`${labelNum}`}
                 position={{ lat: restaurantData.latitude, lng: restaurantData.longitude }}
@@ -99,6 +104,7 @@ export default function MarkerInfoBoxComp({
             {
                 showRestaurants[idx].showInfoBox &&
                 <InfoBox
+                    anchor={markerState.markerObj}
                     onLoad={infoBoxOnLoad}
                     options={infoBoxOptions}
                     position={{ lat: restaurantData.latitude, lng: restaurantData.longitude }}
@@ -111,7 +117,6 @@ export default function MarkerInfoBoxComp({
                         // dow={dow}
                         idx={idx}
                     />
-
 
                 </InfoBox>
             }
