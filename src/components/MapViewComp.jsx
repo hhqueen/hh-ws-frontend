@@ -1,4 +1,4 @@
-import React, {  useMemo} from 'react'
+import React, {useMemo} from 'react'
 // import { GoogleMap, LoadScript, useLoadScript, MarkerF, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api'
 import { GoogleMap, useLoadScript, MarkerF} from '@react-google-maps/api'
 import { useMediaQuery } from 'react-responsive';

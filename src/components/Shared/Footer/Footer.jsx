@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
-import LogoSmall from './Shared/Logo/LogoSmall'
-import Copyright from './Copyright'
+import LogoSmall from '../Logo/LogoSmall'
+import Copyright from './partials/Copyright'
 
 export default function Footer({setFooterHeight, contentHeight}) {
   const footerDiv = useRef(null)

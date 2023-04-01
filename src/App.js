@@ -13,7 +13,7 @@ import { useImmer } from "use-immer"
 
 // import components
 import LoadingComp from './components/Shared/LoadingComp';
-import Footer from './components/Footer';
+import Footer from './components/Shared/Footer/Footer';
 
 // import source data
 import { checkboxFilters } from "./sourceData/emptyDataTemplates"
@@ -50,7 +50,7 @@ const AddEditRest = lazy(() => import('./components/pages/AddEditRest'))
 // import AddEditRest from "./components/pages/AddEditRest"
 const RestDetail = lazy(() => import('./components/pages/RestDetail'))
 // import RestDetail from './components/pages/RestDetail';
-const NavBar = lazy(() => import('./components/NavBar'))
+const NavBar = lazy(() => import('./components/Shared/Navbar/NavBar'))
 // import NavBar from "./components/NavBar";
 const SignUp = lazy(() => import('./components/pages/SignUp'))
 // import SignUp from './components/pages/SignUp';
