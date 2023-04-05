@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useTransition, useContext } from 'react'
 
-import { dowList } from "../sourceData/dowList"
+import { dowList } from "../../../../sourceData/dowList"
 import { Select, Dropdown, Checkbox } from "flowbite-react"
-import apiLogger from "../helperFunctions/apiLogger"
-import {DowContext} from "../components/context/DowContext"
+import apiLogger from "../../../../helperFunctions/apiLogger"
+import {DowContext} from "../../../context/DowContext"
+
+// daypicker
+import DayPicker from './DayPicker'
 
 export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, setFilterParams }) {
     const [anyChecked, setAnyChecked] = useState(false)
@@ -115,6 +118,15 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
 
     return (
         <>
+            {/* new day picker code */}
+            <div
+                className='flex justify-center'
+            >   
+                <DayPicker
+                    dow={dow}
+                    setDow={setDow}
+                />
+            </div>
             <aside
                 className='w-full sm:w-[20rem] pb-2 sticky bg-white dark:bg-gray-800 z-40'
                 aria-label='Sidebar'
@@ -122,7 +134,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                 <div
                     className='flex justify-center sm:overflow-y-auto sm:py-4 sm:px-3 '
                 >
-                    <label
+                    {/* <label
                         className='w-fit'
                         htmlFor='dow'>
                         <Select
@@ -138,7 +150,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
                         >
                             {dowOptionsMap}
                         </Select>
-                    </label>
+                    </label> */}
                     <div
                         className='w-fit sm:w-fit'
                     >

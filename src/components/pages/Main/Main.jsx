@@ -12,7 +12,7 @@ import { useMediaQuery } from 'react-responsive'
 import { useImmer } from 'use-immer'
 
 const ListViewComp = lazy(() => import('../../ListViewComp'))
-const FilterComp = lazy(() => import('../../FilterComp'))
+const FilterComp = lazy(() => import('./partials/FilterComp'))
 
 export default function Main({
   UIFiltersProps,
@@ -46,9 +46,7 @@ export default function Main({
         height: mainDivStyle.minHeight,
         marginTop: mainDivStyle.marginTop
       }}
-      className='flex flex-col
-      sm:flex-row
-      '
+      className='flex justify-center'
     >
       {isTWmd &&
         <div
@@ -83,6 +81,9 @@ export default function Main({
           carrot
         </div>
       </section> */}
+      <div
+        className='flex flex-col'
+      >
       <Suspense fallback={<LoadingComp />}>
         <FilterComp
           setFilterParams={setFilterParams}
@@ -105,6 +106,7 @@ export default function Main({
           restListErrorMsg={restListErrorMsg}
         />
       </Suspense>
+      </div>
 
 
 

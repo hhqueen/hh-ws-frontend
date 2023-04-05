@@ -87,3 +87,13 @@ export const emptySearchParams = {
         long: 0
     }
 }
+
+export const dowMapping = {
+    0: {short:"M",medium:"Mon", long:"Monday"},
+    1: {short:"T",medium:"Tues", long:"Tuesday"},
+    2: {short:"W",medium:"Wed", long:"Wednesday"},
+    3: {short:"Th",medium:"Thurs", long:"Thursday"},
+    4: {short:"F",medium:"Fri", long:"Friday"},
+    5: {short:"Sa",medium:"Sat", long:"Saturday"},
+    6: {short:"Su",medium:"Sun", long:"Sunday"}
+}

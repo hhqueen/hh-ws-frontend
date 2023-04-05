@@ -352,7 +352,7 @@ function App() {
 
   const queryClient = new QueryClient()
   return (
-
+    <div>
     <QueryClientProvider client={queryClient}>
       <Router>
 
@@ -400,6 +400,7 @@ function App() {
                       showRestaurants={showRestaurantsState}
                       setFilterParams={setFilterParams}
                       filterParams={filterParams}
+                      dow={dow}
                       setDow={setDow}
                       searchParams={searchParams}
                       coordinatesState={coordinatesState}
@@ -497,6 +498,7 @@ function App() {
         />
       </Router>
     </QueryClientProvider >
+    </div>
   );
 }
 
