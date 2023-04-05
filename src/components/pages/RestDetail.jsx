@@ -151,6 +151,7 @@ export default function RestDetail({ mainDivStyle }) {
               {/* Hour Header */}
 
                 <HHHoursContainer
+                  timeOutputVal={1}
                   hourSet={restData.hourSet}
                 />
             </div>
