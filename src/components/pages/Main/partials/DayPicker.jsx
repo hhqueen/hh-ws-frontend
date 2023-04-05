@@ -1,13 +1,12 @@
 import React, {useContext, useTransition} from 'react'
+import LoadingComp from '../../../Shared/LoadingComp'
 import { DowContext } from "../../../context/DowContext"
 import { dowMapping } from '../../../../sourceData/emptyDataTemplates'
 
-export default function DayPicker({dow, setDow}) {
+export default function DayPicker({setDow}) {
     const [isPending, startTransition] = useTransition()
     const DowContextVal = useContext(DowContext)
     const daysInWeek = 7
-    console.log("dow:", dow)
-    console.log("dowContext:", DowContextVal)
     let daysPick = [
 
     ]
@@ -20,8 +19,8 @@ export default function DayPicker({dow, setDow}) {
         day.dayNum = i
         daysPick.push(day)
     }
-    const divUnpickedStyle = "flex border rounded-full h-[50px] w-[50px] p-3 justify-center items-center mx-3 hover:cursor-pointer"
-    const divPickedStyle = "flex border rounded-full h-[50px] w-[50px] p-3 justify-center items-center mx-3 bg-purple-600 hover:cursor-pointer text-white"
+    const divUnpickedStyle = "flex border rounded-full h-[45px] w-[45px] justify-center items-center mx-1 text-black bg-purple-300 hover:bg-purple-400 hover:cursor-pointer"
+    const divPickedStyle = "flex border rounded-full h-[45px] w-[45px] justify-center items-center mx-1 bg-purple-600 hover:cursor-pointer text-white"
 
     const renderDaysPicker = daysPick.map((day) => {
         let dayLong = dowMapping[day.dayNum].long
@@ -39,9 +38,10 @@ export default function DayPicker({dow, setDow}) {
             </>
         )
     })
+    // if(isPending) return <LoadingComp/>
     return (
         <div
-            className='flex'
+            className='flex w-fit'
         >{renderDaysPicker}</div>
     )
 }
