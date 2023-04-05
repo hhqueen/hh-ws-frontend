@@ -8,10 +8,10 @@ import MarkerInfoBoxComp from './MarkerInfoBoxComp';
 const containerStyle = {
   sm:{
     width: `100%`,
-    height: `1000px`
+    height: `700px`
   },
   md: {
-    width: `1000px`,
+    width: `700px`,
     height: `100%`
   },
 

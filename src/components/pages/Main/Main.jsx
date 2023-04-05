@@ -2,7 +2,7 @@ import { Suspense, lazy, useTransition, useState } from 'react'
 // import FilterComp from '../FilterComp'
 // import ListViewComp from '../ListViewComp'
 import MapViewComp from '../../MapViewComp'
-import MapViewJSLoaderExperimental from '../../MapViewJSLoaderExperimental'
+import MapViewJSLoaderExperimental from '../../Archived/MapViewJSLoaderExperimental'
 // import MapGMapWrapper from '../../MapGMapWrapper'
 
 import LoadingComp from '../../Shared/LoadingComp'
@@ -82,7 +82,7 @@ export default function Main({
         </div>
       </section> */}
       <div
-        className='flex flex-col'
+        className='flex flex-col w-fit md:w-[560px]'
       >
       <Suspense fallback={<LoadingComp />}>
         <FilterComp

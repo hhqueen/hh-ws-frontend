@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { useState, useEffect, useLayoutEffect, Suspense, lazy, useMemo, useTransition } from 'react'
+import { useState, useEffect, useLayoutEffect, Suspense, lazy, useMemo, useTransition, useReducer } from 'react'
 import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -82,6 +82,20 @@ function App() {
 
   // variables
   const componentName = "App.js"
+
+  // mobileView Reducer
+  const [mobileViewState, mobileViewDispatch] = useReducer(mobileViewReducer, {view: "list"})
+  function mobileViewReducer(state,action){
+    if (action.type === 'switchToMap') {
+      return {view:"map"};
+    } 
+    
+    if(action.type === 'switchToList') {
+      return {view:"list"};
+    }
+  }
+
+
   const [navBarHeight, setNavBarHeight] = useState(0)
   const [footerHeight, setFooterHeight] = useState(0)
   const [contentHeight, setContentHeight] = useState(0)

@@ -1,17 +1,21 @@
-import { useEffect, useRef } from 'react'
+// library imports
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { Navbar, Dropdown, Avatar } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
 import { useImmer } from 'use-immer'
-import { useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
+
+// internal comps
 import Alpha2BannerComp from '../../Alpha2BannerComp'
-import { FiMail } from 'react-icons/fi'
 import apilogger from '../../../helperFunctions/apiLogger'
 import SearchBar from './partials/SearchBar'
 import LogoSmall from '../Logo/LogoSmall'
 import IG_Logo from '../Logo/IG_Logo'
-import { useMediaQuery } from 'react-responsive'
 
+// react-icons
+import { FiMail } from 'react-icons/fi'
+import { FaMapMarkedAlt, FaListUl } from 'react-icons/fa'
 
 const emptyUserInfo = {
     "firstName": "",
@@ -31,6 +35,7 @@ export default function NavBar({
 
 
     const navBarDiv = useRef(null)
+    
     const renderSearchBar = true
     // const pathName = window.location.pathname
     // console.log("pathName:",pathName)
@@ -117,9 +122,8 @@ export default function NavBar({
 
 
                         {/* Search Inputs */}
-                        {/* logic that conditionally renders the search bar when NOT landing page */}
                         {(
-                            // pathName !== "/" && 
+                            // pathName !== "/" &&          // logic that conditionally renders the search bar when NOT landing page
                             renderSearchBar) &&
                             <>
                                 <div
@@ -135,6 +139,18 @@ export default function NavBar({
                             </>
                         }
 
+                        {
+                            !isTWmd && 
+                            <>
+                                {/* code to render map or list icon for mobile */}
+                                <div
+                                    className='flex flex-col justify-center items-center ml-2'
+                                >
+                                    <FaMapMarkedAlt/>
+                                    <FaListUl/>
+                                </div>
+                            </> 
+                        }
 
 
                         <div className="flex justify-around md:w-fit md:gap-10 md:order-2 items-center">

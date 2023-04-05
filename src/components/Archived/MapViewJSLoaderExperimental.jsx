@@ -3,9 +3,9 @@ import {createRoot} from "react-dom/client"
 import {renderToString } from "react-dom/server"
 import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
-import LoadingComp from './Shared/LoadingComp'
+import LoadingComp from '../Shared/LoadingComp'
 import { Loader, LoaderStatus } from '@googlemaps/js-api-loader'
-import RestListDetailCard from './RestListDetailCard'
+import RestListDetailCard from '../RestListDetailCard'
 
 
 export default function MapViewJSLoaderExperimental({ coordinatesState, showRestaurants, isFetchingRestData }) {
