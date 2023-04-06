@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { useState, useEffect, useLayoutEffect, Suspense, lazy, useMemo, useTransition, useReducer } from 'react'
+import { useState, useEffect, useLayoutEffect, Suspense, lazy, useMemo, useTransition, useReducer, useCallback } from 'react'
 import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -80,16 +80,16 @@ function App() {
   const componentName = "App.js"
 
   // mobileView Reducer
-  const [mobileViewState, mobileViewDispatch] = useReducer(mobileViewReducer, {view: "list"})
-  function mobileViewReducer(state,action){
-    if (action.type === 'switchToMap') {
-      return {view:"map"};
-    } 
+  // const [mobileViewState, mobileViewDispatch] = useReducer(mobileViewReducer, {view: "list"})
+  // function mobileViewReducer(state,action){
+  //   if (action.type === 'switchToMap') {
+  //     return {view:"map"};
+  //   } 
     
-    if(action.type === 'switchToList') {
-      return {view:"list"};
-    }
-  }
+  //   if(action.type === 'switchToList') {
+  //     return {view:"list"};
+  //   }
+  // }
 
 
   const [navBarHeight, setNavBarHeight] = useState(0)
@@ -121,7 +121,7 @@ function App() {
   const [isPendingTransition, startTransition] = useTransition()
 
   // restaurant filter function
-  const filterRests = (filterArr, restData) => {
+  const filterRests = useCallback((filterArr, restData) => {
     // console.log("filterArr:", filterArr)
     const trueFilters = filterArr.filter(filterParam => filterParam.value)
     // console.log("trueFilters:", trueFilters)
@@ -140,10 +140,10 @@ function App() {
     })
     // console.log("filteredRestaurants", filteredRestaurants)
     return filteredRestaurants
-  }
+  },[])
 
 
-  const filterRestByDay = (filteredRests, dayOweek, hasOnlyLateNightOnDay = false) => {
+  const filterRestByDay = useCallback((filteredRests, dayOweek, hasOnlyLateNightOnDay = false) => {
     const numOweek = dc_StrToNum(dayOweek)
     console.log("numOweek:",numOweek) 
     // console.log("filteredRests:",filteredRests)
@@ -159,7 +159,7 @@ function App() {
       return filterFlag
     })
     return filterRestsByDay
-  }
+  },[])
 
   // useMemos?
   const focusedRestIdx = useMemo(() => (restIdxHover), [restIdxHover])
@@ -168,7 +168,6 @@ function App() {
   useLayoutEffect(() => {
     // get recent search address
     const getMostRecentlySearchedAddress = () => {
-
       if (localStorage.getItem('sh')) {
         const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
         const mostRecentVal = getHistoryArr.length - 1
@@ -184,7 +183,7 @@ function App() {
       }
     }
     
-    if (searchParams.address === "" || addressState === "") {
+    if (searchParams.address === "" || addressState === "" || searchParams.address!==addressState) {
       const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
       console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
       setAddressState(gotRecentOrCurrentLoc)
@@ -196,6 +195,16 @@ function App() {
   // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
   useLayoutEffect(() => {
     const executePhaseZero = async () => {
+            // functions
+        const  setCoordinateStateTransition = (source) => {
+          startTransition(() => {
+            setCoordinatesState((draft) => {
+              draft.latitude = source.latitude
+              draft.longitude = source.longitude
+            })
+          })
+        }
+
       try {
         setIsFetchingRestData(true)
         console.log("executing phase 0")
@@ -217,6 +226,7 @@ function App() {
           const foundAddress = await geoForward(addressState)
           // console.log("foundAddress:", foundAddress)
           if (foundAddress.length > 0) {
+            console.log("setting Coordinate State:", foundAddress[0])
             setCoordinateStateTransition(foundAddress[0])
           } else {
             // if not
@@ -226,22 +236,11 @@ function App() {
       } catch (error) {
         console.log(error)
       }
-
-      // functions
-      function setCoordinateStateTransition(source) {
-        startTransition(() => {
-          setCoordinatesState((draft) => {
-            draft.latitude = source.latitude
-            draft.longitude = source.longitude
-          })
-        })
-      }
-
     }
-    // if(coordinatesState.latitude != 0 || coordinatesState.longitude != 0) {
+    if(addressState !== "") {
     executePhaseZero()
-    // }
-  }, [addressState, searchTermState])
+    }
+  }, [addressState])
 
 
   // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState]
@@ -265,10 +264,11 @@ function App() {
           screenHeight: window.innerHeight
         }
         queryString = qStringfromObj(queryParams)
+        console.log("built queryString:", queryString)
         const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
         const httpMethod = "get"
         const gotRests = await axios[httpMethod](getString)
-        // console.log("gotRests_V2:", gotRests.data)
+        console.log("gotRests_data:", gotRests.data)
 
         // add infobox open/close state in the data
         let allRestData = []
@@ -286,28 +286,33 @@ function App() {
         console.warn(error)
       }
     }
-    if (koadedProperly) {
+    if (koadedProperly && coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
       executePhaseOne()
     }
   }, [coordinatesState, distanceState])
 
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
   useLayoutEffect(() => {
-    console.log("executing phase 2")
-    let filteredRest = []
-    if (allRestaurantsState.length > 0) {
-      console.log("allRestaurantsState.length > 0, executing code")
-      // console.log("filteredRest:", filteredRest)
-
-      filteredRest = deepCopyObj(allRestaurantsState)
-      // console.log("deepcopied:", filteredRest)
-      // console.log("allRestaurantsState_inFilterRest:", allRestaurantsState)
-      filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
-      filteredRest = filterRests(filterParams, filteredRest)
-    } else {
-      console.log("allRestaurantsState.length = 0, skipping code")
+    const executePhaseTwo = () => {
+      console.log("executing phase 2")
+      let filteredRest = []
+      if (allRestaurantsState.length > 0) {
+        console.log("allRestaurantsState.length > 0, executing code")
+        // console.log("filteredRest:", filteredRest)
+  
+        filteredRest = deepCopyObj(allRestaurantsState)
+        // console.log("deepcopied:", filteredRest)
+        // console.log("allRestaurantsState_inFilterRest:", allRestaurantsState)
+        filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
+        filteredRest = filterRests(filterParams, filteredRest)
+      } else {
+        console.log("allRestaurantsState.length = 0, skipping code")
+      }
+      setFilteredRestaurantsState(filteredRest)
     }
-    setFilteredRestaurantsState(filteredRest)
+    if (koadedProperly && coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
+      executePhaseTwo()
+    }
   }, [allRestaurantsState, dow, filterParams, UIFilters])
 
 
@@ -316,7 +321,7 @@ function App() {
     console.log("executing error messaging")
     // if(isFetchingRestData) {
     // setRestListErrorMsg("")
-    if (koadedProperly) return
+    
     if (filteredRestaurantsState.length === 0) {
       console.log("error_msg1")
       setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
@@ -327,6 +332,7 @@ function App() {
       setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
       return
     }
+    if (koadedProperly) return console.log("no errors to report")
     // }
   }
 
@@ -334,14 +340,19 @@ function App() {
   // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]
   // also handles restaurant list error message rendering
   useLayoutEffect(() => {
-    // currently there is no sorting.
-    console.log("executing phase 3")
-    // console.log("filteredRestaurantsState_v2:", filteredRestaurantsState)
-    let sortedRestaurants = filteredRestaurantsState
-    // sorting code goes here (WIP)
-    setShowRestaurantsState(sortedRestaurants)
-    handleRestListErrorMsg()
-    setIsFetchingRestData(false)
+    const executePhaseThree = () =>{
+      // currently there is no sorting.
+      console.log("executing phase 3")
+      // console.log("filteredRestaurantsState_v2:", filteredRestaurantsState)
+      let sortedRestaurants = filteredRestaurantsState
+      // sorting code goes here (WIP)
+      setShowRestaurantsState(sortedRestaurants)
+      handleRestListErrorMsg()
+      setIsFetchingRestData(false)
+    }
+    if (koadedProperly && coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
+      executePhaseThree()
+    }
   }, [filteredRestaurantsState])
 
   // handles no restaurants

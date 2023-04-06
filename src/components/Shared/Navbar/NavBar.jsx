@@ -74,12 +74,12 @@ export default function NavBar({
         setNavBarHeight(navBarDiv.current.clientHeight)
     })
 
-    useEffect(() => {
-        // console.log("searchParams:",searchParams)
-        if (searchParams.address.length === 0) {
-            setSearchParams((draft) => { draft.address = "Current Location" })
-        }
-    }, [])
+    // useEffect(() => {
+    //     // console.log("searchParams:",searchParams)
+    //     if (searchParams.address.length === 0) {
+    //         setSearchParams((draft) => { draft.address = "Current Location" })
+    //     }
+    // }, [])
 
     // create / update search history
 
