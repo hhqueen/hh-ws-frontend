@@ -4,6 +4,7 @@ import WeeklyEmailSubs from './partials/WeeklyEmailSubs'
 import DailyVisitors from './partials/DailyVisitors'
 import RegisteredProfiles from './partials/RegisteredProfiles'
 import TopThreeRestPerCity from './partials/TopThreeRestPerCity'
+import TotalRestaurants from './partials/TotalRestaurants'
 
 export default function DashBoard({ mainDivStyle }) {
   return (
@@ -12,8 +13,9 @@ export default function DashBoard({ mainDivStyle }) {
       className="grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2"
     >
       <section
-        className='flex items-center justify-center'
+        className='flex flex-col items-center justify-center'
       >
+        <TotalRestaurants/>
         <TopThreeRestPerCity />
       </section>
       <section

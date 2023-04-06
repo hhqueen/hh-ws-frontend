@@ -25,14 +25,16 @@ const militaryTimeConverter = (value, outputVal = 0) => {
     // console.log("ampm:",ampm)
 
     let minute = 0// default 0
+    let minuteString = ""
     //calculate minute
     if (value % 1 !== 0){
       minute = Math.floor((value % 1)*60)
       // console.log("minute if 1")
       value = value - value % 1
+      minuteString = String(minute)
     } 
     if (minute < 10) {
-      minute = `0${minute}`
+      minuteString = `0${minute}`
       // console.log("minute if 2")
     }
     // console.log("minute:",minute)
@@ -51,14 +53,18 @@ const militaryTimeConverter = (value, outputVal = 0) => {
 
     }
     if (hour < 10) {
-      hour = `0${hour}`
+      hour = `${hour}`
     }
     // console.log("hour",hour)
 
     // need to add code to convert and return a string
     // timeString = `${hour}:${minute} ${ampm}`
-
-    timeString = `${hour}:${minute}`
+    if(minute == 0) {
+      timeString = `${hour}`
+    } else {
+      timeString = `${hour}:${minuteString}`
+    }
+    
     if(outputVal === 1) {
       timeString = `${timeString} ${ampm}`
     }
