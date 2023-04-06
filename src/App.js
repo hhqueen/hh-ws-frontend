@@ -22,7 +22,6 @@ import { checkboxFilters } from "./sourceData/emptyDataTemplates"
 // import useGeolocation from "../src/components/customHooks/useGeolocation.js"
 
 // require functions
-import dateConverter from "./helperFunctions/dateConverter"
 import qStringfromObj from './helperFunctions/qStringfromObj';
 import jwtDecode from 'jwt-decode';
 import geoForward from './helperFunctions/radarAPI/geofoward';
@@ -30,9 +29,6 @@ import geoForward from './helperFunctions/radarAPI/geofoward';
 import geoLocation from "./helperFunctions/geoLocation"
 
 
-
-
-// const dateConverter = require("./helperFunctions/dateConverter")
 // const getCoord = require("./helperFunctions/getCoord.js")
 // const geoLocation = require("./helperFunctions/geoLocation.js")
 
@@ -43,7 +39,7 @@ import { CoordinateStateContext } from './components/context/CoordinatesStateCon
 import { DowContext } from './components/context/DowContext';
 // import {globalState, setGlobalState} from "./components/context/CoordinatesStateContext"
 
-
+const {dc_StrToNum} = require("./helperFunctions/dowConv")
 const Main = lazy(() => import('./components/pages/Main/Main'))
 // import Main from './components/pages/Main';
 const AddEditRest = lazy(() => import('./components/pages/AddEditRest'))
@@ -148,8 +144,8 @@ function App() {
 
 
   const filterRestByDay = (filteredRests, dayOweek, hasOnlyLateNightOnDay = false) => {
-    const numOweek = dateConverter(dayOweek, false)
-    // console.log("numOweek:",numOweek) 
+    const numOweek = dc_StrToNum(dayOweek)
+    console.log("numOweek:",numOweek) 
     // console.log("filteredRests:",filteredRests)
     const filterRestsByDay = filteredRests.filter((rest, idx) => {
       //  console.log(`rest${idx}:`, rest)

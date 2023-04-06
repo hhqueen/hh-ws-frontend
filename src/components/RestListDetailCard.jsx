@@ -7,13 +7,16 @@ import DistancePartialComp from './DistancePartialComp'
 // import HHHours from './HHHours/HHHours'
 import HHHoursContainer from './Shared/HHHours/HHHoursContainer'
 // function/data imports
-import dateConverter from "../helperFunctions/dateConverter"
+
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
 import EditDeleteRestComp from './EditDeleteRestComp'
 import apiLogger from '../helperFunctions/apiLogger'
 // context
 import { CoordinateStateContext } from './context/CoordinatesStateContext'
 import { DowContext } from './context/DowContext'
+
+// requires:
+const {dc_StrToNum} = require("../helperFunctions/dowConv")
 
 export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInfo }) {
     const navigate = useNavigate()
@@ -24,7 +27,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
     const dowContextVal = useContext(DowContext)
 
     const dowHours = restaurantInfo.hourSet.hours.filter((day) => {
-        const numOfDay = dateConverter(dowContextVal, false)
+        const numOfDay = dc_StrToNum(dowContextVal)
         // console.log("numOfDay", numOfDay)
         const dayFilterFlag = numOfDay === day.day
         return dayFilterFlag

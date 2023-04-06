@@ -1,9 +1,10 @@
 import React from 'react'
 import militaryTimeConverter from "../../../helperFunctions/militaryTimeConverter"
-import dateConverter from "../../../helperFunctions/dateConverter"
 
 import HHHoursHeader from './HHHoursHeader'
 import HHHour from './HHHour'
+
+const {dc_StrToNum, dc_numToStr} = require("../../../helperFunctions/dowConv")
 
 export default function HHHoursContainer({ hourSet,timeOutputVal, dow = null }) {
 
@@ -16,10 +17,10 @@ export default function HHHoursContainer({ hourSet,timeOutputVal, dow = null }) 
     let renderHours = <></>
     let filteredHours = hourSet.hours
     if (dow !== null) {
-        filteredHours = filteredHours.filter(i => { return dateConverter(dow,false) === i.day })
+        filteredHours = filteredHours.filter(i => { return dc_StrToNum(dow) === i.day })
     }
     renderHours = filteredHours?.map((hour) => {
-        const dayOfweek = dateConverter(hour.day, true)
+        const dayOfweek = dc_numToStr(hour.day, "medium")
         const displayStart1 = militaryTimeConverter(hour.start1, timeOutputVal)
         let displayEnd1 = null
         if (hour.end1close) {
