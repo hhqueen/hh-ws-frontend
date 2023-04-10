@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useTransition, useContext } from 'react'
 
 import { dowList } from "../../../../sourceData/dowList"
-import { Select, Dropdown, Checkbox } from "flowbite-react"
+import { Dropdown, Checkbox } from "flowbite-react"
 import apiLogger from "../../../../helperFunctions/apiLogger"
-import {DowContext} from "../../../context/DowContext"
+import { GlobalStateContext } from '../../../context/GlobalStateContext'
 
 // daypicker
 import DayPicker from './DayPicker'
@@ -12,7 +12,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
     const [anyChecked, setAnyChecked] = useState(false)
     const componentName = "FilterComp"
     const [isPendingTransition, startTransition] = useTransition()
-    const DowContextVal = useContext(DowContext)
+    const DowContextVal = useContext(GlobalStateContext.dow)
     const filtersMap = filterParams.map((filterVal) => {
         return (
             <Dropdown.Item>

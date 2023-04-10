@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom"
 import DistancePartialComp from './DistancePartialComp'
 // import HHHours from './HHHours/HHHours'
 import HHHoursContainer from './Shared/HHHours/HHHoursContainer'
-// function/data imports
-
 import showApplicableFilters from "../helperFunctions/showApplicableFilters"
 import EditDeleteRestComp from './EditDeleteRestComp'
+
+// function/data imports
 import apiLogger from '../helperFunctions/apiLogger'
+
 // context
-import { CoordinateStateContext } from './context/CoordinatesStateContext'
-import { DowContext } from './context/DowContext'
+import { GlobalStateContext } from './context/GlobalStateContext'
 
 // requires:
 const {dc_StrToNum} = require("../helperFunctions/dowConv")
@@ -23,8 +23,8 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
     const componentName = 'RestListDetailCard'
     const cuisineString = restaurantInfo.cuisines.join(", ")
     const applicableFilters = showApplicableFilters(restaurantInfo.filterParams)
-    const coordinatesStateContextVal = useContext(CoordinateStateContext)
-    const dowContextVal = useContext(DowContext)
+    const coordinatesStateContextVal = useContext(GlobalStateContext.coordinateState)
+    const dowContextVal = useContext(GlobalStateContext.dow)
 
     const dowHours = restaurantInfo.hourSet.hours.filter((day) => {
         const numOfDay = dc_StrToNum(dowContextVal)

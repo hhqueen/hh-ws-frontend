@@ -1,11 +1,10 @@
 import React, {useContext, useTransition} from 'react'
-import LoadingComp from '../../../Shared/LoadingComp'
-import { DowContext } from "../../../context/DowContext"
+import { GlobalStateContext } from '../../../context/GlobalStateContext'
 import { dowMapping } from '../../../../sourceData/emptyDataTemplates'
 
 export default function DayPicker({setDow}) {
     const [isPending, startTransition] = useTransition()
-    const DowContextVal = useContext(DowContext)
+    const DowContextVal = useContext(GlobalStateContext.dow)
     const daysInWeek = 7
     let daysPick = [
 

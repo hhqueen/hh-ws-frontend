@@ -35,11 +35,9 @@ import geoLocation from "./helperFunctions/geoLocation"
 // const RestDetail = lazy(() => import('./components/pages/RestDetail'))
 
 // Context
-import { CoordinateStateContext } from './components/context/CoordinatesStateContext';
-import { DowContext } from './components/context/DowContext';
-// import {globalState, setGlobalState} from "./components/context/CoordinatesStateContext"
+import { GlobalStateContext } from './components/context/GlobalStateContext';
 
-const {dc_StrToNum} = require("./helperFunctions/dowConv")
+
 const Main = lazy(() => import('./components/pages/Main/Main'))
 // import Main from './components/pages/Main';
 const AddEditRest = lazy(() => import('./components/pages/AddEditRest'))
@@ -54,11 +52,11 @@ const Login = lazy(() => import('./components/pages/Login'))
 // import Login from './components/pages/Login';
 const Profile = lazy(() => import('./components/pages/ProfileSettings/ProfileContainer'))
 const LandingPage = lazy(() => import('./components/pages/LandingPage/LandingPage'))
-
 const DashBoard = lazy(() => import('./components/pages/dashboard/DashBoard'))
 // import Login from './components/pages/Login';
 
-
+// require functions
+const { dc_StrToNum } = require("./helperFunctions/dowConv")
 const { deepCopyObj } = require("./helperFunctions/deepCopy")
 // const fmtDate = date.format(new Date(), 'dddd')
 
@@ -75,23 +73,13 @@ function App() {
   const [searchTermState, setSearchTermState] = useImmer("")
   const [restIdxHover, setRestIdxHover] = useState(-1)
   const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
+  const [globalContextVar, setGlobalContextVar] = useImmer({
+    dow:null,
+    coordinatesState:null
+  })
 
   // variables
   const componentName = "App.js"
-
-  // mobileView Reducer
-  // const [mobileViewState, mobileViewDispatch] = useReducer(mobileViewReducer, {view: "list"})
-  // function mobileViewReducer(state,action){
-  //   if (action.type === 'switchToMap') {
-  //     return {view:"map"};
-  //   } 
-    
-  //   if(action.type === 'switchToList') {
-  //     return {view:"list"};
-  //   }
-  // }
-
-
   const [navBarHeight, setNavBarHeight] = useState(0)
   const [footerHeight, setFooterHeight] = useState(0)
   const [contentHeight, setContentHeight] = useState(0)
@@ -162,6 +150,14 @@ function App() {
 
   // useMemos?
   const focusedRestIdx = useMemo(() => (restIdxHover), [restIdxHover])
+
+  // set global context variable
+  useEffect(()=>{
+    setGlobalContextVar(draft=>{
+      draft.dow = dow
+      draft.coordinatesState = coordinatesState
+    })
+  },[dow,coordinatesState])
 
   // init 
   useLayoutEffect(() => {
@@ -413,8 +409,9 @@ function App() {
             path="/restaurants"
             element={
               <Suspense fallback={<LoadingComp />}>
-                <CoordinateStateContext.Provider value={coordinatesState}>
-                  <DowContext.Provider value={dow}>
+                {/* <CoordinateStateContext.Provider value={coordinatesState}>
+                  <DowContext.Provider value={dow}> */}
+                    <GlobalStateContext.Provider value = {GlobalStateContext}>
                     <Main
                       isFetchingRestData={isFetchingRestData}
                       showRestaurants={showRestaurantsState}
@@ -433,8 +430,9 @@ function App() {
                       focusedRestIdx={focusedRestIdx}
                       setShowRestaurantsState={setShowRestaurantsState}
                     />
-                  </DowContext.Provider>
-                </CoordinateStateContext.Provider>
+                    </GlobalStateContext.Provider>
+                  {/* </DowContext.Provider>
+                </CoordinateStateContext.Provider> */}
               </Suspense>
             }
           />
