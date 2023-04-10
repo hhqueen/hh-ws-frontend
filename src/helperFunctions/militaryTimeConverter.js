@@ -1,7 +1,8 @@
 // converts a value bewteen 0 and 24 
-const militaryTimeConverter = (value, outputVal = 0) => {
+const militaryTimeConverter = (value, outputVal = 0, displayString = 0) => {
   // outputVal = 1: 12-hour time + AM/PM
   // outputVal = 0: military time
+  // standardFormat = 
   // console.log("outputVal",outputVal)
     if (value < 0 || value > 24) {
       return "Error, input value out of range (should be betwen 0 to 24)"
@@ -50,7 +51,6 @@ const militaryTimeConverter = (value, outputVal = 0) => {
       } else if( value === 0 ) {
         hour = 12
       }
-
     }
     if (hour < 10) {
       hour = `${hour}`
@@ -59,11 +59,21 @@ const militaryTimeConverter = (value, outputVal = 0) => {
 
     // need to add code to convert and return a string
     // timeString = `${hour}:${minute} ${ampm}`
-    if(minute == 0) {
-      timeString = `${hour}`
+    if(displayString == 1) {
+      // for displaying abreviated time on card and detail page
+      if(minute == 0) {
+        timeString = `${hour}`
+      } else {
+        timeString = `${hour}:${minuteString}`
+      }
     } else {
+      // time string for time inputs (addedit restaurant page)
       timeString = `${hour}:${minuteString}`
     }
+
+    // if(standardFormat !== 0) {
+    //   timeString = `${hour}:${minuteString}`
+    // }
     
     if(outputVal === 1) {
       timeString = `${timeString} ${ampm}`

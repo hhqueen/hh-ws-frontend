@@ -115,7 +115,6 @@ function App() {
     }
   })
   const [restListErrorMsg, setRestListErrorMsg] = useState("")
-  const koadedProperly = coordinatesState.latitude != (0 || null) || coordinatesState.longitude != (0 || null)
 
   // hook Variables
   const [isPendingTransition, startTransition] = useTransition()
@@ -286,7 +285,7 @@ function App() {
         console.warn(error)
       }
     }
-    if (koadedProperly && coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
+    if (coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
       executePhaseOne()
     }
   }, [coordinatesState, distanceState])
@@ -310,7 +309,7 @@ function App() {
       }
       setFilteredRestaurantsState(filteredRest)
     }
-    if (koadedProperly && coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
+    if (coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
       executePhaseTwo()
     }
   }, [allRestaurantsState, dow, filterParams, UIFilters])
@@ -332,7 +331,7 @@ function App() {
       setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
       return
     }
-    if (koadedProperly) return console.log("no errors to report")
+    console.log("no errors to report")
     // }
   }
 
@@ -350,7 +349,7 @@ function App() {
       handleRestListErrorMsg()
       setIsFetchingRestData(false)
     }
-    if (koadedProperly && coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
+    if (coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
       executePhaseThree()
     }
   }, [filteredRestaurantsState])

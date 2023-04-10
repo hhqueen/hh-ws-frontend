@@ -21,21 +21,21 @@ export default function HHHoursContainer({ hourSet,timeOutputVal, dow = null }) 
     }
     renderHours = filteredHours?.map((hour) => {
         const dayOfweek = dc_numToStr(hour.day, "medium")
-        const displayStart1 = militaryTimeConverter(hour.start1, timeOutputVal)
+        const displayStart1 = militaryTimeConverter(hour.start1, timeOutputVal, 1)
         let displayEnd1 = null
         if (hour.end1close) {
             displayEnd1 = "Close"
         } else {
-            displayEnd1 = militaryTimeConverter(hour.end1, timeOutputVal)
+            displayEnd1 = militaryTimeConverter(hour.end1, timeOutputVal, 1)
         }
 
 
-        const displayStart2 = militaryTimeConverter(hour.start2, timeOutputVal)
+        const displayStart2 = militaryTimeConverter(hour.start2, timeOutputVal, 1)
         let displayEnd2 = null
         if (hour.end2close) {
             displayEnd2 = "Close"
         } else {
-            displayEnd2 = militaryTimeConverter(hour.end2, timeOutputVal)
+            displayEnd2 = militaryTimeConverter(hour.end2, timeOutputVal, 1)
         }
 
         let renderHappyHour;
