@@ -152,7 +152,7 @@ function App() {
   const focusedRestIdx = useMemo(() => (restIdxHover), [restIdxHover])
 
   // set global context variable
-  useEffect(()=>{
+  useLayoutEffect(()=>{
     setGlobalContextVar(draft=>{
       draft.dow = dow
       draft.coordinatesState = coordinatesState
@@ -409,9 +409,7 @@ function App() {
             path="/restaurants"
             element={
               <Suspense fallback={<LoadingComp />}>
-                {/* <CoordinateStateContext.Provider value={coordinatesState}>
-                  <DowContext.Provider value={dow}> */}
-                    <GlobalStateContext.Provider value = {GlobalStateContext}>
+                    <GlobalStateContext.Provider value = {globalContextVar}>
                     <Main
                       isFetchingRestData={isFetchingRestData}
                       showRestaurants={showRestaurantsState}
@@ -431,8 +429,6 @@ function App() {
                       setShowRestaurantsState={setShowRestaurantsState}
                     />
                     </GlobalStateContext.Provider>
-                  {/* </DowContext.Provider>
-                </CoordinateStateContext.Provider> */}
               </Suspense>
             }
           />

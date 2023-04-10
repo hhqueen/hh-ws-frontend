@@ -23,11 +23,11 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
     const componentName = 'RestListDetailCard'
     const cuisineString = restaurantInfo.cuisines.join(", ")
     const applicableFilters = showApplicableFilters(restaurantInfo.filterParams)
-    const coordinatesStateContextVal = useContext(GlobalStateContext.coordinateState)
-    const dowContextVal = useContext(GlobalStateContext.dow)
+    const globalStateContextVal = useContext(GlobalStateContext)
+
 
     const dowHours = restaurantInfo.hourSet.hours.filter((day) => {
-        const numOfDay = dc_StrToNum(dowContextVal)
+        const numOfDay = dc_StrToNum(globalStateContextVal.dow)
         // console.log("numOfDay", numOfDay)
         const dayFilterFlag = numOfDay === day.day
         return dayFilterFlag
@@ -111,7 +111,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
                             className='text-[11px]'
                         >{`${restaurantInfo.city} `}</p>
                         <DistancePartialComp
-                            currentLocation={coordinatesStateContextVal}
+                            currentLocation={globalStateContextVal.coordinatesState}
                             restaurantLocation={{
                                 latitude: restaurantInfo.latitude,
                                 longitude: restaurantInfo.longitude
@@ -122,13 +122,13 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
                     {/* hours Div */}
                     {/* Hour Header */}
                     {
-                        dowContextVal &&
+                        globalStateContextVal.dow &&
                         <>
                             {/* Hour */}
                             <HHHoursContainer
                                 hourSet={restaurantInfo.hourSet}
                                 timeOutputVal={1}
-                                dow={dowContextVal}
+                                dow={globalStateContextVal.dow}
                             />
                         </>
                     }

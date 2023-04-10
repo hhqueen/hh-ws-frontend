@@ -12,7 +12,9 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
     const [anyChecked, setAnyChecked] = useState(false)
     const componentName = "FilterComp"
     const [isPendingTransition, startTransition] = useTransition()
-    const DowContextVal = useContext(GlobalStateContext.dow)
+    const DowContextVal = useContext(GlobalStateContext).dow
+    // const DowContextVal = "Monday"
+
     const filtersMap = filterParams.map((filterVal) => {
         return (
             <Dropdown.Item>

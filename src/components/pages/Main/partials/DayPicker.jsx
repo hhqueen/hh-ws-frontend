@@ -4,7 +4,8 @@ import { dowMapping } from '../../../../sourceData/emptyDataTemplates'
 
 export default function DayPicker({setDow}) {
     const [isPending, startTransition] = useTransition()
-    const DowContextVal = useContext(GlobalStateContext.dow)
+    const DowContextVal = useContext(GlobalStateContext).dow
+    // const DowContextVal = "Monday"
     const daysInWeek = 7
     let daysPick = [
 
