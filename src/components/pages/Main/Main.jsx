@@ -38,7 +38,18 @@ export default function Main({
     closedHeight: 0,
     openHeight: 100
   })
-  console.log("contentHeight:",contentHeight)
+  console.log("contentHeight:", contentHeight)
+
+  const MapViewCompVar = (
+    <MapViewComp
+      coordinatesState={coordinatesState}
+      showRestaurants={showRestaurants}
+      setShowRestaurantsState={setShowRestaurantsState}
+      isFetchingRestData={isFetchingRestData}
+      contentHeight={contentHeight}
+    // restIdxHover={setRestIdxHover}
+    />
+  )
   return (
     <div
       style={{
@@ -48,20 +59,23 @@ export default function Main({
       className='flex justify-center'
     >
 
-      {!isTWmd && showMap &&
-        <div
-          className='md:order-last'
-        >
-          <MapViewComp
-            coordinatesState={coordinatesState}
-            showRestaurants={showRestaurants}
-            setShowRestaurantsState={setShowRestaurantsState}
-            isFetchingRestData={isFetchingRestData}
-            contentHeight={contentHeight}
-          // restIdxHover={setRestIdxHover}
-          />
-        </div>
-      }
+
+      <div
+        className='md:order-last'
+      >
+        {isTWmd ?
+          MapViewCompVar
+          :
+          <>
+            {
+              showMap && MapViewCompVar
+            }
+          </>
+
+        }
+      </div>
+
+
       {
         !showMap &&
 
