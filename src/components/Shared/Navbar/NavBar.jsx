@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Navbar, Dropdown, Avatar } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
 import { useImmer } from 'use-immer'
-import { useMediaQuery } from 'react-responsive'
+
 
 // internal comps
 import Alpha2BannerComp from '../../Alpha2BannerComp'
@@ -15,7 +15,7 @@ import IG_Logo from '../Logo/IG_Logo'
 
 // react-icons
 import { FiMail } from 'react-icons/fi'
-import { FaMapMarkedAlt, FaListUl } from 'react-icons/fa'
+import MapListToggle from './partials/MapListToggle'
 
 const emptyUserInfo = {
     "firstName": "",
@@ -26,16 +26,19 @@ const emptyUserInfo = {
 
 export default function NavBar({
     setNavBarHeight, searchParams, setSearchParams,
-    setAddressState, setSearchTermState
+    setAddressState, setSearchTermState,
+    showMap,
+    setShowMap,
+    isTWmd
 }) {
     const componentName = "NavBar"
 
     // media Queries
-    const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
+    
 
 
     const navBarDiv = useRef(null)
-    
+
     const renderSearchBar = true
     // const pathName = window.location.pathname
     // console.log("pathName:",pathName)
@@ -140,16 +143,14 @@ export default function NavBar({
                         }
 
                         {
-                            !isTWmd && 
+                            !isTWmd &&
                             <>
-                                {/* code to render map or list icon for mobile */}
-                                <div
-                                    className='flex flex-col justify-center items-center ml-2'
-                                >
-                                    <FaMapMarkedAlt/>
-                                    <FaListUl/>
-                                </div>
-                            </> 
+                                {/* code to render map / list toggle icon for mobile */}
+                                <MapListToggle
+                                    showMap={showMap}
+                                    setShowMap={setShowMap}
+                                />
+                            </>
                         }
 
 
@@ -386,22 +387,22 @@ export default function NavBar({
                                     localStorage.getItem('jwt') &&
 
                                     <>
-                                    <Link
-                                        id='Profile_Link'
-                                        onClick={(e) => {
-                                            apilogger(e, componentName, 'Profile_Link')
-                                        }}
-                                        to="/profile"
-                                    >
-                                        <Dropdown.Item
+                                        <Link
+                                            id='Profile_Link'
+                                            onClick={(e) => {
+                                                apilogger(e, componentName, 'Profile_Link')
+                                            }}
+                                            to="/profile"
+                                        >
+                                            <Dropdown.Item
                                             // onClick={(e) => {
                                             //     apilogger({ componentName, elementId: 'LogOut_Link' })
                                             //     handleLogOut()
                                             // }}
-                                        >
-                                            Profile
-                                        </Dropdown.Item>
-                                    </Link>
+                                            >
+                                                Profile
+                                            </Dropdown.Item>
+                                        </Link>
 
                                         <Dropdown.Item
                                             onClick={(e) => {

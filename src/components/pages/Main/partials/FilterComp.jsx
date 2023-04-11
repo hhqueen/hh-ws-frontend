@@ -50,7 +50,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
         setAnyChecked(isAnyChecked)
     },[filterParams,UIFiltersProps])
 
-    // const dowList = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
+    const dowList = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"]
     const dowOptionsMap = dowList.map((day, idx) => {
         if (DowContextVal == day) {
             return <option key={`day-option${idx}`} value={day} selected>{day}</option>

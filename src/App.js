@@ -10,6 +10,7 @@ import axios from "axios"
 import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { useImmer } from "use-immer"
+import { useMediaQuery } from 'react-responsive'
 
 // import components
 import LoadingComp from './components/Shared/LoadingComp';
@@ -79,6 +80,7 @@ function App() {
   })
 
   // variables
+  const [showMap, setShowMap] = useState(false)
   const componentName = "App.js"
   const [navBarHeight, setNavBarHeight] = useState(0)
   const [footerHeight, setFooterHeight] = useState(0)
@@ -106,6 +108,8 @@ function App() {
 
   // hook Variables
   const [isPendingTransition, startTransition] = useTransition()
+
+  const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
 
   // restaurant filter function
   const filterRests = useCallback((filterArr, restData) => {
@@ -378,6 +382,9 @@ function App() {
           setNavBarHeight={setNavBarHeight}
           setAddressState={setAddressState}
           setSearchTermState={setSearchTermState}
+          showMap={showMap} 
+          setShowMap={setShowMap}
+          isTWmd={isTWmd}
         />
 
         <Routes>
@@ -427,6 +434,9 @@ function App() {
                       restListErrorMsg={restListErrorMsg}
                       focusedRestIdx={focusedRestIdx}
                       setShowRestaurantsState={setShowRestaurantsState}
+                      showMap={showMap}
+                      isTWmd={isTWmd}
+                      contentHeight={contentHeight}
                     />
                     </GlobalStateContext.Provider>
               </Suspense>

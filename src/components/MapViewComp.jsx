@@ -1,29 +1,36 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useEffect} from 'react'
 // import { GoogleMap, LoadScript, useLoadScript, MarkerF, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api'
 import { GoogleMap, useLoadScript, MarkerF} from '@react-google-maps/api'
 import { useMediaQuery } from 'react-responsive';
 import LoadingComp from './Shared/LoadingComp';
 import MarkerInfoBoxComp from './MarkerInfoBoxComp';
 
-const containerStyle = {
-  sm:{
-    width: `100%`,
-    height: `700px`
-  },
-  md: {
-    width: `700px`,
-    height: `100%`
-  },
 
-}
 
 const loadScriptObj = { googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY, version: "beta", libraries: ["marker"] }
 
-export default function MapViewComp({ setShowRestaurantsState, showRestaurants, coordinatesState, restIdxHover }) {
+export default function MapViewComp({ 
+  setShowRestaurantsState, 
+  showRestaurants, 
+  coordinatesState, 
+  restIdxHover,
+  contentHeight
+}) {
   const { isLoaded } = useLoadScript(loadScriptObj)
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
   const center = useMemo(() => ({ lat: coordinatesState.latitude, lng: coordinatesState.longitude }), [coordinatesState])
 
+  let containerStyle = {
+    sm:{
+      width: `${window.innerWidth}px`,
+      height: `100%`
+    },
+    md: {
+      width: `700px`,
+      height: `100%`
+    },
+  
+  }
 
   const mapMarkers = showRestaurants.map((rest, idx) => {
     const labelNum = idx + 1
