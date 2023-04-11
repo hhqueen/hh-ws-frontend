@@ -22,11 +22,11 @@ export default function MapViewComp({
 
   let containerStyle = {
     sm:{
-      width: `${window.innerWidth}px`,
+      width: `100vw`,
       height: `100%`
     },
     md: {
-      width: `700px`,
+      width: `40vw`,
       height: `100%`
     },
   

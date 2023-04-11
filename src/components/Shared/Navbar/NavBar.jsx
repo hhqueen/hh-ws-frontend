@@ -32,7 +32,7 @@ export default function NavBar({
     isTWmd
 }) {
     const componentName = "NavBar"
-
+    
     // media Queries
     
 

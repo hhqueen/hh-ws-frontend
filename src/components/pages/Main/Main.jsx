@@ -67,9 +67,7 @@ export default function Main({
           MapViewCompVar
           :
           <>
-            {
-              showMap && MapViewCompVar
-            }
+            {showMap && MapViewCompVar}
           </>
 
         }
