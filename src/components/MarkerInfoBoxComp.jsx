@@ -53,7 +53,7 @@ export default function MarkerInfoBoxComp({
     // infobox loadouts
     const infoBoxOptions = {
         closeBoxURL: '',
-        enableEventPropagation: true
+        enableEventPropagation: false
     };
     const infoBoxOnLoad = infoBox => {
         // console.log('infoBox: ', infoBox)
