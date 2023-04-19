@@ -2,12 +2,29 @@ import React from 'react'
 import CityCard from "./CityCard"
 
 export default function CityCardContainer({ CityArr, handleCardClick }) {
+    const bodyLines = [// implented per Feature# 75
+        'Location Name:', 
+        'Location Address:', 
+        'Days and Hours of happy hour:',
+        'Are you dog friendly?',
+        'Do you have a patio or rooftop?',
+        'Attach high resolution picture of HH menu.'
+    ]
+    const bodyStringBuilder = (stringArr) => {// implented per Feature# 75
+        const newLineString = '%0D'
+        let formattedString = stringArr[0]
+        for(let i=1;i<stringArr.length;i++){
+            formattedString+=newLineString+stringArr[i]
+        }
+        return formattedString
+    }
+    
     const emailProps = {
         email: "hhqueen.official@gmail.com",
         subject: "new HHQ submission request",
-        body: "Please tell us about your restaurant or provide a website URL"
+        body: bodyStringBuilder(bodyLines) // implented per Feature# 75
     }
-
+    console.log("cityCard this:", window)
     const mapCityArry = CityArr.map((city) => {
         // console.log("cityData_fromArr:", city)
         return (
