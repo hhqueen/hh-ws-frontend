@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Profile({ handleProfileUpdate, profileData, handleProfileDataOnChange, passwordState ,handlePasswordStateOnChange }) {
+export default function Profile({ handleProfileSubmit, profileData, handleProfileDataOnChange, passwordState, handlePasswordStateOnChange }) {
   const passwordEntries = Object.entries(passwordState)
   const passwordInputsMap = passwordEntries.map((ele) => {
     return (
@@ -26,7 +26,7 @@ export default function Profile({ handleProfileUpdate, profileData, handleProfil
   return (
     <form
       className='flex flex-col items-center w-full'
-      onSubmit={handleProfileUpdate}
+      onSubmit={handleProfileSubmit}
     >
       <label
         htmlFor='firstName'
@@ -82,6 +82,20 @@ export default function Profile({ handleProfileUpdate, profileData, handleProfil
           value={profileData.email}
         />
       </label> */}
+      <label
+        htmlFor='emailSub'
+        className='grid grid-cols-2 grid-rows-1'
+      >
+        <p>Email Sub</p>
+        <input
+          id='emailSub'
+          name="emailSub"
+          type='checkbox'
+          checked={profileData.emailSubbed}
+          className='border rounded'
+          onChange={handleProfileDataOnChange}
+        />
+      </label>
 
       {passwordInputsMap}
 
@@ -90,6 +104,6 @@ export default function Profile({ handleProfileUpdate, profileData, handleProfil
       >
         Submit
       </button>
-    </form>
+    </form >
   )
 }

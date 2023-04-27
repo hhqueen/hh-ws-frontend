@@ -36,7 +36,7 @@ export default function ProfileContainer({mainDivStyle}) {
                     return navigate('/')
                 }
                 const gotProfile = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/profile/${decoded.id}`)
-                console.log(gotProfile.data)
+                console.log("gotprofile data:",gotProfile.data)
                 setProfileData(gotProfile.data)
             } catch (error) {
                 console.log(error)
@@ -47,12 +47,13 @@ export default function ProfileContainer({mainDivStyle}) {
         getProfile()
     },[])
 
-    const handleProfileUpdate = async (e) => {
+    const handleProfileSubmit = async (e) => {
         e.preventDefault()
         try {
             console.log("submit profile update")
             console.log("formsubmit e:", e.target.elements[0].name)
             const formData = Object.entries(e.target.elements)
+            console.log()
         } catch (error) {
             console.log(error)
         }
@@ -74,7 +75,7 @@ export default function ProfileContainer({mainDivStyle}) {
         >
             <Profile
                 profileData={profileData}
-                handleProfileUpdate={handleProfileUpdate}
+                handleProfileSubmit={handleProfileSubmit}
                 handleProfileDataOnChange={handleProfileDataOnChange}
                 handlePasswordStateOnChange={handlePasswordStateOnChange}
                 passwordState={passwordState}

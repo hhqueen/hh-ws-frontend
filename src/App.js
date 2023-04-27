@@ -320,19 +320,19 @@ function App() {
     console.log("executing error messaging")
     // if(isFetchingRestData) {
     // setRestListErrorMsg("")
-    
-    if (filteredRestaurantsState.length === 0) {
-      console.log("error_msg1")
-      // setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
-      setRestListErrorMsg(`No results found. Please modify filters and try again.`)
-      return
-    }
     if (allRestaurantsState.length === 0) {
       console.log("error_msg2")
       // setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
       setRestListErrorMsg(`No results found. Please modify search terms and try again.`)
       return
     }
+    if (filteredRestaurantsState.length === 0) {
+      console.log("error_msg1")
+      // setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
+      setRestListErrorMsg(`No results found. Please modify filters and try again.`)
+      return
+    }
+
     console.log("no errors to report")
     // }
   }
