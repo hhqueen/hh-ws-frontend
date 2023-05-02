@@ -53,7 +53,8 @@ const Login = lazy(() => import('./components/pages/Login'))
 // import Login from './components/pages/Login';
 const Profile = lazy(() => import('./components/pages/ProfileSettings/ProfileContainer'))
 const LandingPage = lazy(() => import('./components/pages/LandingPage/LandingPage'))
-const DashBoard = lazy(() => import('./components/pages/dashboard/DashBoard'))
+// const DashBoard = lazy(() => import('./components/pages/dashboard/DashBoard'))
+const DashBoardContainer = lazy(() => import('./components/pages/dashboard_v1/DashBoardContainer'))
 // import Login from './components/pages/Login';
 
 // require functions
@@ -472,7 +473,7 @@ function App() {
             path='/dashboard'
             element={
               <Suspense fallback={<LoadingComp />}>
-                <DashBoard
+                <DashBoardContainer
                   mainDivStyle={mainDivStyle}
                 />
               </Suspense>
