@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import axios from "axios"
 
 // import Comps
-import TopRestaurantsContainer from './partials/TopRestaurantsContainer.jsx'
+import TopRestaurantsContainer from './partials/TopRestaurantsContainer'
 
 export default function DashBoardContainer({mainDivStyle}) {
     const [apiLogData, setApiLogData] = useState([])
@@ -28,10 +28,6 @@ export default function DashBoardContainer({mainDivStyle}) {
                 })
                 setRestaurantViewLogs(filtered_PROD_RestaurantData)
                 console.log("filtered PROD Restaurant Data",filtered_PROD_RestaurantData)
-
-
-
-
             } catch (error) {
                 console.log(error)
             }
@@ -48,7 +44,6 @@ export default function DashBoardContainer({mainDivStyle}) {
             restaurantViewLogs={restaurantViewLogs}
         />
     </div>
-
     </>
   )
 }

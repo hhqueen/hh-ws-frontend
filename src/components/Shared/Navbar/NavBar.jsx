@@ -12,10 +12,15 @@ import apilogger from '../../../helperFunctions/apiLogger'
 import SearchBar from './partials/SearchBar'
 import LogoSmall from '../Logo/LogoSmall'
 import IG_Logo from '../Logo/IG_Logo'
+import MailIconDesktop from './partials/MailIcon_Desktop'
+import MailIconMobile from './partials/MailIcon_Mobile'
 
 // react-icons
-import { FiMail } from 'react-icons/fi'
+
 import MapListToggle from './partials/MapListToggle'
+
+// require helper functions
+const {emailBodyStringBuilder} = require("../../../helperFunctions/emailBodyStringBuilder")
 
 const emptyUserInfo = {
     "firstName": "",
@@ -32,10 +37,6 @@ export default function NavBar({
     isTWmd
 }) {
     const componentName = "NavBar"
-    
-    // media Queries
-    
-
 
     const navBarDiv = useRef(null)
 
@@ -184,26 +185,7 @@ export default function NavBar({
                                         </a>
                                     </Dropdown.Item>
                                     <Dropdown.Item>
-                                        <a
-                                            name="mail_icon"
-                                            id='mail_icon'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'mail_icon')
-                                            }}
-                                            href='/' target="_blank">
-                                            <div
-                                                className='flex items-center'
-
-                                            >
-                                                <FiMail
-                                                    size={40}
-                                                    opacity={.6}
-                                                />
-                                                <p
-                                                    className='pl-3'
-                                                >Mail Us</p>
-                                            </div>
-                                        </a>
+                                            <MailIconMobile/>
                                     </Dropdown.Item>
                                     <Dropdown.Item>
                                         <a
@@ -253,24 +235,7 @@ export default function NavBar({
                                     </a>
 
                                     {/* mail icon */}
-                                    <a
-                                        name="mail_icon"
-                                        id='mail_icon'
-                                        onClick={(e) => {
-                                            apilogger(e, componentName, 'mail_icon')
-                                        }}
-                                        href='/' target="_blank">
-                                        <div
-                                            className=''
-
-                                        >
-                                            <FiMail
-                                                size={40}
-                                                opacity={.6}
-                                                color={`white`}
-                                            />
-                                        </div>
-                                    </a>
+                                        <MailIconDesktop/>
                                     {/* IG Icon */}
                                     <a
                                         name="IG_Link"

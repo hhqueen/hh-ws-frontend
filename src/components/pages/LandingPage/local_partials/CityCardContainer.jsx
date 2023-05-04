@@ -1,6 +1,8 @@
 import React from 'react'
 import CityCard from "./CityCard"
 
+const {emailBodyStringBuilder} = require("../../../../helperFunctions/emailBodyStringBuilder")
+
 export default function CityCardContainer({ CityArr, handleCardClick }) {
     const bodyLines = [// implented per Feature# 75
         'Location Name:', 
@@ -10,19 +12,11 @@ export default function CityCardContainer({ CityArr, handleCardClick }) {
         'Do you have a patio or rooftop?',
         'Attach high resolution picture of HH menu.'
     ]
-    const bodyStringBuilder = (stringArr) => {// implented per Feature# 75
-        const newLineString = '%0D'
-        let formattedString = stringArr[0]
-        for(let i=1;i<stringArr.length;i++){
-            formattedString+=newLineString+stringArr[i]
-        }
-        return formattedString
-    }
-    
+
     const emailProps = {
         email: "hhqueen.official@gmail.com",
         subject: "new HHQ submission request",
-        body: bodyStringBuilder(bodyLines) // implented per Feature# 75
+        body: emailBodyStringBuilder(bodyLines) // implented per Feature# 75
     }
     console.log("cityCard this:", window)
     const mapCityArry = CityArr.map((city) => {
