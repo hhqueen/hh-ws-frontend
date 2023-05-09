@@ -11,7 +11,7 @@ export default function MailIcon() {
         uad: window.navigator.userAgent,
         mobile: window.navigator.userAgentData?.mobile,
         browser: window.navigator.userAgentData?.brands[1]?.brand,
-        OS: window.navigator.userAgentData.platform,
+        OS: window.navigator.userAgentData?.platform,
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight
     }
