@@ -354,7 +354,7 @@ function App() {
       handleRestListErrorMsg()
       setIsFetchingRestData(false)
     }
-    if (coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
+    if (coordinatesState.latitude !== 0 && coordinatesState.longitude !== 0) {
       executePhaseThree()
     }
   }, [filteredRestaurantsState])

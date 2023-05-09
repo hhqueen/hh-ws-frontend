@@ -9,7 +9,7 @@ export default function MailIcon() {
     const componentName = "NavBar_MailIcon"
     const userDeviceData = {
         uad: window.navigator.userAgent,
-        mobile: window.navigator.userAgentData.mobile,
+        mobile: window.navigator.userAgentData?.mobile,
         browser: window.navigator.userAgentData?.brands[1]?.brand,
         OS: window.navigator.userAgentData.platform,
         screenWidth: window.innerWidth,
