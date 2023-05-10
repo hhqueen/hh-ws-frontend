@@ -242,7 +242,7 @@ function App() {
     if(addressState !== "") {
     executePhaseZero()
     }
-  }, [addressState])
+  }, [searchTermState,addressState])
 
 
   // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState]
@@ -291,7 +291,7 @@ function App() {
     if (coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
       executePhaseOne()
     }
-  }, [coordinatesState, distanceState])
+  }, [coordinatesState, distanceState, searchTermState])
 
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
   useLayoutEffect(() => {
