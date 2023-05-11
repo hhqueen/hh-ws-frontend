@@ -60,10 +60,15 @@ export default function RestDetail({ mainDivStyle }) {
         const qString = qStringfromObj({
           UI_ComponentName: componentName,
           userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
+          uad: window.navigator.userAgent,
+          mobile: window.navigator.userAgentData?.mobile,
+          browser: window.navigator.userAgentData?.brands[1]?.brand,
+          OS: window.navigator.userAgentData?.platform,
           screenWidth: window.innerWidth,
-          screenHeight: window.screenHeight
+          screenHeight: window.innerHeight,
+          restaurantId: id
         })
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}${qString}`)
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/page/${id}${qString}`)
         console.log("async data", response.data)
         setRestData(response.data)
         setAddress(`${response.data.address1} ${response.data.city} ${response.data.state} ${response.data.zip_code}`)

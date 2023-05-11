@@ -29,7 +29,7 @@ import {
 
 const getOneRestaurantInfo = async (id) => {
     console.log("restId for Edit:", id)
-    const getOneRest = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
+    const getOneRest = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/page/${id}`)
     console.log("get One Async Data", getOneRest.data)
     return getOneRest.data
 }

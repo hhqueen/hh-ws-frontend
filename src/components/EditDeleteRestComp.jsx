@@ -37,7 +37,7 @@ export default function EditDeleteRestComp({ id }) {
 
     async function handleDeleteRestaurant() {
         try {
-            const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`)
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/restaurants/page/${id}`)
             // ARE YOU SURE MODAL -> API call to server to set rest as inActive
 
             console.log(response)

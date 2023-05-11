@@ -108,19 +108,16 @@ function App() {
 
 
   const [restListErrorMsg, setRestListErrorMsg] = useState("")
-  
-  
-  const windowHeight = window.innerHeight
-  const windowWidth = window.innerWidth
-  
+
   const [screenSize, setScreenSize] = useImmer({
-    component:{
-      navBarHeight:0,
-      footerHeight:0
+    component: {
+      navBarHeight: 0,
+      footerHeight: 0
     },
-    screenWidth: windowWidth,
-    screenHeight: windowHeight,
+    screenWidth: window.innerWidth,
+    screenHeight: window.innerHeight,
   })
+  
 
   // hook Variables
   const [isPendingTransition, startTransition] = useTransition()
@@ -181,19 +178,28 @@ function App() {
     })
   }, [dow, coordinatesState])
 
+
   // set Screen Size
-  useEffect(()=>{
-    const setScreenSize = () => {
-      setScreenSize((draft)=>{
-        draft.screenHeight = windowHeight
-        draft.screenWidth = windowWidth
-      })
-    }
-    window.addEventListener("resize", setScreenSize)
-    // setScreenSize()
-    return window.removeEventListener("resize", setScreenSize)
-  })
-  console.log("screensize",screenSize)
+  // useEffect(() => {
+
+  //   const setScreenSize = () => {
+  //     let timeoutId = null
+
+  //     clearTimeout(timeoutId)
+  //     timeoutId = setTimeout(
+  //       // startTransition(()=>{
+  //       setScreenSize((draft) => {
+  //         draft.screenHeight = window.innerHeight
+  //         draft.screenWidth = window.innerWidth
+  //         // })
+  //       }), 150)
+  //   }
+  //   window.addEventListener("resize", setScreenSize)
+  //   return () => {
+  //     window.removeEventListener("resize", setScreenSize)
+  //   }
+  // }, [])
+
 
   // init 
   useLayoutEffect(() => {
