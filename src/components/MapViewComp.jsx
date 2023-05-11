@@ -14,7 +14,8 @@ export default function MapViewComp({
   showRestaurants, 
   coordinatesState, 
   restIdxHover,
-  contentHeight
+  contentHeight,
+  pageHeight
 }) {
   const { isLoaded } = useLoadScript(loadScriptObj)
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })

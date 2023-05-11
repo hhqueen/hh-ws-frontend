@@ -34,7 +34,8 @@ export default function NavBar({
     setAddressState, setSearchTermState,
     showMap,
     setShowMap,
-    isTWmd
+    isTWmd,
+    setScreenSize
 }) {
     const componentName = "NavBar"
 
@@ -75,7 +76,10 @@ export default function NavBar({
             // renderAddRest = checkAdmin(decoded)
         }
         // console.log("navBarDiv.current.clientHeight:",navBarDiv.current.clientHeight)
+        
         setNavBarHeight(navBarDiv.current.clientHeight)
+
+        setScreenSize((draft)=>{draft.component.navBarHeight = navBarDiv.current.clientHeight})
     })
 
     // useEffect(() => {

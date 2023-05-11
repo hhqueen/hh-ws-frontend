@@ -1,4 +1,4 @@
-import { Suspense, lazy, useTransition, useState } from 'react'
+import { Suspense, lazy, useTransition, useState, useEffect } from 'react'
 // import FilterComp from '../FilterComp'
 // import ListViewComp from '../ListViewComp'
 import MapViewComp from '../../MapViewComp'
@@ -30,15 +30,21 @@ export default function Main({
   setShowRestaurantsState,
   isTWmd,
   showMap,
-  contentHeight
+  contentHeight,
+  screenSize
 }) {
 
-  const [mapCompRender, setMapCompRender] = useImmer({
-    open: false,
-    closedHeight: 0,
-    openHeight: 100
-  })
-  console.log("contentHeight:", contentHeight)
+  // const [mapCompRender, setMapCompRender] = useImmer({
+  //   open: false,
+  //   closedHeight: 0,
+  //   openHeight: 100
+  // })
+  // console.log("contentHeight:", contentHeight)
+  const [pageHeight, setPageHeight] = useState(0)
+  
+  useEffect(()=>{
+    setPageHeight(screenSize.screenHeight - (screenSize.component.navBarHeight + screenSize.component.footerHeight))
+  },[screenSize])
 
   const MapViewCompVar = (
     <MapViewComp
@@ -47,16 +53,19 @@ export default function Main({
       setShowRestaurantsState={setShowRestaurantsState}
       isFetchingRestData={isFetchingRestData}
       contentHeight={contentHeight}
+      pageHeight={pageHeight}
     // restIdxHover={setRestIdxHover}
     />
   )
+  // console.log("pageHeight:", pageHeight)
   return (
     <div
       style={{
-        height: mainDivStyle.minHeight,
-        marginTop: mainDivStyle.marginTop
+        height:pageHeight,
+        // maxHeight:pageHeight,
+        marginTop: screenSize.component.navBarHeight
       }}
-      className='flex justify-center'
+      className='flex justify-center overflow-y-auto'
     >
 
 
@@ -100,6 +109,7 @@ export default function Main({
               coordinatesState={coordinatesState}
               // setRestIdxHover={setRestIdxHover}
               restListErrorMsg={restListErrorMsg}
+              pageHeight={pageHeight}
             />
           </Suspense>
         </div>

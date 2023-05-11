@@ -2,9 +2,13 @@ import React, { Suspense, lazy, useState } from 'react'
 import { useEffect } from 'react'
 import LoadingComp from './Shared/LoadingComp'
 import RestListDetailCard from './RestListDetailCard'
+import { RxHeight } from 'react-icons/rx'
 // const RestListDetailCard = lazy(() => import('./RestListDetailCard'))
 
-export default function ListViewComp({ restListErrorMsg,setRestIdxHover, showRestaurants,isFetchingRestData, searchParams }) {
+export default function ListViewComp({ 
+  restListErrorMsg,setRestIdxHover, showRestaurants,isFetchingRestData, searchParams,
+  pageHeight
+}) {
 
   const listRestaurants = showRestaurants.map((restaurant, idx) => {
     return (
@@ -22,6 +26,9 @@ export default function ListViewComp({ restListErrorMsg,setRestIdxHover, showRes
     <>
       
         <div
+          style={{
+            height:pageHeight
+          }}
           className='w-full md:w-[45vw] overflow-auto'
         >
           {

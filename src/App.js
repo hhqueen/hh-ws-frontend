@@ -76,8 +76,8 @@ function App() {
   const [restIdxHover, setRestIdxHover] = useState(-1)
   const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
   const [globalContextVar, setGlobalContextVar] = useImmer({
-    dow:null,
-    coordinatesState:null
+    dow: null,
+    coordinatesState: null
   })
 
   // variables
@@ -105,7 +105,22 @@ function App() {
       value: false
     }
   })
+
+
   const [restListErrorMsg, setRestListErrorMsg] = useState("")
+  
+  
+  const windowHeight = window.innerHeight
+  const windowWidth = window.innerWidth
+  
+  const [screenSize, setScreenSize] = useImmer({
+    component:{
+      navBarHeight:0,
+      footerHeight:0
+    },
+    screenWidth: windowWidth,
+    screenHeight: windowHeight,
+  })
 
   // hook Variables
   const [isPendingTransition, startTransition] = useTransition()
@@ -134,12 +149,12 @@ function App() {
     })
     // console.log("filteredRestaurants", filteredRestaurants)
     return filteredRestaurants
-  },[])
+  }, [])
 
 
   const filterRestByDay = useCallback((filteredRests, dayOweek, hasOnlyLateNightOnDay = false) => {
     const numOweek = dc_StrToNum(dayOweek)
-    console.log("numOweek:",numOweek) 
+    console.log("numOweek:", numOweek)
     // console.log("filteredRests:",filteredRests)
     const filterRestsByDay = filteredRests.filter((rest, idx) => {
       //  console.log(`rest${idx}:`, rest)
@@ -153,18 +168,32 @@ function App() {
       return filterFlag
     })
     return filterRestsByDay
-  },[])
+  }, [])
 
   // useMemos?
   const focusedRestIdx = useMemo(() => (restIdxHover), [restIdxHover])
 
   // set global context variable
-  useLayoutEffect(()=>{
-    setGlobalContextVar(draft=>{
+  useLayoutEffect(() => {
+    setGlobalContextVar(draft => {
       draft.dow = dow
       draft.coordinatesState = coordinatesState
     })
-  },[dow,coordinatesState])
+  }, [dow, coordinatesState])
+
+  // set Screen Size
+  useEffect(()=>{
+    const setScreenSize = () => {
+      setScreenSize((draft)=>{
+        draft.screenHeight = windowHeight
+        draft.screenWidth = windowWidth
+      })
+    }
+    window.addEventListener("resize", setScreenSize)
+    // setScreenSize()
+    return window.removeEventListener("resize", setScreenSize)
+  })
+  console.log("screensize",screenSize)
 
   // init 
   useLayoutEffect(() => {
@@ -184,8 +213,8 @@ function App() {
         return ""
       }
     }
-    
-    if (searchParams.address === "" || addressState === "" || searchParams.address!==addressState) {
+
+    if (searchParams.address === "" || addressState === "" || searchParams.address !== addressState) {
       const gotRecentOrCurrentLoc = getMostRecentlySearchedAddress()
       console.log("gotRecentOrCurrentLoc:", gotRecentOrCurrentLoc)
       setAddressState(gotRecentOrCurrentLoc)
@@ -197,15 +226,15 @@ function App() {
   // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
   useLayoutEffect(() => {
     const executePhaseZero = async () => {
-            // functions
-        const  setCoordinateStateTransition = (source) => {
-          startTransition(() => {
-            setCoordinatesState((draft) => {
-              draft.latitude = source.latitude
-              draft.longitude = source.longitude
-            })
+      // functions
+      const setCoordinateStateTransition = (source) => {
+        startTransition(() => {
+          setCoordinatesState((draft) => {
+            draft.latitude = source.latitude
+            draft.longitude = source.longitude
           })
-        }
+        })
+      }
 
       try {
         setIsFetchingRestData(true)
@@ -239,10 +268,10 @@ function App() {
         console.log(error)
       }
     }
-    if(addressState !== "") {
-    executePhaseZero()
+    if (addressState !== "") {
+      executePhaseZero()
     }
-  }, [searchTermState,addressState])
+  }, [searchTermState, addressState])
 
 
   // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState]
@@ -278,7 +307,7 @@ function App() {
           data.showInfoBox = false
           allRestData.push(data)
         });
-        console.log("allRestData post mod:", allRestData)
+        // console.log("allRestData post mod:", allRestData)
 
 
         startTransition(() => {
@@ -288,7 +317,7 @@ function App() {
         console.warn(error)
       }
     }
-    if (coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
+    if (coordinatesState.latitude !== 0 && coordinatesState.longitude !== 0) {
       executePhaseOne()
     }
   }, [coordinatesState, distanceState, searchTermState])
@@ -301,7 +330,7 @@ function App() {
       if (allRestaurantsState.length > 0) {
         console.log("allRestaurantsState.length > 0, executing code")
         // console.log("filteredRest:", filteredRest)
-  
+
         filteredRest = deepCopyObj(allRestaurantsState)
         // console.log("deepcopied:", filteredRest)
         // console.log("allRestaurantsState_inFilterRest:", allRestaurantsState)
@@ -312,13 +341,17 @@ function App() {
       }
       setFilteredRestaurantsState(filteredRest)
     }
-    if (coordinatesState.latitude !== 0 &&  coordinatesState.longitude !== 0) {
+    if (coordinatesState.latitude !== 0 && coordinatesState.longitude !== 0) {
       executePhaseTwo()
     }
   }, [allRestaurantsState, dow, filterParams, UIFilters])
 
 
   const handleRestListErrorMsg = () => {
+    const errMsg = {
+      zeroFetchedData: `No results found. Please modify search terms and try again.`,
+      zeroFilterResults: `No results found. Please modify filters and try again.`
+    }
     setRestListErrorMsg("")
     console.log("executing error messaging")
     // if(isFetchingRestData) {
@@ -326,13 +359,13 @@ function App() {
     if (allRestaurantsState.length === 0) {
       console.log("error_msg2")
       // setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
-      setRestListErrorMsg(`No results found. Please modify search terms and try again.`)
+      setRestListErrorMsg(errMsg.zeroFetchedData)
       return
     }
     if (filteredRestaurantsState.length === 0) {
       console.log("error_msg1")
       // setRestListErrorMsg(`Sorry, we found ${allRestaurantsState.length} places near you, but none of them fit your filter criteria!`)
-      setRestListErrorMsg(`No results found. Please modify filters and try again.`)
+      setRestListErrorMsg(errMsg.zeroFilterResults)
       return
     }
 
@@ -344,7 +377,7 @@ function App() {
   // Phase 3 useEffect -> sorts filtered restaurant list, dependencies: [FilteredRestaurantsState]
   // also handles restaurant list error message rendering
   useLayoutEffect(() => {
-    const executePhaseThree = () =>{
+    const executePhaseThree = () => {
       // currently there is no sorting.
       console.log("executing phase 3")
       // console.log("filteredRestaurantsState_v2:", filteredRestaurantsState)
@@ -378,50 +411,53 @@ function App() {
   const queryClient = new QueryClient()
   return (
     <div>
-    <QueryClientProvider client={queryClient}>
-      <Router>
+      <QueryClientProvider client={queryClient}>
+        <Router>
 
-        <NavBar
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          setNavBarHeight={setNavBarHeight}
-          setAddressState={setAddressState}
-          setSearchTermState={setSearchTermState}
-          showMap={showMap} 
-          setShowMap={setShowMap}
-          isTWmd={isTWmd}
-        />
+          <Suspense fallback={<LoadingComp />}>
+            <NavBar
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+              setNavBarHeight={setNavBarHeight}
+              setAddressState={setAddressState}
+              setSearchTermState={setSearchTermState}
+              showMap={showMap}
+              setShowMap={setShowMap}
+              isTWmd={isTWmd}
+              setScreenSize={setScreenSize}
+            />
+          </Suspense>
 
-        <Routes>
-          {/* website routes */}
-          <Route
-            path='/'
-            element={
-              <LandingPage
-                setSearchParams={setSearchParams}
-                mainDivStyle={mainDivStyle}
-                setAddressState={setAddressState}
-              />
-
-            }
-          />
-
-          <Route
-            path='/profile'
-            element={
-              <Suspense fallback={<LoadingComp />}>
-                <Profile
+          <Routes>
+            {/* website routes */}
+            <Route
+              path='/'
+              element={
+                <LandingPage
+                  setSearchParams={setSearchParams}
                   mainDivStyle={mainDivStyle}
+                  setAddressState={setAddressState}
                 />
-              </Suspense>
-            }
-          />
 
-          <Route
-            path="/restaurants"
-            element={
-              <Suspense fallback={<LoadingComp />}>
-                    <GlobalStateContext.Provider value = {globalContextVar}>
+              }
+            />
+
+            <Route
+              path='/profile'
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <Profile
+                    mainDivStyle={mainDivStyle}
+                  />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/restaurants"
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <GlobalStateContext.Provider value={globalContextVar}>
                     <Main
                       isFetchingRestData={isFetchingRestData}
                       showRestaurants={showRestaurantsState}
@@ -442,91 +478,93 @@ function App() {
                       showMap={showMap}
                       isTWmd={isTWmd}
                       contentHeight={contentHeight}
+                      screenSize={screenSize}
                     />
-                    </GlobalStateContext.Provider>
-              </Suspense>
-            }
-          />
+                  </GlobalStateContext.Provider>
+                </Suspense>
+              }
+            />
 
-          <Route
-            path="/restaurant/:id"
-            element={
-              <Suspense fallback={<LoadingComp />}>
-                <RestDetail
-                  mainDivStyle={mainDivStyle}
-                />
-              </Suspense>
-            }
-          />
+            <Route
+              path="/restaurant/:id"
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <RestDetail
+                    mainDivStyle={mainDivStyle}
+                  />
+                </Suspense>
+              }
+            />
 
-          <Route
-            path='/editrestaurant/:id'
-            element={
-              <Suspense fallback={<LoadingComp />}>
-                <AddEditRest
-                  // currentLocation={currentLocation}
-                  mainDivStyle={mainDivStyle}
-                />
-              </Suspense>
-            }
-          />
+            <Route
+              path='/editrestaurant/:id'
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <AddEditRest
+                    // currentLocation={currentLocation}
+                    mainDivStyle={mainDivStyle}
+                  />
+                </Suspense>
+              }
+            />
 
-          <Route
-            path='/dashboard'
-            element={
-              <Suspense fallback={<LoadingComp />}>
-                <DashBoardContainer
-                  mainDivStyle={mainDivStyle}
-                />
-              </Suspense>
-            }
-          />
-          {/* <Route
+            <Route
+              path='/dashboard'
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <DashBoardContainer
+                    mainDivStyle={mainDivStyle}
+                  />
+                </Suspense>
+              }
+            />
+            {/* <Route
           path="/account"
           element={<RestDetail/>}
         /> */}
 
-          < Route
-            path="/addnewrestaurant"
-            element={
-              <Suspense fallback={<LoadingComp />}>
-                <AddEditRest
-                  // currentLocation={currentLocation}
-                  mainDivStyle={mainDivStyle}
-                />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <Suspense fallback={<LoadingComp />}>
-                <SignUp
-                  mainDivStyle={mainDivStyle}
-                />
-              </Suspense>
-            }
-          />
+            < Route
+              path="/addnewrestaurant"
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <AddEditRest
+                    // currentLocation={currentLocation}
+                    mainDivStyle={mainDivStyle}
+                  />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <SignUp
+                    mainDivStyle={mainDivStyle}
+                  />
+                </Suspense>
+              }
+            />
 
-          <Route
-            path="/login"
-            element={
-              <Suspense fallback={<LoadingComp />}>
-                <Login
-                  mainDivStyle={mainDivStyle}
-                />
-              </Suspense>
-            }
+            <Route
+              path="/login"
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <Login
+                    mainDivStyle={mainDivStyle}
+                  />
+                </Suspense>
+              }
+            />
+
+          </Routes>
+
+          <Footer
+            contentHeight={contentHeight}
+            setFooterHeight={setFooterHeight}
+            setScreenSize={setScreenSize}
           />
-
-        </Routes>
-
-        <Footer
-          contentHeight={contentHeight}
-          setFooterHeight={setFooterHeight}
-        />
-      </Router>
-    </QueryClientProvider >
+        </Router>
+      </QueryClientProvider >
     </div>
   );
 }
