@@ -46,13 +46,150 @@ export default function RestDetail({ mainDivStyle }) {
   const [isLoaded, setIsloaded] = useState(false)
   const [address, setAddress] = useState("")
 
-  const dateString = () => {
-    const updatedDate = restData.updatedAt
+  const dateString = (dateTime) => {
+    const updatedDate = dateTime
     const year = updatedDate.substring(0, 4)
     const month = updatedDate.substring(5, 7)
     const day = updatedDate.substring(8, 10)
     return `${month}/${day}/${year}`
   }
+
+  const dateObjToString = (obj) => {
+    return `${obj.month}/${obj.day}/${obj.year}`
+  }
+
+  const dateStringToObj = (dateTime) => {
+    const updatedDate = dateTime
+    const year = Number(updatedDate.substring(0, 4))
+    const month = Number(updatedDate.substring(5, 7))
+    const day = Number(updatedDate.substring(8, 10))
+    return {
+      year,
+      month,
+      day
+    }
+  }
+
+  const getLargestDateObj = (dateObjArr) => {
+    
+    // init low point
+    let dateObj = {
+      year: 0,
+      month: 0,
+      day: 0
+    }
+
+    // check if input is array
+    if (!Array.isArray(dateObjArr)) {
+      return new Error("Input Variable is not an Array")
+    }
+
+    // loop thru date obj array
+
+    for (let idx = 0; idx < dateObjArr.length; idx++) {
+      let dateObjGreaterThanEle = true
+
+      const ele = dateObjArr[idx]
+      // check if element is not object or null
+      let eleType = typeof ele
+      if (!eleType == "object" || ele == null) {
+        const errorMessage = `Array[${idx}] is not an object`
+        console.log(errorMessage)
+        return new Error(errorMessage)
+      }
+      // console.log(`Array[${idx}] is an object`)
+
+      // check if key lenght = 3 AND if key names are year, month, day
+      const keyArr = Object.keys(ele)
+      let keysValid = true
+      let keysArrCheckVals = ["year", "month", "day"]
+      keysArrCheckVals.forEach((val) => {
+        if (!keysArrCheckVals.includes(val)) { keysValid = false }
+      })
+      if (keyArr.length !== 3 || !keysValid) {
+        const errorMessage = `Array[${idx}] key error, should be year, month, day, CASE SENSITIVE`
+        console.log(errorMessage)
+        return new Error(errorMessage)
+      }
+      // console.log("keys valid:", keyArr)
+
+      // console.log("idx:", idx)
+      // console.log("ele:", ele)
+      // console.log("dateObj:", dateObj)
+
+
+      console.log(`idx:${idx} comparing year: ele:${ele.year} ? dateObj:${dateObj.year}`)
+      if (dateObjGreaterThanEle && (Number(ele.year) < Number(dateObj.year))) {
+        // console.log(`idx:${idx} year: ${ele.year} < ${dateObj.year}, skipping`)
+        dateObjGreaterThanEle = false
+        idx++
+      }
+
+      // check if month is smaller and skip if so
+      let checkday = false
+      // console.log(`idx:${idx} comparing month: ele:${ele.month} ? dateObj:${dateObj.month}`)
+      if (dateObjGreaterThanEle && (Number(ele.month) < Number(dateObj.month))) {
+        // console.log(`idx:${idx} month: ${ele.month} < ${dateObj.month}, skipping`)
+        dateObjGreaterThanEle = false
+        idx++
+      } else if (dateObjGreaterThanEle && (Number(ele.month) == Number(dateObj.month))) {
+        // if the month is the same, then check the day
+        checkday = true
+      }
+
+      
+      if (checkday) {
+        // check if day is same/eq or smaller
+        // console.log(`idx:${idx} comparing day: ele:${ele.day} ? dateObj:${dateObj.day}`)
+        if (
+          dateObjGreaterThanEle
+          && (Number(ele.day) <= Number(dateObj.day))) {
+          // console.log(`idx:${idx} day: ${ele.day} <= ${dateObj.day}, skipping`)
+          dateObjGreaterThanEle = false
+          idx++
+        }
+      }
+
+
+      // if passes all checks, set dateObj with ele dateObj
+      if (dateObjGreaterThanEle) {
+        // console.log(`ele > dateObj, setting new datObj with:`, ele)
+        dateObj = ele
+      }
+
+    }
+    return dateObj
+  }
+
+  const getAllUpdateDatesAndCheckLargest = (obj) => {
+    // define empty array to return
+    let updatedDateArr = []
+    const recurseAll = (obj) => {
+      if (typeof obj == "object" && obj !== null) {
+        if (obj.updatedAt) {
+          updatedDateArr.push(dateStringToObj(obj.updatedAt))
+        }
+        const objKeys = Object.entries(obj)
+        objKeys.forEach((keyVal) => {
+          // console.log("key:", keyVal)
+          const keyType = typeof keyVal[1]
+          if (keyType == "object" && keyVal[1] !== null) {
+            return recurseAll(keyVal[1])
+          }
+
+          if (Array.isArray(keyVal[1])) {
+            keyVal[1].forEach((keyValArr) => {
+              return recurseAll(keyValArr[1])
+            })
+          }
+        })
+      }
+    }
+    recurseAll(obj)
+    console.log("updatedDateArr:", updatedDateArr)
+    return getLargestDateObj(updatedDateArr)
+  }
+
   useEffect(() => {
     console.log(id)
     const getRestData = async () => {
@@ -155,10 +292,10 @@ export default function RestDetail({ mainDivStyle }) {
               </div>
               {/* Hour Header */}
 
-                <HHHoursContainer
-                  timeOutputVal={1}
-                  hourSet={restData.hourSet}
-                />
+              <HHHoursContainer
+                timeOutputVal={1}
+                hourSet={restData.hourSet}
+              />
             </div>
           </div>
 
@@ -255,7 +392,8 @@ export default function RestDetail({ mainDivStyle }) {
             <div
               className='flex items-center justify-center text-center'
             >
-              <p>{`Last Updated: ${dateString()}`}</p>
+              {/* <p>{`Last Updated: ${dateString(restData.updatedAt)}`}</p> */}
+              <p>{`Last Updated: ${dateObjToString(getAllUpdateDatesAndCheckLargest(restData))}`}</p>
             </div>
 
             <div
