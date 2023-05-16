@@ -41,6 +41,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
         )
     })
 
+    // render logic for "uncheck all" / "check all"
     useEffect(()=>{
         let isAnyChecked = false
         filterParams.forEach((param)=>{
@@ -59,6 +60,7 @@ export default function FilterComp({ UIFiltersProps, dow, setDow, filterParams, 
         }
     })
 
+    // renders "uncheck all" or "check all"
     let renderCheckOrUnCheckAll = <></>
     if (anyChecked) {
         renderCheckOrUnCheckAll = (

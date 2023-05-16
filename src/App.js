@@ -154,10 +154,14 @@ function App() {
     console.log("numOweek:", numOweek)
     // console.log("filteredRests:",filteredRests)
     const filterRestsByDay = filteredRests.filter((rest, idx) => {
-      //  console.log(`rest${idx}:`, rest)
+       console.log(`rest${idx}:`, rest)
       const filterFlag = rest.hourSet?.hours.some((e) => {
         let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay === true || e.isAllNight === true
-        if (hasOnlyLateNightOnDay) { hasHHFilter = e.hasHH2 === true || e.isAllNight === true || e.isAllDay === true }
+
+        // late night filter logic
+        if (hasOnlyLateNightOnDay) { hasHHFilter = e.hasHH2 === true || e.isAllNight === true || e.isAllDay === true 
+          || e.end1close === true /* added this filter per bug# 71 */
+        }
         return e.day === numOweek && hasHHFilter
       })
       // const filterFlag = rest.hourSet.hours
@@ -280,7 +284,7 @@ function App() {
   }, [searchTermState, addressState])
 
 
-  // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState]
+  // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState, searchTermState]
   useLayoutEffect(() => {
     const executePhaseOne = async () => {
       try {
