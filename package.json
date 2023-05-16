@@ -19,6 +19,7 @@
     "immer": "^9.0.16",
     "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
+    "react-burger-menu": "^3.0.9",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-query": "^3.39.2",

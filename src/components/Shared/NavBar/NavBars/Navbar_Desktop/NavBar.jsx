@@ -7,20 +7,20 @@ import { useImmer } from 'use-immer'
 
 
 // internal comps
-import Alpha2BannerComp from '../../Alpha2BannerComp'
-import apilogger from '../../../helperFunctions/apiLogger'
+// import Alpha2BannerComp from '../../../Alpha2BannerComp'
+import apilogger from '../../../../../helperFunctions/apiLogger'
 import SearchBar from './partials/SearchBar'
-import LogoSmall from '../Logo/LogoSmall'
-import IG_Logo from '../Logo/IG_Logo'
+import LogoSmall from '../../../Logo/LogoSmall'
+import IG_Logo from '../../../Logo/IG_Logo'
 import MailIconDesktop from './partials/MailIcon_Desktop'
-import MailIconMobile from './partials/MailIcon_Mobile'
+
 
 // react-icons
 
 import MapListToggle from './partials/MapListToggle'
 
 // require helper functions
-const {emailBodyStringBuilder} = require("../../../helperFunctions/emailBodyStringBuilder")
+const { emailBodyStringBuilder } = require("../../../../../helperFunctions/emailBodyStringBuilder")
 
 const emptyUserInfo = {
     "firstName": "",
@@ -76,10 +76,10 @@ export default function NavBar({
             // renderAddRest = checkAdmin(decoded)
         }
         // console.log("navBarDiv.current.clientHeight:",navBarDiv.current.clientHeight)
-        
+
         setNavBarHeight(navBarDiv.current.clientHeight)
 
-        setScreenSize((draft)=>{draft.component.navBarHeight = navBarDiv.current.clientHeight})
+        setScreenSize((draft) => { draft.component.navBarHeight = navBarDiv.current.clientHeight })
     })
 
     // useEffect(() => {
@@ -147,118 +147,54 @@ export default function NavBar({
                             </>
                         }
 
-                        {
-                            !isTWmd &&
-                            <>
-                                {/* code to render map / list toggle icon for mobile */}
-                                <MapListToggle
-                                    showMap={showMap}
-                                    setShowMap={setShowMap}
-                                />
-                            </>
-                        }
+
 
 
                         <div className="flex justify-around md:w-fit md:gap-10 md:order-2 items-center">
-                            {/* small width media query here (HAMBURGER) WIP */}
-                            {
-                                !isTWmd &&
 
-                                <Dropdown
-                                    label={""}
-                                    arrowIcon={true}
-                                    inline={true}
-                                    dismissOnClick={true}
-                                >
-                                    <Dropdown.Item>
-                                        <a
-                                            name="survey_p"
-                                            id='survey_p'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'survey_p')
-                                            }}
-                                            href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank" rel="noreferrer">
-                                            <div
-                                                className=''
-
-                                            >
-                                                <p
-                                                    className=''
-                                                >Survey</p>
-                                            </div>
-                                        </a>
-                                    </Dropdown.Item>
-                                    <Dropdown.Item>
-                                            <MailIconMobile/>
-                                    </Dropdown.Item>
-                                    <Dropdown.Item>
-                                        <a
-                                            name="IG_Link"
-                                            id='IG_Link'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'IG_Link')
-                                            }}
-                                            href='https://www.instagram.com/hhqueen.official/' target="_blank" rel="noreferrer">
-                                            <div
-                                                className='flex items-center'
-
-                                            >
-                                                <IG_Logo
-                                                    height={45}
-                                                />
-                                                <p
-                                                    className='pl-3 break-normal w-[70%]'
-                                                >Follow us on Instagram</p>
-                                            </div>
-                                        </a>
-                                    </Dropdown.Item>
-                                </Dropdown>
-                            }
 
 
                             {/* medium Media Query Items */}
-                            {isTWmd &&
-                                <>
 
-                                    {/* newsletter */}
-                                    <a
-                                        name="survey_p"
-                                        id='survey_p'
-                                        onClick={(e) => {
-                                            apilogger(e, componentName, 'survey_p')
-                                        }}
-                                        href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank" rel="noreferrer">
-                                        <div
-                                            className=''
+                            {/* newsletter */}
+                            <a
+                                name="survey_p"
+                                id='survey_p'
+                                onClick={(e) => {
+                                    apilogger(e, componentName, 'survey_p')
+                                }}
+                                href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank" rel="noreferrer">
+                                <div
+                                    className=''
 
-                                        >
-                                            <p
-                                                className='text-white'
-                                            >Survey</p>
-                                        </div>
-                                    </a>
+                                >
+                                    <p
+                                        className='text-white'
+                                    >Survey</p>
+                                </div>
+                            </a>
 
-                                    {/* mail icon */}
-                                        <MailIconDesktop/>
-                                    {/* IG Icon */}
-                                    <a
-                                        name="IG_Link"
-                                        id='IG_Link'
-                                        onClick={(e) => {
-                                            apilogger(e, componentName, 'IG_Link')
-                                        }}
-                                        href='https://www.instagram.com/hhqueen.official/' target="_blank" rel="noreferrer">
-                                        <div
-                                            className=''
+                            {/* mail icon */}
+                            <MailIconDesktop />
+                            {/* IG Icon */}
+                            <a
+                                name="IG_Link"
+                                id='IG_Link'
+                                onClick={(e) => {
+                                    apilogger(e, componentName, 'IG_Link')
+                                }}
+                                href='https://www.instagram.com/hhqueen.official/' target="_blank" rel="noreferrer">
+                                <div
+                                    className=''
 
-                                        >
-                                            <IG_Logo
-                                                height={45}
-                                            />
-                                        </div>
-                                    </a>
-                                </>
-                            }
+                                >
+                                    <IG_Logo
+                                        height={45}
+                                    />
+                                </div>
+                            </a>
+
+
 
                             <Dropdown
                                 arrowIcon={false}
@@ -393,9 +329,6 @@ export default function NavBar({
                     </div>
                 </Navbar>
 
-                {alpha2 &&
-                    <Alpha2BannerComp />
-                }
 
             </div>
         </>

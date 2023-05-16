@@ -45,8 +45,10 @@ const AddEditRest = lazy(() => import('./components/pages/AddEditRest'))
 // import AddEditRest from "./components/pages/AddEditRest"
 const RestDetail = lazy(() => import('./components/pages/RestDetail'))
 // import RestDetail from './components/pages/RestDetail';
-const NavBar = lazy(() => import('./components/Shared/Navbar/NavBar'))
+
+const NavBarContainer = lazy(() => import('./components/Shared/NavBar/NavBarContainer'))
 // import NavBar from "./components/NavBar";
+
 const SignUp = lazy(() => import('./components/pages/SignUp'))
 // import SignUp from './components/pages/SignUp';
 const Login = lazy(() => import('./components/pages/Login'))
@@ -425,7 +427,7 @@ function App() {
         <Router>
 
           <Suspense fallback={<LoadingComp />}>
-            <NavBar
+            <NavBarContainer
               searchParams={searchParams}
               setSearchParams={setSearchParams}
               setNavBarHeight={setNavBarHeight}
