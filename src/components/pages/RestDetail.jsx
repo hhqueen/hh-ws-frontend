@@ -118,7 +118,7 @@ export default function RestDetail({ mainDivStyle }) {
       // console.log("dateObj:", dateObj)
 
 
-      console.log(`idx:${idx} comparing year: ele:${ele.year} ? dateObj:${dateObj.year}`)
+      // console.log(`idx:${idx} comparing year: ele:${ele.year} ? dateObj:${dateObj.year}`)
       if (dateObjGreaterThanEle && (Number(ele.year) < Number(dateObj.year))) {
         // console.log(`idx:${idx} year: ${ele.year} < ${dateObj.year}, skipping`)
         dateObjGreaterThanEle = false
@@ -239,13 +239,14 @@ export default function RestDetail({ mainDivStyle }) {
           className='md:flex md:flex-col mt-[200px] md:items-center'
         >
           <div
-            className='md:flex md:px-10'
+            className='flex md:flex md:px-10'
           >
             <div
-              className='relative md:w-[35vw]'
+              className='md:w-[35vw]'
             >
+              {/* updated img height to 250px per bug #9 */}
               <img
-                className='md:w-full md:max-h-[300px] md:object-cover'
+                className='h-[250px] object-cover md:w-full md:max-h-[300px] md:object-cover'
                 src={restData?.image_url}
                 alt={restData?.name} />
               <EditDeleteRestComp
