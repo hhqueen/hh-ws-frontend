@@ -1,8 +1,8 @@
 import React from 'react'
-import apilogger from '../../../../../../helperFunctions/apiLogger'
+// import apilogger from '../../../../../helperFunctions/apiLogger'
 import { FiMail } from 'react-icons/fi'
 
-const {emailBodyStringBuilder} = require("../../../../../../helperFunctions/emailBodyStringBuilder")
+const {emailBodyStringBuilder} = require("../../../../helperFunctions/emailBodyStringBuilder")
 
 
 export default function MailIcon() {
@@ -33,7 +33,7 @@ export default function MailIcon() {
                 name="mail_icon"
                 id='mail_icon'
                 onClick={(e) => {
-                    apilogger(e, componentName, 'mail_icon')
+                    // apilogger(e, componentName, 'mail_icon')
                 }}
                 href={`mailto:${emailProps.email}?subject=${emailProps.subject}&body=${emailProps.body}`}>
                 <div
@@ -43,8 +43,10 @@ export default function MailIcon() {
                     <FiMail
                         size={40}
                         opacity={.6}
-                        color='white'
                     />
+                    <p
+                        className='pl-3'
+                    >Mail Us</p>
                 </div>
             </a>
         </>

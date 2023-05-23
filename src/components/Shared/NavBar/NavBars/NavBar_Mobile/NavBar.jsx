@@ -1,7 +1,7 @@
 // library imports
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-import { Navbar, Dropdown, Avatar } from 'flowbite-react'
+import { Navbar, Dropdown } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
 import { useImmer } from 'use-immer'
 
@@ -12,13 +12,17 @@ import apilogger from '../../../../../helperFunctions/apiLogger'
 import SearchBar from './partials/SearchBar'
 import LogoSmall from '../../../Logo/LogoSmall'
 import IG_Logo from '../../../Logo/IG_Logo'
-import MailIconDesktop from './partials/MailIcon_Desktop'
+// import MailIconDesktop from './partials/MailIcon_Desktop'
 import MailIconMobile from './partials/MailIcon_Mobile'
 import HamburgerMobile from './partials/HamburgerMobile'
 
 // react-icons
 
 import MapListToggle from './partials/MapListToggle'
+import DropDownComp from './partials/DropDownComp'
+import SearchTermHistoryComp from './partials/SearchTermHistoryComp'
+import SurveyComp from '../../sharedPartials/SurveyComp'
+import Ig_IconComp from '../../sharedPartials/Ig_IconComp'
 
 // require helper functions
 const { emailBodyStringBuilder } = require("../../../../../helperFunctions/emailBodyStringBuilder")
@@ -36,7 +40,8 @@ export default function NavBar({
   showMap,
   setShowMap,
   isTWmd,
-  setScreenSize
+  setScreenSize,
+  hamburgerDropDownArr
 }) {
   const componentName = "NavBar_v2"
 
@@ -48,6 +53,52 @@ export default function NavBar({
   const navigate = useNavigate()
   const [alpha2] = useState(false)
   const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
+
+  const [dropDownState, setDropDownState] = useImmer({
+    isOpen: false,
+    dropDownLiComp: <></>,
+  })
+
+  const [focusedComp, setFocusedComp] = useImmer({
+    searchTermInput: false,
+    addressInput: false,
+    hamburger: false
+  })
+
+  // const hamburgerDropDownDivStyles = "text-center"
+  const hamburgerDropDownComps = hamburgerDropDownArr.map((comp) => {
+    // console.log("comp", comp)
+    console.log("comp", comp)
+    if (comp.toRender === false) return ""
+    return (
+      <>
+        <div
+          className="my-2"
+        >
+          {comp.component}
+        </div>
+      </>
+    )
+  })
+
+  const unfocusOthers = (focusedCompStr) => {
+    if (
+      focusedCompStr !== "searchTermInput"
+      && focusedCompStr !== "addressInput"
+      && focusedCompStr !== "hamburger"
+    ) {
+      return console.log(`error, navbar focus input term "${focusedCompStr}" incorrect, expecting "searchTermInput", "addressInput", or "hamburger"`)
+    }
+    const focusedCompsKeys = Object.keys(focusedComp)
+    const keysToUnfocus = focusedCompsKeys.filter((key) => key !== focusedCompStr)
+    setFocusedComp(draft => keysToUnfocus.map(key => draft[key] = false))
+  }
+
+  // const setDropDown = (focusedCompStr, dropDownComp) => {
+  //   // searchTermInput
+  //   // addressInput
+  //   // hamburger
+  // }
 
   // function to remove token for logging out here
   const handleLogOut = () => {
@@ -107,6 +158,15 @@ export default function NavBar({
         className='fixed flex justify-center md:flex-col w-full top-0 z-50 bg-[#372A88]'
         ref={navBarDiv}
       >
+        {/* conditionally render dropdown based on selection */}
+        {
+          dropDownState.isOpen &&
+          <DropDownComp
+            ComponentToRender={dropDownState.dropDownLiComp}
+          />
+        }
+
+        {/* render navBar */}
         <Navbar
           class="w-f"
           menuOpen={true}
@@ -123,7 +183,7 @@ export default function NavBar({
               <Navbar.Brand
                 href="/">
                 <LogoSmall
-                  showText={isTWmd ? true : false}
+                  showText={isTWmd}
                 />
                 {/* </Link> */}
               </Navbar.Brand>
@@ -149,7 +209,7 @@ export default function NavBar({
             }
 
             {
-              !isTWmd &&
+              !isTWmd && //!window.location.pathname === "/" &&
               <>
                 {/* code to render map / list toggle icon for mobile */}
                 <MapListToggle
@@ -162,107 +222,40 @@ export default function NavBar({
 
             <div className="flex justify-around md:w-fit md:gap-10 md:order-2 items-center">
               {/* small width media query here (HAMBURGER) WIP */}
-              {
-                !isTWmd &&
-
-                <Dropdown
-                  label={""}
-                  arrowIcon={true}
-                  inline={true}
-                  dismissOnClick={true}
-                >
-                  <Dropdown.Item>
-                    <a
-                      name="survey_p"
-                      id='survey_p'
-                      onClick={(e) => {
-                        apilogger(e, componentName, 'survey_p')
-                      }}
-                      href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank" rel="noreferrer">
-                      <div
-                        className=''
-
-                      >
-                        <p
-                          className=''
-                        >Survey</p>
-                      </div>
-                    </a>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <MailIconMobile />
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <a
-                      name="IG_Link"
-                      id='IG_Link'
-                      onClick={(e) => {
-                        apilogger(e, componentName, 'IG_Link')
-                      }}
-                      href='https://www.instagram.com/hhqueen.official/' target="_blank" rel="noreferrer">
-                      <div
-                        className='flex items-center'
-
-                      >
-                        <IG_Logo
-                          height={45}
-                        />
-                        <p
-                          className='pl-3 break-normal w-[70%]'
-                        >Follow us on Instagram</p>
-                      </div>
-                    </a>
-                  </Dropdown.Item>
-                </Dropdown>
-              }
 
 
-              {/* medium Media Query Items */}
-              {isTWmd &&
-                <>
+              {/* <Dropdown
+                label={""}
+                arrowIcon={true}
+                inline={true}
+                dismissOnClick={true}
+              >
 
-                  {/* newsletter */}
-                  <a
-                    name="survey_p"
-                    id='survey_p'
-                    onClick={(e) => {
-                      apilogger(e, componentName, 'survey_p')
-                    }}
-                    href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank" rel="noreferrer">
-                    <div
-                      className=''
+                <Dropdown.Item>
+                  <SurveyComp />
+                </Dropdown.Item>
 
-                    >
-                      <p
-                        className='text-white'
-                      >Survey</p>
-                    </div>
-                  </a>
+                <Dropdown.Item>
+                  <MailIconMobile />
+                </Dropdown.Item>
 
-                  {/* mail icon */}
-                  <MailIconDesktop />
-                  {/* IG Icon */}
-                  <a
-                    name="IG_Link"
-                    id='IG_Link'
-                    onClick={(e) => {
-                      apilogger(e, componentName, 'IG_Link')
-                    }}
-                    href='https://www.instagram.com/hhqueen.official/' target="_blank" rel="noreferrer">
-                    <div
-                      className=''
+                <Dropdown.Item>
+                  <Ig_IconComp />
+                </Dropdown.Item>
 
-                    >
-                      <IG_Logo
-                        height={45}
-                      />
-                    </div>
-                  </a>
-                </>
-              }
+              </Dropdown> */}
 
 
-              <HamburgerMobile />
+              <HamburgerMobile
+                setDropDownIsOpenState={
+                  () => {
+                    setDropDownState(draft => {
+                      draft.isOpen = !draft.isOpen
+                      draft.dropDownLiComp = hamburgerDropDownComps
+                    })
+                  }
+                }
+              />
               {/* 
                             <Dropdown
                                 arrowIcon={false}

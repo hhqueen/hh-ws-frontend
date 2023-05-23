@@ -203,7 +203,8 @@ export default function RestDetail({ mainDivStyle }) {
           OS: window.navigator.userAgentData?.platform,
           screenWidth: window.innerWidth,
           screenHeight: window.innerHeight,
-          restaurantId: id
+          restaurantId: id,
+          windowNav: JSON.stringify(window.navigator)
         })
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/page/${id}${qString}`)
         console.log("async data", response.data)
