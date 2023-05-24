@@ -35,7 +35,8 @@ export default function NavBar({
     showMap,
     setShowMap,
     isTWmd,
-    setScreenSize
+    setScreenSize,
+    handleSubmit
 }) {
     const componentName = "NavBar"
 
@@ -104,6 +105,7 @@ export default function NavBar({
         <>
             <div
                 className='fixed flex justify-center md:flex-col w-full top-0 z-50 bg-[#372A88]'
+                // onSubmit={handleSubmit}
                 ref={navBarDiv}
             >
                 <Navbar
@@ -142,6 +144,7 @@ export default function NavBar({
                                         setSearchTermState={setSearchTermState}
                                         searchParams={searchParams}
                                         setSearchParams={setSearchParams}
+                                        handleSubmit={handleSubmit}
                                     />
                                 </div>
                             </>

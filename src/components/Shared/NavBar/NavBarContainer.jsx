@@ -40,7 +40,7 @@ export default function NavBarContainer({
   isTWmd,
   setScreenSize
 }) {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const [avatarDropDownComps, setAvatarDropDownComps] = useImmer([])
   const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
 
@@ -58,13 +58,8 @@ export default function NavBarContainer({
         draft.email = decoded.email
         draft.id = decoded.id
       })
-      // renderAddRest = checkAdmin(decoded)
     }
-    // console.log("navBarDiv.current.clientHeight:",navBarDiv.current.clientHeight)
 
-    // setNavBarHeight(navBarDiv.current.clientHeight)
-
-    // setScreenSize((draft) => { draft.component.navBarHeight = navBarDiv.current.clientHeight })
   })
   const foundJWT = localStorage.getItem('jwt')
 
@@ -81,64 +76,22 @@ export default function NavBarContainer({
     } else {
         console.log("no user token found in localStorage, logOut aborted")
     }
-    // setUserInfo(emptyUserInfo)
-  }
-
-  const addRenderLogic = (renderArr, toRenderLogic) => {
-    const internalArr = []
-    renderArr.forEach((comp)=>{
-      internalArr.push({
-        component:comp,
-        toRender: toRenderLogic
-      })
-    })
-    return internalArr
   }
 
 
 
-  useEffect(()=>{
-    // setAvatarDropDownComps(prev => prev = [])
-    // setAvatarDropDownComps(prev=>[...prev, ...avatarComps.renderRegardless, ...avatarComps.noJWT, ...avatarComps.hasJWT])
-    const avatarComps = {
-      renderRegardless: addRenderLogic([
-          <AddNewRestComp />,
-          <DashBoardComp />
-        ], true),
-      
-      noJWT: addRenderLogic([
-          <LogInComp />,
-          <SignUpComp />
-        ], userInfo.id === ""),
-      
-      hasJWT: addRenderLogic([
-          <LogOutComp 
-          handleLogOut={handleLogOut}
-          foundJWT={foundJWT}
-          />
-        ],userInfo.id !== "")
-    }
-    setAvatarDropDownComps(prev => prev = [...avatarComps.renderRegardless, ...avatarComps.noJWT, ...avatarComps.hasJWT])
 
-  },[userInfo])
-
-
-  const additionalIconsComps = addRenderLogic([
-        <SurveyComp />,
-        <MailIconComp />,
-        <Ig_IconComp />
-      ],true)
-
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault()
-  //     // new code
-  //     console.log("search term, address",searchParams.searchTerm, searchParams.address)
-  //     setSearchTermState(searchParams.searchTerm)
-  //     setAddressState(searchParams.address)
-  //     appendSearchHistory(searchParams.searchTerm, searchParams.address)
-  //     // keep this regardless
-  //     navigate('/restaurants/')
-  // }
+    const handleSubmit = (e) => {
+      e.preventDefault()
+      // new code
+      console.log("search term, address",searchParams.searchTerm, searchParams.address)
+      setSearchTermState(searchParams.searchTerm)
+      setAddressState(searchParams.address)
+      appendSearchHistory(searchParams.searchTerm, searchParams.address)
+      // keep this regardless
+      navigate('/restaurants/')
+  }
+  
   // conditionally render based on screen size (reference tailwind medium)
   let renderNavBar
   if (isTWmd) {
@@ -153,7 +106,7 @@ export default function NavBarContainer({
       isTWmd={isTWmd}
       setScreenSize={setScreenSize}
       avatarDropDownComps={avatarDropDownComps}
-      additionalIconsComps={additionalIconsComps}
+      handleSubmit={handleSubmit}
     />
   } else {
     renderNavBar = <NavBar_Mobile
@@ -166,7 +119,7 @@ export default function NavBarContainer({
       setShowMap={setShowMap}
       isTWmd={isTWmd}
       setScreenSize={setScreenSize}
-      hamburgerDropDownArr={[...additionalIconsComps, ... avatarDropDownComps]}
+      handleSubmit={handleSubmit}
     />
   }
   return (

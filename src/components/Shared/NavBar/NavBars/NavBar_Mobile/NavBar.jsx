@@ -1,5 +1,5 @@
 // library imports
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useTransition } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { Navbar, Dropdown } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
@@ -14,15 +14,16 @@ import LogoSmall from '../../../Logo/LogoSmall'
 import IG_Logo from '../../../Logo/IG_Logo'
 // import MailIconDesktop from './partials/MailIcon_Desktop'
 import MailIconMobile from './partials/MailIcon_Mobile'
-import HamburgerMobile from './partials/HamburgerMobile'
+import HamburgerIcon from './partials/HamburgerIcon'
 
 // react-icons
 
 import MapListToggle from './partials/MapListToggle'
 import DropDownComp from './partials/DropDownComp'
 import SearchTermHistoryComp from './partials/SearchTermHistoryComp'
-import SurveyComp from '../../sharedPartials/SurveyComp'
-import Ig_IconComp from '../../sharedPartials/Ig_IconComp'
+import SearchTermInput from './partials/SearchTermInput'
+import AddressSubmitInputContainer from './partials/AddressSubmitInput/AddressSubmitInputContainer'
+
 
 // require helper functions
 const { emailBodyStringBuilder } = require("../../../../../helperFunctions/emailBodyStringBuilder")
@@ -41,11 +42,12 @@ export default function NavBar({
   setShowMap,
   isTWmd,
   setScreenSize,
-  hamburgerDropDownArr
+  handleSubmit
 }) {
   const componentName = "NavBar_v2"
 
   const navBarDiv = useRef(null)
+  const [isPending, startTransition] = useTransition()
 
   const renderSearchBar = true
   // const pathName = window.location.pathname
@@ -59,46 +61,13 @@ export default function NavBar({
     dropDownLiComp: <></>,
   })
 
-  const [focusedComp, setFocusedComp] = useImmer({
-    searchTermInput: false,
-    addressInput: false,
-    hamburger: false
-  })
-
-  // const hamburgerDropDownDivStyles = "text-center"
-  const hamburgerDropDownComps = hamburgerDropDownArr.map((comp) => {
-    // console.log("comp", comp)
-    console.log("comp", comp)
-    if (comp.toRender === false) return ""
-    return (
-      <>
-        <div
-          className="my-2"
-        >
-          {comp.component}
-        </div>
-      </>
-    )
-  })
-
-  const unfocusOthers = (focusedCompStr) => {
-    if (
-      focusedCompStr !== "searchTermInput"
-      && focusedCompStr !== "addressInput"
-      && focusedCompStr !== "hamburger"
-    ) {
-      return console.log(`error, navbar focus input term "${focusedCompStr}" incorrect, expecting "searchTermInput", "addressInput", or "hamburger"`)
-    }
-    const focusedCompsKeys = Object.keys(focusedComp)
-    const keysToUnfocus = focusedCompsKeys.filter((key) => key !== focusedCompStr)
-    setFocusedComp(draft => keysToUnfocus.map(key => draft[key] = false))
+  const focusEnum = {
+    nothing: -1,
+    searchTermInput: 0,
+    addressInput: 1,
+    hamburger: 2
   }
-
-  // const setDropDown = (focusedCompStr, dropDownComp) => {
-  //   // searchTermInput
-  //   // addressInput
-  //   // hamburger
-  // }
+  const [focusedVal, setFocusedVal] = useImmer(focusEnum.nothing)
 
   // function to remove token for logging out here
   const handleLogOut = () => {
@@ -111,6 +80,27 @@ export default function NavBar({
     }
     setUserInfo(emptyUserInfo)
   }
+
+  const isInputsFocused = () => {
+    if (focusedVal === focusEnum.searchTermInput || focusedVal === focusEnum.addressInput) return true
+    return false
+  }
+
+  const isHamburgerFocused = () => {
+    if (focusedVal === focusEnum.hamburger) return true
+    return false
+  }
+
+  const focusSearchTermInput = () => { startTransition(() => setFocusedVal(focusEnum.searchTermInput)) }
+  const focusAddressInput = () => { startTransition(() => setFocusedVal(focusEnum.addressInput)) }
+  const focusHamburger = () => { startTransition(() => setFocusedVal(focusEnum.hamburger)) }
+
+  const unfocusAll = () => { startTransition(() => setFocusedVal(focusEnum.nothing)) }
+
+  // const renderDropDownComp = () => {
+  //   if (isInputsFocused() || isHamburgerFocused()) return true
+  //   return false
+  // }
 
   // set user Info for NavBar use from jwt token
   useEffect(() => {
@@ -134,12 +124,28 @@ export default function NavBar({
     setScreenSize((draft) => { draft.component.navBarHeight = navBarDiv.current.clientHeight })
   })
 
-  // useEffect(() => {
-  //     // console.log("searchParams:",searchParams)
-  //     if (searchParams.address.length === 0) {
-  //         setSearchParams((draft) => { draft.address = "Current Location" })
-  //     }
-  // }, [])
+  // focus dependent drop down rendering
+  useEffect(() => {
+    console.log("focusedVal:", focusedVal)
+    switch (focusedVal) {
+
+      case focusEnum.searchTermInput:
+        // code here
+        break;
+
+      case focusEnum.addressInput:
+        // code here
+        break;
+
+      case focusEnum.hamburger:
+        // code here
+        break;
+
+
+      default: // focusEnum.nothing
+      // code here 
+    }
+  }, [focusedVal])
 
   // create / update search history
 
@@ -156,6 +162,7 @@ export default function NavBar({
     <>
       <div
         className='fixed flex justify-center md:flex-col w-full top-0 z-50 bg-[#372A88]'
+        // onSubmit={handleSubmit}
         ref={navBarDiv}
       >
         {/* conditionally render dropdown based on selection */}
@@ -163,230 +170,116 @@ export default function NavBar({
           dropDownState.isOpen &&
           <DropDownComp
             ComponentToRender={dropDownState.dropDownLiComp}
+            className=""
+            style={{
+              marginTop: navBarDiv.current.clientHeight
+            }}
           />
         }
 
         {/* render navBar */}
         <Navbar
-          class="w-f"
-          menuOpen={true}
+          class="w-full px-2"
+        // menuOpen={true}
         // fluid={true}
         // rounded={true}
         >
           {/* navBar Items Container */}
           <div
-            className='w-full flex justify-between'
+            className='w-full flex flex-col justify-between'
           >
 
-            {/* Logo Container */}
-            <div>
-              <Navbar.Brand
-                href="/">
-                <LogoSmall
-                  showText={isTWmd}
-                />
-                {/* </Link> */}
-              </Navbar.Brand>
-            </div>
-
-
-            {/* Search Inputs */}
-            {(
-              // pathName !== "/" &&          // logic that conditionally renders the search bar when NOT landing page
-              renderSearchBar) &&
-              <>
-                <div
-                  className='flex items-center'
-                >
-                  <SearchBar
-                    setAddressState={setAddressState}
-                    setSearchTermState={setSearchTermState}
-                    searchParams={searchParams}
-                    setSearchParams={setSearchParams}
-                  />
+            <div
+              className='w-full flex justify-between'
+            >
+              {/* Logo Container */}
+              {(
+                !isInputsFocused()
+                // && !isHamburgerFocused()
+              )
+                &&
+                <div>
+                  <Navbar.Brand
+                    href="/">
+                    <LogoSmall
+                      showText={isTWmd}
+                    />
+                    {/* </Link> */}
+                  </Navbar.Brand>
                 </div>
-              </>
-            }
 
-            {
-              !isTWmd && //!window.location.pathname === "/" &&
-              <>
-                {/* code to render map / list toggle icon for mobile */}
-                <MapListToggle
-                  showMap={showMap}
-                  setShowMap={setShowMap}
-                />
-              </>
-            }
+              }
 
-
-            <div className="flex justify-around md:w-fit md:gap-10 md:order-2 items-center">
-              {/* small width media query here (HAMBURGER) WIP */}
-
-
-              {/* <Dropdown
-                label={""}
-                arrowIcon={true}
-                inline={true}
-                dismissOnClick={true}
+              <form
+                onSubmit={handleSubmit}
+                className={!isInputsFocused() ? "flex w-[200px]" : 'flex flex-col w-full'}
               >
+                {/* Search Inputs */}
+                {(
+                  // pathName !== "/" &&          // logic that conditionally renders the search bar when NOT landing page
+                  renderSearchBar) &&
+                  <>
 
-                <Dropdown.Item>
-                  <SurveyComp />
-                </Dropdown.Item>
-
-                <Dropdown.Item>
-                  <MailIconMobile />
-                </Dropdown.Item>
-
-                <Dropdown.Item>
-                  <Ig_IconComp />
-                </Dropdown.Item>
-
-              </Dropdown> */}
+                    <SearchTermInput
+                      searchParams={searchParams}
+                      setSearchParams={setSearchParams}
+                      focusSearchTermInput={focusSearchTermInput}
+                      unfocusAll={unfocusAll}
+                    />
 
 
-              <HamburgerMobile
-                setDropDownIsOpenState={
-                  () => {
-                    setDropDownState(draft => {
-                      draft.isOpen = !draft.isOpen
-                      draft.dropDownLiComp = hamburgerDropDownComps
-                    })
-                  }
+                    {
+                      isInputsFocused() &&
+                      <>
+                        <AddressSubmitInputContainer
+                          searchParams={searchParams}
+                          setSearchParams={setSearchParams}
+                          focusAddressInput={focusAddressInput}
+                          unfocusAll={unfocusAll}
+                          isInputsFocused={isInputsFocused}
+                        />
+                      </>
+                    }
+                  </>
                 }
-              />
-              {/* 
-                            <Dropdown
-                                arrowIcon={false}
-                                inline={true}
-                                label={
-                                    <Avatar
-                                        placeholderInitials={localStorage.getItem('jwt') && `${userInfo.firstName[0]}${userInfo.lastName[0]}`}
-                                        rounded={true}
+                <input
+                  type='submit'
+                  hidden={true}
+                />
+              </form>
+              {
+                !isTWmd && !isInputsFocused() && //!window.location.pathname === "/" &&
+                <>
+                  {/* code to render map / list toggle icon for mobile */}
+                  <MapListToggle
+                    showMap={showMap}
+                    setShowMap={setShowMap}
+                  />
+                </>
+              }
 
-                                    />
-                                }
-                            >
+              {!isInputsFocused() &&
 
-                                {
-                                    localStorage.getItem('jwt') &&
-                                    <>
-                                        <Dropdown.Header
-                                        // class="hover:bg-slate-400"
-                                        // onClick={()=>{}}
-                                        >
-                                            <div
-                                                className="hover:bg-slate-100 rounded"
-                                            // onClick={navigate("/profile")}
-                                            >
-                                                <span className="block text-sm">
-                                                    {`${userInfo.firstName} ${userInfo.lastName}`}
-                                                </span>
-                                                <span className="block truncate text-sm font-medium">
-                                                    {userInfo.email}
-                                                </span>
-                                            </div>
-                                        </Dropdown.Header>
-                                    </>
-                                }
-
-                                {
-                                    !localStorage.getItem('jwt') &&
-                                    <>
-                                        <Link
-                                            id='Login_Link'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'Login_Link')
-                                            }}
-                                            to="/login"
-                                        >
-                                            <Dropdown.Item>
-                                                Log In
-                                            </Dropdown.Item>
-                                        </Link>
+                <div className="flex justify-around md:w-fit md:gap-10 md:order-2 items-center">
+                  {/* small width media query here (HAMBURGER) WIP */}
 
 
-                                        <Link
-                                            id='SignUp_Link'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'SignUp_Link')
-                                            }}
-                                            to="/signup"
-                                        >
-                                            <Dropdown.Item>
-                                                Sign Up
-                                            </Dropdown.Item>
-                                        </Link>
-                                    </>
-                                }
+                  <HamburgerIcon
+                    setDropDownIsOpenState={
+                      () => {
+                        setDropDownState(draft => {
+                          draft.isOpen = !draft.isOpen
+                          draft.dropDownLiComp = <></>
+                        })
+                      }
+                    }
+                  />
 
-                                {
-                                    localStorage.getItem('jwt') && jwt_decode(localStorage.getItem('jwt')).auth === "Admin" &&
-                                    <>
-                                        <Link
-                                            id='AddNewRestaurant_Link'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'AddNewRestaurant_Link')
-                                            }}
-                                            to="/addnewrestaurant"
-                                        >
-                                            <Dropdown.Item>
-                                                Add New Restaurant
-                                            </Dropdown.Item>
-                                        </Link>
-                                        <Link
-                                            id='DashBoard_Link'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'DashBoard_Link')
-                                            }}
-                                            to="/dashboard"
-                                        >
-                                            <Dropdown.Item>
-                                                DashBoard
-                                            </Dropdown.Item>
-                                        </Link>
-                                    </>
-                                }
-
-                                {
-                                    localStorage.getItem('jwt') &&
-
-                                    <>
-                                        <Link
-                                            id='Profile_Link'
-                                            onClick={(e) => {
-                                                apilogger(e, componentName, 'Profile_Link')
-                                            }}
-                                            to="/profile"
-                                        >
-                                            <Dropdown.Item
-                                            // onClick={(e) => {
-                                            //     apilogger({ componentName, elementId: 'LogOut_Link' })
-                                            //     handleLogOut()
-                                            // }}
-                                            >
-                                                Profile
-                                            </Dropdown.Item>
-                                        </Link>
-
-                                        <Dropdown.Item
-                                            onClick={(e) => {
-                                                apilogger({ componentName, elementId: 'LogOut_Link' })
-                                                handleLogOut()
-                                            }}
-                                        >
-                                            Sign out
-                                        </Dropdown.Item>
-                                    </>
-
-                                    // </div>
-                                }
-
-
-
-                            </Dropdown> */}
+                </div>
+              }
             </div>
+            {/* address/Submit input (conditionally rendered) */}
+
           </div>
         </Navbar>
 

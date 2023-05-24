@@ -19,7 +19,7 @@ export default function MapListToggle({ showMap, setShowMap }) {
             <button
                 onClick={showMap ? toggleMapListFunction : toggleMapListFunction}
             >
-                {showMap ? <FaListUl /> : <FaMapMarkedAlt />}
+                {showMap ? <FaListUl color="white"/> : <FaMapMarkedAlt color="white"/>}
             </button>
         </div>
     )

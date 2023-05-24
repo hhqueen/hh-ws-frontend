@@ -4,7 +4,7 @@ import { RxHamburgerMenu } from "react-icons/rx"
 
 // import components
 
-export default function HamburgerMobile({ setDropDownIsOpenState }) {
+export default function HamburgerIcon({ setDropDownIsOpenState }) {
     return (
         <>
             <div
