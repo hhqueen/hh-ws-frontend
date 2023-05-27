@@ -7,7 +7,7 @@ export default function AddressSubmitInputContainer({
     setSearchParams,
     focusAddressInput,
     unfocusAll,
-    isInputsFocused
+    isInputsFocused,
 }) {
 
     return (
@@ -22,6 +22,7 @@ export default function AddressSubmitInputContainer({
                     setSearchParams={setSearchParams}
                     focusAddressInput={focusAddressInput}
                     unfocusAll={unfocusAll}
+                    isInputsFocused={isInputsFocused}
                 />
             {/* </div> */}
         </>

@@ -4,11 +4,17 @@ import { RxHamburgerMenu } from "react-icons/rx"
 
 // import components
 
-export default function HamburgerIcon({ setDropDownIsOpenState }) {
+export default function HamburgerIcon({ 
+    setDropDownIsOpenState,
+    focusHamburger,
+    unfocusAll
+ }) {
     return (
         <>
             <div
-                onClick={setDropDownIsOpenState}
+                onFocus={focusHamburger}
+                onBlur={unfocusAll}
+                // onClick={setDropDownIsOpenState}
                 className='relative cursor-pointer'
             >
                 <RxHamburgerMenu

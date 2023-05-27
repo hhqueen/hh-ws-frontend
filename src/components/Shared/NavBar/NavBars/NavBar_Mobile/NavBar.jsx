@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Navbar, Dropdown } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
 import { useImmer } from 'use-immer'
-
+import {BsBoxArrowLeft} from 'react-icons/bs'
 
 // internal comps
 import Alpha2BannerComp from '../../../../Alpha2BannerComp'
@@ -15,14 +15,13 @@ import IG_Logo from '../../../Logo/IG_Logo'
 // import MailIconDesktop from './partials/MailIcon_Desktop'
 import MailIconMobile from './partials/MailIcon_Mobile'
 import HamburgerIcon from './partials/HamburgerIcon'
-
-// react-icons
-
 import MapListToggle from './partials/MapListToggle'
 import DropDownComp from './partials/DropDownComp'
-import SearchTermHistoryComp from './partials/SearchTermHistoryComp'
 import SearchTermInput from './partials/SearchTermInput'
 import AddressSubmitInputContainer from './partials/AddressSubmitInput/AddressSubmitInputContainer'
+import SearchLocationHistoryComp from './partials/SearchLocationHistoryComp'
+import SearchTermHistoryComp from './partials/SearchTermHistoryComp'
+import HamburgerDropDown from './partials/HamburgerDropDown'
 
 
 // require helper functions
@@ -127,24 +126,32 @@ export default function NavBar({
   // focus dependent drop down rendering
   useEffect(() => {
     console.log("focusedVal:", focusedVal)
-    switch (focusedVal) {
 
-      case focusEnum.searchTermInput:
-        // code here
-        break;
+      switch (focusedVal) {
 
-      case focusEnum.addressInput:
-        // code here
-        break;
+        case focusEnum.searchTermInput:
+          // code here
+          console.log("searchTerms history dropdown rendering");
+          // draft.dropDownLiComp=<></>
+          break;
+  
+        case focusEnum.addressInput:
+          // code here
+          console.log("address history dropdown rendering");
+          // draft.dropDownLiComp=<></>
+          break;
+  
+        case focusEnum.hamburger:
+          // code here
+          console.log("hamburger dropdown rendering");
+          setDropDownState((draft)=>{
+          draft.dropDownLiComp=<><HamburgerDropDown/></>});
+          break;
+  
+        default: // focusEnum.nothing
+        // code here 
+      }
 
-      case focusEnum.hamburger:
-        // code here
-        break;
-
-
-      default: // focusEnum.nothing
-      // code here 
-    }
   }, [focusedVal])
 
   // create / update search history
@@ -197,7 +204,7 @@ export default function NavBar({
                 !isInputsFocused()
                 // && !isHamburgerFocused()
               )
-                &&
+                ?
                 <div>
                   <Navbar.Brand
                     href="/">
@@ -206,6 +213,16 @@ export default function NavBar({
                     />
                     {/* </Link> */}
                   </Navbar.Brand>
+                </div>
+                :
+                <div
+                  onClick={unfocusAll}
+                  className='flex justify-center items-center mr-3'
+                >
+                  <BsBoxArrowLeft
+                    color='white'
+                    size={40}
+                  />
                 </div>
 
               }
@@ -225,6 +242,7 @@ export default function NavBar({
                       setSearchParams={setSearchParams}
                       focusSearchTermInput={focusSearchTermInput}
                       unfocusAll={unfocusAll}
+                      isInputsFocused={isInputsFocused}
                     />
 
 
@@ -262,23 +280,14 @@ export default function NavBar({
 
                 <div className="flex justify-around md:w-fit md:gap-10 md:order-2 items-center">
                   {/* small width media query here (HAMBURGER) WIP */}
-
-
                   <HamburgerIcon
-                    setDropDownIsOpenState={
-                      () => {
-                        setDropDownState(draft => {
-                          draft.isOpen = !draft.isOpen
-                          draft.dropDownLiComp = <></>
-                        })
-                      }
-                    }
+                    focusHamburger={focusHamburger}
+                    unfocusAll={unfocusAll}
+                    // isFocusedValNothing={isFocusedValNothing}
                   />
-
                 </div>
               }
             </div>
-            {/* address/Submit input (conditionally rendered) */}
 
           </div>
         </Navbar>

@@ -1,33 +1,53 @@
+// import library
 import React from 'react'
+
+// comps
+import InputXDiv from '../../../sharedPartials/InputXDiv'
 
 export default function SearchTermInput({
     searchParams,
     setSearchParams,
     focusSearchTermInput,
-    unfocusAll
+    unfocusAll,
+    isInputsFocused
 }) {
     return (
         <>
             {/* search Term Input */}
-            <input
-                className='text-center border w-full rounded p-0 my-2'
-                type='text'
-                placeholder='Search'
-                value={searchParams.searchTerm}
-                onChange={(e) => {
-                    setSearchParams((draft) => { draft.searchTerm = e.target.value })
-                    // console.log(`SearchVal set to ${e.target.value}`)
-                }}
-                onFocus={()=>{
-                    console.log("search Input focus entered")
-                    focusSearchTermInput()
-                }}
-                // onFocusOut={()=>console.log("search Input focus exited")}
-                onBlur={()=>{
-                    console.log("search Input focus exited")
-                    unfocusAll()
-                }}
-            />
+            <label
+                className='flex w-full rounded p-0 my-2 relative h-[26px]'
+            >
+                <input
+                    className='text-center w-full border rounded'
+                    type='text'
+                    placeholder='Search'
+                    value={searchParams.searchTerm}
+                    onChange={(e) => {
+                        setSearchParams((draft) => { draft.searchTerm = e.target.value })
+                        // console.log(`SearchVal set to ${e.target.value}`)
+                    }}
+                    onFocus={() => {
+                        console.log("search Input focus entered")
+                        focusSearchTermInput()
+                    }}
+                    // onFocusOut={()=>console.log("search Input focus exited")}
+                    onBlur={() => {
+                        console.log("search Input focus exited")
+                        if (!isInputsFocused()) {
+                            unfocusAll()
+                        }
+                    }}
+                />
+                {
+                    isInputsFocused() &&
+                    <InputXDiv
+                        onClick={() => {
+                            focusSearchTermInput()
+                            setSearchParams((draft) => { draft.searchTerm = '' })
+                        }}
+                    />
+                }
+            </label>
         </>
     )
 }
