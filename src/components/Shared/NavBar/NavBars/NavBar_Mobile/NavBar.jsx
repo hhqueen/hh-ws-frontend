@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Navbar, Dropdown } from 'flowbite-react'
 import jwt_decode from 'jwt-decode'
 import { useImmer } from 'use-immer'
-import {BsBoxArrowLeft} from 'react-icons/bs'
+import { BsBoxArrowLeft } from 'react-icons/bs'
 
 // internal comps
 import Alpha2BannerComp from '../../../../Alpha2BannerComp'
@@ -94,12 +94,15 @@ export default function NavBar({
   const focusAddressInput = () => { startTransition(() => setFocusedVal(focusEnum.addressInput)) }
   const focusHamburger = () => { startTransition(() => setFocusedVal(focusEnum.hamburger)) }
 
-  const unfocusAll = () => { startTransition(() => setFocusedVal(focusEnum.nothing)) }
-
-  // const renderDropDownComp = () => {
-  //   if (isInputsFocused() || isHamburgerFocused()) return true
-  //   return false
-  // }
+  const unfocusAll = () => {
+    startTransition(() => {
+      setFocusedVal(val => val = focusEnum.nothing)
+      setDropDownState(draft => { 
+        draft.isOpen = false
+        draft.dropDownLiComp=<></>
+       })
+    })
+  }
 
   // set user Info for NavBar use from jwt token
   useEffect(() => {
@@ -123,34 +126,75 @@ export default function NavBar({
     setScreenSize((draft) => { draft.component.navBarHeight = navBarDiv.current.clientHeight })
   })
 
+  const getHistoryArrFromLocalStorage = (filterVal, lsItemName) => {
+    const lsItemNameType = typeof lsItemName
+    if (lsItemNameType !== 'string') {
+      return `Error, passed Local Storage item name type should be string, is ${lsItemNameType}`
+    }
+    const getLsItem = localStorage.getItem(lsItemName)
+    if (!getLsItem) {
+      return `Error, no local storage item named ${lsItemName} found.`
+    }
+
+    let historyArr = []
+    JSON.parse(getLsItem).forEach(item => {
+      const searchObj = Object.entries(item)
+      searchObj.forEach(item => {
+        if (item[0] == filterVal && historyArr.indexOf(item[1]) === -1 ) historyArr.push(item[1])
+      })
+    })
+    console.log("parsed historyArr:", historyArr)
+    return historyArr
+  }
+
   // focus dependent drop down rendering
   useEffect(() => {
-    console.log("focusedVal:", focusedVal)
+    switch (focusedVal) {
+      case focusEnum.searchTermInput:
+        // code here
+        console.log("searchTerms history dropdown rendering");
+        setDropDownState((draft) => {
+          draft.isOpen = true
+          draft.dropDownLiComp = <SearchTermHistoryComp
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            unfocusAll={unfocusAll}
+            searchTermHistoryArr={getHistoryArrFromLocalStorage("searchTerm", 'sh')}
+            setSearchTermState={setSearchTermState}
+          />
+        });
+        break;
 
-      switch (focusedVal) {
+      case focusEnum.addressInput:
+        // code here
+        console.log("address history dropdown rendering");
+        setDropDownState((draft) => {
+          draft.isOpen = true
+          draft.dropDownLiComp = <SearchLocationHistoryComp
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            unfocusAll={unfocusAll}
+            locationHistoryArr={getHistoryArrFromLocalStorage("address", 'sh')}
+            setAddressState={setAddressState}
+          />
+        });
+        break;
 
-        case focusEnum.searchTermInput:
-          // code here
-          console.log("searchTerms history dropdown rendering");
-          // draft.dropDownLiComp=<></>
-          break;
-  
-        case focusEnum.addressInput:
-          // code here
-          console.log("address history dropdown rendering");
-          // draft.dropDownLiComp=<></>
-          break;
-  
-        case focusEnum.hamburger:
-          // code here
-          console.log("hamburger dropdown rendering");
-          setDropDownState((draft)=>{
-          draft.dropDownLiComp=<><HamburgerDropDown/></>});
-          break;
-  
-        default: // focusEnum.nothing
-        // code here 
-      }
+      case focusEnum.hamburger:
+        // code here
+        console.log("hamburger dropdown rendering");
+        setDropDownState((draft) => {
+          draft.isOpen = true
+          draft.dropDownLiComp = <HamburgerDropDown
+            handleSubmit={handleSubmit}
+            handleLogOut={handleLogOut}
+          />
+        });
+        break;
+
+      default: // focusEnum.nothing
+      // code here 
+    }
 
   }, [focusedVal])
 
@@ -236,15 +280,17 @@ export default function NavBar({
                   // pathName !== "/" &&          // logic that conditionally renders the search bar when NOT landing page
                   renderSearchBar) &&
                   <>
-
-                    <SearchTermInput
-                      searchParams={searchParams}
-                      setSearchParams={setSearchParams}
-                      focusSearchTermInput={focusSearchTermInput}
-                      unfocusAll={unfocusAll}
-                      isInputsFocused={isInputsFocused}
-                    />
-
+                    <div
+                      className='flex justify-center items-center'
+                    >
+                      <SearchTermInput
+                        searchParams={searchParams}
+                        setSearchParams={setSearchParams}
+                        focusSearchTermInput={focusSearchTermInput}
+                        unfocusAll={unfocusAll}
+                        isInputsFocused={isInputsFocused}
+                      />
+                    </div>
 
                     {
                       isInputsFocused() &&
@@ -283,7 +329,8 @@ export default function NavBar({
                   <HamburgerIcon
                     focusHamburger={focusHamburger}
                     unfocusAll={unfocusAll}
-                    // isFocusedValNothing={isFocusedValNothing}
+                    isInputsFocused={isInputsFocused}
+                  // isFocusedValNothing={isFocusedValNothing}
                   />
                 </div>
               }

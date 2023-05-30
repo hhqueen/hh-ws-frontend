@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default function LogOutComp({handleLogOut}) {
     const navigate = useNavigate()
-
+    const foundJWT = localStorage.getItem("jwt")
     // const handleLogOut = () => {
     //     console.log("attempt log out")
     //     // check to see if a token exists in local storage
@@ -20,7 +20,7 @@ export default function LogOutComp({handleLogOut}) {
     //   }
 
     //   do not render if no JWT found
-      // if (!foundJWT) return ""
+      if (!foundJWT) return ""
     return (
         <div
             onClick={(e) => {

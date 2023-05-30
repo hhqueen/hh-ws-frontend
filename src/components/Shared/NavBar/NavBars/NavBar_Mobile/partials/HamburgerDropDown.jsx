@@ -1,31 +1,26 @@
 import React from 'react'
+import MailIcon from './MailIcon_Mobile'
+import SignUpComp from '../../../sharedPartials/SignUpComp'
+import LogInComp from '../../../sharedPartials/LogInComp'
+import LogOutComp from '../../../sharedPartials/LogOutComp'
+import SurveyComp from '../../../sharedPartials/SurveyComp'
+import Ig_IconComp from '../../../sharedPartials/Ig_IconComp'
 
-export default function HamburgerDropDown({ }) {
-//     let dropDownArr = [{ name: "menu" }]
-
-//     const liStyle = "text-center"
-
-    // const mapDropDown = dropDownArr.map((item) => {
-    //     return (
-    //         <>
-    //             <li
-    //                 className={liStyle}
-    //             >{item.name}</li>
-    //         </>
-    //     )
-
-    // })
+export default function HamburgerDropDown({handleLogOut}) {
     return (
         <>
-            <ul
-                // className='absolute border w-[100px] h-full bg-white right-[0px] top-[52px] pt-0 mt-0'
+            <div
+                className='flex flex-col gap-y-3'
             >
-                {/* {mapDropDown} */}
-                <li
-                    // className={liStyle}
-                >purple</li>
-            </ul>
-            <div>100</div>
+                <MailIcon/>
+                <Ig_IconComp/>
+                <SurveyComp/>
+                <SignUpComp/>
+                <LogInComp/>
+                <LogOutComp
+                    handleLogOut={handleLogOut}
+                />
+            </div>
         </>
     )
 }

@@ -18,7 +18,7 @@ export default function CityCardContainer({ CityArr, handleCardClick }) {
         subject: "new HHQ submission request",
         body: emailBodyStringBuilder(bodyLines) // implented per Feature# 75
     }
-    console.log("cityCard this:", window)
+    // console.log("cityCard this:", window)
     const mapCityArry = CityArr.map((city) => {
         // console.log("cityData_fromArr:", city)
         return (

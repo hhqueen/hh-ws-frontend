@@ -85,6 +85,7 @@ export default function NavBarContainer({
       e.preventDefault()
       // new code
       console.log("search term, address",searchParams.searchTerm, searchParams.address)
+      // console.log("handleSubmi searchParams", searchParams)
       setSearchTermState(searchParams.searchTerm)
       setAddressState(searchParams.address)
       appendSearchHistory(searchParams.searchTerm, searchParams.address)

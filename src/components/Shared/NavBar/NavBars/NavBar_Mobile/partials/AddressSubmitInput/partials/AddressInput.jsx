@@ -23,14 +23,13 @@ export default function AddressInput({
                         setSearchParams((draft) => { draft.address = e.target.value })
                     }}
                     onFocus={() => {
-                        console.log("search Input focus entered")
+                        // console.log("search Input focus entered")
                         focusAddressInput()
                     }}
                     // onFocusOut={()=>console.log("search Input focus exited")}
                     onBlur={() => {
-                        console.log("search Input focus exited")
-                        if (!isInputsFocused()) { return unfocusAll() }
-
+                        // console.log("search Input focus exited")
+                        if (!isInputsFocused()) unfocusAll()
                     }}
                 />
                 {

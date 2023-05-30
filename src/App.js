@@ -156,7 +156,7 @@ function App() {
     console.log("numOweek:", numOweek)
     // console.log("filteredRests:",filteredRests)
     const filterRestsByDay = filteredRests.filter((rest, idx) => {
-       console.log(`rest${idx}:`, rest)
+      //  console.log(`rest${idx}:`, rest)
       const filterFlag = rest.hourSet?.hours.some((e) => {
         let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay === true || e.isAllNight === true
 
@@ -311,7 +311,7 @@ function App() {
         const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
         const httpMethod = "get"
         const gotRests = await axios[httpMethod](getString)
-        console.log("gotRests_data:", gotRests.data)
+        // console.log("gotRests_data:", gotRests.data)
 
         // add infobox open/close state in the data
         let allRestData = []
