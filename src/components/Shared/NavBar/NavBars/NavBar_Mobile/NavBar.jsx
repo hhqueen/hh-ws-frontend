@@ -46,6 +46,9 @@ export default function NavBar({
   const componentName = "NavBar_v2"
 
   const navBarDiv = useRef(null)
+  const formRef = useRef(null)
+  const searchInputRef = useRef(null)
+
   const [isPending, startTransition] = useTransition()
 
   const renderSearchBar = true
@@ -198,16 +201,9 @@ export default function NavBar({
 
   }, [focusedVal])
 
-  // create / update search history
-
-
-  // const getMostRecentSearchHistory = () => {
-  //     if (localStorage.getItem('sh')) {
-  //         const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
-  //         const mostRecent = getHistoryArr[getHistoryArr.length - 1]
-  //         return mostRecent
-  //     }
-  // }
+  const blurByEleId = (id)=>{
+    document.getElementById(id).blur()
+  }
 
   return (
     <>
@@ -275,7 +271,13 @@ export default function NavBar({
                 onSubmit={(e)=>{
                   handleSubmit(e)
                   unfocusAll()
+                  // console.log("formRef:", formRef)
+                  blurByEleId('searchTermInput_Mobile')
+                  blurByEleId('addressInput_Mobile')
+                  // document.getElementById('searchTermInput_Mobile').blur()
+                  // console.log("searchInputRef:", searchInputRef)
                 }}
+                ref={formRef}
                 className={!isInputsFocused() ? "flex w-[200px]" : 'flex flex-col w-full'}
               >
                 {/* Search Inputs */}
@@ -292,6 +294,7 @@ export default function NavBar({
                         focusSearchTermInput={focusSearchTermInput}
                         unfocusAll={unfocusAll}
                         isInputsFocused={isInputsFocused}
+                        // ref={searchInputRef}
                       />
                     </div>
 

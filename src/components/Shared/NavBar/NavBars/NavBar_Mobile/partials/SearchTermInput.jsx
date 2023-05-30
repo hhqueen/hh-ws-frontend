@@ -1,5 +1,5 @@
 // import library
-import React from 'react'
+import React, { useRef } from 'react'
 
 // comps
 import InputXDiv from '../../../sharedPartials/InputXDiv'
@@ -9,8 +9,10 @@ export default function SearchTermInput({
     setSearchParams,
     focusSearchTermInput,
     unfocusAll,
-    isInputsFocused
+    isInputsFocused,
 }) {
+    const inputRef = useRef()
+
     return (
         <>
             {/* search Term Input */}
@@ -18,6 +20,8 @@ export default function SearchTermInput({
                 className='flex w-full rounded p-0 my-2 relative h-[26px]'
             >
                 <input
+                    id='searchTermInput_Mobile'
+                    ref={inputRef}
                     className='text-center w-full border rounded'
                     type='text'
                     placeholder='Search'

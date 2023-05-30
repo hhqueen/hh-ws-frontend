@@ -16,6 +16,7 @@ export default function AddressInput({
                 className='flex w-full rounded p-0 mb-2 relative h-[26px]'
             >
                 <input
+                    id='addressInput_Mobile'
                     type="text"
                     className='text-center w-full border rounded'
                     value={searchParams.address}

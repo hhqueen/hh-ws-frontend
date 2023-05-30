@@ -13,7 +13,7 @@ export default function SearchTermHistoryComp({
   const navigate = useNavigate()
   
   const handleOnClick = (item) =>{
-    setSearchParams(draft=>{draft.address = item})
+    setSearchParams(draft=>{draft.searchTerm = item})
     setSearchTermState(item)
     appendSearchHistory(searchParams.searchTerm, item)
     navigate("/restaurants/")
