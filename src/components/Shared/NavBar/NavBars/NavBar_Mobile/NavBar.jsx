@@ -272,7 +272,10 @@ export default function NavBar({
               }
 
               <form
-                onSubmit={handleSubmit}
+                onSubmit={(e)=>{
+                  handleSubmit(e)
+                  unfocusAll()
+                }}
                 className={!isInputsFocused() ? "flex w-[200px]" : 'flex flex-col w-full'}
               >
                 {/* Search Inputs */}
