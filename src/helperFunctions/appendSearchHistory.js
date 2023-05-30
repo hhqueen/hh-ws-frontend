@@ -8,7 +8,7 @@ const appendSearchHistory = (searchParam, address) => {
     if (localStorage.getItem('sh')) {
         const getHistoryArr = JSON.parse(localStorage.getItem('sh'))
         getHistoryArr.push(newEntry)
-        if (getHistoryArr.length > 3) {
+        if (getHistoryArr.length > 100) {
             getHistoryArr.shift()
         }
         localStorage.setItem('sh', JSON.stringify(getHistoryArr))
