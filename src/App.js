@@ -79,7 +79,11 @@ function App() {
   const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
   const [globalContextVar, setGlobalContextVar] = useImmer({
     dow: null,
-    coordinatesState: null
+    coordinatesState:{
+        latitude: 0,
+        longitude: 0
+    },
+    isMobile: null
   })
 
   // variables
@@ -98,6 +102,10 @@ function App() {
     currentLongitude: null,
     address: "",
     searchButtonClicked: false
+  })
+  const [searchRadius, setSearchRadius] = useImmer({
+    distance: 5,
+    UOM: "mi"
   })
 
   const [UIFilters, setUIFilters] = useImmer({
@@ -125,7 +133,6 @@ function App() {
   const [isPendingTransition, startTransition] = useTransition()
 
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
-
 
 
   // restaurant filter function
@@ -181,9 +188,11 @@ function App() {
     setGlobalContextVar(draft => {
       draft.dow = dow
       draft.coordinatesState = coordinatesState
+      draft.isMobile = !isTWmd
     })
-  }, [dow, coordinatesState])
-
+    // console.log("globalContextVar:",globalContextVar)
+  }, [dow, coordinatesState, isTWmd])
+  //, [dow, coordinatesState, isTWmd]
 
   // set Screen Size
   // useEffect(() => {
@@ -299,6 +308,8 @@ function App() {
           searchTerm: searchTermState,
           currentLatitude: coordinatesState.latitude,
           currentLongitude: coordinatesState.longitude,
+          distance: 5,
+          UOM: "mi",
           address: addressState,
           searchButtonClicked: false,
           userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
@@ -427,6 +438,7 @@ function App() {
         <Router>
 
           <Suspense fallback={<LoadingComp />}>
+          <GlobalStateContext.Provider value={globalContextVar}>
             <NavBarContainer
               searchParams={searchParams}
               setSearchParams={setSearchParams}
@@ -438,6 +450,7 @@ function App() {
               isTWmd={isTWmd}
               setScreenSize={setScreenSize}
             />
+            </GlobalStateContext.Provider>
           </Suspense>
 
           <Routes>

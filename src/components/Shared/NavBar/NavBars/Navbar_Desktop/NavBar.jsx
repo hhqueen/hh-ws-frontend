@@ -12,7 +12,8 @@ import apilogger from '../../../../../helperFunctions/apiLogger'
 import SearchBar from './partials/SearchBar'
 import LogoSmall from '../../../Logo/LogoSmall'
 import IG_Logo from '../../../Logo/IG_Logo'
-import MailIconDesktop from './partials/MailIcon_Desktop'
+// import MailIconDesktop from './partials/MailIcon_Desktop'
+import MailIconComp from '../../sharedPartials/MailIconComp'
 
 
 // react-icons
@@ -178,7 +179,7 @@ export default function NavBar({
                             </a>
 
                             {/* mail icon */}
-                            <MailIconDesktop />
+                            <MailIconComp />
                             {/* IG Icon */}
                             <a
                                 name="IG_Link"

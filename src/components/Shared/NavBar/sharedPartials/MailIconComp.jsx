@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 // import apilogger from '../../../../../helperFunctions/apiLogger'
 import { FiMail } from 'react-icons/fi'
 
-const {emailBodyStringBuilder} = require("../../../../helperFunctions/emailBodyStringBuilder")
+// global context
+import {GlobalStateContext} from '../../../context/GlobalStateContext'
+
+const { emailBodyStringBuilder } = require("../../../../helperFunctions/emailBodyStringBuilder")
 
 
-export default function MailIcon() {
+export default function MailIconComp() {
+
+    const globalStateContextVal = useContext(GlobalStateContext)
+    // console.log("GlobalStateContextVal_MailIconComp",globalStateContextVal)
     const componentName = "NavBar_MailIcon"
     const userDeviceData = {
         uad: window.navigator.userAgent,
@@ -17,16 +23,16 @@ export default function MailIcon() {
     }
     //   console.log("userDeviceData:", userDeviceData)
     let bodyLines = []
-    Object.entries(userDeviceData).forEach((entry)=>{
+    Object.entries(userDeviceData).forEach((entry) => {
         bodyLines.push(`${entry[0]}: ${entry[1]}`)
     })
 
     const emailProps = {
         email: "hhqueen.official@gmail.com",
         subject: "FeedBack on HHQ",
-        body: emailBodyStringBuilder(bodyLines) 
+        body: emailBodyStringBuilder(bodyLines)
     }
-
+    
     return (
         <>
             <a
@@ -41,12 +47,20 @@ export default function MailIcon() {
 
                 >
                     <FiMail
+                        color={globalStateContextVal.isMobile ? 'black' : 'white'}
                         size={40}
                         opacity={.6}
                     />
-                    <p
-                        className='pl-3'
-                    >Mail Us</p>
+                    {/* <p>{globalStateContextVal.isMobile}</p> */}
+                    {
+                        globalStateContextVal.isMobile &&
+                        <>
+                            <p
+                                className='pl-3'
+                            >Mail Us</p>
+                        </>
+                    }
+
                 </div>
             </a>
         </>

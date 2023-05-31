@@ -5,5 +5,6 @@ export const GlobalStateContext = createContext({
     coordinatesState:{
         latitude: 0,
         longitude: 0
-    }
-  })
+    },
+    isMobile: null
+})

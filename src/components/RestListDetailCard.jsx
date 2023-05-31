@@ -24,6 +24,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
     const cuisineString = restaurantInfo.cuisines.join(", ")
     const applicableFilters = showApplicableFilters(restaurantInfo.filterParams)
     const globalStateContextVal = useContext(GlobalStateContext)
+    // console.log("globalState_restdetail",globalStateContextVal)
 
 
     const dowHours = restaurantInfo.hourSet.hours.filter((day) => {

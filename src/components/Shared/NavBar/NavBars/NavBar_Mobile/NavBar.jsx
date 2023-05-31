@@ -227,9 +227,7 @@ export default function NavBar({
         {/* render navBar */}
         <Navbar
           class="w-full px-2"
-        // menuOpen={true}
-        // fluid={true}
-        // rounded={true}
+
         >
           {/* navBar Items Container */}
           <div
@@ -240,10 +238,11 @@ export default function NavBar({
               className='w-full flex justify-between'
             >
               {/* Logo Container */}
-              {(
-                !isInputsFocused()
-                // && !isHamburgerFocused()
-              )
+              {
+                (
+                  !isInputsFocused()
+                  // && !isHamburgerFocused()
+                )
                 ?
                 <div>
                   <Navbar.Brand
@@ -251,7 +250,6 @@ export default function NavBar({
                     <LogoSmall
                       showText={isTWmd}
                     />
-                    {/* </Link> */}
                   </Navbar.Brand>
                 </div>
                 :
@@ -282,7 +280,6 @@ export default function NavBar({
               >
                 {/* Search Inputs */}
                 {(
-                  // pathName !== "/" &&          // logic that conditionally renders the search bar when NOT landing page
                   renderSearchBar) &&
                   <>
                     <div

@@ -4,6 +4,7 @@ import axios from "axios"
 
 // import Comps
 import TopRestaurantsContainer from './partials/TopRestaurantsContainer'
+import DashBoard from './DashBoard'
 
 export default function DashBoardContainer({mainDivStyle}) {
     const [apiLogData, setApiLogData] = useState([])
@@ -40,9 +41,7 @@ export default function DashBoardContainer({mainDivStyle}) {
     <div
         style={mainDivStyle}
     >
-        <TopRestaurantsContainer
-            restaurantViewLogs={restaurantViewLogs}
-        />
+        <DashBoard/>
     </div>
     </>
   )
