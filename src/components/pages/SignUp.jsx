@@ -59,7 +59,7 @@ export default function SignUp({ mainDivStyle }) {
     } catch (err) {
       console.warn(err)
       if (err.response) {
-        if (err.response.status === 400) {
+        if (err.response.status !== 200) {
           setMsg(err.response.data.msg)
         }
       }
@@ -84,7 +84,7 @@ export default function SignUp({ mainDivStyle }) {
           <div>
             <Label
               htmlFor='firstName'
-              value='First Name'
+              value='First Name:'
             />
           </div>
           <TextInput
@@ -102,7 +102,7 @@ export default function SignUp({ mainDivStyle }) {
           <div>
             <Label
               htmlFor='lastName'
-              value='Last Name'
+              value='Last Name:'
             />
           </div>
           <TextInput
@@ -142,8 +142,11 @@ export default function SignUp({ mainDivStyle }) {
         <div>
           <Label
             htmlFor='email'
-            value='Email'
+            value='Email:'
           />
+          <span
+            className='text-[red]'
+          >*</span>
         </div>
         {/* <label htmlFor='email'>Email:</label> */}
         <TextInput
@@ -160,8 +163,11 @@ export default function SignUp({ mainDivStyle }) {
         <div>
           <Label
             htmlFor='password1'
-            value='Password'
+            value='Password:'
           />
+          <span
+            className='text-[red]'
+          >*</span>
         </div>
         {/* <label htmlFor='password'>Password:</label> */}
         <TextInput
@@ -179,8 +185,11 @@ export default function SignUp({ mainDivStyle }) {
         <div>
           <Label
             htmlFor='password2'
-            value='Re-Enter Password'
+            value='Re-Enter Password:'
           />
+          <span
+            className='text-[red]'
+          >*</span>
         </div>
         {/* <label htmlFor='password'>Password:</label> */}
         <TextInput
@@ -198,10 +207,10 @@ export default function SignUp({ mainDivStyle }) {
         <label
           className='flex text-center items-center'
         >
-          <input 
+          <input
             type="checkbox"
             checked={emailSub}
-            onClick={()=>{setEmailSub(!emailSub)}}
+            onClick={() => { setEmailSub(!emailSub) }}
           />
           <p
             className='pl-2'

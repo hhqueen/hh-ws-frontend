@@ -1,19 +1,53 @@
 import React from 'react'
 
 
-export default function TopRestaurants({restVisitCountArr}) {
-  console.log("restVisitCountArr(topRestaurants):", restVisitCountArr)     
+export default function TopRestaurants({ restVisitCountArr, errorMsg, onRowClick }) {
+  // console.log("restVisitCountArr(topRestaurants):", restVisitCountArr)     
   
-  const listMap = restVisitCountArr?.map((item, idx)=>{
+  const headerStyle = 'border'
+  const rowStyle = 'hover:bg-slate-200 hover:cursor-pointer border hover:text-[#372A88]'
+  const cellStyle = 'text-center w-fit'
+
+  const trMap = restVisitCountArr?.map((item, idx) => {
     return (
-      <li>{idx+1}. {item.restData.name} - {item.restData.city}, {item.restData.state} : {item.count}</li>
+      <tr
+        onClick={()=>{onRowClick(item._id)}}
+        className={rowStyle}
+      >
+        <td
+          // className='text-center'
+        >{item.restaurantData[0].name}</td>
+        <td
+          className={cellStyle}
+        >{item.restaurantData[0].city}</td>
+        <td
+          className={cellStyle}
+          >{item.restaurantData[0].state}</td>
+        <td
+          className={cellStyle}
+          >{item.numOfVisits}</td>
+      </tr>
     )
   })
-    return (
+  console.log("restVisitCountArr:", restVisitCountArr)
+  if (errorMsg !== null) return errorMsg
+  return (
     <>
-      <ul>
-        {listMap}
-      </ul>
+      <table>
+        <thead
+          className={rowStyle}
+        >
+          <th>Name</th>
+          <th>City</th>
+          <th>State</th>
+          <th
+            className='w-[100px]'
+          >Visits</th>
+        </thead>
+        <tbody>
+          {trMap}
+        </tbody>
+      </table>
     </>
   )
 }

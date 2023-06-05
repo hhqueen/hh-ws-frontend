@@ -1,68 +1,46 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import {useNavigate} from 'react-router-dom'
 import TopRestaurants from "./TopRestaurants"
 
-export default function TopRestaurantsContainer({ restaurantViewLogs }) {
+export default function TopRestaurantsContainer({}) {
     const [restVisitCountArr, setRestVisitCountArr] = useState([])
     const [numToRender, setNumToRender] = useState(10)
-    useEffect(() => {
-        // set to map for performance
-        let restIdMap = new Map()
-        // console.log("restaurantViewLogs:",restaura   ntViewLogs)
-        restaurantViewLogs.forEach((logItem) => {
-            const findStr = "/restaurants/"
-            const idLength = 24
-            const startIdx = logItem.endPointURL.indexOf(findStr) + findStr.length
-            const restId = logItem.endPointURL.substring(startIdx, startIdx + idLength)
-            if (restId.length < 24) return
-            if (restIdMap.has(restId)) {
-                restIdMap.set(restId, restIdMap.get(restId) + 1)
-            } else {
-                restIdMap.set(restId, 1)
-            }
-        })
-        console.log("restIdMap:", restIdMap)
+    const [errorMsg , setErrorMsg] = useState(null)
+    
+    const navigate = useNavigate()
 
-        const sortedArrFromRestIdMap = Array.from(restIdMap).sort((a, b) => { return b[1] - a[1] })
-        console.log("sortedArrFromRestIdMap:", sortedArrFromRestIdMap)
+    const onRowClick = (id) => {
+        navigate(`/restaurant/${id}`)
+    }
 
-
-        let promisesArr = []
-        sortedArrFromRestIdMap.forEach(async (rest, idx) => {
-            if (idx >= numToRender) return
+    useEffect(()=>{
+        const getRestVisits = async () =>{
             try {
-                promisesArr.push(axios.get(`${process.env.REACT_APP_SERVER_URL}/analytics/restaurant/${rest[0]}`))
+                const gotRestVisits = await axios.get(`${process.env.REACT_APP_SERVER_URL}/analytics/RestaurantVisits`)
+                
+                console.log("gotRestVisits:", gotRestVisits.data)
+                let topNumRest = []
+                for(let i=0; i < numToRender; i++) {
+                    // console.log(`gotRestVisits.data[${i}]`, gotRestVisits.data[i])
+                    topNumRest.push(gotRestVisits.data[i])
+                }
+                console.log(topNumRest)
+                setRestVisitCountArr(topNumRest)
             } catch (error) {
                 console.log(error)
+                setErrorMsg(error)
             }
-        })
+        }
+        getRestVisits()
+    },[])
 
-        let promiseStatus = []
-        Promise.allSettled(promisesArr).then((status) => {
-            console.log("status", status)
-            promiseStatus = status
-        })
-        console.log("promiseStatus",promiseStatus)
-
-        let populatedDataArr = []
-
-        promiseStatus.forEach((promise) => {
-            populatedDataArr.push({
-                restId: promise.value.data._id,
-                restData: promise.value.data,
-                count: restIdMap[promise.value.data._id]
-            })
-            console.log("populatedDataArr:",populatedDataArr)
-        })
-        // console.log("promiseStatuses:",promiseStatuses)
-
-        console.log("populatedDataArr All pushed:",populatedDataArr)
-        // setRestVisitCountArr(populatedDataArr)
-    }, [restaurantViewLogs])
     return (
         <div>
             <TopRestaurants
                 restVisitCountArr={restVisitCountArr}
+                errorMsg={errorMsg}
+                onRowClick={onRowClick}
             />
         </div>
     )
