@@ -79,10 +79,11 @@ function App() {
   const [showRestaurantsState, setShowRestaurantsState] = useImmer([])
   const [globalContextVar, setGlobalContextVar] = useImmer({
     dow: null,
-    coordinatesState:{
-        latitude: 0,
-        longitude: 0
+    coordinatesState: {
+      latitude: 0,
+      longitude: 0
     },
+    geoLocationPermission: null,
     isMobile: null
   })
 
@@ -127,7 +128,7 @@ function App() {
     screenWidth: window.innerWidth,
     screenHeight: window.innerHeight,
   })
-  
+
 
   // hook Variables
   const [isPendingTransition, startTransition] = useTransition()
@@ -168,8 +169,9 @@ function App() {
         let hasHHFilter = e.hasHH1 === true || e.hasHH2 === true || e.isAllDay === true || e.isAllNight === true
 
         // late night filter logic
-        if (hasOnlyLateNightOnDay) { hasHHFilter = e.hasHH2 === true || e.isAllNight === true || e.isAllDay === true 
-          || e.end1close === true /* added this filter per bug# 71 */
+        if (hasOnlyLateNightOnDay) {
+          hasHHFilter = e.hasHH2 === true || e.isAllNight === true || e.isAllDay === true
+            || e.end1close === true /* added this filter per bug# 71 */
         }
         return e.day === numOweek && hasHHFilter
       })
@@ -189,6 +191,7 @@ function App() {
       draft.dow = dow
       draft.coordinatesState = coordinatesState
       draft.isMobile = !isTWmd
+      // draft.geoLocationPermission = 
     })
     // console.log("globalContextVar:",globalContextVar)
   }, [dow, coordinatesState, isTWmd])
@@ -263,21 +266,36 @@ function App() {
         // setShowRestaurantsState([])
         console.log("addressState:", addressState)
         // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
-        if (addressState === "Current Location") {
-          // if geolocation permission is given, get/set coordinates
-          if ("geolocation" in navigator) {
-            const geoCoords = await geoLocation()
-            setCoordinateStateTransition(geoCoords)
-          } else {
-            // if not, error and prompt for a valid location
-            console.log("geolocation permission was not given.")
-          }
+
+
+        let geoCoords
+        if ("geolocation" in navigator) {
+          geoCoords = await geoLocation()
+          // if (geoCoords.permission) {
+          setGlobalContextVar(draft => { 
+            draft.geoLocationPermission = geoCoords.permission
+            draft.currentLocationState = {latitude: geoCoords.latitude, longitude: geoCoords.longitude}
+          })
+          // }
+
+        } else {
+          // if not, error and prompt for a valid location
+          console.log("geolocation permission was not given.")
         }
-        if (addressState !== "Current Location" && addressState !== "") {
+
+        // if geolocation permission is given and addressState is "Current Location", get/set coordinates
+        if (addressState.toLowerCase() === "current location") {
+          console.log("addressState:", addressState)
+          console.log("setting Coordinate State:", geoCoords)
+          setCoordinateStateTransition(geoCoords)
+        }
+
+        if (addressState.toLowerCase() !== "current location" && addressState !== "") {
           // send address to radar geoforward for coordinates
           const foundAddress = await geoForward(addressState)
           // console.log("foundAddress:", foundAddress)
           if (foundAddress.length > 0) {
+            console.log("addressState:", addressState)
             console.log("setting Coordinate State:", foundAddress[0])
             setCoordinateStateTransition(foundAddress[0])
           } else {
@@ -438,34 +456,37 @@ function App() {
         <Router>
 
           <Suspense fallback={<LoadingComp />}>
-          <GlobalStateContext.Provider value={globalContextVar}>
-            <NavBarContainer
-              searchParams={searchParams}
-              setSearchParams={setSearchParams}
-              setNavBarHeight={setNavBarHeight}
-              setAddressState={setAddressState}
-              setSearchTermState={setSearchTermState}
-              showMap={showMap}
-              setShowMap={setShowMap}
-              isTWmd={isTWmd}
-              setScreenSize={setScreenSize}
-            />
+            <GlobalStateContext.Provider value={globalContextVar}>
+              <NavBarContainer
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+                setNavBarHeight={setNavBarHeight}
+                setAddressState={setAddressState}
+                setSearchTermState={setSearchTermState}
+                showMap={showMap}
+                setShowMap={setShowMap}
+                isTWmd={isTWmd}
+                setScreenSize={setScreenSize}
+              />
             </GlobalStateContext.Provider>
           </Suspense>
 
           <Routes>
             {/* website routes */}
+
             <Route
               path='/'
               element={
-                <LandingPage
-                  setSearchParams={setSearchParams}
-                  mainDivStyle={mainDivStyle}
-                  setAddressState={setAddressState}
-                />
-
+                <GlobalStateContext.Provider value={globalContextVar}>
+                  <LandingPage
+                    setSearchParams={setSearchParams}
+                    mainDivStyle={mainDivStyle}
+                    setAddressState={setAddressState}
+                  />
+                </GlobalStateContext.Provider>
               }
             />
+
 
             <Route
               path='/profile'

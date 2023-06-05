@@ -7,11 +7,11 @@ export default function CityCard({ CityData,handleCardClick }) {
         <>
             <div
                 className={`flex flex-col h-fit py-2 w-[220px] md:mx-3 md:h-[290px] md:w-[220px] hover:cursor-pointer`}
-                onClick={(e)=>{handleCardClick(e,CityData.name)}}
+                onClick={(e)=>{handleCardClick(e,CityData?.name)}}
             >
                 <img
-                    className='w-full h-full object-cover border-2 rounded-[15px]'
-                    src={CityData.img_url}
+                    className=' min-h-[290px] w-full h-full object-cover border-2 rounded-[15px]'
+                    src={CityData?.img_url}
                     alt='image'
                 />
 

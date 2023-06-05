@@ -10,7 +10,8 @@ const geoLocation = async () => {
         function success(position) {
           const returnCoords = {
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            longitude: position.coords.longitude,
+            permission: true
           }
           res(returnCoords)
         }
