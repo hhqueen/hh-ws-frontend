@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function LogOutComp({handleLogOut}) {
+export default function LogOutComp({handleLogOut, unfocusAll}) {
     const navigate = useNavigate()
     const foundJWT = localStorage.getItem("jwt")
     // const handleLogOut = () => {
@@ -25,10 +25,11 @@ export default function LogOutComp({handleLogOut}) {
         <div
             onClick={(e) => {
                 // apilogger({ componentName, elementId: 'LogOut_Link' })
+                unfocusAll()
                 handleLogOut()
             }}
         >
-            Sign out
+            Log out
         </div>
     )
 }

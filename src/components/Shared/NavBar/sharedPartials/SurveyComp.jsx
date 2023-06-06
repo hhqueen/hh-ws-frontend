@@ -1,7 +1,7 @@
 import React from 'react'
 import apiLogger from '../../../../helperFunctions/apiLogger'
 
-export default function SurveyComp() {
+export default function SurveyComp({unfocusAll}) {
     const componentName = "SurveyComp"
     return (
         <>
@@ -10,6 +10,7 @@ export default function SurveyComp() {
                 id='survey_p'
                 onClick={(e) => {
                     // apilogger(e, componentName, 'survey_p')
+                    unfocusAll()
                 }}
                 href='https://docs.google.com/forms/d/e/1FAIpQLSfVTC5A4W9LeuPXbR70ROILcFwTKneThVzZTh9ATTw0DHWgrQ/viewform' target="_blank" rel="noreferrer">
                 <div

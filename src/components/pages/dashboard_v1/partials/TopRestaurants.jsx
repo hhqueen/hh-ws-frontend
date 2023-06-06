@@ -15,6 +15,9 @@ export default function TopRestaurants({ restVisitCountArr, errorMsg, onRowClick
         className={rowStyle}
       >
         <td
+          className={cellStyle}
+        >{idx+1}</td>
+        <td
           // className='text-center'
         >{item.restaurantData[0].name}</td>
         <td
@@ -33,10 +36,15 @@ export default function TopRestaurants({ restVisitCountArr, errorMsg, onRowClick
   if (errorMsg !== null) return errorMsg
   return (
     <>
-      <table>
+      <table
+        className='m-5'
+      >
         <thead
           className={rowStyle}
         >
+          <th
+            className='w-[50px]'
+          >No.</th>
           <th>Name</th>
           <th>City</th>
           <th>State</th>

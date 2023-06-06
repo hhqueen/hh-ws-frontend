@@ -88,14 +88,14 @@ export default function NavBar({
     return false
   }
 
-  const isHamburgerFocused = () => {
-    if (focusedVal === focusEnum.hamburger) return true
-    return false
-  }
-
   const focusSearchTermInput = () => { startTransition(() => setFocusedVal(focusEnum.searchTermInput)) }
   const focusAddressInput = () => { startTransition(() => setFocusedVal(focusEnum.addressInput)) }
-  const focusHamburger = () => { startTransition(() => setFocusedVal(focusEnum.hamburger)) }
+  const focusHamburger = () => { startTransition(() => {
+    setDropDownState(draft=>{
+      draft.isOpen = !draft.isOpen
+    })
+    setFocusedVal(focusEnum.hamburger)
+  }) }
 
   const unfocusAll = () => {
     startTransition(() => {
@@ -152,6 +152,8 @@ export default function NavBar({
 
   // focus dependent drop down rendering
   useEffect(() => {
+    console.log("focusedVal",focusedVal)
+
     switch (focusedVal) {
       case focusEnum.searchTermInput:
         // code here
@@ -187,16 +189,17 @@ export default function NavBar({
         // code here
         console.log("hamburger dropdown rendering");
         setDropDownState((draft) => {
-          draft.isOpen = true
           draft.dropDownLiComp = <HamburgerDropDown
             handleSubmit={handleSubmit}
             handleLogOut={handleLogOut}
+            unfocusAll={unfocusAll}
           />
         });
         break;
 
       default: // focusEnum.nothing
       // code here 
+      unfocusAll()
     }
 
   }, [focusedVal])

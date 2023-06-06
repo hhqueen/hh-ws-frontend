@@ -2,7 +2,7 @@ import React from 'react'
 import apiLogger from '../../../../helperFunctions/apiLogger'
 import IG_Logo from '../../Logo/IG_Logo'
 
-export default function Ig_IconComp() {
+export default function Ig_IconComp({unfocusAll}) {
     const componentName = "Ig_IconComp"
     return (
         <>
@@ -11,6 +11,7 @@ export default function Ig_IconComp() {
                 id='IG_Link'
                 onClick={(e) => {
                     // apilogger(e, componentName, 'IG_Link')
+                    unfocusAll()
                 }}
                 href='https://www.instagram.com/hhqueen.official/' target="_blank" rel="noreferrer">
                 <div

@@ -13,9 +13,13 @@ export default function HamburgerIcon({
         <>
             <div
                 id="hamburgerIconContainerDiv_mobile"
-                tabIndex="1"
-                onFocus={()=>{
-                    console.log("hamburgerIcon In Focus")
+                // tabIndex="1"
+                // onFocus={()=>{
+                //     console.log("hamburgerIcon In Focus")
+                //     focusHamburger()
+                // }}
+                onClick={()=>{
+                    // console.log("hamburgerIcon In Focus")
                     focusHamburger()
                 }}
                 onBlur={()=>{

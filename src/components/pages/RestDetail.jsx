@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 import { useParams } from "react-router-dom"
 import showApplicableFilters from "../../helperFunctions/showApplicableFilters"
 import { siteSettings } from "../../sourceData/siteSettings"
@@ -97,8 +97,6 @@ export default function RestDetail({ mainDivStyle }) {
         console.log(errorMessage)
         return new Error(errorMessage)
       }
-      // console.log(`Array[${idx}] is an object`)
-
       // check if key lenght = 3 AND if key names are year, month, day
       const keyArr = Object.keys(ele)
       let keysValid = true
@@ -111,25 +109,15 @@ export default function RestDetail({ mainDivStyle }) {
         console.log(errorMessage)
         return new Error(errorMessage)
       }
-      // console.log("keys valid:", keyArr)
 
-      // console.log("idx:", idx)
-      // console.log("ele:", ele)
-      // console.log("dateObj:", dateObj)
-
-
-      // console.log(`idx:${idx} comparing year: ele:${ele.year} ? dateObj:${dateObj.year}`)
       if (dateObjGreaterThanEle && (Number(ele.year) < Number(dateObj.year))) {
-        // console.log(`idx:${idx} year: ${ele.year} < ${dateObj.year}, skipping`)
         dateObjGreaterThanEle = false
         idx++
       }
 
       // check if month is smaller and skip if so
       let checkday = false
-      // console.log(`idx:${idx} comparing month: ele:${ele.month} ? dateObj:${dateObj.month}`)
       if (dateObjGreaterThanEle && (Number(ele.month) < Number(dateObj.month))) {
-        // console.log(`idx:${idx} month: ${ele.month} < ${dateObj.month}, skipping`)
         dateObjGreaterThanEle = false
         idx++
       } else if (dateObjGreaterThanEle && (Number(ele.month) == Number(dateObj.month))) {
@@ -186,11 +174,11 @@ export default function RestDetail({ mainDivStyle }) {
       }
     }
     recurseAll(obj)
-    console.log("updatedDateArr:", updatedDateArr)
+    // console.log("updatedDateArr:", updatedDateArr)
     return getLargestDateObj(updatedDateArr)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     console.log(id)
     const getRestData = async () => {
       try {
@@ -208,7 +196,7 @@ export default function RestDetail({ mainDivStyle }) {
         })
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/restaurants/page/${id}${qString}`)
         console.log("async data", response.data)
-        setRestData(response.data)
+        setRestData(data => data = response.data)
         setAddress(`${response.data.address1} ${response.data.city} ${response.data.state} ${response.data.zip_code}`)
         setIsloaded(true)
       } catch (error) {
@@ -216,24 +204,16 @@ export default function RestDetail({ mainDivStyle }) {
       }
     }
     getRestData()
-  }, [id])
+  }, [])
 
-  const mapHours = restData.hourSet.hours.map((hour, idx) => {
-    return (
-      <HHHoursContainer
-        key={`${id}-${hour}-${idx}`}
-        hour={hour}
-        timeOutputVal={1}
-      />
-    )
-  })
 
+  if(!isLoaded) return <LoadingComp />
   return (
 
     <>
-      {!isLoaded && <LoadingComp />}
-      {
-        isLoaded &&
+      {/* {!isLoaded && <LoadingComp />} */}
+      {/* {
+        isLoaded && */}
 
         <div
           style={mainDivStyle}
@@ -414,7 +394,7 @@ export default function RestDetail({ mainDivStyle }) {
           </div>
 
         </div>
-      }
+      {/* } */}
     </>
   )
 }

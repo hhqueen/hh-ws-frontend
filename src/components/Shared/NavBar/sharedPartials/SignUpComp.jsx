@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 
-export default function SignUpComp() {
+export default function SignUpComp({unfocusAll}) {
 
     // check if logged in
     const foundJWT = localStorage.getItem('jwt')
@@ -14,6 +14,7 @@ export default function SignUpComp() {
                 id='SignUp_Link'
                 onClick={(e) => {
                     // apilogger(e, componentName, 'SignUp_Link')
+                    unfocusAll()
                 }}
                 to="/signup"
             >

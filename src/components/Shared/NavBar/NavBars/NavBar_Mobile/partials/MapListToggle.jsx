@@ -10,7 +10,7 @@ export default function MapListToggle({ showMap, setShowMap }) {
         startTransition(() => { setShowMap(prev => !prev) })
     }
     // renders if not on landing page
-    if (window.location.pathname == "/") return 
+    if (window.location.pathname !== "/restaurants") return 
     
     return (
         <div

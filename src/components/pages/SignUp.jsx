@@ -94,7 +94,6 @@ export default function SignUp({ mainDivStyle }) {
             placeholder='First Name'
             onChange={e => setFirstName(e.target.value)}
             value={firstName}
-            required
           />
         </div>
 
@@ -112,7 +111,6 @@ export default function SignUp({ mainDivStyle }) {
             placeholder='Last Name'
             onChange={e => setLastName(e.target.value)}
             value={lastName}
-            required
           />
         </div>
       </section>

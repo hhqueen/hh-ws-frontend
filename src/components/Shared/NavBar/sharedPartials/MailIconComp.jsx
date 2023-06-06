@@ -8,7 +8,7 @@ import {GlobalStateContext} from '../../../context/GlobalStateContext'
 const { emailBodyStringBuilder } = require("../../../../helperFunctions/emailBodyStringBuilder")
 
 
-export default function MailIconComp() {
+export default function MailIconComp({unfocusAll}) {
 
     const globalStateContextVal = useContext(GlobalStateContext)
     // console.log("GlobalStateContextVal_MailIconComp",globalStateContextVal)
@@ -40,6 +40,7 @@ export default function MailIconComp() {
                 id='mail_icon'
                 onClick={(e) => {
                     // apilogger(e, componentName, 'mail_icon')
+                    unfocusAll()
                 }}
                 href={`mailto:${emailProps.email}?subject=${emailProps.subject}&body=${emailProps.body}`}>
                 <div

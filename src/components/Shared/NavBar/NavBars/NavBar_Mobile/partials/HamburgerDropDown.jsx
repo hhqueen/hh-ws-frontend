@@ -11,32 +11,47 @@ import DashBoardLinkComp from '../../../sharedPartials/DashBoardLinkComp'
 
 import jwt_decode from 'jwt-decode'
 
-export default function HamburgerDropDown({ handleLogOut }) {
+export default function HamburgerDropDown({ handleLogOut, unfocusAll }) {
     let authorized = false
-    if(localStorage.getItem('jwt')){
+    if (localStorage.getItem('jwt')) {
         authorized = jwt_decode(localStorage.getItem('jwt')).auth === "Admin"
     }
     return (
         <>
             <div
                 className='flex flex-col gap-y-3 pl-3'
+                onClick={unfocusAll}
             >
-                <MailIconComp />
-                <Ig_IconComp />
-                <SurveyComp />
-                <SignUpComp />
-                <LogInComp />
+                <MailIconComp
+                    unfocusAll={unfocusAll}
+
+                />
+                <Ig_IconComp
+                    unfocusAll={unfocusAll}
+
+                />
+                <SurveyComp
+                    unfocusAll={unfocusAll}
+
+                />
+                <SignUpComp
+                    unfocusAll={unfocusAll}
+
+                />
+                <LogInComp
+                    unfocusAll={unfocusAll}
+                />
                 {
                     authorized &&
                     <>
                         <AddNewRestComp />
                         <DashBoardLinkComp />
+                        <ProfileLinkComp />
                     </>
                 }
-
-                <ProfileLinkComp />
                 <LogOutComp
                     handleLogOut={handleLogOut}
+                    unfocusAll={unfocusAll}
                 />
             </div>
         </>

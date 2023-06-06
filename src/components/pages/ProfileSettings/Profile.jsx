@@ -67,6 +67,7 @@ export default function Profile({ handleProfileSubmit, profileData, handleProfil
           className='border rounded'
           value={profileData.email}
           onChange={handleProfileDataOnChange}
+          disabled
         />
       </label>
 
