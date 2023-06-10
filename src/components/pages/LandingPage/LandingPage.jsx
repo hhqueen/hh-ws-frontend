@@ -14,6 +14,7 @@ import CarouselContainer from './local_partials/CarouselContainer'
 import appendSearchHistory from '../../../helperFunctions/appendSearchHistory'
 import apiLogger from '../../../helperFunctions/apiLogger'
 import NewHHTextContainer from './local_partials/NewHHTextContainer'
+import LoadingComp from '../../Shared/LoadingComp'
 
 // context
 import { GlobalStateContext } from '../../context/GlobalStateContext'
@@ -74,6 +75,7 @@ export default function LandingPage({ setAddressState, setSearchParams, mainDivS
 
     useEffect(() => {
         const getNearbyCities = async () => {
+            let nearByCitiesToRenderArr = []
             try {
                 const { latitude, longitude } = globalVar.currentLocationState
                 const qObj = {
@@ -86,25 +88,44 @@ export default function LandingPage({ setAddressState, setSearchParams, mainDivS
                 const gotNearbyCities = await axios.get(`${process.env.REACT_APP_SERVER_URL}/analytics/TopThreeCitiesNearMe${qStringfromObj(qObj)}`)
                 console.log("gotNearbyCities", gotNearbyCities.data)
                 let num = 3
-                let nearByCitiesToRenderArr = []
+
                 for (let i = 0; i < num; i++) {
                     // console.log(`gotNearbyCities[${i}]:`, gotNearbyCities[i].data)
                     const { city, state } = gotNearbyCities.data[i]._id
                     nearByCitiesToRenderArr.push({ name: `${city}, ${state}` })
                 }
                 console.log("nearByCitiesToRenderArr:", nearByCitiesToRenderArr)
-                setNearByCities(nearByCitiesToRenderArr)
+
             } catch (error) {
                 console.log(error)
+            } finally {
+                setNearByCities(nearByCitiesToRenderArr)
             }
         }
 
         // console.log("globalVar", globalVar)
         if (globalVar.geoLocationPermission) {
             console.log("getNearBy Cities exec")
-            const nearByCitiesArr = getNearbyCities()
+            getNearbyCities()
         }
     }, [globalVar])
+
+    let renderNearbyCitiesContainer = <></>
+    console.log("nearByCities:", nearByCities)
+    if (nearByCities.length > 0) {
+        renderNearbyCitiesContainer =
+            <>
+                <div
+                    className='mb-10'
+                >
+                    <CityCardContainer
+                        headerText='Nearby Cities'
+                        CityArr={nearByCities}
+                        handleCardClick={handleCardClick}
+                    />
+                </div>
+            </>
+    }  
 
 
     return (
@@ -114,15 +135,9 @@ export default function LandingPage({ setAddressState, setSearchParams, mainDivS
         >
             <CarouselContainer />
 
-            <div
-                className='mb-10'
-            >
-                <CityCardContainer
-                    headerText='Nearby Cities'
-                    CityArr={nearByCities}
-                    handleCardClick={handleCardClick}
-                />
-            </div>
+
+            {renderNearbyCitiesContainer}
+
 
             <CityCardContainer
                 headerText='Featured Locations'
