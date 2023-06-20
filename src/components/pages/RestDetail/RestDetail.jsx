@@ -1,10 +1,8 @@
 // libaries
-import { useState, useEffect, useLayoutEffect, useContext } from 'react'
+import { useState, useLayoutEffect, useContext } from 'react'
 import { useParams } from "react-router-dom"
 import showApplicableFilters from "../../../helperFunctions/showApplicableFilters"
 import { siteSettings } from "../../../sourceData/siteSettings"
-import { FaDirections } from "react-icons/fa"
-import { TbPhoneCall } from "react-icons/tb"
 import axios from "axios"
 import apiLogger from '../../../helperFunctions/apiLogger'
 import qStringfromObj from '../../../helperFunctions/qStringfromObj'
@@ -17,6 +15,7 @@ import LoadingComp from '../../Shared/LoadingComp'
 import EditDeleteRestComp from '../../EditDeleteRestComp'
 import TitleCuisineFilters from './partials/TitleCuisineFilters'
 import AddressPhoneNumber from './partials/AddressPhoneNumber'
+import MenuTabsContainer from './partials/MenuTabs/MenuTabsContainer'
 
 // import context
 import { GlobalStateContext } from '../../context/GlobalStateContext'
@@ -309,7 +308,12 @@ export default function RestDetail({ mainDivStyle }) {
 
         {mainInfoComp}
 
-        <div
+        <MenuTabsContainer
+          menu={restData?.menu}
+          containerClassName="my-10"
+        />
+
+        {/* <div
           className='w-full flex flex-col md:flex-row'
         >
           {
@@ -394,7 +398,7 @@ export default function RestDetail({ mainDivStyle }) {
               }
             </>
           }
-        </div>
+        </div> */}
 
 
         <div
