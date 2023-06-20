@@ -218,18 +218,18 @@ export default function RestDetail({ mainDivStyle }) {
     address={address}
     addressHref={`https://www.google.com/maps/place/${address.replace(" ", "+")}`}
     addressClassName='text-[blue] underline'
-    phoneNum={restData.displayNumber}
+    phoneNum={restData?.displayNumber}
     phoneNumHref={`tel:${restData?.telNumber}`}
     phoneNumClassName='text-[blue] underline'
   />
 
   const titleCuisineFiltersComp = <TitleCuisineFilters
-    containerDivClassName=''
+    containerDivClassName='ml-3'
     name={restData?.name}
     nameClassName='font-bold'
     cuisines={restData?.cuisines.join(", ")}
-    cuisinesClassName='italic'
-    filters={showApplicableFilters(restData.filterParams ?? [])}
+    cuisinesClassName='italic py-1'
+    filters={showApplicableFilters(restData?.filterParams ?? [])}
     filtersClassName=""
   />
 
@@ -257,17 +257,15 @@ export default function RestDetail({ mainDivStyle }) {
   let mainInfoComp = <></>
 
   if (GlobalStateVar.isMobile === true) {
+    
     mainInfoComp = <>
       <div
         className='flex md:flex md:px-10'
       >
-
         {imgComp}
-
         {titleCuisineFiltersComp}
 
       </div>
-
       <div
         className='mx-3 w-full md:w-fit'
       >
@@ -275,15 +273,17 @@ export default function RestDetail({ mainDivStyle }) {
         {hoursContainerComp}
       </div>
     </>
+
   } else {
+    
     mainInfoComp = <>
       <div
         className='flex md:flex md:px-10'
       >
-
         {imgComp}
-        <div>
-
+        <div
+          className='ml-3'
+        >
           {titleCuisineFiltersComp}
           {addressPhoneNumComp}
           {hoursContainerComp}
@@ -291,6 +291,7 @@ export default function RestDetail({ mainDivStyle }) {
 
       </div>
     </>
+
   }
 
   if (!isLoaded) return <LoadingComp />
@@ -303,11 +304,11 @@ export default function RestDetail({ mainDivStyle }) {
 
       <div
         style={mainDivStyle}
-        className='md:flex md:flex-col mt-[200px] md:items-center'
+        className='mx-5 md:flex md:flex-col mt-[200px] md:items-center'
       >
 
         {mainInfoComp}
-        
+
         <div
           className='w-full flex flex-col md:flex-row'
         >
