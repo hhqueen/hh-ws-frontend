@@ -43,7 +43,7 @@ const Main = lazy(() => import('./components/pages/Main/Main'))
 // import Main from './components/pages/Main';
 const AddEditRest = lazy(() => import('./components/pages/AddEditRest'))
 // import AddEditRest from "./components/pages/AddEditRest"
-const RestDetail = lazy(() => import('./components/pages/RestDetail'))
+const RestDetail = lazy(() => import('./components/pages/RestDetail/RestDetail'))
 // import RestDetail from './components/pages/RestDetail';
 
 const NavBarContainer = lazy(() => import('./components/Shared/NavBar/NavBarContainer'))
@@ -326,8 +326,8 @@ function App() {
           searchTerm: searchTermState,
           currentLatitude: coordinatesState.latitude,
           currentLongitude: coordinatesState.longitude,
-          distance: 5,
-          UOM: "mi",
+          distance: searchRadius.distance,
+          UOM: searchRadius.UOM,
           address: addressState,
           searchButtonClicked: false,
           userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
@@ -535,9 +535,11 @@ function App() {
               path="/restaurant/:id"
               element={
                 <Suspense fallback={<LoadingComp />}>
+                  <GlobalStateContext.Provider value={globalContextVar}>
                   <RestDetail
                     mainDivStyle={mainDivStyle}
                   />
+                  </GlobalStateContext.Provider>
                 </Suspense>
               }
             />
