@@ -18,7 +18,7 @@ export default function MenuTabsContainer({
 
     const foodAndDrinkMenuObj = {
         name:"foodAndDrinkMenuImg",
-        headerDisplayName: "Food/Drink",
+        headerDisplayName: "Food And Drink",
         imgUrl:""
     }
 
@@ -42,11 +42,14 @@ export default function MenuTabsContainer({
             foodAndDrinkMenuObj.imgUrl = menu[foodAndDrinkMenuObj.name].imgUrl
             localMenuArr.push(foodAndDrinkMenuObj)
         } else {
-            drinkMenuObj.imgUrl = menu[drinkMenuObj.name].imgUrl
-            localMenuArr.push(drinkMenuObj)
-            foodMenuObj.imgUrl = menu[foodMenuObj.name].imgUrl
-            localMenuArr.push(foodMenuObj)
-
+            if(menu[drinkMenuObj.name].imgUrl){
+                drinkMenuObj.imgUrl = menu[drinkMenuObj.name].imgUrl
+                localMenuArr.push(drinkMenuObj)
+            }
+            if(menu[foodMenuObj.name].imgUrl){
+                foodMenuObj.imgUrl = menu[foodMenuObj.name].imgUrl
+                localMenuArr.push(foodMenuObj)
+            }
         }
         // console.log("localMenuArr", localMenuArr)
         setMenuArr(localMenuArr)
