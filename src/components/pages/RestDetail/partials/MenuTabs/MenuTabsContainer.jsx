@@ -18,7 +18,7 @@ export default function MenuTabsContainer({
 
     const foodAndDrinkMenuObj = {
         name:"foodAndDrinkMenuImg",
-        headerDisplayName: "Food And Drink",
+        headerDisplayName: "Food & Drink",
         imgUrl:""
     }
 

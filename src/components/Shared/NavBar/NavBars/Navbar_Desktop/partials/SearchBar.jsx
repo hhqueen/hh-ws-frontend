@@ -20,7 +20,7 @@ export default function SearchBar({ searchParams, setSearchParams, setAddressSta
 
     return (
         <div
-            className='w-[50vw] md:w-[20vw]'
+            className='max-w-[400px] w-[35vw] min-w-[250px]'
         >
             <form
                 className='flex flex-col justify-center items-center text-center'

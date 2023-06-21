@@ -16,7 +16,7 @@ import apiLogger from '../helperFunctions/apiLogger'
 import { GlobalStateContext } from './context/GlobalStateContext'
 
 // requires:
-const {dc_StrToNum} = require("../helperFunctions/dowConv")
+const { dc_StrToNum } = require("../helperFunctions/dowConv")
 
 export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInfo }) {
     const navigate = useNavigate()
@@ -61,7 +61,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
         //     console.log(`mouse-leave: restIdx -1`)
         //     setRestIdxHover(-1)
         // }}
-
+        onClick={handleRestaurantClick}
         >
             <div>
                 <p
@@ -71,7 +71,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
             <img
                 id={`RestListDetailCard_img_${restaurantInfo._id}`}
                 name={`RestListDetailCard_img_${restaurantInfo._id}`}
-                onClick={handleRestaurantClick}
+                // onClick={handleRestaurantClick}
                 loading="lazy"
                 src={restaurantInfo.image_url}
                 alt={restaurantInfo.name}
@@ -87,7 +87,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
                     className=' flex flex-col justify-between px-4 leading-normal'
                     id={`RestListDetailCard_div_${restaurantInfo._id}`}
                     name={`RestListDetailCard_div_${restaurantInfo._id}`}
-                    onClick={handleRestaurantClick}
+                // onClick={handleRestaurantClick}
                 >
 
                     {/* info div */}
@@ -95,7 +95,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
                         className='font-semibold text-sm hover:underline hover:cursor-pointer'
                         id={`RestListDetailCard_p_${restaurantInfo._id}`}
                         name={`RestListDetailCard_p_${restaurantInfo._id}`}
-                        onClick={handleRestaurantClick}
+                    // onClick={handleRestaurantClick}
                     >{restaurantInfo.name}</p>
 
                     <p

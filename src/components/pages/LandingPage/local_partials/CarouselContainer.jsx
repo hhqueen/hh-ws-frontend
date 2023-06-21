@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{} from 'react'
 import LogoLarge from '../../../Shared/Logo/LogoLarge'
 
 export default function CarouselContainer() {
@@ -13,7 +13,7 @@ export default function CarouselContainer() {
     return (    
         <div
             // style={{backgroundImage: 'url(/images/carousel_lounge_img.jpg)'}}
-            className="relative h-[100vh] md:h-[320px] w-[100vw]"
+            className="relative h-[40vh] md:h-[320px] w-[100vw]"
         >
             {/* <p>CarouselContainer</p> */}
             <img
@@ -22,28 +22,30 @@ export default function CarouselContainer() {
                 alt='image'
             />
             <div
-                className='flex flex-col md:flex-row justify-center items-center h-fit w-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'
+                className='mt-[2vh] flex flex-col md:flex-row justify-center items-center h-fit w-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'
             >
                 <div
-                    className='flex flex-col text-white text-center text-[48.61px] font-bold justify-center px-5 md:w-[300px]'
+                    className='flex flex-col text-white text-center text-[30.61px] font-bold justify-center px-5 md:w-[300px]'
                 >
-                    <p>Find your nearest Happy Hours</p>
+                    <p>Find your nearest Happy Hours!</p>
                 </div>
 
-                <LogoLarge />
+                {/* <LogoLarge /> */}
 
                 <div
-                    className='flex flex-col justify-center items-center text-white'
+                    className='flex flex-col justify-center items-center font-bold text-white'
                 >
-                    <p>Have any feedback or inquiries?</p>
+                    <p
+                        className='mt-6 pt-3'
+                    >Have any feedback or inquiries?</p>
                     <a
                         href={`mailto:${emailProps.email}?subject=${emailProps.subject}&body=${emailProps.body}`}
                     >
                         <button
-                            className=' border w-[137px] h-[43px] rounded-[10px] opacity-75 mt-[5px]'
+                            className=' border w-[137px] h-[43px] rounded-[10px] mt-[5px] bg-white'
                         >
                             <p
-                                className='text-[#FFFAE7] leading-[18px] font-bold text-[15px]'
+                                className='text-[#372A88] leading-[18px] font-bold text-[15px]'
                             >Contact Us!</p>
                         </button>
                     </a>
