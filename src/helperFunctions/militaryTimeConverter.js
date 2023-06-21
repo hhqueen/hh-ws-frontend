@@ -76,7 +76,7 @@ const militaryTimeConverter = (value, outputVal = 0, displayString = 0) => {
     // }
     
     if(outputVal === 1) {
-      timeString = `${timeString} ${ampm}`
+      timeString = `${timeString}${ampm}`
     }
     // console.log("timeString",timeString)
     return timeString
