@@ -48,11 +48,7 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
     return (
         // container div
         <div
-            className='
-            my-1 h-[170px] min-h-[170px] py-3 flex flex-row items-center bg-white border shadow-md overflow-hidden
-            md:flex-row md:w-[550px] md:max-w-xl md:rounded-r-lg
-            hover:bg-gray-100 
-            dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+            className='relative h-[170px] min-h-[170px] md:w-[550px] md:max-w-xl'
         // onMouseEnter={()=>{
         //     console.log(`mouse-enter: restIdx ${idx}`)
         //     setRestIdxHover(idx)
@@ -61,87 +57,96 @@ export default function RestListDetailCard({ setRestIdxHover, idx, restaurantInf
         //     console.log(`mouse-leave: restIdx -1`)
         //     setRestIdxHover(-1)
         // }}
-        onClick={handleRestaurantClick}
+
         >
-            <div>
-                <p
-                    className='w-10 px-2 h-full text-center'
-                >{idx + 1}</p>
-            </div>
-            <img
-                id={`RestListDetailCard_img_${restaurantInfo._id}`}
-                name={`RestListDetailCard_img_${restaurantInfo._id}`}
-                // onClick={handleRestaurantClick}
-                loading="lazy"
-                src={restaurantInfo.image_url}
-                alt={restaurantInfo.name}
-                className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full w-3/12 md:rounded-none"
-            />
-
-            {/* image and Info Container Div */}
             <div
-                className='relative'
-
+                className='
+                        my-1 h-full py-3 flex flex-row items-center bg-white border shadow-md overflow-hidden
+                        md:flex-row md:rounded-lg
+                        hover:bg-gray-100 
+                        dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+                onClick={handleRestaurantClick}
             >
-                <div
-                    className=' flex flex-col justify-between px-4 leading-normal'
-                    id={`RestListDetailCard_div_${restaurantInfo._id}`}
-                    name={`RestListDetailCard_div_${restaurantInfo._id}`}
-                // onClick={handleRestaurantClick}
-                >
-
-                    {/* info div */}
+                <div>
                     <p
-                        className='font-semibold text-sm hover:underline hover:cursor-pointer'
-                        id={`RestListDetailCard_p_${restaurantInfo._id}`}
-                        name={`RestListDetailCard_p_${restaurantInfo._id}`}
+                        className='w-10 px-2 h-full text-center'
+                    >{idx + 1}</p>
+                </div>
+                <img
+                    id={`RestListDetailCard_img_${restaurantInfo._id}`}
+                    name={`RestListDetailCard_img_${restaurantInfo._id}`}
                     // onClick={handleRestaurantClick}
-                    >{restaurantInfo.name}</p>
+                    loading="lazy"
+                    src={restaurantInfo.image_url}
+                    alt={restaurantInfo.name}
+                    className="hover:cursor-pointer hover:scale-[1.05] object-cover h-full w-3/12 md:rounded-none"
+                />
 
-                    <p
-                        className='text-[11px]'
-                    >{applicableFilters}</p>
+                {/* image and Info Container Div */}
+                <div
+                    className='relative'
 
-                    <p
-                        className='text-[11px]'
-                    >{cuisineString}</p>
+                >
                     <div
-                        className='flex'
+                        className=' flex flex-col justify-between px-4 leading-normal'
+                        id={`RestListDetailCard_div_${restaurantInfo._id}`}
+                        name={`RestListDetailCard_div_${restaurantInfo._id}`}
+                    // onClick={handleRestaurantClick}
                     >
+
+                        {/* info div */}
+                        <p
+                            className='font-semibold text-sm hover:underline hover:cursor-pointer'
+                            id={`RestListDetailCard_p_${restaurantInfo._id}`}
+                            name={`RestListDetailCard_p_${restaurantInfo._id}`}
+                        // onClick={handleRestaurantClick}
+                        >{restaurantInfo.name}</p>
+
                         <p
                             className='text-[11px]'
-                        >{`${restaurantInfo.city} `}</p>
-                        <DistancePartialComp
-                            currentLocation={globalStateContextVal.coordinatesState}
-                            restaurantLocation={{
-                                latitude: restaurantInfo.latitude,
-                                longitude: restaurantInfo.longitude
-                            }}
-                            pStyle={'text-[11px] pl-2'}
-                        />
-                    </div>
-                    {/* hours Div */}
-                    {/* Hour Header */}
-                    {
-                        globalStateContextVal.dow &&
-                        <>
-                            {/* Hour */}
-                            <HHHoursContainer
-                                hourSet={restaurantInfo.hourSet}
-                                timeOutputVal={1}
-                                dow={globalStateContextVal.dow}
+                        >{applicableFilters}</p>
+
+                        <p
+                            className='text-[11px]'
+                        >{cuisineString}</p>
+                        <div
+                            className='flex'
+                        >
+                            <p
+                                className='text-[11px]'
+                            >{`${restaurantInfo.city} `}</p>
+                            <DistancePartialComp
+                                currentLocation={globalStateContextVal.coordinatesState}
+                                restaurantLocation={{
+                                    latitude: restaurantInfo.latitude,
+                                    longitude: restaurantInfo.longitude
+                                }}
+                                pStyle={'text-[11px] pl-2'}
                             />
-                        </>
-                    }
+                        </div>
+                        {/* hours Div */}
+                        {/* Hour Header */}
+                        {
+                            globalStateContextVal.dow &&
+                            <>
+                                {/* Hour */}
+                                <HHHoursContainer
+                                    hourSet={restaurantInfo.hourSet}
+                                    timeOutputVal={1}
+                                    dow={globalStateContextVal.dow}
+                                />
+                            </>
+                        }
+
+
+                    </div>
 
 
                 </div>
-
-                <EditDeleteRestComp
-                    id={restaurantInfo._id}
-                />
             </div>
-
+            <EditDeleteRestComp
+                id={restaurantInfo._id}
+            />
         </div>
     )
 }

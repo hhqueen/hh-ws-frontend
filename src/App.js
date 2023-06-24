@@ -87,6 +87,10 @@ function App() {
     isMobile: null
   })
 
+  // 
+  const [gmapBoxState, setGmapBoxState] = useImmer({})
+  const [searchOnMapMove, setSearchOnMapMove] = useState(false)
+
   // variables
   const [showMap, setShowMap] = useState(false)
   const componentName = "App.js"
@@ -161,7 +165,7 @@ function App() {
 
   const filterRestByDay = useCallback((filteredRests, dayOweek, hasOnlyLateNightOnDay = false) => {
     const numOweek = dc_StrToNum(dayOweek)
-    console.log("numOweek:", numOweek)
+    // console.log("numOweek:", numOweek)
     // console.log("filteredRests:",filteredRests)
     const filterRestsByDay = filteredRests.filter((rest, idx) => {
       //  console.log(`rest${idx}:`, rest)
@@ -247,7 +251,7 @@ function App() {
   }, [])
 
 
-  // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [AddressState]
+  // Phase 0 useEffect -> takes address value and sets CoordinatesState (with logic), dependencies: [searchTermState,AddressState]
   useLayoutEffect(() => {
     const executePhaseZero = async () => {
       // functions
@@ -310,9 +314,35 @@ function App() {
     if (addressState !== "") {
       executePhaseZero()
     }
-  }, [searchTermState, addressState])
+  }, [addressState])
 
 
+  const getRestaurantsQuery = async () => {
+    let queryString = ""
+    let queryParams = {
+      searchTerm: searchTermState,
+      currentLatitude: coordinatesState.latitude,
+      currentLongitude: coordinatesState.longitude,
+      distance: searchRadius.distance,
+      UOM: searchRadius.UOM,
+      address: addressState,
+      searchButtonClicked: false,
+      userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
+      UI_ComponentName: componentName,
+      screenWidth: window.innerWidth,
+      screenHeight: window.innerHeight,
+      searchOnMapMove,
+      gmapBoxState: JSON.stringify(gmapBoxState)
+    }
+    // queryParams = {...queryParams, ...searchOnMapMove, ...gmapBoxState}
+    console.warn("queryParams:", queryParams)
+    queryString = qStringfromObj(queryParams)
+    console.log("built queryString:", queryString)
+    const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
+    const httpMethod = "get"
+    const gotRests = await axios[httpMethod](getString)
+    return gotRests
+  }
   // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState, searchTermState]
   useLayoutEffect(() => {
     const executePhaseOne = async () => {
@@ -321,27 +351,8 @@ function App() {
         setIsFetchingRestData(true)
         console.log("executing phase 1")
         // setRestListErrorMsg("")
-        let queryString = ""
-        const queryParams = {
-          searchTerm: searchTermState,
-          currentLatitude: coordinatesState.latitude,
-          currentLongitude: coordinatesState.longitude,
-          distance: searchRadius.distance,
-          UOM: searchRadius.UOM,
-          address: addressState,
-          searchButtonClicked: false,
-          userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
-          UI_ComponentName: componentName,
-          screenWidth: window.innerWidth,
-          screenHeight: window.innerHeight
-        }
-        queryString = qStringfromObj(queryParams)
-        console.log("built queryString:", queryString)
-        const getString = `${process.env.REACT_APP_SERVER_URL}/restaurants${queryString}`
-        const httpMethod = "get"
-        const gotRests = await axios[httpMethod](getString)
-        // console.log("gotRests_data:", gotRests.data)
-
+        const gotRests = await getRestaurantsQuery()
+        console.log("gotRests", gotRests)
         // add infobox open/close state in the data
         let allRestData = []
         gotRests.data.forEach(data => {
@@ -358,10 +369,42 @@ function App() {
         console.warn(error)
       }
     }
-    if (coordinatesState.latitude !== 0 && coordinatesState.longitude !== 0) {
+    if ((coordinatesState.latitude !== 0 && coordinatesState.longitude !== 0) && searchOnMapMove == false) {
       executePhaseOne()
     }
-  }, [coordinatesState, distanceState, searchTermState])
+  }, [coordinatesState, distanceState, searchTermState,searchOnMapMove])
+
+  // Phase 1.1 useEffect -> fetchs new raw restaurant list based on new google map latLng bounds instead of original coordinates + radius, dependencies: [gmapLatLngBounds,  , searchTermState]
+  useLayoutEffect(() => {
+    const executePhaseOnePointOne = async () => {
+      try {
+        setIsFetchingRestData(true)
+        // setAllRestaurantsState([])
+        console.log("executing phase 1.1")
+        // setRestListErrorMsg("")
+        const gotRests = await getRestaurantsQuery()
+        console.log("gotRests", gotRests)
+        // add infobox open/close state in the data
+        let allRestData = []
+        gotRests.data.forEach(data => {
+          data.showInfoBox = false
+          allRestData.push(data)
+        });
+        // console.log("allRestData post mod:", allRestData)
+
+
+        startTransition(() => {
+          setAllRestaurantsState(allRestData)
+        })
+      } catch (error) {
+        console.warn(error)
+      }
+    }
+    if (searchOnMapMove) {
+      executePhaseOnePointOne()
+    }
+  }, [searchTermState, gmapBoxState , searchOnMapMove])
+
 
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
   useLayoutEffect(() => {
@@ -373,7 +416,7 @@ function App() {
         // console.log("filteredRest:", filteredRest)
 
         filteredRest = deepCopyObj(allRestaurantsState)
-        // console.log("deepcopied:", filteredRest)
+        console.log("deepcopied:", filteredRest)
         // console.log("allRestaurantsState_inFilterRest:", allRestaurantsState)
         filteredRest = filterRestByDay(filteredRest, dow, UIFilters.hasOnlyLateNightOnDay.value /* late night/all night only filter flag here*/)
         filteredRest = filterRests(filterParams, filteredRest)
@@ -525,6 +568,12 @@ function App() {
                       isTWmd={isTWmd}
                       contentHeight={contentHeight}
                       screenSize={screenSize}
+                      searchOnMapMoveProps={{
+                        searchOnMapMove,
+                        setSearchOnMapMove,
+                        gmapBoxState,
+                        setGmapBoxState
+                      }}
                     />
                   </GlobalStateContext.Provider>
                 </Suspense>

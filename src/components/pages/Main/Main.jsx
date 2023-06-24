@@ -31,7 +31,8 @@ export default function Main({
   isTWmd,
   showMap,
   contentHeight,
-  screenSize
+  screenSize,
+  searchOnMapMoveProps
 }) {
 
   // const [mapCompRender, setMapCompRender] = useImmer({
@@ -54,6 +55,7 @@ export default function Main({
       isFetchingRestData={isFetchingRestData}
       contentHeight={contentHeight}
       pageHeight={pageHeight}
+      searchOnMapMoveProps={searchOnMapMoveProps}
     // restIdxHover={setRestIdxHover}
     />
   )
