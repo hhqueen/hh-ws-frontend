@@ -369,10 +369,10 @@ function App() {
         console.warn(error)
       }
     }
-    if ((coordinatesState.latitude !== 0 && coordinatesState.longitude !== 0) && searchOnMapMove == false) {
+    if ((coordinatesState.latitude !== 0 && coordinatesState.longitude !== 0)) {
       executePhaseOne()
     }
-  }, [coordinatesState, distanceState, searchTermState,searchOnMapMove])
+  }, [coordinatesState, distanceState, searchTermState])
 
   // Phase 1.1 useEffect -> fetchs new raw restaurant list based on new google map latLng bounds instead of original coordinates + radius, dependencies: [gmapLatLngBounds,  , searchTermState]
   useLayoutEffect(() => {

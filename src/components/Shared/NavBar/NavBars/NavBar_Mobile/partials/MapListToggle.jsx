@@ -10,14 +10,14 @@ export default function MapListToggle({ showMap, setShowMap }) {
         startTransition(() => { setShowMap(prev => !prev) })
     }
     // renders if not on landing page
-    if (window.location.pathname !== "/restaurants") return 
+    if (window.location.pathname.indexOf("/restaurants") == -1) return 
     
     return (
         <div
             className='flex flex-col justify-center items-center ml-2'
         >
             <button
-                onClick={showMap ? toggleMapListFunction : toggleMapListFunction}
+                onClick={toggleMapListFunction}
             >
                 {showMap ? <FaListUl color="white"/> : <FaMapMarkedAlt color="white"/>}
             </button>

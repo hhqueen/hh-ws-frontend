@@ -13,8 +13,8 @@ export default function SearchLocationHistoryComp({
 
   // console.log("locationHistoryArr", locationHistoryArr)
 
-  const handleOnClick = (item) =>{
-    setSearchParams(draft=>{draft.address = item})
+  const handleOnClick = (item) => {
+    setSearchParams(draft => { draft.address = item })
     setAddressState(item)
     appendSearchHistory(searchParams.searchTerm, item)
     navigate("/restaurants/")
@@ -35,12 +35,25 @@ export default function SearchLocationHistoryComp({
     )
   })
 
-
+  const clCamelCase = 'Current Location'
+  const renderCurrentLocationDiv = (
+    <>
+      <div
+        className='w-full border pl-[25%] py-2 font-bold text-[#27478d]'
+        onClick={() => {
+          console.log(`location: ${clCamelCase} clicked`)
+          handleOnClick(clCamelCase)
+          unfocusAll()
+        }}
+      >{`${clCamelCase}`}</div>
+    </>
+  )
   return (
     <>
       <ul
         className='flex flex-col'
       >
+        {searchParams.address.toLowerCase() !== clCamelCase.toLowerCase() && renderCurrentLocationDiv}
         {renderLocHistory}
         {/* <div>SearchLocationHistoryComp</div> */}
       </ul>
