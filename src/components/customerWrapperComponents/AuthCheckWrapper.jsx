@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { GlobalStateContext } from '../context/GlobalStateContext'
 import jwtDecode from 'jwt-decode'
 
-export default function Redirect({ minAuth = "User", requireAuth = true, children }) {
+export default function AuthCheckWrapper({ minAuth = "User", requireAuth = true, children }) {
     // const { userInfo, jwtToken } = useContext(GlobalStateContext)
     const navigate = useNavigate()
     const authRanking = {
@@ -29,7 +29,7 @@ export default function Redirect({ minAuth = "User", requireAuth = true, childre
             if (currentAuthLevel < minAuthLevel) {
                 const redirectRoute = "/unauthorized"
                 console.log(`auth level ${currentAuthLevel} less than ${minAuthLevel} redirecting to ${redirectRoute}`)
-                navigate(redirectRoute)
+                return navigate(redirectRoute)
             }
     
             console.log(`no redirect`)

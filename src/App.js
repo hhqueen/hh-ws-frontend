@@ -18,7 +18,7 @@ import { useMediaQuery } from 'react-responsive'
 // import components
 import LoadingComp from './components/Shared/LoadingComp';
 import Footer from './components/Shared/Footer/Footer';
-import Redirect from './components/customerWrapperComponents/Redirect';
+import AuthCheckWrapper from './components/customerWrapperComponents/AuthCheckWrapper';
 
 // import source data
 import { checkboxFilters } from "./sourceData/emptyDataTemplates"
@@ -42,7 +42,6 @@ import geoLocation from "./helperFunctions/geoLocation"
 // Context
 import { GlobalStateContext } from './components/context/GlobalStateContext';
 import Unauthorized from './components/pages/Unauthorized';
-import useCheckAuth from './components/customHooks/useCheckAuth';
 import callServer from './helperFunctions/backendHelper';
 
 const Main = lazy(() => import('./components/pages/Main/Main'))
@@ -603,7 +602,7 @@ function App() {
               element={
                 <Suspense fallback={<LoadingComp />}>
                   <GlobalStateContext.Provider value={globalContextVar}>
-                    <Redirect
+                    <AuthCheckWrapper
                       minAuth='User'
                       requireAuth={requireAuthOnAllRoutes}
                     >
@@ -612,7 +611,7 @@ function App() {
                         mainDivStyle={mainDivStyle}
                         setAddressState={setAddressState}
                       />
-                    </Redirect>
+                    </AuthCheckWrapper>
                   </GlobalStateContext.Provider>
                 </Suspense>
               }
@@ -623,14 +622,14 @@ function App() {
               path='/profile'
               element={
                 <Suspense fallback={<LoadingComp />}>
-                  <Redirect
+                  <AuthCheckWrapper
                     minAuth='User'
                     requireAuth={true}
                   >
                     <Profile
                       mainDivStyle={mainDivStyle}
                     />
-                  </Redirect>
+                  </AuthCheckWrapper>
                 </Suspense>
 
               }
@@ -641,7 +640,7 @@ function App() {
               element={
                 <Suspense fallback={<LoadingComp />}>
                   <GlobalStateContext.Provider value={globalContextVar}>
-                    <Redirect
+                    <AuthCheckWrapper
                       minAuth='User'
                       requireAuth={requireAuthOnAllRoutes}
                     >
@@ -673,7 +672,7 @@ function App() {
                           setGmapBoxState
                         }}
                       />
-                    </Redirect>
+                    </AuthCheckWrapper>
                   </GlobalStateContext.Provider>
                 </Suspense>
               }
@@ -684,14 +683,14 @@ function App() {
               element={
                 <Suspense fallback={<LoadingComp />}>
                   <GlobalStateContext.Provider value={globalContextVar}>
-                    <Redirect
+                    <AuthCheckWrapper
                       minAuth='User'
                       requireAuth={requireAuthOnAllRoutes}
                     >
                       <RestDetail
                         mainDivStyle={mainDivStyle}
                       />
-                    </Redirect>
+                    </AuthCheckWrapper>
                   </GlobalStateContext.Provider>
                 </Suspense>
 
@@ -703,7 +702,7 @@ function App() {
               element={
                 <Suspense fallback={<LoadingComp />}>
                   <GlobalStateContext.Provider value={globalContextVar}>
-                    <Redirect
+                    <AuthCheckWrapper
                       minAuth='Admin'
                       requireAuth={true}
 
@@ -712,7 +711,7 @@ function App() {
                         // currentLocation={currentLocation}
                         mainDivStyle={mainDivStyle}
                       />
-                    </Redirect>
+                    </AuthCheckWrapper>
                   </GlobalStateContext.Provider>
                 </Suspense>
 
@@ -724,14 +723,14 @@ function App() {
               element={
                 <Suspense fallback={<LoadingComp />}>
                   <GlobalStateContext.Provider value={globalContextVar}>
-                    <Redirect
+                    <AuthCheckWrapper
                       minAuth='Admin'
                       requireAuth={true}
                     >
                       <DashBoardContainer
                         mainDivStyle={mainDivStyle}
                       />
-                    </Redirect>
+                    </AuthCheckWrapper>
                   </GlobalStateContext.Provider>
                 </Suspense>
 
@@ -744,7 +743,7 @@ function App() {
               element={
                 <Suspense fallback={<LoadingComp />}>
                   <GlobalStateContext.Provider value={globalContextVar}>
-                    <Redirect
+                    <AuthCheckWrapper
                       minAuth='Admin'
                       requireAuth={true}
                     >
@@ -752,7 +751,7 @@ function App() {
                         // currentLocation={currentLocation}
                         mainDivStyle={mainDivStyle}
                       />
-                    </Redirect>
+                    </AuthCheckWrapper>
                   </GlobalStateContext.Provider>
                 </Suspense>
               }
