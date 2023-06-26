@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button, Checkbox } from 'flowbite-react'
 import qStringfromObj from '../../helperFunctions/qStringfromObj'
 
-export default function SignUp({ mainDivStyle }) {
+export default function SignUp({ mainDivStyle,  userProps}) {
   // state for the controlled form
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -17,6 +17,8 @@ export default function SignUp({ mainDivStyle }) {
   const [emailSub, setEmailSub] = useState(true)
 
   const navigate = useNavigate();
+
+  const { setJwtToken } = userProps
 
   // submit event handler
   const handleSubmit = async e => {
@@ -47,9 +49,10 @@ export default function SignUp({ mainDivStyle }) {
       // save the token in localstorage
       const { token } = response.data
       localStorage.setItem('jwt', token)
+      setJwtToken(token)
 
       // decode the token
-      const decoded = jwt_decode(token)
+      // const decoded = jwt_decode(token)
 
       // set the user in App's state to be the decoded token
       // setCurrentUser(decoded)

@@ -41,7 +41,8 @@ export default function NavBar({
   setShowMap,
   isTWmd,
   setScreenSize,
-  handleSubmit
+  handleSubmit,
+  handleLogOut
 }) {
   const componentName = "NavBar_v2"
 
@@ -72,16 +73,16 @@ export default function NavBar({
   const [focusedVal, setFocusedVal] = useImmer(focusEnum.nothing)
 
   // function to remove token for logging out here
-  const handleLogOut = () => {
-    console.log("log out")
-    // check to see if a token exists in local storage
-    if (localStorage.getItem('jwt')) {
-      // if so, delete it 
-      localStorage.removeItem('jwt')
-      navigate('/')
-    }
-    setUserInfo(emptyUserInfo)
-  }
+  // const handleLogOut = () => {
+  //   console.log("log out")
+  //   // check to see if a token exists in local storage
+  //   if (localStorage.getItem('jwt')) {
+  //     // if so, delete it 
+  //     localStorage.removeItem('jwt')
+  //     navigate('/')
+  //   }
+  //   setUserInfo(emptyUserInfo)
+  // }
 
   const isInputsFocused = () => {
     if (focusedVal === focusEnum.searchTermInput || focusedVal === focusEnum.addressInput) return true

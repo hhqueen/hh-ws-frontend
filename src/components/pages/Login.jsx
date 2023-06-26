@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import axios from 'axios'
 import { Label, TextInput, Button, Checkbox } from 'flowbite-react'
 import { useNavigate } from "react-router-dom"
+import LoadingComp from '../Shared/LoadingComp'
 
-export default function Login({ mainDivStyle }) {
+export default function Login({ mainDivStyle, userProps }) {
 
   const navigate = useNavigate()
   const [msg, setMsg] = useState('')
@@ -12,18 +13,23 @@ export default function Login({ mainDivStyle }) {
     password: "",
     rememberMeBool: false
   })
+  const { jwtToke, setJwtToken } = userProps
+
+  const [isPending, startTransition] = useTransition()
 
   const loginFormSubmitHandler = async (e) => {
     e.preventDefault()
     try {
-      console.log("login attempted")
+      // console.log("login attempted")
       const reqBody = loginData
       const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/login`, reqBody)
       const { token } = response.data
       localStorage.setItem('jwt', token)
-      console.log("login successful")
-      navigate("/")
-
+      startTransition(()=>{
+        setJwtToken(token)
+        // console.log("login successful")
+        navigate("/")
+      })
     } catch (err) {
       if (err.response.status === 400) {
         const errMessage = err.response.data.msg

@@ -38,44 +38,38 @@ export default function NavBarContainer({
   showMap,
   setShowMap,
   isTWmd,
-  setScreenSize
+  setScreenSize,
+  userInfo,
+  clearUserData
 }) {
   const navigate = useNavigate()
   const [avatarDropDownComps, setAvatarDropDownComps] = useImmer([])
-  const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
+  // const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
 
 
   // set user Info for NavBar use from jwt token
-  useEffect(() => {
-    // console.log("navbar useEffect")
-    if (localStorage.getItem('jwt')) {
-      const token = localStorage.getItem('jwt')
-      const decoded = jwt_decode(token)
-      // console.log("decoded",decoded)
-      setUserInfo((draft) => {
-        draft.firstName = decoded.firstName
-        draft.lastName = decoded.lastName
-        draft.email = decoded.email
-        draft.id = decoded.id
-      })
-    }
+  // useEffect(() => {
+  //   // console.log("navbar useEffect")
+  //   if (localStorage.getItem('jwt')) {
+  //     const token = localStorage.getItem('jwt')
+  //     const decoded = jwt_decode(token)
+  //     // console.log("decoded",decoded)
+  //     setUserInfo((draft) => {
+  //       draft.firstName = decoded.firstName
+  //       draft.lastName = decoded.lastName
+  //       draft.email = decoded.email
+  //       draft.id = decoded.id
+  //     })
+  //   }
 
-  })
+  // })
+
   const foundJWT = localStorage.getItem('jwt')
 
   const handleLogOut = () => {
     console.log("attempt log out")
     // check to see if a token exists in local storage
-    if (foundJWT) {
-        console.log("user token found in localStorage")
-      // if so, delete it 
-      localStorage.removeItem('jwt')
-      setUserInfo(emptyUserInfo)
-        console.log("user logged out, navigating to home")
-      // navigate('/')
-    } else {
-        console.log("no user token found in localStorage, logOut aborted")
-    }
+    clearUserData()
   }
 
 
@@ -108,6 +102,7 @@ export default function NavBarContainer({
       setScreenSize={setScreenSize}
       avatarDropDownComps={avatarDropDownComps}
       handleSubmit={handleSubmit}
+      handleLogOut={handleLogOut}
     />
   } else {
     renderNavBar = <NavBar_Mobile
@@ -121,6 +116,7 @@ export default function NavBarContainer({
       isTWmd={isTWmd}
       setScreenSize={setScreenSize}
       handleSubmit={handleSubmit}
+      handleLogOut={handleLogOut}
     />
   }
   return (

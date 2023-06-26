@@ -80,12 +80,12 @@ export default function MenuTabsContainer({
         className={containerClassName}
     >
         <div
-            className='flex justify-center'
+            className='flex justify-center items-center'
         >
             {renderHeaderTabs}
         </div>
         <div
-            className='border rounded-2xl w-full'
+            className='border rounded-2xl'
         >
             <MenuTabImage
                 className="w-full md:rounded-2xl"

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 // functions
 import qStringfromObj from '../../../helperFunctions/qStringfromObj'
+import {callServer} from "../../../helperFunctions/backendHelper"
 
 // components
 import CityCardContainer from './local_partials/CityCardContainer'

@@ -37,7 +37,8 @@ export default function NavBar({
     setShowMap,
     isTWmd,
     setScreenSize,
-    handleSubmit
+    handleSubmit,
+    handleLogOut
 }) {
     const componentName = "NavBar"
 
@@ -51,16 +52,16 @@ export default function NavBar({
     const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
 
     // function to remove token for logging out here
-    const handleLogOut = () => {
-        console.log("log out")
-        // check to see if a token exists in local storage
-        if (localStorage.getItem('jwt')) {
-            // if so, delete it 
-            localStorage.removeItem('jwt')
-            navigate('/login')
-        }
-        setUserInfo(emptyUserInfo)
-    }
+    // const handleLogOut = () => {
+    //     console.log("log out")
+    //     // check to see if a token exists in local storage
+    //     if (localStorage.getItem('jwt')) {
+    //         // if so, delete it 
+    //         localStorage.removeItem('jwt')
+    //         navigate('/login')
+    //     }
+    //     setUserInfo(emptyUserInfo)
+    // }
 
     // set user Info for NavBar use from jwt token
     useEffect(() => {
