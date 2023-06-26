@@ -11,9 +11,15 @@ import RegisteredProfiles from './partials/RegisteredProfiles'
 import TopThreeRestPerCity from './partials/TopThreeRestPerCity'
 import TotalRestaurants from './partials/TotalRestaurants'
 
+
+// custom hooks
+import useEnforceAuth from '../../customHooks/useEnforceAuth'
+
 export default function DashBoardContainer({ mainDivStyle }) {
     const [apiLogData, setApiLogData] = useState([])
     const [restaurantViewLogs, setRestaurantViewLogs] = useState([])
+
+    useEnforceAuth()
 
     // useEffect(()=>{
     //     const queryData =  async ()=>{

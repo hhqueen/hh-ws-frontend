@@ -16,16 +16,18 @@ export default function Login({ mainDivStyle }) {
   const loginFormSubmitHandler = async (e) => {
     e.preventDefault()
     try {
+      console.log("login attempted")
       const reqBody = loginData
       const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/login`, reqBody)
       const { token } = response.data
       localStorage.setItem('jwt', token)
+      console.log("login successful")
       navigate("/")
 
     } catch (err) {
       if (err.response.status === 400) {
         const errMessage = err.response.data.msg
-        console.log(errMessage)
+        console.log("login failed", errMessage)
         setMsg(errMessage)
       }
     }
@@ -34,7 +36,7 @@ export default function Login({ mainDivStyle }) {
   return (
     <>
       <body
-        className='flex justify-center items-center w-full h-full'
+        className='flex flex-col justify-center items-center w-full h-full'
       >
         <form
           style={mainDivStyle}
@@ -73,6 +75,12 @@ export default function Login({ mainDivStyle }) {
               required={true}
               onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
             />
+          </div>
+          <div>
+            <p>Don't have an account? Sign up <span
+              className='text-sky-600 underline hover:cursor-pointer hover:text-sky-400'
+              onClick={()=>{navigate("/signup")}}
+            >here</span>!</p>
           </div>
 
           {/* <div className="flex items-center gap-2">

@@ -57,7 +57,7 @@ export default function NavBar({
         if (localStorage.getItem('jwt')) {
             // if so, delete it 
             localStorage.removeItem('jwt')
-            navigate('/')
+            navigate('/login')
         }
         setUserInfo(emptyUserInfo)
     }

@@ -15,11 +15,8 @@ export default function MarkerInfoBoxComp({
         markerObj: null
     })
 
-    
-    
-
     const markerOnLoad = marker => {
-        const defaultOpacity = 0.7
+        const defaultOpacity = 1.0
         const hoverOpacity = 1.0
         const defaultZidx = 0
         const hoverZidx = 1
@@ -91,8 +88,6 @@ export default function MarkerInfoBoxComp({
                 }}
                 label={`${labelNum}`}
                 position={{ lat: restaurantData.latitude, lng: restaurantData.longitude }}
-                opacity={markerState?.opacity}
-                zIndex={markerState?.zIdx}
             />
             {
                 showRestaurants[idx].showInfoBox &&

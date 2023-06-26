@@ -56,7 +56,6 @@ export default function Main({
       contentHeight={contentHeight}
       pageHeight={pageHeight}
       searchOnMapMoveProps={searchOnMapMoveProps}
-    // restIdxHover={setRestIdxHover}
     />
   )
   // console.log("pageHeight:", pageHeight)

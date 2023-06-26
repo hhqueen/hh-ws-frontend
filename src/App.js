@@ -4,6 +4,8 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
+
 } from 'react-router-dom'
 import { useState, useEffect, useLayoutEffect, Suspense, lazy, useMemo, useTransition, useReducer, useCallback } from 'react'
 import axios from "axios"
@@ -11,6 +13,7 @@ import date from 'date-and-time';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { useImmer } from "use-immer"
 import { useMediaQuery } from 'react-responsive'
+
 
 // import components
 import LoadingComp from './components/Shared/LoadingComp';
@@ -37,7 +40,8 @@ import geoLocation from "./helperFunctions/geoLocation"
 
 // Context
 import { GlobalStateContext } from './components/context/GlobalStateContext';
-
+import Unauthorized from './components/pages/Unauthorized';
+import useCheckAuth from './components/customHooks/useCheckAuth';
 
 const Main = lazy(() => import('./components/pages/Main/Main'))
 // import Main from './components/pages/Main';
@@ -87,7 +91,7 @@ function App() {
     isMobile: null
   })
 
-  // 
+  // search on map move variables
   const [gmapBoxState, setGmapBoxState] = useImmer({})
   const [searchOnMapMove, setSearchOnMapMove] = useState(false)
 
@@ -121,6 +125,23 @@ function App() {
     }
   })
 
+  // const {hasJWT, authIsGreaterThanUser} = useCheckAuth()
+  // console.log("hasJWT", hasJWT)
+  // console.log("authIsGreaterThanUser", authIsGreaterThanUser)
+
+  const getJWT = () => {
+    return localStorage.getItem("jwt")
+  }
+  const checkHasJWT = () => {
+    if(getJWT()) return true
+    return false
+  }
+
+  const authIsGreaterThanUser = () => {
+    if(!checkHasJWT) return false
+    const auth = jwtDecode(getJWT()).auth
+    return (auth === "Admin")
+  }
 
   const [restListErrorMsg, setRestListErrorMsg] = useState("")
 
@@ -133,12 +154,14 @@ function App() {
     screenHeight: window.innerHeight,
   })
 
-
   // hook Variables
   const [isPendingTransition, startTransition] = useTransition()
 
   const isTWmd = useMediaQuery({ query: '(min-width: 768px)' })
 
+
+  // const checkedAuth = useCheckAuth()
+  // console.log("checkedAuth", checkedAuth)
 
   // restaurant filter function
   const filterRests = useCallback((filterArr, restData) => {
@@ -195,11 +218,9 @@ function App() {
       draft.dow = dow
       draft.coordinatesState = coordinatesState
       draft.isMobile = !isTWmd
-      // draft.geoLocationPermission = 
     })
-    // console.log("globalContextVar:",globalContextVar)
   }, [dow, coordinatesState, isTWmd])
-  //, [dow, coordinatesState, isTWmd]
+
 
   // set Screen Size
   // useEffect(() => {
@@ -276,9 +297,9 @@ function App() {
         if ("geolocation" in navigator) {
           geoCoords = await geoLocation()
           // if (geoCoords.permission) {
-          setGlobalContextVar(draft => { 
+          setGlobalContextVar(draft => {
             draft.geoLocationPermission = geoCoords.permission
-            draft.currentLocationState = {latitude: geoCoords.latitude, longitude: geoCoords.longitude}
+            draft.currentLocationState = { latitude: geoCoords.latitude, longitude: geoCoords.longitude }
           })
           // }
 
@@ -403,7 +424,7 @@ function App() {
     if (searchOnMapMove) {
       executePhaseOnePointOne()
     }
-  }, [searchTermState, gmapBoxState , searchOnMapMove])
+  }, [searchTermState, gmapBoxState, searchOnMapMove])
 
 
   // Phase 2 useEffect -> filteres raw restaurant list, dependencies: [AllRestaurantsState, dowState, FilterParamsState,uiFilterState]
@@ -493,6 +514,7 @@ function App() {
   }, [footerHeight, navBarHeight])
 
   const queryClient = new QueryClient()
+  
   return (
     <div>
       <QueryClientProvider client={queryClient}>
@@ -520,13 +542,18 @@ function App() {
             <Route
               path='/'
               element={
-                <GlobalStateContext.Provider value={globalContextVar}>
-                  <LandingPage
-                    setSearchParams={setSearchParams}
-                    mainDivStyle={mainDivStyle}
-                    setAddressState={setAddressState}
-                  />
-                </GlobalStateContext.Provider>
+                checkHasJWT() ?
+                  <GlobalStateContext.Provider value={globalContextVar}>
+                    <LandingPage
+                      setSearchParams={setSearchParams}
+                      mainDivStyle={mainDivStyle}
+                      setAddressState={setAddressState}
+                    />
+                  </GlobalStateContext.Provider>
+                  :
+                  <>
+                    <Navigate to="/login" />
+                  </>
               }
             />
 
@@ -534,101 +561,128 @@ function App() {
             <Route
               path='/profile'
               element={
-                <Suspense fallback={<LoadingComp />}>
-                  <Profile
-                    mainDivStyle={mainDivStyle}
-                  />
-                </Suspense>
+                checkHasJWT() ?
+                  <Suspense fallback={<LoadingComp />}>
+                    <Profile
+                      mainDivStyle={mainDivStyle}
+                    />
+                  </Suspense>
+                  :
+                  <>
+                    <Navigate to="/login" />
+                  </>
               }
             />
 
             <Route
               path="/restaurants"
               element={
-                <Suspense fallback={<LoadingComp />}>
-                  <GlobalStateContext.Provider value={globalContextVar}>
-                    <Main
-                      isFetchingRestData={isFetchingRestData}
-                      showRestaurants={showRestaurantsState}
-                      setFilterParams={setFilterParams}
-                      filterParams={filterParams}
-                      dow={dow}
-                      setDow={setDow}
-                      searchParams={searchParams}
-                      coordinatesState={coordinatesState}
-                      UIFiltersProps={{ UIFilters, setUIFilters }}
-                      mainDivStyle={mainDivStyle}
-                      navBarHeight={navBarHeight}
-                      restIdxHover={restIdxHover}
-                      setRestIdxHover={setRestIdxHover}
-                      restListErrorMsg={restListErrorMsg}
-                      focusedRestIdx={focusedRestIdx}
-                      setShowRestaurantsState={setShowRestaurantsState}
-                      showMap={showMap}
-                      isTWmd={isTWmd}
-                      contentHeight={contentHeight}
-                      screenSize={screenSize}
-                      searchOnMapMoveProps={{
-                        searchOnMapMove,
-                        setSearchOnMapMove,
-                        gmapBoxState,
-                        setGmapBoxState
-                      }}
-                    />
-                  </GlobalStateContext.Provider>
-                </Suspense>
+                checkHasJWT() ?
+                  <Suspense fallback={<LoadingComp />}>
+                    <GlobalStateContext.Provider value={globalContextVar}>
+                      <Main
+                        isFetchingRestData={isFetchingRestData}
+                        showRestaurants={showRestaurantsState}
+                        setFilterParams={setFilterParams}
+                        filterParams={filterParams}
+                        dow={dow}
+                        setDow={setDow}
+                        searchParams={searchParams}
+                        coordinatesState={coordinatesState}
+                        UIFiltersProps={{ UIFilters, setUIFilters }}
+                        mainDivStyle={mainDivStyle}
+                        navBarHeight={navBarHeight}
+                        restIdxHover={restIdxHover}
+                        setRestIdxHover={setRestIdxHover}
+                        restListErrorMsg={restListErrorMsg}
+                        focusedRestIdx={focusedRestIdx}
+                        setShowRestaurantsState={setShowRestaurantsState}
+                        showMap={showMap}
+                        isTWmd={isTWmd}
+                        contentHeight={contentHeight}
+                        screenSize={screenSize}
+                        searchOnMapMoveProps={{
+                          searchOnMapMove,
+                          setSearchOnMapMove,
+                          gmapBoxState,
+                          setGmapBoxState
+                        }}
+                      />
+                    </GlobalStateContext.Provider>
+                  </Suspense>
+                  :
+                  <>
+                    <Navigate to="/login" />
+                  </>
               }
             />
 
             <Route
               path="/restaurant/:id"
               element={
-                <Suspense fallback={<LoadingComp />}>
-                  <GlobalStateContext.Provider value={globalContextVar}>
-                  <RestDetail
-                    mainDivStyle={mainDivStyle}
-                  />
-                  </GlobalStateContext.Provider>
-                </Suspense>
+                checkHasJWT() ?
+                  <Suspense fallback={<LoadingComp />}>
+                    <GlobalStateContext.Provider value={globalContextVar}>
+                      <RestDetail
+                        mainDivStyle={mainDivStyle}
+                      />
+                    </GlobalStateContext.Provider>
+                  </Suspense>
+                  :
+                  <>
+                    <Navigate to="/login" />
+                  </>
               }
             />
 
             <Route
               path='/editrestaurant/:id'
               element={
-                <Suspense fallback={<LoadingComp />}>
-                  <AddEditRest
-                    // currentLocation={currentLocation}
-                    mainDivStyle={mainDivStyle}
-                  />
-                </Suspense>
+                authIsGreaterThanUser ?
+                  <Suspense fallback={<LoadingComp />}>
+                    <AddEditRest
+                      // currentLocation={currentLocation}
+                      mainDivStyle={mainDivStyle}
+                    />
+                  </Suspense>
+                  :
+                  <>
+                    <Navigate to="/login" />
+                  </>
               }
             />
 
             <Route
               path='/dashboard'
               element={
-                <Suspense fallback={<LoadingComp />}>
-                  <DashBoardContainer
-                    mainDivStyle={mainDivStyle}
-                  />
-                </Suspense>
+                authIsGreaterThanUser ?
+                  <Suspense fallback={<LoadingComp />}>
+                    <DashBoardContainer
+                      mainDivStyle={mainDivStyle}
+                    />
+                  </Suspense>
+                  :
+                  <>
+                    <Navigate to="/login" />
+                  </>
               }
             />
-            {/* <Route
-          path="/account"
-          element={<RestDetail/>}
-        /> */}
+
 
             < Route
               path="/addnewrestaurant"
               element={
-                <Suspense fallback={<LoadingComp />}>
-                  <AddEditRest
-                    // currentLocation={currentLocation}
-                    mainDivStyle={mainDivStyle}
-                  />
-                </Suspense>
+                authIsGreaterThanUser ?
+                  <Suspense fallback={<LoadingComp />}>
+                    <AddEditRest
+                      // currentLocation={currentLocation}
+                      mainDivStyle={mainDivStyle}
+                    />
+                  </Suspense>
+                  :
+                  <>
+                    <Navigate to="/login" />
+                  </>
               }
             />
             <Route
@@ -650,6 +704,14 @@ function App() {
                     mainDivStyle={mainDivStyle}
                   />
                 </Suspense>
+
+              }
+            />
+
+            <Route
+              path='/unauthorized'
+              element={
+                <Unauthorized />
               }
             />
 

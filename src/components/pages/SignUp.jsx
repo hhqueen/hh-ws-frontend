@@ -216,6 +216,15 @@ export default function SignUp({ mainDivStyle }) {
         </label>
       </div>
 
+      <div
+        className='flex justify-center'
+      >
+        <p
+          className='text-sky-600 underline hover:cursor-pointer hover:text-sky-400'
+          onClick={() => { navigate("/login") }}
+        >I already have an Account! </p>
+      </div>
+
       <Button
         className="border border-sm w-24 self-center"
         type="submit">Register</Button>

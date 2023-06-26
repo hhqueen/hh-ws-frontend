@@ -16,9 +16,6 @@ export default function MapViewComp({
   setShowRestaurantsState,
   showRestaurants,
   coordinatesState,
-  restIdxHover,
-  contentHeight,
-  pageHeight,
   searchOnMapMoveProps
 }) {
 
@@ -73,20 +70,12 @@ export default function MapViewComp({
 
   const mapMarkers = showRestaurants.map((rest, idx) => {
     const labelNum = idx + 1
-    let showOpacity = 0.7
-    let zIdx = idx
-    if (idx === restIdxHover) {
-      showOpacity = 1.0
-      zIdx = showRestaurants.length + 1
-    }
     return (
       <>
         <MarkerInfoBoxComp
           labelNum={labelNum}
           idx={idx}
           restaurantData={rest}
-          markerOpacity={showOpacity}
-          markerZidx={zIdx}
           showRestaurants={showRestaurants}
           setShowRestaurantsState={setShowRestaurantsState}
         />
