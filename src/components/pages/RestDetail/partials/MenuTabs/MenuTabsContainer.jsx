@@ -42,11 +42,11 @@ export default function MenuTabsContainer({
             foodAndDrinkMenuObj.imgUrl = menu[foodAndDrinkMenuObj.name].imgUrl
             localMenuArr.push(foodAndDrinkMenuObj)
         } else {
-            if(menu[drinkMenuObj.name].imgUrl){
+            if(menu[drinkMenuObj.name]?.imgUrl){
                 drinkMenuObj.imgUrl = menu[drinkMenuObj.name].imgUrl
                 localMenuArr.push(drinkMenuObj)
             }
-            if(menu[foodMenuObj.name].imgUrl){
+            if(menu[foodMenuObj.name]?.imgUrl){
                 foodMenuObj.imgUrl = menu[foodMenuObj.name].imgUrl
                 localMenuArr.push(foodMenuObj)
             }
