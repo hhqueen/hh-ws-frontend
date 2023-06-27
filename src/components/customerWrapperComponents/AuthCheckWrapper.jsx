@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useLayoutEffect } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GlobalStateContext } from '../context/GlobalStateContext'
 import jwtDecode from 'jwt-decode'
 
 export default function AuthCheckWrapper({ minAuth = "User", requireAuth = true, children }) {
     // const { userInfo, jwtToken } = useContext(GlobalStateContext)
+    const [renderComp, setRenderComp] = useState(false)
     const navigate = useNavigate()
     const authRanking = {
         "user": 0,
@@ -31,11 +32,12 @@ export default function AuthCheckWrapper({ minAuth = "User", requireAuth = true,
                 console.log(`auth level ${currentAuthLevel} less than ${minAuthLevel} redirecting to ${redirectRoute}`)
                 return navigate(redirectRoute)
             }
-    
-            console.log(`no redirect`)
+            // console.log(`no redirect`)
+            setRenderComp(true)
         }
     })
 
+    if(!renderComp) return 
     return (
         <>
             {children}

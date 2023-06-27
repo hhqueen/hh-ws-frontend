@@ -12,8 +12,8 @@ const callServer = async ({
     justData = false
 }) =>{
     let response 
-    if(method="get") {
-        response = await axios[method](`${serverUrl}/${route}${qString}`)
+    if(method == "get") {
+        response = await axios["get"](`${serverUrl}/${route}${qString}`)
     } else {
         response = await axios[method](`${serverUrl}/${route}${qString}`,reqBody)
 

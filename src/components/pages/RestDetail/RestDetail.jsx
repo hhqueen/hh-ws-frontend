@@ -7,6 +7,7 @@ import axios from "axios"
 import apiLogger from '../../../helperFunctions/apiLogger'
 import qStringfromObj from '../../../helperFunctions/qStringfromObj'
 import jwtDecode from 'jwt-decode'
+import visitorActivityLogger from '../../../helperFunctions/visitorActivityLogger'
 
 // partials
 import HHHoursContainer from '../../Shared/HHHours/HHHoursContainer'
@@ -203,9 +204,19 @@ export default function RestDetail({ mainDivStyle }) {
         console.log("async data", response.data)
         setRestData(data => data = response.data)
         setAddress(`${response.data.address1} ${response.data.city} ${response.data.state} ${response.data.zip_code}`)
+
+        await visitorActivityLogger({
+          restaurantId: id,
+          elementId: "va2",
+          message: `User visited restaurantId: ${id} ${response.data.name}`,
+          url: window
+        })
+
         setIsloaded(true)
       } catch (error) {
         console.log(error)
+      } finally {
+
       }
     }
     getRestData()
@@ -256,7 +267,7 @@ export default function RestDetail({ mainDivStyle }) {
   let mainInfoComp = <></>
 
   if (GlobalStateVar.isMobile === true) {
-    
+
     mainInfoComp = <>
       <div
         className='flex md:flex md:px-10'
@@ -274,7 +285,7 @@ export default function RestDetail({ mainDivStyle }) {
     </>
 
   } else {
-    
+
     mainInfoComp = <>
       <div
         className='flex md:flex md:px-10'

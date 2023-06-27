@@ -1,5 +1,6 @@
 import React from 'react'
 import CityCard from "./CityCard"
+import visitorActivityLogger from "../../../../helperFunctions/visitorActivityLogger"
 
 
 export default function CityCardContainer({ headerText = "", CityArr = [], handleCardClick }) {
@@ -7,11 +8,19 @@ export default function CityCardContainer({ headerText = "", CityArr = [], handl
     // console.log("cityCard this:", window)
     const mapCityArry = CityArr.map((city) => {
         // console.log("cityData_fromArr:", city)
+
         return (
             <>
                 <CityCard
                     CityData={city}
                     handleCardClick={handleCardClick}
+                    visitorActivityLogger={()=>{
+                        visitorActivityLogger({
+                        elementId: "va1",
+                        value: city.name,
+                        message: `User clicked ${headerText} ${city.name} from Landing Page`
+                    })
+                }}
                 />
             </>
 

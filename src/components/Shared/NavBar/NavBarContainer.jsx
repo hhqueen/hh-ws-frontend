@@ -21,6 +21,7 @@ import Ig_IconComp from './sharedPartials/Ig_IconComp'
 // const NavBarMobile = lazy(() => import('./NavBars/NavBar_Mobile/NavBar'))
 import appendSearchHistory from '../../../helperFunctions/appendSearchHistory'
 import { useImmer } from 'use-immer'
+import visitorActivityLogger from '../../../helperFunctions/visitorActivityLogger'
 
 const emptyUserInfo = {
   "firstName": "",
@@ -44,49 +45,41 @@ export default function NavBarContainer({
 }) {
   const navigate = useNavigate()
   const [avatarDropDownComps, setAvatarDropDownComps] = useImmer([])
-  // const [userInfo, setUserInfo] = useImmer(emptyUserInfo)
 
-
-  // set user Info for NavBar use from jwt token
-  // useEffect(() => {
-  //   // console.log("navbar useEffect")
-  //   if (localStorage.getItem('jwt')) {
-  //     const token = localStorage.getItem('jwt')
-  //     const decoded = jwt_decode(token)
-  //     // console.log("decoded",decoded)
-  //     setUserInfo((draft) => {
-  //       draft.firstName = decoded.firstName
-  //       draft.lastName = decoded.lastName
-  //       draft.email = decoded.email
-  //       draft.id = decoded.id
-  //     })
-  //   }
-
-  // })
-
-  const foundJWT = localStorage.getItem('jwt')
-
-  const handleLogOut = () => {
-    console.log("attempt log out")
-    // check to see if a token exists in local storage
+  const handleLogOut = async () => {
+    try {
+      visitorActivityLogger({
+        elementId:"va5",
+        message:`User manually signed out`
+      })
+    } catch (error) {
+      console.warn(error)
+    }
     clearUserData()
   }
 
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    // new code
+    console.log("search term, address", searchParams.searchTerm, searchParams.address)
+    // console.log("handleSubmi searchParams", searchParams)
+    setSearchTermState(searchParams.searchTerm)
+    setAddressState(searchParams.address)
+    appendSearchHistory(searchParams.searchTerm, searchParams.address)
+    try {
+      visitorActivityLogger({
+        elementId:"va4",
+        message:`Search submitted with searchTerm: ${searchParams.searchTerm} and address:${searchParams.address}`
+      })
+    } catch (error) {
+      console.warn(error)
+    }
 
-
-    const handleSubmit = (e) => {
-      e.preventDefault()
-      // new code
-      console.log("search term, address",searchParams.searchTerm, searchParams.address)
-      // console.log("handleSubmi searchParams", searchParams)
-      setSearchTermState(searchParams.searchTerm)
-      setAddressState(searchParams.address)
-      appendSearchHistory(searchParams.searchTerm, searchParams.address)
-      // keep this regardless
-      navigate('/restaurants/')
+    // keep this regardless
+    navigate('/restaurants/')
   }
-  
+
   // conditionally render based on screen size (reference tailwind medium)
   let renderNavBar
   if (isTWmd) {

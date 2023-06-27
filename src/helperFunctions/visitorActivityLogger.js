@@ -1,33 +1,37 @@
 import qStringfromObj from "./qStringfromObj"
-import axios from 'axios'
-// const { qStringfromObj } = require('./qStringfromObj.js')
-// const axios = require('axios')
+import callServer from "./backendHelper"
+import jwtDecode from "jwt-decode"
 
-const visitorActivityLogger = async ({ 
-        e = null, 
-        componentName = null, 
-        elementId = null,}
-    ) => {
+const visitorActivityLogger = async ({
+    elementId,
+    restaurantId,
+    value,
+    message,
+    url
+}) => {
+    let response 
     try {
         const queryObj = {
-            UI_ElementName: e ? (e.target.name || e.target.parentElement.name) : null ,
-            UI_ElementId: e ? (e.target.id || e.target.parentElement.id) : elementId,
-            UI_ElementValue: e ? e.target.value : null,
-            UI_ElementChecked: e ? e.target.checked : null,
-            UI_ComponentName: componentName,
-            screenWidth: window.innerWidth,
-            screenHeight: window.screenHeight,
-            userId: localStorage.getItem("jwt") ? jwtdecode(localStorage.getItem("jwt")).id : null
+            userId: localStorage.getItem("jwt") ? jwtDecode(localStorage.getItem("jwt")).id : null,
+            restaurantId: restaurantId ?? null,
+            elementId: elementId ?? null,
+            value: value ?? null,
+            message: message ?? null,
+            url: window.location.href ?? null
         }
-        // console.log("apiLogger_queryObj:", queryObj)
-        
-        const queryString = qStringfromObj(queryObj)
-        // console.log("apiLogger_queryString:", queryString)
-        const apiLogResponse = await axios.post(`${process.env.REACT_APP_SERVER_URL}/apiLogs${queryString}`)
-        // console.log("apiLogger_apiLogResponse:",apiLogResponse)
-        return apiLogResponse
+        const callProps = {
+            route: 'visitorActivity',
+            method: 'post',
+            // qString: qStringfromObj(queryObj)
+            reqBody: queryObj
+        }
+        response = await callServer(callProps)
+        console.log("visitor activity", response)
     } catch (error) {
-        console.log(error)
+        console.error("visitorActivityLogger Error:",error)
+        response = error
+    } finally {
+        return response
     }
 }
 

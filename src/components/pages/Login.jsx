@@ -4,6 +4,8 @@ import { Label, TextInput, Button, Checkbox } from 'flowbite-react'
 import { useNavigate } from "react-router-dom"
 import LoadingComp from '../Shared/LoadingComp'
 
+import visitorActivityLogger from "../../helperFunctions/visitorActivityLogger"
+
 export default function Login({ mainDivStyle, userProps }) {
 
   const navigate = useNavigate()
@@ -19,22 +21,33 @@ export default function Login({ mainDivStyle, userProps }) {
 
   const loginFormSubmitHandler = async (e) => {
     e.preventDefault()
+
     try {
+
       // console.log("login attempted")
       const reqBody = loginData
       const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/login`, reqBody)
       const { token } = response.data
       localStorage.setItem('jwt', token)
+
+      await visitorActivityLogger({
+        elementId: "va3",
+        value: token,
+        message: `User logged in`,
+      })
+
       startTransition(()=>{
         setJwtToken(token)
         // console.log("login successful")
         navigate("/")
       })
     } catch (err) {
-      if (err.response.status === 400) {
+      if (err?.response?.status === 400) {
         const errMessage = err.response.data.msg
         console.log("login failed", errMessage)
         setMsg(errMessage)
+      } else {
+        console.log("login failed", err)
       }
     }
   }
@@ -116,6 +129,14 @@ export default function Login({ mainDivStyle, userProps }) {
 
 
         </form>
+        {/* <button
+          onClick={async ()=>{
+            const vsResponse = await visitorActivityLogger({})
+            // console.log("vsResponse", vsResponse)
+          }}
+        >
+          test123
+        </button> */}
       </body>
     </>
   )
