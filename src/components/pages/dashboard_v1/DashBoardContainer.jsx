@@ -16,6 +16,7 @@ import RegisteredProfiles from './partials/RegisteredProfiles'
 import TopThreeRestPerCity from './partials/TopThreeRestPerCity'
 import TotalRestaurants from './partials/TotalRestaurants'
 import LoadingComp from '../../Shared/LoadingComp'
+import MembershipAnalytics from './partials/MembershipAnalytics'
 
 
 // custom hooks
@@ -29,6 +30,8 @@ export default function DashBoardContainer({ mainDivStyle }) {
     const [totalRestNum, setTotalRestNum] = useState(0)
     const [pageVisitData, setPageVisitData] = useImmer([])
     const [dailyVisitors, setDailyVisitors] = useImmer([])
+    const [registeredProfiles, setRegisteredProfiles] = useImmer([])
+    const [emailSubs, setEmailSubs] = useImmer([])
 
 
     useEffect(() => {
@@ -38,6 +41,8 @@ export default function DashBoardContainer({ mainDivStyle }) {
                     await callServer({ route: "analytics/totalNumberOfRestaurants" }),
                     await callServer({ route: "analytics/RestaurantVisits" }),
                     await callServer({ route: "analytics/dailyVistors" }),
+                    await callServer({ route: "analytics/registeredProfiles" }),
+                    await callServer({ route: "analytics/emailSubs" }),
                 ]
 
 
@@ -48,6 +53,8 @@ export default function DashBoardContainer({ mainDivStyle }) {
                     { value: { data: totalRestNumResponse } },
                     { value: { data: restaurantVisitsResponse } },
                     { value: { data: dailyVisitorsResponse } },
+                    { value: { data: registeredProfilesResponse } },
+                    { value: { data: emailSubsResponse } },
                 ] = settledPromises
 
                 // console.log("restaurantVisitsResponse", restaurantVisitsResponse)
@@ -55,6 +62,8 @@ export default function DashBoardContainer({ mainDivStyle }) {
                     setTotalRestNum(totalRestNumResponse)
                     setPageVisitData(restaurantVisitsResponse)
                     setDailyVisitors(dailyVisitorsResponse)
+                    setRegisteredProfiles(registeredProfilesResponse)
+                    setEmailSubs(emailSubsResponse)
                 })
 
             } catch (error) {
@@ -64,6 +73,7 @@ export default function DashBoardContainer({ mainDivStyle }) {
         queryData()
     }, [])
 
+    if(isFetching) return <LoadingComp/>
     return (
         <>
             <Suspense fallback={<LoadingComp />}>
@@ -101,23 +111,15 @@ export default function DashBoardContainer({ mainDivStyle }) {
                         />
                     </section>
 
-                    {/* <section
-                    className='flex items-center justify-center'
-                >
-                    <Suspense fallback={<LoadingComp />}>
 
-                    </Suspense>
-                </section> */}
-                    {/* <section
-                    className='flex items-center justify-center'
-                >
-                    <RegisteredProfiles />
-                </section>
-                <section
-                    className='flex items-center justify-center'
-                >
-                    <WeeklyEmailSubs />
-                </section> */}
+                    <section
+                        className='flex items-center justify-center'
+                    >
+                        <MembershipAnalytics 
+                            registeredProfiles={registeredProfiles}
+                            emailSubs={emailSubs}
+                        />
+                    </section>
                 </div>
             </Suspense>
         </>
