@@ -1,6 +1,11 @@
 // import Libraries
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useTransition, Suspense } from 'react'
 import axios from "axios"
+import { useImmer } from 'use-immer'
+
+
+// helper functions
+import callServer from '../../../helperFunctions/backendHelper'
 
 // import Comps
 import TopRestaurantsContainer from './partials/TopRestaurantsContainer'
@@ -10,65 +15,100 @@ import DailyVisitors from './partials/DailyVisitors'
 import RegisteredProfiles from './partials/RegisteredProfiles'
 import TopThreeRestPerCity from './partials/TopThreeRestPerCity'
 import TotalRestaurants from './partials/TotalRestaurants'
+import LoadingComp from '../../Shared/LoadingComp'
 
 
 // custom hooks
-import useEnforceAuth from '../../customHooks/useEnforceAuth'
 
 export default function DashBoardContainer({ mainDivStyle }) {
+    const [isFetching, startTransition] = useTransition()
+
     const [apiLogData, setApiLogData] = useState([])
     const [restaurantViewLogs, setRestaurantViewLogs] = useState([])
 
-    useEnforceAuth()
+    const [totalRestNum, setTotalRestNum] = useState(0)
+    const [pageVisitData, setPageVisitData] = useImmer([])
+    const [dailyVisitors, setDailyVisitors] = useImmer([])
 
-    // useEffect(()=>{
-    //     const queryData =  async ()=>{
-    //         try {
-    //             // get all api log data
-    //             const getAllData = await axios.get(`${process.env.REACT_APP_SERVER_URL}/analytics`)
 
-    //             //filter data for not dev and set to apiLog State
-    //             const filteredProdData = getAllData.data.filter((logItem) => {
-    //                 // console.log(logItem)
-    //                 return !logItem.endPointURL.includes("https://development")
-    //             })
-    //             setApiLogData(filteredProdData)
+    useEffect(() => {
+        const queryData = async () => {
+            try {
+                const promiseArr = [
+                    await callServer({ route: "analytics/totalNumberOfRestaurants" }),
+                    await callServer({ route: "analytics/RestaurantVisits" }),
+                    await callServer({ route: "analytics/dailyVistors" }),
+                ]
 
-    //             // filter PROD Data for restaurant Views and set to state
-    //             const filtered_PROD_RestaurantData = filteredProdData.filter((logItem)=>{
-    //                 return logItem.endPointURL.includes("/restaurants/")
-    //             })
-    //             setRestaurantViewLogs(filtered_PROD_RestaurantData)
-    //             console.log("filtered PROD Restaurant Data",filtered_PROD_RestaurantData)
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-    //     }
-    //     queryData()
-    // },[])
+
+                const settledPromises = await Promise.allSettled(promiseArr)
+                console.log("settledPromises", settledPromises)
+
+                const [
+                    { value: { data: totalRestNumResponse } },
+                    { value: { data: restaurantVisitsResponse } },
+                    { value: { data: dailyVisitorsResponse } },
+                ] = settledPromises
+
+                // console.log("restaurantVisitsResponse", restaurantVisitsResponse)
+                startTransition(() => {
+                    setTotalRestNum(totalRestNumResponse)
+                    setPageVisitData(restaurantVisitsResponse)
+                    setDailyVisitors(dailyVisitorsResponse)
+                })
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        queryData()
+    }, [])
 
     return (
         <>
-            <div
-                style={mainDivStyle}
-            >
-                {/* <DashBoard/> */}
-                <section
-                    className='flex flex-col items-center justify-center font-bold text-2xl'
+            <Suspense fallback={<LoadingComp />}>
+                <div
+                    className='flex flex-col'
+                    style={mainDivStyle}
                 >
-                    <TotalRestaurants />
-                </section>
+                    {/* Heading */}
+                    <section
+                        className='flex items-center justify-center w-full h-fit'
+                    >
+                        <p
+                            className='text-[100px]'
+                        >HHQ Dashboard</p>
+                    </section>
+                    {/* <DashBoard/> */}
+                    <section
+                        className='flex flex-col items-center justify-center font-bold text-2xl'
+                    >
 
-                <section>
-                    <TopRestaurantsContainer />
-                </section>
+                        <TotalRestaurants
+                            passedRestTotalNum={totalRestNum}
+                        />
 
-                <section
+                    </section>
+
+                    <section
+                        className='flex flex-col justify-center items-center'
+                    >
+                        <TopRestaurantsContainer
+                            pageVisitData={pageVisitData}
+                        />
+                        <DailyVisitors
+                            dailyVisitors={dailyVisitors}
+                        />
+                    </section>
+
+                    {/* <section
                     className='flex items-center justify-center'
                 >
-                    <DailyVisitors />
-                </section>
-                <section
+                    <Suspense fallback={<LoadingComp />}>
+
+                    </Suspense>
+                </section> */}
+                    {/* <section
                     className='flex items-center justify-center'
                 >
                     <RegisteredProfiles />
@@ -77,8 +117,9 @@ export default function DashBoardContainer({ mainDivStyle }) {
                     className='flex items-center justify-center'
                 >
                     <WeeklyEmailSubs />
-                </section>
-            </div>
+                </section> */}
+                </div>
+            </Suspense>
         </>
     )
 }

@@ -12,10 +12,13 @@ const callServer = async ({
     justData = false
 }) =>{
     let response 
+    if(route[0] !== "/") {
+        route = "/" + route
+    }
     if(method == "get") {
-        response = await axios["get"](`${serverUrl}/${route}${qString}`)
+        response = await axios["get"](`${serverUrl}${route}${qString}`)
     } else {
-        response = await axios[method](`${serverUrl}/${route}${qString}`,reqBody)
+        response = await axios[method](`${serverUrl}${route}${qString}`,reqBody)
 
     }
     return justData ? response.data : response

@@ -38,7 +38,7 @@ export default function CityCardContainer({ headerText = "", CityArr = [], handl
                     className='flex flex-col md:flex-row justify-between items-center w-full'
                 >
                     {mapCityArry}
-                </div>
+                </div> 
             </div>
         </div>
     )

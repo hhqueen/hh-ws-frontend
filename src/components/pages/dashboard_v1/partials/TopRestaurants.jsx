@@ -11,7 +11,7 @@ export default function TopRestaurants({ restVisitCountArr, errorMsg, onRowClick
   const trMap = restVisitCountArr?.map((item, idx) => {
     return (
       <tr
-        onClick={()=>{onRowClick(item._id)}}
+        onClick={()=>{onRowClick(item?._id)}}
         className={rowStyle}
       >
         <td
@@ -19,16 +19,16 @@ export default function TopRestaurants({ restVisitCountArr, errorMsg, onRowClick
         >{idx+1}</td>
         <td
           // className='text-center'
-        >{item.restaurantData[0].name}</td>
+        >{item?.restaurantData[0]?.name}</td>
         <td
           className={cellStyle}
-        >{item.restaurantData[0].city}</td>
+        >{item?.restaurantData[0]?.city}</td>
         <td
           className={cellStyle}
-          >{item.restaurantData[0].state}</td>
+          >{item?.restaurantData[0]?.state}</td>
         <td
           className={cellStyle}
-          >{item.numOfVisits}</td>
+          >{item?.numOfVisits}</td>
       </tr>
     )
   })
