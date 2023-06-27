@@ -17,6 +17,7 @@ import TopThreeRestPerCity from './partials/TopThreeRestPerCity'
 import TotalRestaurants from './partials/TotalRestaurants'
 import LoadingComp from '../../Shared/LoadingComp'
 import MembershipAnalytics from './partials/MembershipAnalytics'
+import TopThreeCitiesBarGraph from './partials/TopThreeCitiesBarGraph'
 
 
 // custom hooks
@@ -32,6 +33,7 @@ export default function DashBoardContainer({ mainDivStyle }) {
     const [dailyVisitors, setDailyVisitors] = useImmer([])
     const [registeredProfiles, setRegisteredProfiles] = useImmer([])
     const [emailSubs, setEmailSubs] = useImmer([])
+    const [restsPerCity, setRestsPerCity] = useImmer([])
 
 
     useEffect(() => {
@@ -43,6 +45,8 @@ export default function DashBoardContainer({ mainDivStyle }) {
                     await callServer({ route: "analytics/dailyVistors" }),
                     await callServer({ route: "analytics/registeredProfiles" }),
                     await callServer({ route: "analytics/emailSubs" }),
+                    await callServer({ route: "analytics/RestaurantsPerCity" }),
+
                 ]
 
 
@@ -55,6 +59,8 @@ export default function DashBoardContainer({ mainDivStyle }) {
                     { value: { data: dailyVisitorsResponse } },
                     { value: { data: registeredProfilesResponse } },
                     { value: { data: emailSubsResponse } },
+                    { value: { data: restPerCityResponse } },
+
                 ] = settledPromises
 
                 // console.log("restaurantVisitsResponse", restaurantVisitsResponse)
@@ -64,6 +70,7 @@ export default function DashBoardContainer({ mainDivStyle }) {
                     setDailyVisitors(dailyVisitorsResponse)
                     setRegisteredProfiles(registeredProfilesResponse)
                     setEmailSubs(emailSubsResponse)
+                    setRestsPerCity(restPerCityResponse)
                 })
 
             } catch (error) {
@@ -98,6 +105,14 @@ export default function DashBoardContainer({ mainDivStyle }) {
                             passedRestTotalNum={totalRestNum}
                         />
 
+                    </section>
+
+                    <section
+                        className='flex justify-center items-center'
+                    >
+                        <TopThreeCitiesBarGraph
+                            restsPerCity={restsPerCity}
+                        />
                     </section>
 
                     <section

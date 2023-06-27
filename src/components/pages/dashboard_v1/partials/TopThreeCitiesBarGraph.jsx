@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useImmer } from 'use-immer'
 import LoadingComp from '../../../Shared/LoadingComp'
 
-export default function TopThreeCitiesBarGraph() {
+export default function TopThreeCitiesBarGraph({restsPerCity}) {
   const [isLoading, setIsLoading] = useState(false)
   const [settings, setSettings] = useImmer({
     useTopNumCities: true
@@ -24,14 +24,14 @@ export default function TopThreeCitiesBarGraph() {
     const executeFetch = async () => {
       try {
         // console.log("fetching Bargraph data")
-        const fetchedData = await axios.get(`${process.env.REACT_APP_SERVER_URL}/analytics/RestaurantsPerCity`)
-        setRawData(fetchedData.data)
+        // const fetchedData = await axios.get(`${process.env.REACT_APP_SERVER_URL}/analytics/RestaurantsPerCity`)
+        setRawData(restsPerCity)
       } catch (error) {
         console.log(error)
       }
     }
     executeFetch()
-  }, [])
+  }, [restsPerCity])
 
   // apply filters and params
   useEffect(() => {
