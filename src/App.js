@@ -759,10 +759,14 @@ function App() {
               path="/signup"
               element={
                 <Suspense fallback={<LoadingComp />}>
-                  <SignUp
-                    mainDivStyle={mainDivStyle}
-                    userProps={userProps}
-                  />
+                  <AuthCheckWrapper
+                    requireAuth={false}
+                  >
+                    <SignUp
+                      mainDivStyle={mainDivStyle}
+                      userProps={userProps}
+                    />
+                  </AuthCheckWrapper>
                 </Suspense>
               }
             />
@@ -771,10 +775,14 @@ function App() {
               path="/login"
               element={
                 <Suspense fallback={<LoadingComp />}>
-                  <Login
-                    mainDivStyle={mainDivStyle}
-                    userProps={userProps}
-                  />
+                  <AuthCheckWrapper
+                    requireAuth={false}
+                  >
+                    <Login
+                      mainDivStyle={mainDivStyle}
+                      userProps={userProps}
+                    />
+                  </AuthCheckWrapper>
                 </Suspense>
 
               }
@@ -784,9 +792,13 @@ function App() {
               path='/unauthorized'
               element={
                 <Suspense fallback={<LoadingComp />}>
-                  <Unauthorized
-                    mainDivStyle={mainDivStyle}
-                  />
+                  <AuthCheckWrapper
+                    requireAuth={false}
+                  >
+                    <Unauthorized
+                      mainDivStyle={mainDivStyle}
+                    />
+                  </AuthCheckWrapper>
                 </Suspense>
               }
             />
