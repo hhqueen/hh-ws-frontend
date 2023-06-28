@@ -15,23 +15,8 @@ export default function TopThreeCitiesBarGraph({restsPerCity}) {
     yAxisTitle: "",
     dataKey: ""
   })
-  const [rawData, setRawData] = useState([])
+  const [rawData, setRawData] = useState(restsPerCity)
   const [showData, setShowData] = useState([])
-
-  // initial data fetch
-  useEffect(() => {
-    setIsLoading(true)
-    const executeFetch = async () => {
-      try {
-        // console.log("fetching Bargraph data")
-        // const fetchedData = await axios.get(`${process.env.REACT_APP_SERVER_URL}/analytics/RestaurantsPerCity`)
-        setRawData(restsPerCity)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    executeFetch()
-  }, [restsPerCity])
 
   // apply filters and params
   useEffect(() => {

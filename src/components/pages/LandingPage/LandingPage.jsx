@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 // functions
 import qStringfromObj from '../../../helperFunctions/qStringfromObj'
-import {callServer} from "../../../helperFunctions/backendHelper"
+import callServer from '../../../helperFunctions/backendHelper'
 
 // components
 import CityCardContainer from './local_partials/CityCardContainer'
@@ -20,10 +20,9 @@ import LoadingComp from '../../Shared/LoadingComp'
 // context
 import { GlobalStateContext } from '../../context/GlobalStateContext'
 import axios from 'axios'
+import visitorActivityLogger from '../../../helperFunctions/visitorActivityLogger'
 
 
-
-// {name: "", img_url:""},
 
 export default function LandingPage({ setAddressState, setSearchParams, mainDivStyle }) {
     const [cityList, setCityList] = useState([
@@ -66,13 +65,17 @@ export default function LandingPage({ setAddressState, setSearchParams, mainDivS
         navigate("/restaurants")
     }
 
-    useEffect(() => {
-        const logUserHit = async () => {
-            const apiLogReponse = await apiLogger(componentName).data
-            console.log("apiLogReponse:", apiLogReponse)
-        }
-        logUserHit()
-    }, [])
+    // useEffect(() => {
+    //     const logUserHit = async () => {
+    //         // const apiLogReponse = await apiLogger(componentName).data
+    //         // console.log("apiLogReponse:", apiLogReponse)
+    //         visitorActivityLogger({
+    //             elementId:"va6",
+    //             message:"User navigated to Landing Page"
+    //         })
+    //     }
+    //     logUserHit()
+    // }, [])
 
     useEffect(() => {
         const getNearbyCities = async () => {

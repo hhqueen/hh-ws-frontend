@@ -596,7 +596,6 @@ function App() {
 
           <Routes>
             {/* website routes */}
-
             <Route
               path='/'
               element={
@@ -604,7 +603,7 @@ function App() {
                   <GlobalStateContext.Provider value={globalContextVar}>
                     <AuthCheckWrapper
                       minAuth='User'
-                      requireAuth={requireAuthOnAllRoutes}
+                      requireAuth={false}
                     >
                       <LandingPage
                         setSearchParams={setSearchParams}

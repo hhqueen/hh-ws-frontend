@@ -10,6 +10,12 @@ export default function MembershipAnalytics({registeredProfiles,emailSubs}) {
         3:["", 0, 0],
     })
 
+    // const 
+    console.log("emailSubs", emailSubs)
+    const filterEmailStatus = (arr, statusVal) =>{
+      return arr.filter((item)=> item.status == statusVal)
+    }
+
     const getDataLastXDays = (arr, numDays, key) => {
         let newArr = []
         arr.forEach((item) => {
@@ -24,7 +30,7 @@ export default function MembershipAnalytics({registeredProfiles,emailSubs}) {
         return [
             `Last ${numDays} Days`,
             getDataLastXDays(registeredProfiles, numDays, "createdAt").length,
-            getDataLastXDays(emailSubs, numDays, "timestamp_opt").length
+            filterEmailStatus(getDataLastXDays(emailSubs, numDays, "timestamp_opt"), "subscribed").length
         ]  
     }
 

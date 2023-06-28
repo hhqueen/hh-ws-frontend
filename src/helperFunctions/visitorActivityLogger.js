@@ -7,7 +7,6 @@ const visitorActivityLogger = async ({
     restaurantId,
     value,
     message,
-    url
 }) => {
     let response 
     try {
@@ -17,7 +16,8 @@ const visitorActivityLogger = async ({
             elementId: elementId ?? null,
             value: value ?? null,
             message: message ?? null,
-            url: window.location.href ?? null
+            url: window.location.href ?? null,
+            uad: window.navigator.userAgent
         }
         const callProps = {
             route: 'visitorActivity',
