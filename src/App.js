@@ -94,7 +94,7 @@ function App() {
     userInfo: {}
   })
 
-  const [requireAuthOnAllRoutes, setRequireAuthOnAllRoutes] = useState(true)
+  const [requireAuthOnAllRoutes, setRequireAuthOnAllRoutes] = useState(false)
 
   // userInfo JWT Token State
   const [jwtToken, setJwtToken] = useState(localStorage.getItem("jwt") ?? "")
