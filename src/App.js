@@ -94,7 +94,7 @@ function App() {
     userInfo: {}
   })
 
-  const [requireAuthOnAllRoutes, setRequireAuthOnAllRoutes] = useState(true)
+  const [requireAuthOnAllRoutes, setRequireAuthOnAllRoutes] = useState(false)
 
   // userInfo JWT Token State
   const [jwtToken, setJwtToken] = useState(localStorage.getItem("jwt") ?? "")
@@ -158,25 +158,6 @@ function App() {
     })
   }
 
-  async function isJWTValid() {
-    if (jwtToken === "") return false
-    const decodedJWT = jwtDecode(jwtToken)
-    try {
-
-      const checkIdValid = callServer({
-
-      })
-
-    } catch (error) {
-
-    }
-  }
-
-  function userInfoNotEmpty() {
-    const isUserInfoNotEmpty = Object.keys(userInfo).length !== 0
-    console.log("isUserInfoNotEmpty", isUserInfoNotEmpty)
-    return isUserInfoNotEmpty
-  }
 
   // log in use Effect
   useEffect(() => {
@@ -362,7 +343,16 @@ function App() {
 
         } else {
           // if not, error and prompt for a valid location
-          console.log("geolocation permission was not given.")
+          console.log("geolocation permission was not given, defaulting to Portland, OR")
+          const defaultLocation = "Portland, OR"
+          try {
+            const foundAddress = await geoForward(defaultLocation)
+            setAddressState(defaultLocation)
+            setCoordinateStateTransition(foundAddress[0])
+            setSearchParams(draft=>{draft.address = defaultLocation})
+          } catch (error) {
+            console.warn(error)
+          }
         }
 
         // if geolocation permission is given and addressState is "Current Location", get/set coordinates
@@ -386,7 +376,7 @@ function App() {
           }
         }
       } catch (error) {
-        console.log(error)
+        console.log("Phase 0 Error:",error)
       }
     }
     if (addressState !== "") {

@@ -14,6 +14,12 @@ export default function HHHoursContainer({ hourSet,timeOutputVal, dow = null }) 
         col3: `text-[11px] mx-1 col-start-5 col-end-8`
     }
 
+    const headerColStyle = {
+        col1: 'text-[11px] justify-items-start col-start-0 col-end-2 font-bold',
+        col2: `text-[11px] mx-1 col-start-2 col-end-5 font-bold`,
+        col3: `text-[11px] mx-1 col-start-5 col-end-8 font-bold`
+    }
+
     let renderHours = <></>
     let filteredHours = hourSet.hours
     if (dow !== null) {
@@ -68,7 +74,7 @@ export default function HHHoursContainer({ hourSet,timeOutputVal, dow = null }) 
             className='static grid grid-cols-7 justify-items-center'
         >
             <HHHoursHeader
-                colStyle={colStyle}
+                colStyle={headerColStyle}
             />
             {renderHours}
         </div>

@@ -55,7 +55,8 @@ export default function MapViewComp({
   }, []);
 
   function getMapBounds(mapObj) {
-    return new window.google.maps.LatLngBounds(mapObj.getBounds()).toJSON()
+    // console.log("mapObj:",mapObj)
+    return new window.google.maps.LatLngBounds(mapObj?.getBounds()).toJSON()
   }
 
   function getAndSetNewMapBound() {
