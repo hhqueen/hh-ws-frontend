@@ -43,6 +43,8 @@ import geoLocation from "./helperFunctions/geoLocation"
 import { GlobalStateContext } from './components/context/GlobalStateContext';
 import Unauthorized from './components/pages/Unauthorized';
 import callServer from './helperFunctions/backendHelper';
+import About from './components/pages/About';
+import Faq from './components/pages/Faq';
 
 const Main = lazy(() => import('./components/pages/Main/Main'))
 // import Main from './components/pages/Main';
@@ -62,6 +64,10 @@ const Profile = lazy(() => import('./components/pages/ProfileSettings/ProfileCon
 const LandingPage = lazy(() => import('./components/pages/LandingPage/LandingPage'))
 // const DashBoard = lazy(() => import('./components/pages/dashboard/DashBoard'))
 const DashBoardContainer = lazy(() => import('./components/pages/dashboard_v1/DashBoardContainer'))
+// import Login from './components/pages/Login';
+
+const AboutPage = lazy(() => import('./components/pages/About'))
+const FAQPage = lazy(() => import('./components/pages/Faq'))
 // import Login from './components/pages/Login';
 
 // require functions
@@ -349,7 +355,7 @@ function App() {
             const foundAddress = await geoForward(defaultLocation)
             setAddressState(defaultLocation)
             setCoordinateStateTransition(foundAddress[0])
-            setSearchParams(draft=>{draft.address = defaultLocation})
+            setSearchParams(draft => { draft.address = defaultLocation })
           } catch (error) {
             console.warn(error)
           }
@@ -376,7 +382,7 @@ function App() {
           }
         }
       } catch (error) {
-        console.log("Phase 0 Error:",error)
+        console.log("Phase 0 Error:", error)
       }
     }
     if (addressState !== "") {
@@ -769,6 +775,39 @@ function App() {
                     requireAuth={false}
                   >
                     <Login
+                      mainDivStyle={mainDivStyle}
+                      userProps={userProps}
+                    />
+                  </AuthCheckWrapper>
+                </Suspense>
+
+              }
+            />
+
+            <Route
+              path="/about"
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <AuthCheckWrapper
+                    requireAuth={false}
+                  >
+                    <About
+                      mainDivStyle={mainDivStyle}
+                    />
+                  </AuthCheckWrapper>
+                </Suspense>
+
+              }
+            />
+
+            <Route
+              path="/faq"
+              element={
+                <Suspense fallback={<LoadingComp />}>
+                  <AuthCheckWrapper
+                    requireAuth={false}
+                  >
+                    <Faq
                       mainDivStyle={mainDivStyle}
                       userProps={userProps}
                     />

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button, Checkbox } from 'flowbite-react'
 import qStringfromObj from '../../helperFunctions/qStringfromObj'
 
-export default function SignUp({ mainDivStyle,  userProps}) {
+export default function SignUp({ mainDivStyle, userProps }) {
   // state for the controlled form
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -89,7 +89,11 @@ export default function SignUp({ mainDivStyle,  userProps}) {
               htmlFor='firstName'
               value='First Name:'
             />
+            <span
+              className='text-[red]'
+            >*</span>
           </div>
+
           <TextInput
             className="mb-2 block"
             type="text"
@@ -107,7 +111,11 @@ export default function SignUp({ mainDivStyle,  userProps}) {
               htmlFor='lastName'
               value='Last Name:'
             />
+            <span
+              className='text-[red]'
+            >*</span>
           </div>
+
           <TextInput
             className="mb-2 block"
             type="text"

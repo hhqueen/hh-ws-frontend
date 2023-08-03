@@ -314,19 +314,46 @@ export default function NavBar({
                                             </Dropdown.Item>
                                         </Link>
 
-                                        <Dropdown.Item
-                                            onClick={(e) => {
-                                                apilogger({ componentName, elementId: 'LogOut_Link' })
-                                                handleLogOut()
-                                            }}
-                                        >
-                                            Sign out
-                                        </Dropdown.Item>
-                                    </>
 
+                                    </>
                                     // </div>
                                 }
 
+                                <Link
+                                    id='Login_Link'
+                                    onClick={(e) => {
+                                        apilogger(e, componentName, 'About_Link')
+                                    }}
+                                    to="/about"
+                                >
+                                    <Dropdown.Item>
+                                        About
+                                    </Dropdown.Item>
+                                </Link>
+
+                                <Link
+                                    id='Login_Link'
+                                    onClick={(e) => {
+                                        apilogger(e, componentName, 'FAQ_Link')
+                                    }}
+                                    to="/faq"
+                                >
+                                    <Dropdown.Item>
+                                        FAQ
+                                    </Dropdown.Item>
+                                </Link>
+
+                                {
+                                    localStorage.getItem('jwt') &&
+                                    <Dropdown.Item
+                                        onClick={(e) => {
+                                            apilogger({ componentName, elementId: 'LogOut_Link' })
+                                            handleLogOut()
+                                        }}
+                                    >
+                                        Sign out
+                                    </Dropdown.Item>
+                                }
 
 
                             </Dropdown>

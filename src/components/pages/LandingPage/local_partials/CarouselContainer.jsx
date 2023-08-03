@@ -25,14 +25,15 @@ export default function CarouselContainer() {
                 className='mt-[2vh] flex flex-col md:flex-row justify-center items-center h-fit w-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'
             >
                 <div
-                    className='flex flex-col text-white text-center text-[30.61px] font-bold justify-center px-5 md:w-[300px]'
+                    className='flex flex-col text-white text-center text-[40.61px] font-bold justify-center px-5 md:w-[500px]'
                 >
-                    <p>Find your nearest Happy Hours!</p>
+                    <p>Find your nearest</p>
+                    <p>Happy Hours!</p>
                 </div>
 
                 {/* <LogoLarge /> */}
 
-                <div
+                {/* <div
                     className='flex flex-col justify-center items-center font-bold text-white'
                 >
                     <p
@@ -49,7 +50,7 @@ export default function CarouselContainer() {
                             >Contact Us!</p>
                         </button>
                     </a>
-                </div>
+                </div> */}
             </div>
 
         </div>
