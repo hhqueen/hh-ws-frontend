@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { RxMagnifyingGlass } from 'react-icons/rx'
 import appendSearchHistory from '../../../../../../helperFunctions/appendSearchHistory'
 
-export default function SearchBar({ searchParams, setSearchParams, setAddressState, setSearchTermState, handleSubmit }) {
+export default function SearchBar({ searchParams, setSearchParams, handleSubmit }) {
 
     // const navigate = useNavigate()
 

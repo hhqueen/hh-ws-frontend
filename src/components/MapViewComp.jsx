@@ -1,6 +1,6 @@
 /* import libarires */
 
-import React, { useMemo, useEffect, useState, useCallback } from 'react'
+import React, { useMemo, useEffect, useState, useCallback, useContext } from 'react'
 // import { GoogleMap, LoadScript, useLoadScript, MarkerF, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api'
 import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api'
 import { useMediaQuery } from 'react-responsive';
@@ -8,6 +8,7 @@ import LoadingComp from './Shared/LoadingComp';
 import MarkerInfoBoxComp from './MarkerInfoBoxComp';
 import { useImmer } from 'use-immer';
 
+import { GlobalStateContext } from './context/GlobalStateContext';
 
 
 const loadScriptObj = { googleMapsApiKey: process.env.REACT_APP_GMAPS_API_KEY, version: "beta", libraries: ["marker"] }
@@ -28,6 +29,7 @@ export default function MapViewComp({
   const [mapObj, setMapObj] = useState(null)
   const [originalBound, setOriginalBound] = useImmer({})
   const [newBound, setNewBound] = useImmer({})
+  const GlobalStateContextVar = useContext(GlobalStateContext)
 
   const {
     searchOnMapMove,
@@ -106,8 +108,11 @@ export default function MapViewComp({
     // && (coordinatesState.latitude == 0 && coordinatesState.longitude == 0) 
     // && isFetchingRestData
   ) return <LoadingComp />
+  console.log("GlobalStateContextVar.geoLocationPermission:",GlobalStateContextVar.geoLocationPermission)
+  // if (GlobalStateContextVar.geoLocationPermission !== true ) return
   return (
     <>
+
       <div
         className='relative w-full h-full'
       >

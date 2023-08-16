@@ -3,20 +3,20 @@ import { useNavigate } from 'react-router-dom'
 import { RxMagnifyingGlass } from 'react-icons/rx'
 import appendSearchHistory from '../../../../../../helperFunctions/appendSearchHistory'
 
-export default function SearchBar({ searchParams, setSearchParams, setAddressState, setSearchTermState }) {
+export default function SearchBar({ searchParams, setSearchParams, setAddressState, setSearchTermState, handleSubmit }) {
 
     const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        // new code
-        console.log("search term, address",searchParams.searchTerm, searchParams.address)
-        setSearchTermState(searchParams.searchTerm)
-        setAddressState(searchParams.address)
-        appendSearchHistory(searchParams.searchTerm, searchParams.address)
-        // keep this regardless
-        navigate('/restaurants/')
-    }
+    // const handleSubmit = (e) => {
+    //     e.preventDefault()
+    //     // new code
+    //     console.log("search term, address",searchParams.searchTerm, searchParams.address)
+    //     setSearchTermState(searchParams.searchTerm)
+    //     setAddressState(searchParams.address)
+    //     appendSearchHistory(searchParams.searchTerm, searchParams.address)
+    //     // keep this regardless
+    //     navigate('/restaurants/')
+    // }
 
     return (
         <div

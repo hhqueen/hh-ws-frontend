@@ -328,63 +328,49 @@ function App() {
           })
         })
       }
+      setIsFetchingRestData(true)
 
-      try {
-        setIsFetchingRestData(true)
-        console.log("executing phase 0")
-        // setShowRestaurantsState([])
-        console.log("addressState:", addressState)
-        // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
+      console.log("executing phase 0")
+      // setShowRestaurantsState([])
+      console.log("addressState:", addressState)
+      // if address state is "Current Location" attempt to get current location, else try and get coordinates from position Stack API
+      const badCoordsState = { latitude: 1, longitude: 1 }
+      let geoCoords
+      if(addressState.toLowerCase() == "current location") {
+        try {
+          if ("geolocation" in navigator) {
+            geoCoords = await geoLocation()
+            // if (geoCoords.permission) {
 
-
-        let geoCoords
-        if ("geolocation" in navigator) {
-          geoCoords = await geoLocation()
-          // if (geoCoords.permission) {
-          setGlobalContextVar(draft => {
-            draft.geoLocationPermission = geoCoords.permission
-            draft.currentLocationState = { latitude: geoCoords.latitude, longitude: geoCoords.longitude }
-          })
-          // }
-
-        } else {
-          // if not, error and prompt for a valid location
-          console.log("geolocation permission was not given, defaulting to Portland, OR")
-          const defaultLocation = "Portland, OR"
-          try {
-            const foundAddress = await geoForward(defaultLocation)
-            setAddressState(defaultLocation)
-            setCoordinateStateTransition(foundAddress[0])
-            setSearchParams(draft => { draft.address = defaultLocation })
-          } catch (error) {
-            console.warn(error)
+            // }
+            setGlobalContextVar(draft => {
+              draft.geoLocationPermission = true
+              draft.currentLocationState = { latitude: geoCoords?.latitude, longitude: geoCoords?.longitude }
+            })
           }
-        }
+        } catch (error) {
+          console.log(error)
+          setGlobalContextVar(draft => {
+            draft.geoLocationPermission = false
+            draft.currentLocationState = badCoordsState
+          })
+          geoCoords = badCoordsState
+        } 
 
-        // if geolocation permission is given and addressState is "Current Location", get/set coordinates
-        if (addressState.toLowerCase() === "current location") {
-          console.log("addressState:", addressState)
-          console.log("setting Coordinate State:", geoCoords)
-          setCoordinateStateTransition(geoCoords)
-        }
-
-        if (addressState.toLowerCase() !== "current location" && addressState !== "") {
+      } else {
           // send address to radar geoforward for coordinates
           const foundAddress = await geoForward(addressState)
-          // console.log("foundAddress:", foundAddress)
+          console.log("foundAddress:", foundAddress)
           if (foundAddress.length > 0) {
             console.log("addressState:", addressState)
             console.log("setting Coordinate State:", foundAddress[0])
-            setCoordinateStateTransition(foundAddress[0])
-          } else {
-            // if not
-            console.log("there was no coordinates found for the supplied address")
-          }
+            geoCoords = foundAddress[0]
         }
-      } catch (error) {
-        console.log("Phase 0 Error:", error)
       }
+      console.log("geoCoords:", geoCoords) 
+      setCoordinateStateTransition(geoCoords)
     }
+
     if (addressState !== "") {
       executePhaseZero()
     }
@@ -417,6 +403,7 @@ function App() {
     const gotRests = await axios[httpMethod](getString)
     return gotRests
   }
+
   // Phase 1 useEffect -> fetchs raw restaurant list, dependencies: [CoordinatesState, DistanceState, searchTermState]
   useLayoutEffect(() => {
     const executePhaseOne = async () => {
@@ -508,12 +495,21 @@ function App() {
   const handleRestListErrorMsg = () => {
     const errMsg = {
       zeroFetchedData: `No results found. Please modify search terms and try again.`,
-      zeroFilterResults: `No results found. Please modify filters and try again.`
+      zeroFilterResults: `No results found. Please modify filters and try again.`,
+      locPermFalseAndAddressStateIsCurrentLocation: `Geolocation has not been granted, please turn on or search a different location.`,
     }
     setRestListErrorMsg("")
     console.log("executing error messaging")
+    console.log("globalContextVar:",globalContextVar)
     // if(isFetchingRestData) {
     // setRestListErrorMsg("")
+    if (globalContextVar.geoLocationPermission === false && addressState.toLowerCase() === "current location") {
+      console.log("error_msg_locPermFalseAndAddressStateIsCurrentLocation")
+      // setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
+      setRestListErrorMsg(errMsg.locPermFalseAndAddressStateIsCurrentLocation)
+      return
+    }
+
     if (allRestaurantsState.length === 0) {
       console.log("error_msg2")
       // setRestListErrorMsg("Whoa, the search did not return any happy hours near this location, please try a different location!")
@@ -542,13 +538,14 @@ function App() {
       let sortedRestaurants = filteredRestaurantsState
       // sorting code goes here (WIP)
       setShowRestaurantsState(sortedRestaurants)
-      handleRestListErrorMsg()
-      setIsFetchingRestData(false)
     }
     if (coordinatesState.latitude !== 0 && coordinatesState.longitude !== 0) {
       executePhaseThree()
     }
-  }, [filteredRestaurantsState])
+
+    handleRestListErrorMsg()
+    setIsFetchingRestData(false)
+  }, [filteredRestaurantsState, globalContextVar.geoLocationPermission])
 
   // handles no restaurants
   // useEffect(()=>{
